@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/sidebar";
 import { APP_LOGO, APP_TITLE, getLoginUrl } from "@/const";
 import { useIsMobile } from "@/hooks/useMobile";
-import { LayoutDashboard, LogOut, PanelLeft, Users, Briefcase, Ticket, Settings, FileText, BarChart3, CheckSquare } from "lucide-react";
+import { LayoutDashboard, LogOut, PanelLeft, Users, Briefcase, Ticket, Settings, FileText, BarChart3, CheckSquare, Award } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
@@ -33,6 +33,7 @@ const menuItems = [
   { icon: Briefcase, label: "نظام رحلة التوظيف ATS", path: "/dashboard/ats" },
   { icon: Ticket, label: "التذاكر", path: "/dashboard/tickets" },
   { icon: CheckSquare, label: "المهام", path: "/dashboard/tasks" },
+  { icon: Award, label: "الشهادات", path: "/dashboard/certificates" },
   { icon: FileText, label: "الأدوات الذكية", path: "/tools" },
   { icon: BarChart3, label: "التقارير", path: "/dashboard/reports" },
   { icon: Settings, label: "الإعدادات", path: "/dashboard/settings" },
