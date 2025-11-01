@@ -46,6 +46,19 @@ export default function DocumentGenerator() {
     },
   });
 
+  // Toggle save document mutation
+  const toggleSaveMutation = trpc.documentGenerator.toggleSaveDocument.useMutation({
+    onSuccess: (data) => {
+      if (generatedDoc) {
+        setGeneratedDoc({ ...generatedDoc, isSaved: data.isSaved });
+      }
+      toast.success(data.isSaved ? 'تم حفظ المستند في مكتبتك!' : 'تم إلغاء الحفظ');
+    },
+    onError: (error) => {
+      toast.error('فشل حفظ المستند: ' + error.message);
+    },
+  });
+
   // Group templates by category
   const groupedTemplates = templates.reduce((acc: any, template: any) => {
     const cat = template.category || 'other';
@@ -358,9 +371,18 @@ export default function DocumentGenerator() {
                     <Download className="ml-2 h-4 w-4" />
                     تحميل Word
                   </Button>
-                  <Button className="flex-1">
-                    <Save className="ml-2 h-4 w-4" />
-                    حفظ في مكتبتي
+                  <Button 
+                    className="flex-1"
+                    variant={generatedDoc.isSaved ? "secondary" : "default"}
+                    onClick={() => toggleSaveMutation.mutate({ documentId: generatedDoc.id })}
+                    disabled={toggleSaveMutation.isPending}
+                  >
+                    {toggleSaveMutation.isPending ? (
+                      <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <Save className="ml-2 h-4 w-4" />
+                    )}
+                    {generatedDoc.isSaved ? 'محفوظ ✓' : 'حفظ في مكتبتي'}
                   </Button>
                 </div>
               </CardContent>

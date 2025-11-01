@@ -2,6 +2,7 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { invokeLLM } from "./_core/llm";
 import * as db from "./db";
@@ -381,11 +382,14 @@ ${companyName ? `اسم الشركة: ${companyName}\n` : ''}
     toggleSaveDocument: protectedProcedure
       .input(z.object({ 
         documentId: z.number(),
-        isSaved: z.boolean(),
       }))
       .mutation(async ({ input }) => {
-        await db.updateDocumentSavedStatus(input.documentId, input.isSaved);
-        return { success: true };
+        const doc = await db.getDocumentById(input.documentId);
+        if (!doc) throw new TRPCError({ code: 'NOT_FOUND', message: 'Document not found' });
+        
+        const newSavedStatus = !doc.isSaved;
+        await db.updateDocumentSavedStatus(input.documentId, newSavedStatus);
+        return { success: true, isSaved: newSavedStatus };
       }),
 
     // Delete document

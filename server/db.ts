@@ -170,6 +170,22 @@ export async function getUserDocuments(userId: number, limit = 50) {
 }
 
 /**
+ * Get document by ID
+ */
+export async function getDocumentById(documentId: number) {
+  const db = await getDb();
+  if (!db) return null;
+  
+  const result = await db
+    .select()
+    .from(generatedDocuments)
+    .where(eq(generatedDocuments.id, documentId))
+    .limit(1);
+  
+  return result.length > 0 ? result[0] : null;
+}
+
+/**
  * Get user's saved documents only
  */
 export async function getUserSavedDocuments(userId: number) {

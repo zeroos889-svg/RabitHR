@@ -6,6 +6,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import DocumentGenerator from "./pages/DocumentGenerator";
+import MyDocuments from "./pages/MyDocuments";
 import EndOfServiceCalculator from "./pages/EndOfServiceCalculator";
 import LeaveCalculator from "./pages/LeaveCalculator";
 import LetterGenerator from "./pages/LetterGenerator";
@@ -51,6 +52,7 @@ function Router() {
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/document-generator"} component={DocumentGenerator} />
+      <Route path={"/my-documents"} component={MyDocuments} />
       <Route path={"/404"} component={NotFound} />
       <Route path="/contact" component={Contact} />
       <Route path="/faq" component={FAQ} />
