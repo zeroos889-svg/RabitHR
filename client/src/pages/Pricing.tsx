@@ -14,8 +14,15 @@ import {
   Crown,
   Zap,
   Shield,
-  HeadphonesIcon
+  HeadphonesIcon,
+  HelpCircle
 } from 'lucide-react';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 import { Link } from 'wouter';
 
 // Pricing Plans
@@ -408,6 +415,110 @@ export default function Pricing() {
             <p className="text-sm text-muted-foreground">فريق دعم جاهز لمساعدتك</p>
           </Card>
         </div>
+
+        {/* Pricing FAQ */}
+        <Card className="mb-16">
+          <CardHeader className="text-center">
+            <div className="mx-auto mb-4 p-3 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 w-fit">
+              <HelpCircle className="h-6 w-6 text-white" />
+            </div>
+            <CardTitle className="text-2xl">أسئلة شائعة عن الباقات</CardTitle>
+            <CardDescription>إجابات على الأسئلة الأكثر شيوعاً حول الأسعار والباقات</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="item-1">
+                <AccordionTrigger className="text-right">
+                  <span className="font-semibold">هل يمكنني تجربة الباقة المدفوعة قبل الشراء؟</span>
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  نعم! نوفر فترة تجريبية مجانية لمدة 14 يوم لجميع الباقات المدفوعة. يمكنك تجربة جميع الميزات دون الحاجة لبطاقة ائتمان.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-2">
+                <AccordionTrigger className="text-right">
+                  <span className="font-semibold">هل يمكنني الترقية أو التخفيض بين الباقات؟</span>
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  بالتأكيد! يمكنك الترقية أو التخفيض بين الباقات في أي وقت. عند الترقية، ستدفع الفرق فقط للفترة المتبقية. عند التخفيض، سيتم احتساب الرصيد المتبقي في الفترة القادمة.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-3">
+                <AccordionTrigger className="text-right">
+                  <span className="font-semibold">ما هي طرق الدفع المتاحة؟</span>
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  نقبل جميع طرق الدفع الرئيسية: بطاقات الائتمان (Visa, Mastercard, Mada)، Apple Pay، والتحويل البنكي للشركات. جميع المعاملات آمنة ومشفرة.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-4">
+                <AccordionTrigger className="text-right">
+                  <span className="font-semibold">هل الأسعار شاملة ضريبة القيمة المضافة؟</span>
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  الأسعار المعروضة غير شاملة لضريبة القيمة المضافة (15%). سيتم إضافة الضريبة عند الدفع وفقاً للأنظمة السعودية.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-5">
+                <AccordionTrigger className="text-right">
+                  <span className="font-semibold">ماذا يحدث إذا تجاوزت عدد الموظفين المسموح؟</span>
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  سنقوم بإشعارك تلقائياً عند الاقتراب من الحد الأقصى. يمكنك الترقية للباقة الأعلى في أي وقت. لن يتم إيقاف الخدمة، لكن سيتم احتساب رسوم إضافية بسيطة للموظفين الإضافيين.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-6">
+                <AccordionTrigger className="text-right">
+                  <span className="font-semibold">هل يمكنني إلغاء الاشتراك في أي وقت؟</span>
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  نعم، يمكنك إلغاء الاشتراك في أي وقت دون أي رسوم إضافية. ستستمر في الوصول للخدمة حتى نهاية الفترة المدفوعة. لن يتم تجديد الاشتراك تلقائياً بعد الإلغاء.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-7">
+                <AccordionTrigger className="text-right">
+                  <span className="font-semibold">هل تقدمون خصومات للدفع السنوي؟</span>
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  نعم! نوفر خصم 20% عند الدفع السنوي مقدماً. على سبيل المثال، باقة مستقل HR بـ 299 ريال شهرياً تصبح 2,870 ريال سنوياً (بدلاً من 3,588 ريال).
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-8">
+                <AccordionTrigger className="text-right">
+                  <span className="font-semibold">ما الفرق بين باقة مستقل HR وباقة الشركات؟</span>
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  باقة مستقل HR مصممة للأفراد الذين يقدمون خدمات HR لعدة عملاء، وتركز على الأدوات الفردية. باقة الشركات تشمل نظام إدارة كامل مع ATS، إدارة الفريق، التذاكر، والتقارير المتقدمة - مناسبة للشركات التي تدير موظفيها داخلياً.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-9">
+                <AccordionTrigger className="text-right">
+                  <span className="font-semibold">هل البيانات آمنة ومحمية؟</span>
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  نعم، نستخدم أعلى معايير الأمان (SSL 256-bit encryption) لحماية بياناتك. جميع البيانات مخزنة في خوادم آمنة داخل السعودية ومتوافقة مع قوانين حماية البيانات. نقوم بنسخ احتياطي يومي لضمان عدم فقدان أي بيانات.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-10">
+                <AccordionTrigger className="text-right">
+                  <span className="font-semibold">هل يمكنني طلب ميزات مخصصة؟</span>
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  بالتأكيد! نوفر باقة Custom للمؤسسات الكبيرة التي تحتاج ميزات مخصصة، تكامل خاص، أو تدريب مخصص. تواصل معنا لمناقشة احتياجاتك وسنقوم بتصميم حل يناسبك.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </CardContent>
+        </Card>
 
         {/* CTA Section */}
         <Card className="bg-gradient-to-r from-blue-500 to-purple-600 text-white border-0">
