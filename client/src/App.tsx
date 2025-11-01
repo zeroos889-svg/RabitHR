@@ -24,12 +24,16 @@ import BrandPreview from "./pages/BrandPreview";
 import Templates from "./pages/dashboard/Templates";
 import Reminders from "./pages/dashboard/Reminders";
 import Tools from "./pages/dashboard/Tools";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path={"/"} component={Home} />
+      <Route path="/about" component={About} />
+      <Route path="/contact" component={Contact} />
       <Route path={"/tools/end-of-service"} component={EndOfServiceCalculator} />
       <Route path={"/tools/leave-calculator"} component={LeaveCalculator} />
       <Route path={"/tools/letter-generator"} component={LetterGenerator} />
