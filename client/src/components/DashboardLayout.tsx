@@ -26,6 +26,7 @@ import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
 import { Button } from "./ui/button";
+import { NotificationDropdown } from './NotificationDropdown';
 
 const menuItems = [
   { icon: LayoutDashboard, label: "لوحة التحكم", path: "/dashboard" },
@@ -294,6 +295,7 @@ function DashboardLayoutContent({
                 </div>
               </div>
             </div>
+            <NotificationDropdown />
           </div>
         )}
         <main className="flex-1 p-4">{children}</main>

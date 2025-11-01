@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { 
   Building2, 
@@ -529,6 +529,165 @@ export default function Home() {
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        <div className="container">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              {t('testimonials.title') || 'ماذا يقول عملاؤنا'}
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              {t('testimonials.subtitle') || 'قصص نجاح حقيقية من شركات سعودية'}
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Testimonial 1 */}
+            <Card className="hover:shadow-xl transition-all duration-300">
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
+                    أ
+                  </div>
+                  <div>
+                    <h4 className="font-semibold">أحمد القحطاني</h4>
+                    <p className="text-sm text-muted-foreground">مدير الموارد البشرية - شركة النخيل</p>
+                  </div>
+                </div>
+                <div className="flex gap-1 mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <span key={i} className="text-yellow-400">★</span>
+                  ))}
+                </div>
+                <p className="text-muted-foreground leading-relaxed">
+                  "رابِط وفّر علينا ساعات عمل كثيرة. مولد الخطابات بالذكاء الاصطناعي رائع ويضمن التوافق مع نظام العمل. أنصح به بشدة!"
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Testimonial 2 */}
+            <Card className="hover:shadow-xl transition-all duration-300">
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="h-12 w-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white font-bold text-lg">
+                    س
+                  </div>
+                  <div>
+                    <h4 className="font-semibold">سارة العتيبي</h4>
+                    <p className="text-sm text-muted-foreground">مستقلة HR - تخدم 15 عميل</p>
+                  </div>
+                </div>
+                <div className="flex gap-1 mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <span key={i} className="text-yellow-400">★</span>
+                  ))}
+                </div>
+                <p className="text-muted-foreground leading-relaxed">
+                  "كمستقلة HR، رابِط ساعدني في خدمة عملائي بشكل أسرع وأكثر احترافية. نظام ATS ممتاز والدعم الفني سريع."
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Testimonial 3 */}
+            <Card className="hover:shadow-xl transition-all duration-300">
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="h-12 w-12 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center text-white font-bold text-lg">
+                    م
+                  </div>
+                  <div>
+                    <h4 className="font-semibold">محمد الغامدي</h4>
+                    <p className="text-sm text-muted-foreground">مدير عام - شركة الريادة للتقنية</p>
+                  </div>
+                </div>
+                <div className="flex gap-1 mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <span key={i} className="text-yellow-400">★</span>
+                  ))}
+                </div>
+                <p className="text-muted-foreground leading-relaxed">
+                  "حسابة نهاية الخدمة دقيقة جداً ووفرت علينا الكثير من الوقت. المنصة سهلة الاستخدام والفريق متعاون."
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="text-center mt-12">
+            <Link href="/case-studies">
+              <Button size="lg" variant="outline" className="gap-2">
+                اقرأ المزيد من قصص النجاح
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Partners Section */}
+      <section className="py-20 bg-muted/30">
+        <div className="container">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              {t('partners.title') || 'شركاؤنا'}
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              {t('partners.subtitle') || 'يثق بنا المئات من الشركات السعودية'}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center">
+            {/* Partner Logos - Using placeholder */}
+            {[
+              { name: 'شركة النخيل', icon: Building2 },
+              { name: 'مجموعة الريادة', icon: Building2 },
+              { name: 'شركة الأفق', icon: Building2 },
+              { name: 'مؤسسة التميز', icon: Building2 },
+              { name: 'شركة الإبداع', icon: Building2 },
+              { name: 'مجموعة النجاح', icon: Building2 },
+              { name: 'شركة التطوير', icon: Building2 },
+              { name: 'مؤسسة الرؤية', icon: Building2 },
+            ].map((partner, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-center p-6 rounded-lg bg-background hover:shadow-lg transition-all duration-300 group"
+              >
+                <div className="text-center">
+                  <partner.icon className="h-12 w-12 mx-auto mb-2 text-muted-foreground group-hover:text-primary transition-colors" />
+                  <p className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+                    {partner.name}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <Card className="max-w-3xl mx-auto">
+              <CardContent className="py-8">
+                <div className="grid md:grid-cols-4 gap-6">
+                  <div className="text-center">
+                    <div className="text-4xl font-bold text-blue-600 mb-2">500+</div>
+                    <p className="text-sm text-muted-foreground">شركة تثق بنا</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-4xl font-bold text-green-600 mb-2">10,000+</div>
+                    <p className="text-sm text-muted-foreground">موظف مسجل</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-4xl font-bold text-purple-600 mb-2">98%</div>
+                    <p className="text-sm text-muted-foreground">رضا العملاء</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-4xl font-bold text-orange-600 mb-2">24/7</div>
+                    <p className="text-sm text-muted-foreground">دعم فني</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
