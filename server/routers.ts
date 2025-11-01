@@ -4,6 +4,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
 import { z } from "zod";
 import { invokeLLM } from "./_core/llm";
+import * as db from "./db";
 
 export const appRouter = router({
   system: systemRouter,
@@ -237,6 +238,297 @@ export const appRouter = router({
         `;
 
         return { pdfContent };
+      }),
+  }),
+
+  // Smart Document Generator
+  documentGenerator: router({
+    // Get all templates
+    getTemplates: publicProcedure.query(async () => {
+      const templates = await db.getAllTemplates();
+      return { templates };
+    }),
+
+    // Get template by code
+    getTemplate: publicProcedure
+      .input(z.object({ code: z.string() }))
+      .query(async ({ input }) => {
+        const template = await db.getTemplateByCode(input.code);
+        return { template };
+      }),
+
+    // Generate document with AI
+    generateDocument: protectedProcedure
+      .input(z.object({
+        templateCode: z.string(),
+        inputData: z.record(z.string(), z.any()),
+        lang: z.enum(["ar", "en", "both"]).default("ar"),
+        style: z.enum(["formal", "semi-formal", "friendly"]).default("formal"),
+        companyLogo: z.string().optional(),
+        companyName: z.string().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const { templateCode, inputData, lang, style, companyLogo, companyName } = input;
+        
+        // Get template
+        const template = await db.getTemplateByCode(templateCode);
+        if (!template) {
+          throw new Error("Template not found");
+        }
+
+        // Build AI prompt
+        const styleDescriptions = {
+          formal: "رسمي جداً ومهني، يستخدم في المراسلات الحكومية والقانونية",
+          "semi-formal": "شبه رسمي، يستخدم في المراسلات الداخلية للشركات",
+          friendly: "ودي ومباشر، مع الحفاظ على الاحترافية",
+        };
+
+        const langDescriptions = {
+          ar: "العربية الفصحى فقط",
+          en: "English only",
+          both: "نسخة عربية ونسخة إنجليزية منفصلتين",
+        };
+
+        const systemPrompt = `أنت مساعد ذكاء اصطناعي متخصص في كتابة المستندات والخطابات الرسمية للموارد البشرية.
+
+مهمتك: إنشاء ${template.titleAr} بناءً على البيانات المقدمة.
+
+الأسلوب المطلوب: ${styleDescriptions[style]}
+اللغة المطلوبة: ${langDescriptions[lang]}
+
+متطلبات الكتابة:
+1. استخدم صيغة احترافية ومناسبة للسياق
+2. تأكد من ذكر جميع التفاصيل المهمة
+3. اتبع التنسيق القياسي للمستندات الرسمية
+4. أضف التاريخ الهجري والميلادي
+5. اجعل المستند جاهزاً للطباعة
+6. إذا كانت اللغة "both"، اكتب النسخة العربية أولاً ثم الإنجليزية مع فاصل واضح
+
+ملاحظة مهمة: هذا المستند يُولَّد بالذكاء الاصطناعي ويخضع للمراجعة البشرية قبل الاستخدام الرسمي.
+
+${template.aiPrompt || ''}`;
+
+        const userPrompt = `البيانات المطلوبة:
+${JSON.stringify(inputData, null, 2)}
+
+${companyName ? `اسم الشركة: ${companyName}\n` : ''}
+
+الرجاء إنشاء المستند كاملاً بصيغة HTML جاهزة للطباعة.`;
+
+        try {
+          // Generate with AI
+          const response = await invokeLLM({
+            messages: [
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: userPrompt },
+            ],
+          });
+
+          let outputHtml = '';
+          const content = response.choices[0]?.message?.content;
+          if (typeof content === 'string') {
+            outputHtml = content;
+          } else if (Array.isArray(content)) {
+            // Extract text from array content
+            outputHtml = content
+              .filter(item => 'text' in item)
+              .map(item => ('text' in item ? item.text : ''))
+              .join('');
+          }
+          
+          const outputText = outputHtml.replace(/<[^>]*>/g, ''); // Strip HTML for text version
+
+          // Save to database
+          await db.createGeneratedDocument({
+            userId: ctx.user.id,
+            templateCode,
+            outputHtml,
+            outputText,
+            lang,
+            inputData: JSON.stringify(inputData),
+            companyLogo,
+            companyName,
+            isSaved: false,
+          });
+
+          return { 
+            success: true,
+            outputHtml,
+            outputText,
+          };
+        } catch (error) {
+          console.error('Document generation error:', error);
+          throw new Error('فشل في توليد المستند. يرجى المحاولة مرة أخرى.');
+        }
+      }),
+
+    // Get user's documents
+    getMyDocuments: protectedProcedure
+      .input(z.object({ limit: z.number().optional() }))
+      .query(async ({ input, ctx }) => {
+        const documents = await db.getUserDocuments(ctx.user.id, input.limit);
+        return { documents };
+      }),
+
+    // Get saved documents only
+    getMySavedDocuments: protectedProcedure
+      .query(async ({ ctx }) => {
+        const documents = await db.getUserSavedDocuments(ctx.user.id);
+        return { documents };
+      }),
+
+    // Save/unsave document
+    toggleSaveDocument: protectedProcedure
+      .input(z.object({ 
+        documentId: z.number(),
+        isSaved: z.boolean(),
+      }))
+      .mutation(async ({ input }) => {
+        await db.updateDocumentSavedStatus(input.documentId, input.isSaved);
+        return { success: true };
+      }),
+
+    // Delete document
+    deleteDocument: protectedProcedure
+      .input(z.object({ documentId: z.number() }))
+      .mutation(async ({ input, ctx }) => {
+        await db.deleteGeneratedDocument(input.documentId, ctx.user.id);
+        return { success: true };
+      }),
+  }),
+
+  // Consulting System
+  consulting: router({
+    // Get all active packages
+    getPackages: publicProcedure.query(async () => {
+      const packages = await db.getActiveConsultingPackages();
+      return { packages };
+    }),
+
+    // Get package by ID
+    getPackage: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .query(async ({ input }) => {
+        const package_ = await db.getConsultingPackageById(input.id);
+        return { package: package_ };
+      }),
+
+    // Create consulting ticket (booking)
+    createTicket: protectedProcedure
+      .input(z.object({
+        packageId: z.number(),
+        subject: z.string(),
+        description: z.string(),
+        submittedFormJson: z.string().optional(),
+        attachments: z.string().optional(),
+        priority: z.enum(["low", "medium", "high", "urgent"]).optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const result = await db.createConsultingTicket({
+          userId: ctx.user.id,
+          ...input,
+        });
+        return { success: true, ...result };
+      }),
+
+    // Get my tickets
+    getMyTickets: protectedProcedure
+      .query(async ({ ctx }) => {
+        const tickets = await db.getUserConsultingTickets(ctx.user.id);
+        return { tickets };
+      }),
+
+    // Get ticket by ID
+    getTicket: protectedProcedure
+      .input(z.object({ ticketId: z.number() }))
+      .query(async ({ input }) => {
+        const ticket = await db.getConsultingTicketById(input.ticketId);
+        return { ticket };
+      }),
+
+    // Get ticket by number
+    getTicketByNumber: protectedProcedure
+      .input(z.object({ ticketNumber: z.string() }))
+      .query(async ({ input }) => {
+        const ticket = await db.getConsultingTicketByNumber(input.ticketNumber);
+        return { ticket };
+      }),
+
+    // Get ticket responses
+    getTicketResponses: protectedProcedure
+      .input(z.object({ ticketId: z.number() }))
+      .query(async ({ input }) => {
+        const responses = await db.getConsultingTicketResponses(input.ticketId);
+        return { responses };
+      }),
+
+    // Add response to ticket
+    addResponse: protectedProcedure
+      .input(z.object({
+        ticketId: z.number(),
+        message: z.string(),
+        attachments: z.string().optional(),
+        isInternal: z.boolean().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        await db.addConsultingResponse({
+          ticketId: input.ticketId,
+          userId: ctx.user.id,
+          message: input.message,
+          attachments: input.attachments,
+          isInternal: input.isInternal || false,
+        });
+        return { success: true };
+      }),
+
+    // Update ticket status
+    updateTicketStatus: protectedProcedure
+      .input(z.object({
+        ticketId: z.number(),
+        status: z.enum(["pending", "assigned", "in-progress", "completed", "cancelled"]),
+      }))
+      .mutation(async ({ input }) => {
+        await db.updateConsultingTicketStatus(input.ticketId, input.status);
+        return { success: true };
+      }),
+
+    // Assign ticket to consultant (admin only)
+    assignTicket: protectedProcedure
+      .input(z.object({
+        ticketId: z.number(),
+        consultantId: z.number(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        // TODO: Add admin check
+        await db.assignConsultingTicket(input.ticketId, input.consultantId);
+        return { success: true };
+      }),
+
+    // Rate ticket
+    rateTicket: protectedProcedure
+      .input(z.object({
+        ticketId: z.number(),
+        rating: z.number().min(1).max(5),
+        feedback: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        await db.rateConsultingTicket(input.ticketId, input.rating, input.feedback);
+        return { success: true };
+      }),
+
+    // Get consultant's tickets (for consultant dashboard)
+    getConsultantTickets: protectedProcedure
+      .query(async ({ ctx }) => {
+        const tickets = await db.getConsultantTickets(ctx.user.id);
+        return { tickets };
+      }),
+
+    // Get pending tickets (for admin)
+    getPendingTickets: protectedProcedure
+      .query(async () => {
+        // TODO: Add admin check
+        const tickets = await db.getPendingConsultingTickets();
+        return { tickets };
       }),
   }),
 

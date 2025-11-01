@@ -139,7 +139,66 @@ export default function Privacy() {
                 <li><strong className="text-foreground">الصلاحيات:</strong> الوصول للبيانات محدود للموظفين المصرح لهم فقط</li>
                 <li><strong className="text-foreground">المراقبة:</strong> مراقبة مستمرة للأنشطة المشبوهة</li>
                 <li><strong className="text-foreground">التدقيق:</strong> مراجعات أمنية دورية من جهات خارجية</li>
+                <li><strong className="text-foreground">الامتثال للمعايير:</strong> نستهدف التوافق مع ISO 27001 وSOC 2 لضمان أعلى معايير الأمان</li>
               </ul>
+            </CardContent>
+          </Card>
+
+          {/* AI & Document Generation Privacy */}
+          <Card className="border-2 border-blue-200 bg-blue-50/50">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Shield className="h-5 w-5 text-blue-600" />
+                خصوصية الذكاء الاصطناعي والمستندات المولّدة
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
+              <p className="text-foreground font-semibold">
+                نلتزم بأعلى معايير الخصوصية عند استخدام الذكاء الاصطناعي:
+              </p>
+              
+              <div className="bg-white p-4 rounded-lg border border-blue-200">
+                <h3 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+                  <Database className="h-4 w-4 text-blue-600" />
+                  تخزين المستندات:
+                </h3>
+                <ul className="list-disc list-inside space-y-2 mr-4 text-sm">
+                  <li>جميع المستندات المولّدة بالذكاء الاصطناعي يتم حفظها <strong className="text-foreground">داخل حسابك الشخصي</strong> فقط</li>
+                  <li>لا يتم مشاركة المستندات مع أي طرف ثالث أو استخدامها لتدريب النماذج</li>
+                  <li>يمكنك حذف أي مستند في أي وقت من مكتبتك</li>
+                  <li>المستندات مشفرة ومحمية بنفس معايير بقية بياناتك</li>
+                </ul>
+              </div>
+
+              <div className="bg-white p-4 rounded-lg border border-blue-200">
+                <h3 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+                  <UserCheck className="h-4 w-4 text-blue-600" />
+                  Human-in-the-Loop (المراجعة البشرية):
+                </h3>
+                <ul className="list-disc list-inside space-y-2 mr-4 text-sm">
+                  <li><strong className="text-foreground">جميع المستندات المولّدة تحمل تنبيهاً:</strong> "يخضع للمراجعة البشرية قبل الاستخدام الرسمي"</li>
+                  <li>ننصح بمراجعة جميع المخرجات من قبل متخصص HR أو قانوني</li>
+                  <li>الذكاء الاصطناعي أداة مساعدة، ليس بديلاً عن الخبرة البشرية</li>
+                  <li>نحن غير مسؤولين عن أي أخطاء في المحتوى المولّد</li>
+                </ul>
+              </div>
+
+              <div className="bg-white p-4 rounded-lg border border-blue-200">
+                <h3 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+                  <Lock className="h-4 w-4 text-blue-600" />
+                  الخصوصية والأمان:
+                </h3>
+                <ul className="list-disc list-inside space-y-2 mr-4 text-sm">
+                  <li>لا نستخدم بياناتك لتدريب نماذج الذكاء الاصطناعي</li>
+                  <li>جميع الاتصالات مع نماذج AI مشفرة بالكامل</li>
+                  <li>لا يتم تخزين المحادثات مع AI إلا في حسابك</li>
+                  <li>يمكنك حذف سجل المحادثات بالكامل في أي وقت</li>
+                </ul>
+              </div>
+
+              <p className="text-sm text-foreground font-medium mt-4 p-3 bg-blue-100 rounded-lg border border-blue-300">
+                🛡️ <strong>ملاحظة مهمة:</strong> نحن نلتزم بمبدأ "Human-in-the-Loop" الذي أوصى به Josh Bersin لضمان الاستخدام المسؤول للذكاء الاصطناعي في الموارد البشرية.
+              </p>
             </CardContent>
           </Card>
 

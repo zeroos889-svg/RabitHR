@@ -15,6 +15,13 @@
       "when": 1761995939830,
       "tag": "0001_wise_randall_flagg",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1762015717732,
+      "tag": "0002_cheerful_xorn",
+      "breakpoints": true
     }
   ]
 }

@@ -311,6 +311,99 @@ export const auditLogs = mysqlTable("auditLogs", {
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
+// 22. قوالب النماذج (Templates)
+export const templates = mysqlTable("templates", {
+  id: int("id").autoincrement().primaryKey(),
+  code: varchar("code", { length: 100 }).notNull().unique(),
+  titleAr: varchar("titleAr", { length: 255 }).notNull(),
+  titleEn: varchar("titleEn", { length: 255 }),
+  category: varchar("category", { length: 100 }),
+  placeholdersSchema: text("placeholdersSchema"), // JSON
+  aiPrompt: text("aiPrompt"),
+  defaultContent: text("defaultContent"),
+  isActive: boolean("isActive").default(true),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+// 23. المستندات المولدة (Generated Documents)
+export const generatedDocuments = mysqlTable("generatedDocuments", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  templateCode: varchar("templateCode", { length: 100 }).notNull(),
+  outputHtml: text("outputHtml"),
+  outputText: text("outputText"),
+  lang: mysqlEnum("lang", ["ar", "en", "both"]).default("ar"),
+  inputData: text("inputData"), // JSON
+  companyLogo: text("companyLogo"),
+  companyName: varchar("companyName", { length: 255 }),
+  isSaved: boolean("isSaved").default(false),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+// 24. باقات الاستشارات (Consulting Packages)
+export const consultingPackages = mysqlTable("consultingPackages", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  nameEn: varchar("nameEn", { length: 255 }),
+  description: text("description"),
+  descriptionEn: text("descriptionEn"),
+  duration: int("duration"), // بالدقائق
+  slaHours: int("slaHours"), // مدة الاستجابة بالساعات
+  priceSAR: int("priceSAR").notNull(),
+  features: text("features"), // JSON array
+  isActive: boolean("isActive").default(true),
+  orderIndex: int("orderIndex").default(0),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+// 25. تذاكر الاستشارات (Consulting Tickets)
+export const consultingTickets = mysqlTable("consultingTickets", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  packageId: int("packageId").notNull(),
+  consultantId: int("consultantId"),
+  ticketNumber: varchar("ticketNumber", { length: 50 }).notNull().unique(),
+  status: mysqlEnum("status", ["pending", "assigned", "in-progress", "completed", "cancelled"]).default("pending"),
+  priority: mysqlEnum("priority", ["low", "medium", "high", "urgent"]).default("medium"),
+  subject: varchar("subject", { length: 255 }),
+  description: text("description"),
+  submittedFormJson: text("submittedFormJson"), // JSON
+  attachments: text("attachments"), // JSON array of URLs
+  scheduledAt: timestamp("scheduledAt"),
+  completedAt: timestamp("completedAt"),
+  slaDeadline: timestamp("slaDeadline"),
+  rating: int("rating"), // 1-5
+  feedback: text("feedback"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+// 26. ردود الاستشارات (Consulting Responses)
+export const consultingResponses = mysqlTable("consultingResponses", {
+  id: int("id").autoincrement().primaryKey(),
+  ticketId: int("ticketId").notNull(),
+  userId: int("userId").notNull(),
+  message: text("message").notNull(),
+  attachments: text("attachments"), // JSON array
+  isInternal: boolean("isInternal").default(false),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+// 27. تتبع الاستخدام (Usage Events)
+export const usageEvents = mysqlTable("usageEvents", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId"),
+  eventType: varchar("eventType", { length: 100 }).notNull(),
+  payloadJson: text("payloadJson"), // JSON
+  ipAddress: varchar("ipAddress", { length: 45 }),
+  userAgent: text("userAgent"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
 // Types
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
@@ -320,3 +413,9 @@ export type Employee = typeof employees.$inferSelect;
 export type Job = typeof jobs.$inferSelect;
 export type Candidate = typeof candidates.$inferSelect;
 export type JobApplication = typeof jobApplications.$inferSelect;
+export type Template = typeof templates.$inferSelect;
+export type GeneratedDocument = typeof generatedDocuments.$inferSelect;
+export type ConsultingPackage = typeof consultingPackages.$inferSelect;
+export type ConsultingTicket = typeof consultingTickets.$inferSelect;
+export type ConsultingResponse = typeof consultingResponses.$inferSelect;
+export type UsageEvent = typeof usageEvents.$inferSelect;
