@@ -43,6 +43,9 @@ export default function Home() {
             <a href="#home" className="text-sm font-medium hover:text-primary transition-colors">
               {t('nav.home')}
             </a>
+            <Link href="/services" className="text-sm font-medium hover:text-primary transition-colors">
+              الخدمات
+            </Link>
             <a href="#tools" className="text-sm font-medium hover:text-primary transition-colors">
               {t('nav.tools')}
             </a>
@@ -83,6 +86,9 @@ export default function Home() {
             <a href="#home" className="block py-2 text-sm font-medium hover:text-primary transition-colors">
               {t('nav.home')}
             </a>
+            <Link href="/services" className="block py-2 text-sm font-medium hover:text-primary transition-colors">
+              الخدمات
+            </Link>
             <a href="#tools" className="block py-2 text-sm font-medium hover:text-primary transition-colors">
               {t('nav.tools')}
             </a>
@@ -306,8 +312,88 @@ export default function Home() {
         </div>
       </section>
 
+      {/* How It Works Section */}
+      <section className="py-20">
+        <div className="container">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">كيف يعمل رابِط؟</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              أربع خطوات بسيطة للبدء في إدارة مواردك البشرية بكفاءة
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-8">
+            {/* Step 1 */}
+            <div className="relative">
+              <div className="text-center space-y-4">
+                <div className="mx-auto h-20 w-20 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                  1
+                </div>
+                <h3 className="text-xl font-bold">سجل مجاناً</h3>
+                <p className="text-sm text-muted-foreground">
+                  أنشئ حسابك في أقل من دقيقة واحدة، لا حاجة لبطاقة ائتمان
+                </p>
+              </div>
+              {/* Connector Line */}
+              <div className="hidden md:block absolute top-10 left-1/2 w-full h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 -z-10"></div>
+            </div>
+
+            {/* Step 2 */}
+            <div className="relative">
+              <div className="text-center space-y-4">
+                <div className="mx-auto h-20 w-20 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                  2
+                </div>
+                <h3 className="text-xl font-bold">أضف بياناتك</h3>
+                <p className="text-sm text-muted-foreground">
+                  أدخل بيانات شركتك وموظفيك بسهولة
+                </p>
+              </div>
+              {/* Connector Line */}
+              <div className="hidden md:block absolute top-10 left-1/2 w-full h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 -z-10"></div>
+            </div>
+
+            {/* Step 3 */}
+            <div className="relative">
+              <div className="text-center space-y-4">
+                <div className="mx-auto h-20 w-20 rounded-full bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                  3
+                </div>
+                <h3 className="text-xl font-bold">استخدم الأدوات</h3>
+                <p className="text-sm text-muted-foreground">
+                  ابدأ باستخدام الأدوات الذكية لإنجاز مهامك بسرعة
+                </p>
+              </div>
+              {/* Connector Line */}
+              <div className="hidden md:block absolute top-10 left-1/2 w-full h-0.5 bg-gradient-to-r from-pink-500 to-green-500 -z-10"></div>
+            </div>
+
+            {/* Step 4 */}
+            <div className="relative">
+              <div className="text-center space-y-4">
+                <div className="mx-auto h-20 w-20 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                  4
+                </div>
+                <h3 className="text-xl font-bold">وفر الوقت</h3>
+                <p className="text-sm text-muted-foreground">
+                  وفر حتى 70% من وقتك اليومي وركز على الأهم
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div className="text-center mt-12">
+            <Button size="lg" className="gradient-primary text-white text-lg px-8 hover-lift">
+              ابدأ الآن مجاناً
+              <ArrowRight className="mr-2 h-5 w-5" />
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* Tools Section */}
-      <section id="tools" className="py-20">
+      <section id="tools" className="py-20 bg-muted/30">
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">{t('tools.title')}</h2>
