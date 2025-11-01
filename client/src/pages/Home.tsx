@@ -44,20 +44,20 @@ export default function Home() {
             <a href="#home" className="text-sm font-medium hover:text-primary transition-colors">
               {t('nav.home')}
             </a>
-            <Link href="/services" className="text-sm font-medium hover:text-primary transition-colors">
-              الخدمات
+            <Link href="/consulting" className="text-sm font-medium hover:text-primary transition-colors">
+              الاستشارات
+            </Link>
+            <Link href="/courses" className="text-sm font-medium hover:text-primary transition-colors">
+              الدورات
+            </Link>
+            <Link href="/knowledge-base" className="text-sm font-medium hover:text-primary transition-colors">
+              قاعدة المعرفة
             </Link>
             <a href="#tools" className="text-sm font-medium hover:text-primary transition-colors">
               {t('nav.tools')}
             </a>
             <a href="#pricing" className="text-sm font-medium hover:text-primary transition-colors">
               {t('nav.pricing')}
-            </a>
-            <a href="#about" className="text-sm font-medium hover:text-primary transition-colors">
-              {t('nav.about')}
-            </a>
-            <a href="#contact" className="text-sm font-medium hover:text-primary transition-colors">
-              {t('nav.contact')}
             </a>
           </nav>
 
@@ -87,8 +87,14 @@ export default function Home() {
             <a href="#home" className="block py-2 text-sm font-medium hover:text-primary transition-colors">
               {t('nav.home')}
             </a>
-            <Link href="/services" className="block py-2 text-sm font-medium hover:text-primary transition-colors">
-              الخدمات
+            <Link href="/consulting" className="block py-2 text-sm font-medium hover:text-primary transition-colors">
+              الاستشارات
+            </Link>
+            <Link href="/courses" className="block py-2 text-sm font-medium hover:text-primary transition-colors">
+              الدورات
+            </Link>
+            <Link href="/knowledge-base" className="block py-2 text-sm font-medium hover:text-primary transition-colors">
+              قاعدة المعرفة
             </Link>
             <a href="#tools" className="block py-2 text-sm font-medium hover:text-primary transition-colors">
               {t('nav.tools')}
@@ -688,6 +694,157 @@ export default function Home() {
                   </div>
                 </div>
               </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Consulting Services Section */}
+      <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
+        <div className="container">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">الخدمات الاستشارية</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              استشارات قانونية متخصصة في الموارد البشرية من خبراء معتمدين
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            <Card className="p-6 hover-lift cursor-pointer group">
+              <div className="h-14 w-14 rounded-lg bg-blue-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <Headphones className="h-7 w-7 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-bold mb-2">استشارة سريعة</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                استشارة نصية أو صوتية أو فيديو خلال 24 ساعة
+              </p>
+              <div className="text-2xl font-bold text-blue-600 mb-4">من 199 ريال</div>
+              <Link href="/consulting">
+                <Button variant="outline" className="w-full group-hover:bg-blue-50">
+                  اعرف أكثر
+                  <ArrowRight className="mr-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </Card>
+
+            <Card className="p-6 hover-lift cursor-pointer group border-2 border-purple-200">
+              <div className="absolute top-4 left-4">
+                <span className="bg-purple-600 text-white text-xs px-2 py-1 rounded-full">الأكثر طلباً</span>
+              </div>
+              <div className="h-14 w-14 rounded-lg bg-purple-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <FileText className="h-7 w-7 text-purple-600" />
+              </div>
+              <h3 className="text-xl font-bold mb-2">مراجعة عقود</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                مراجعة وتدقيق عقود العمل والقرارات
+              </p>
+              <div className="text-2xl font-bold text-purple-600 mb-4">499 ريال</div>
+              <Link href="/consulting">
+                <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                  احجز الآن
+                  <ArrowRight className="mr-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </Card>
+
+            <Card className="p-6 hover-lift cursor-pointer group">
+              <div className="h-14 w-14 rounded-lg bg-green-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <Shield className="h-7 w-7 text-green-600" />
+              </div>
+              <h3 className="text-xl font-bold mb-2">دراسة حالة</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                دراسة شاملة لقضية HR معقدة مع تقرير مفصل
+              </p>
+              <div className="text-2xl font-bold text-green-600 mb-4">999 ريال</div>
+              <Link href="/consulting">
+                <Button variant="outline" className="w-full group-hover:bg-green-50">
+                  اعرف أكثر
+                  <ArrowRight className="mr-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </Card>
+          </div>
+
+          <div className="text-center">
+            <Link href="/consulting">
+              <Button size="lg" className="gradient-primary text-white">
+                عرض جميع الخدمات الاستشارية
+                <ArrowRight className="mr-2 h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Learning Section */}
+      <section className="py-20">
+        <div className="container">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">التعليم والتطوير</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              دورات تدريبية وموارد تعليمية لتطوير مهارات HR
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <Card className="p-8 hover-lift">
+              <div className="h-16 w-16 rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center mb-6">
+                <Play className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">الدورات التدريبية</h3>
+              <p className="text-muted-foreground mb-6">
+                أكثر من 20 دورة تدريبية متخصصة في الموارد البشرية مع شهادات معتمدة
+              </p>
+              <ul className="space-y-3 mb-6">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                  <span>دروس فيديو عالية الجودة</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                  <span>شهادات معتمدة</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                  <span>دعم مباشر من المدربين</span>
+                </li>
+              </ul>
+              <Link href="/courses">
+                <Button size="lg" className="w-full">
+                  تصفح الدورات
+                  <ArrowRight className="mr-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </Card>
+
+            <Card className="p-8 hover-lift">
+              <div className="h-16 w-16 rounded-lg bg-gradient-to-br from-green-500 to-blue-500 flex items-center justify-center mb-6">
+                <FileText className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">قاعدة المعرفة</h3>
+              <p className="text-muted-foreground mb-6">
+                مكتبة شاملة من المقالات والأدلة والقوالب الجاهزة
+              </p>
+              <ul className="space-y-3 mb-6">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                  <span>+100 مقال متخصص</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                  <span>قوالب ونماذج جاهزة</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                  <span>أدلة إرشادية PDF</span>
+                </li>
+              </ul>
+              <Link href="/knowledge-base">
+                <Button size="lg" variant="outline" className="w-full">
+                  استكشف المعرفة
+                  <ArrowRight className="mr-2 h-4 w-4" />
+                </Button>
+              </Link>
             </Card>
           </div>
         </div>

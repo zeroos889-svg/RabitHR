@@ -82,10 +82,25 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Tools & Resources */}
+          {/* Services */}
           <div>
-            <h4 className="font-semibold mb-4 text-lg">الأدوات والموارد</h4>
+            <h4 className="font-semibold mb-4 text-lg">الخدمات</h4>
             <ul className="space-y-3 text-muted-foreground">
+              <li>
+                <Link href="/consulting" className="hover:text-primary transition-colors">
+                  الاستشارات القانونية
+                </Link>
+              </li>
+              <li>
+                <Link href="/courses" className="hover:text-primary transition-colors">
+                  الدورات التدريبية
+                </Link>
+              </li>
+              <li>
+                <Link href="/knowledge-base" className="hover:text-primary transition-colors">
+                  قاعدة المعرفة
+                </Link>
+              </li>
               <li>
                 <Link href="/tools/end-of-service" className="hover:text-primary transition-colors">
                   حاسبة نهاية الخدمة
