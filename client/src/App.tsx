@@ -14,6 +14,8 @@ import Employees from "./pages/dashboard/Employees";
 import ATS from "./pages/dashboard/ATS";
 import Tickets from "./pages/dashboard/Tickets";
 import Tasks from "./pages/dashboard/Tasks";
+import Reports from "./pages/dashboard/Reports";
+import Settings from "./pages/dashboard/Settings";
 import BrandPreview from "./pages/BrandPreview";
 
 function Router() {
@@ -30,6 +32,8 @@ function Router() {
       <Route path="/dashboard/ats" component={ATS} />
       <Route path="/dashboard/tickets" component={Tickets} />
       <Route path="/dashboard/tasks" component={Tasks} />
+      <Route path="/dashboard/reports" component={Reports} />
+      <Route path="/dashboard/settings" component={Settings} />
       <Route path="/brand-preview" component={BrandPreview} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
