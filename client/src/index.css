@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -43,6 +45,17 @@
 }
 
 :root {
+  /* منصة رابِط - التدرجات الرئيسية */
+  --primary-blue: #3B82F6;
+  --primary-purple: #8B5CF6;
+  --secondary-pink: #EC4899;
+  --company-blue-start: #3B82F6;
+  --company-blue-end: #2563EB;
+  --individual-purple-start: #8B5CF6;
+  --individual-purple-end: #7C3AED;
+  --employee-green-start: #10B981;
+  --employee-green-end: #059669;
+  
   --primary: var(--color-blue-700);
   --primary-foreground: var(--color-blue-50);
   --sidebar-primary: var(--color-blue-600);
@@ -119,6 +132,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Cairo', 'Inter', sans-serif;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
@@ -158,6 +172,43 @@
   .flex {
     min-height: 0;
     min-width: 0;
+  }
+
+  /* منصة رابِط - التدرجات */
+  .gradient-primary {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-purple) 100%);
+  }
+  
+  .gradient-secondary {
+    background: linear-gradient(135deg, var(--primary-purple) 0%, var(--secondary-pink) 100%);
+  }
+  
+  .gradient-company {
+    background: linear-gradient(135deg, var(--company-blue-start) 0%, var(--company-blue-end) 100%);
+  }
+  
+  .gradient-individual {
+    background: linear-gradient(135deg, var(--individual-purple-start) 0%, var(--individual-purple-end) 100%);
+  }
+  
+  .gradient-employee {
+    background: linear-gradient(135deg, var(--employee-green-start) 0%, var(--employee-green-end) 100%);
+  }
+  
+  .text-gradient-primary {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-purple) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   }
 
   @media (min-width: 640px) {

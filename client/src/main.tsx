@@ -7,6 +7,12 @@ import superjson from "superjson";
 import App from "./App";
 import { getLoginUrl } from "./const";
 import "./index.css";
+import './lib/i18n';
+
+// تعيين الاتجاه الافتراضي
+const defaultLang = localStorage.getItem('i18nextLng') || 'ar';
+document.documentElement.dir = defaultLang === 'ar' ? 'rtl' : 'ltr';
+document.documentElement.lang = defaultLang;
 
 const queryClient = new QueryClient();
 

@@ -1,0 +1,13 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="rabitGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B5CF6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- حلقة الربط -->
+  <path d="M15 8C11.134 8 8 11.134 8 15C8 18.866 11.134 22 15 22H17V18H15C13.343 18 12 16.657 12 15C12 13.343 13.343 12 15 12H25C26.657 12 28 13.343 28 15C28 16.657 26.657 18 25 18H23V22H25C28.866 22 32 18.866 32 15C32 11.134 28.866 8 25 8H15Z" fill="url(#rabitGradient)"/>
+  
+  <path d="M25 32C28.866 32 32 28.866 32 25C32 21.134 28.866 18 25 18H23V22H25C26.657 22 28 23.343 28 25C28 26.657 26.657 28 25 28H15C13.343 28 12 26.657 12 25C12 23.343 13.343 22 15 22H17V18H15C11.134 18 8 21.134 8 25C8 28.866 11.134 32 15 32H25Z" fill="url(#rabitGradient)"/>
+</svg>
