@@ -34,6 +34,8 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Cookies from "./pages/Cookies";
 import CaseStudies from "./pages/CaseStudies";
+import Consulting from "./pages/Consulting";
+import ConsultingBook from "./pages/ConsultingBook";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -47,9 +49,9 @@ function Router() {
       <Route path="/blog/:id" component={BlogPost} />
       <Route path="/privacy" component={Privacy} />
       <Route path="/terms" component={Terms} />
-      <Route path="/cookies" component={Cookies} />
-      <Route path="/case-studies" component={CaseStudies} />
-      <Route path={"/tools/end-of-service"} component={EndOfServiceCalculator} />
+      <Route path="/cookies" component={Cookies} />      <Route path={"/case-studies"} component={CaseStudies} />
+      <Route path={"/consulting"} component={Consulting} />
+      <Route path={"/consulting/book"} component={ConsultingBook} />      <Route path={"/tools/end-of-service"} component={EndOfServiceCalculator} />
       <Route path={"/tools/leave-calculator"} component={LeaveCalculator} />
       <Route path={"/tools/letter-generator"} component={LetterGenerator} />
       <Route path="/pricing" component={Pricing} />
