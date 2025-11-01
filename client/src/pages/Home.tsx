@@ -344,17 +344,19 @@ export default function Home() {
             </Card>
 
             {/* Letter Generator */}
-            <Card className="p-6 hover-lift cursor-pointer group">
-              <div className="h-14 w-14 rounded-lg bg-green-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <FileText className="h-7 w-7 text-green-600" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">{t('tools.letter_generator')}</h3>
-              <p className="text-sm text-muted-foreground mb-4">{t('tools.letter_generator.desc')}</p>
-              <Button variant="ghost" className="w-full group-hover:bg-green-50">
-                {t('tools.try_now')}
-                <ArrowRight className="mr-2 h-4 w-4" />
-              </Button>
-            </Card>
+            <Link href="/tools/letter-generator">
+              <Card className="p-6 hover-lift cursor-pointer group">
+                <div className="h-14 w-14 rounded-lg bg-green-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <FileText className="h-7 w-7 text-green-600" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">{t('tools.letter_generator')}</h3>
+                <p className="text-sm text-muted-foreground mb-4">{t('tools.letter_generator.desc')}</p>
+                <Button variant="ghost" className="w-full group-hover:bg-green-50">
+                  {t('tools.try_now')}
+                  <ArrowRight className="mr-2 h-4 w-4" />
+                </Button>
+              </Card>
+            </Link>
           </div>
         </div>
       </section>
