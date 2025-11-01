@@ -10,6 +10,8 @@ import LeaveCalculator from "./pages/LeaveCalculator";
 import LetterGenerator from "./pages/LetterGenerator";
 import Pricing from "./pages/Pricing";
 import CompanyDashboard from "./pages/dashboard/CompanyDashboard";
+import Employees from "./pages/dashboard/Employees";
+import ATS from "./pages/dashboard/ATS";
 import BrandPreview from "./pages/BrandPreview";
 
 function Router() {
@@ -22,6 +24,8 @@ function Router() {
       <Route path={"/tools/letter-generator"} component={LetterGenerator} />
       <Route path="/pricing" component={Pricing} />
       <Route path="/dashboard" component={CompanyDashboard} />
+      <Route path="/dashboard/employees" component={Employees} />
+      <Route path="/dashboard/ats" component={ATS} />
       <Route path="/brand-preview" component={BrandPreview} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}

@@ -30,7 +30,7 @@ import { Button } from "./ui/button";
 const menuItems = [
   { icon: LayoutDashboard, label: "لوحة التحكم", path: "/dashboard" },
   { icon: Users, label: "الموظفين", path: "/dashboard/employees" },
-  { icon: Briefcase, label: "نظام ATS", path: "/dashboard/ats" },
+  { icon: Briefcase, label: "نظام رحلة التوظيف ATS", path: "/dashboard/ats" },
   { icon: Ticket, label: "التذاكر والمهام", path: "/dashboard/tickets" },
   { icon: FileText, label: "الأدوات الذكية", path: "/tools" },
   { icon: BarChart3, label: "التقارير", path: "/dashboard/reports" },
