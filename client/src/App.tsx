@@ -17,6 +17,8 @@ import Tasks from "./pages/dashboard/Tasks";
 import Reports from "@/pages/dashboard/Reports";
 import Settings from "@/pages/dashboard/Settings";
 import Certificates from "@/pages/dashboard/Certificates";
+import LegalCheck from "@/pages/dashboard/LegalCheck";
+import VerifyDecision from "./pages/VerifyDecision";
 import BrandPreview from "./pages/BrandPreview";
 
 function Router() {
@@ -36,6 +38,8 @@ function Router() {
       <Route path="/dashboard/reports" component={Reports} />
       <Route path="/dashboard/settings" component={Settings} />
       <Route path="/dashboard/certificates" component={Certificates} />
+      <Route path="/dashboard/legal-check" component={LegalCheck} />
+      <Route path="/verify-decision" component={VerifyDecision} />
       <Route path="/brand-preview" component={BrandPreview} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
