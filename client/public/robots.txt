@@ -1,0 +1,8 @@
+# robots.txt for Rabit HR Platform
+User-agent: *
+Allow: /
+Disallow: /dashboard/
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://rbithr.com/sitemap.xml
