@@ -22,6 +22,7 @@ import VerifyDecision from "./pages/VerifyDecision";
 import Services from "./pages/Services";
 import BrandPreview from "./pages/BrandPreview";
 import Templates from "./pages/dashboard/Templates";
+import Reminders from "./pages/dashboard/Reminders";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -42,6 +43,7 @@ function Router() {
       <Route path="/dashboard/certificates" component={Certificates} />
       <Route path="/dashboard/legal-check" component={LegalCheck} />
       <Route path="/dashboard/templates" component={Templates} />
+      <Route path="/dashboard/reminders" component={Reminders} />
       <Route path="/verify-decision" component={VerifyDecision} />
       <Route path="/services" component={Services} />
       <Route path="/brand-preview" component={BrandPreview} />
