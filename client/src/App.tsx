@@ -37,6 +37,7 @@ import CaseStudies from "./pages/CaseStudies";
 import Consulting from "./pages/Consulting";
 import ConsultingBook from "./pages/ConsultingBook";
 import ConsultingExperts from "./pages/ConsultingExperts";
+import ConsultingExpertProfile from "./pages/ConsultingExpertProfile";
 import Courses from "./pages/Courses";
 import KnowledgeBase from "./pages/KnowledgeBase";
 
@@ -55,6 +56,7 @@ function Router() {
       <Route path="/cookies" component={Cookies} />      <Route path={"/case-studies"} component={CaseStudies} />
       <Route path={"/consulting"} component={Consulting} />      <Route path={"/ consulting/book"} component={ConsultingBook} />
       <Route path={"/ consulting/experts"} component={ConsultingExperts} />
+      <Route path={"/ consulting/expert/:id"} component={ConsultingExpertProfile} />
       <Route path={"/courses"} component={Courses} />
       <Route path={"/knowledge-base"} component={KnowledgeBase} />      <Route path={"/tools/end-of-service"} component={EndOfServiceCalculator} />
       <Route path={"/tools/leave-calculator"} component={LeaveCalculator} />
