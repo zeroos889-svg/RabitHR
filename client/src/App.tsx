@@ -28,6 +28,8 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 import Blog from "./pages/Blog";
+import Notifications from "./pages/dashboard/Notifications";
+import BlogPost from "./pages/BlogPost";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Cookies from "./pages/Cookies";
@@ -42,6 +44,7 @@ function Router() {
       <Route path="/contact" component={Contact} />
       <Route path="/faq" component={FAQ} />
       <Route path="/blog" component={Blog} />
+      <Route path="/blog/:id" component={BlogPost} />
       <Route path="/privacy" component={Privacy} />
       <Route path="/terms" component={Terms} />
       <Route path="/cookies" component={Cookies} />
@@ -62,6 +65,7 @@ function Router() {
       <Route path="/dashboard/templates" component={Templates} />
       <Route path="/dashboard/reminders" component={Reminders} />
       <Route path="/dashboard/tools" component={Tools} />
+      <Route path="/dashboard/notifications" component={Notifications} />
       <Route path="/verify-decision" component={VerifyDecision} />
       <Route path="/services" component={Services} />
       <Route path="/brand-preview" component={BrandPreview} />
