@@ -86,6 +86,13 @@ const resources = {
       "faq.title": "الأسئلة الشائعة",
       "faq.subtitle": "إجابات على أكثر الأسئلة شيوعاً حول منصة رابِط",
       
+      // FAQ Categories
+      "faq.category.general": "عام",
+      "faq.category.account": "الحساب",
+      "faq.category.billing": "الفواتير",
+      "faq.category.usage": "الاستخدام",
+      "faq.category.security": "الأمان",
+      
       "faq.q1": "ما هي منصة رابِط؟",
       "faq.a1": "رابِط هي منصة شاملة لإدارة الموارد البشرية مدعومة بالذكاء الاصطناعي، متوافقة 100% مع نظام العمل السعودي. توفر أدوات ذكية لحساب نهاية الخدمة، الإجازات، وتوليد الخطابات، بالإضافة إلى نظام ATS كامل للتوظيف.",
       
@@ -103,6 +110,27 @@ const resources = {
       
       "faq.q6": "هل يمكنني تجربة المنصة قبل الاشتراك؟",
       "faq.a6": "نعم، نوفر فترة تجريبية مجانية 14 يوماً لجميع الباقات المدفوعة. يمكنك الوصول لجميع الميزات خلال هذه الفترة دون الحاجة لبطاقة ائتمان.",
+      
+      // Account Questions
+      "faq.q7": "كيف أنشئ حساب جديد؟",
+      "faq.a7": "لإنشاء حساب جديد، اضعط على زر 'ابدأ مجاناً' في الصفحة الرئيسية، ثم اختر نوع الحساب (موظف، مستقل HR، أو شركة). ستحتاج إلى بريد إلكتروني صالح ورقم جوال. العملية تستغرق أقل من 3 دقائق.",
+      
+      "faq.q8": "هل يمكنني تغيير نوع الحساب؟",
+      "faq.a8": "نعم، يمكنك الترقية أو التغيير بين الباقات في أي وقت من إعدادات الحساب. عند الترقية، ستحصل على وصول فوري لجميع الميزات الجديدة. عند التخفيض، ستستمر الميزات الحالية حتى نهاية فترة الفوترة.",
+      
+      // Billing Questions
+      "faq.q9": "ما هي طرق الدفع المتاحة؟",
+      "faq.a9": "نقبل جميع بطاقات الائتمان الرئيسية (Visa، Mastercard، Mada)، التحويل البنكي، والدفع عبر Apple Pay. جميع المعاملات مشفرة وآمنة 100%.",
+      
+      "faq.q10": "هل يمكنني إلغاء الاشتراك في أي وقت؟",
+      "faq.a10": "نعم، يمكنك إلغاء الاشتراك في أي وقت دون رسوم إضافية. ستستمر في الوصول لجميع الميزات حتى نهاية فترة الفوترة الحالية. لا يوجد التزام طويل الأجل.",
+      
+      // Usage Questions  
+      "faq.q11": "كيف أستخدم حاسبة نهاية الخدمة؟",
+      "faq.a11": "انتقل إلى قسم الأدوات واختر 'حاسبة نهاية الخدمة'. أدخل الراتب الأساسي، تاريخ بداية الخدمة، وتاريخ الانتهاء. ستحسب المنصة المستحقات تلقائياً وفقاً للمادة 84.",
+      
+      "faq.q12": "هل يمكنني دعوة فريقي للمنصة؟",
+      "faq.a12": "نعم، في باقات الشركات يمكنك دعوة عدد غير محدود من المستخدمين. انتقل إلى إعدادات الفريق وأرسل دعوات عبر البريد الإلكتروني. يمكنك تحديد صلاحيات مختلفة لكل عضو.",
       
       // عام
       "common.loading": "جاري التحميل...",
@@ -200,6 +228,13 @@ const resources = {
       "faq.title": "Frequently Asked Questions",
       "faq.subtitle": "Answers to the most common questions about Rabit platform",
       
+      // FAQ Categories
+      "faq.category.general": "General",
+      "faq.category.account": "Account",
+      "faq.category.billing": "Billing",
+      "faq.category.usage": "Usage",
+      "faq.category.security": "Security",
+      
       "faq.q1": "What is Rabit platform?",
       "faq.a1": "Rabit is a comprehensive AI-powered HR management platform, 100% compliant with Saudi Labor Law. It provides smart tools for calculating end of service benefits, vacations, and generating letters, plus a complete ATS system for recruitment.",
       
@@ -217,6 +252,27 @@ const resources = {
       
       "faq.q6": "Can I try the platform before subscribing?",
       "faq.a6": "Yes, we offer a 14-day free trial for all paid plans. You can access all features during this period without needing a credit card.",
+      
+      // Account Questions
+      "faq.q7": "How do I create a new account?",
+      "faq.a7": "To create a new account, click the 'Start Free' button on the homepage, then choose your account type (Employee, HR Freelancer, or Company). You'll need a valid email and phone number. The process takes less than 3 minutes.",
+      
+      "faq.q8": "Can I change my account type?",
+      "faq.a8": "Yes, you can upgrade or switch between plans anytime from account settings. When upgrading, you'll get immediate access to all new features. When downgrading, current features will continue until the end of the billing period.",
+      
+      // Billing Questions
+      "faq.q9": "What payment methods are available?",
+      "faq.a9": "We accept all major credit cards (Visa, Mastercard, Mada), bank transfer, and Apple Pay. All transactions are encrypted and 100% secure.",
+      
+      "faq.q10": "Can I cancel my subscription anytime?",
+      "faq.a10": "Yes, you can cancel your subscription anytime without additional fees. You'll continue to have access to all features until the end of your current billing period. No long-term commitment required.",
+      
+      // Usage Questions
+      "faq.q11": "How do I use the end of service calculator?",
+      "faq.a11": "Go to the Tools section and select 'End of Service Calculator'. Enter the basic salary, service start date, and end date. The platform will automatically calculate entitlements according to Article 84.",
+      
+      "faq.q12": "Can I invite my team to the platform?",
+      "faq.a12": "Yes, in Company plans you can invite unlimited users. Go to Team Settings and send invitations via email. You can assign different permissions to each member.",
       
       // Common
       "common.loading": "Loading...",
