@@ -117,8 +117,8 @@ export default function Settings() {
                     <Label htmlFor="company-phone">رقم الهاتف</Label>
                     <Input
                       id="company-phone"
-                      placeholder="+966 11 234 5678"
-                      defaultValue="+966 11 234 5678"
+                      placeholder="0570700355"
+                      defaultValue="0570700355"
                     />
                   </div>
                   <div className="space-y-2">
@@ -218,8 +218,8 @@ export default function Settings() {
                     <Label htmlFor="user-phone">رقم الجوال</Label>
                     <Input
                       id="user-phone"
-                      placeholder="+966 50 123 4567"
-                      defaultValue="+966 50 123 4567"
+                      placeholder="0570700355"
+                      defaultValue="0570700355"
                     />
                   </div>
                 </div>

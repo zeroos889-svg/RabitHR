@@ -306,14 +306,14 @@ export default function Tickets() {
                 <Mail className="h-8 w-8 text-blue-600" />
                 <div>
                   <p className="font-semibold">البريد الإلكتروني</p>
-                  <p className="text-sm text-muted-foreground">support@rabit.sa</p>
+                  <p className="text-sm text-muted-foreground">info@rbithr.com</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 bg-white dark:bg-gray-900 p-3 rounded-lg">
                 <MessageSquare className="h-8 w-8 text-green-600" />
                 <div>
                   <p className="font-semibold">واتساب</p>
-                  <p className="text-sm text-muted-foreground">+966 50 123 4567</p>
+                  <p className="text-sm text-muted-foreground">0570700355</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 bg-white dark:bg-gray-900 p-3 rounded-lg">

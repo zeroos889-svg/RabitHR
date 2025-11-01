@@ -509,8 +509,8 @@ export default function Home() {
             <div>
               <h4 className="font-semibold mb-4">{t('footer.contact')}</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>البريد: info@rabit.sa</li>
-                <li>الهاتف: +966 50 000 0000</li>
+                <li>البريد: info@rbithr.com</li>
+                <li>الهاتف: 0570700355</li>
                 <li>الموقع: الرياض، السعودية</li>
               </ul>
             </div>
