@@ -39,7 +39,10 @@ import ConsultingBook from "./pages/ConsultingBook";
 import ConsultingExperts from "./pages/ConsultingExperts";
 import ConsultingExpertProfile from "./pages/ConsultingExpertProfile";
 import Courses from "./pages/Courses";
+import CourseDetail from "./pages/CourseDetail";
 import KnowledgeBase from "./pages/KnowledgeBase";
+import KnowledgeBaseArticle from "./pages/KnowledgeBaseArticle";
+import AdminDashboard from "./pages/dashboard/AdminDashboard";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -56,13 +59,15 @@ function Router() {
       <Route path="/cookies" component={Cookies} />      <Route path={"/case-studies"} component={CaseStudies} />
       <Route path={"/consulting"} component={Consulting} />      <Route path={"/ consulting/book"} component={ConsultingBook} />
       <Route path={"/ consulting/experts"} component={ConsultingExperts} />
-      <Route path={"/ consulting/expert/:id"} component={ConsultingExpertProfile} />
-      <Route path={"/courses"} component={Courses} />
-      <Route path={"/knowledge-base"} component={KnowledgeBase} />      <Route path={"/tools/end-of-service"} component={EndOfServiceCalculator} />
+      <Route path={"/ consulting/expert/:id"} component={ConsultingExpertProfile} />      <Route path={"/courses"} component={Courses} />
+      <Route path={"/courses/:id"} component={CourseDetail} />
+      <Route path={"/knowledge-base"} component={KnowledgeBase} />
+      <Route path={"/knowledge-base/:id"} component={KnowledgeBaseArticle} />      <Route path={"/tools/end-of-service"} component={EndOfServiceCalculator} />
       <Route path={"/tools/leave-calculator"} component={LeaveCalculator} />
       <Route path={"/tools/letter-generator"} component={LetterGenerator} />
       <Route path="/pricing" component={Pricing} />
       <Route path="/dashboard" component={CompanyDashboard} />
+      <Route path="/admin" component={AdminDashboard} />
       <Route path="/dashboard/employees" component={Employees} />
       <Route path="/dashboard/ats" component={ATS} />
       <Route path="/dashboard/tickets" component={Tickets} />
