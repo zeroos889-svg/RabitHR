@@ -5,7 +5,8 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
-import EndOfServiceCalculator from "./pages/EndOfServiceCalculator";
+import EndOfServiceCalculator from "@/pages/EndOfServiceCalculator";
+import LeaveCalculator from "@/pages/LeaveCalculator";
 import BrandPreview from "./pages/BrandPreview";
 
 function Router() {
@@ -13,7 +14,8 @@ function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Home} />
-      <Route path="/tools/end-of-service" component={EndOfServiceCalculator} />
+      <Route path={"/tools/end-of-service"} component={EndOfServiceCalculator} />
+      <Route path={"/tools/leave-calculator"} component={LeaveCalculator} />
       <Route path="/brand-preview" component={BrandPreview} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
