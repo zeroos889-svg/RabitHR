@@ -35,7 +35,7 @@ const menuItems = [
   { icon: CheckSquare, label: "المهام", path: "/dashboard/tasks" },
   { icon: Award, label: "الشهادات", path: "/dashboard/certificates" },
   { icon: Scale, label: "التحقق القانوني", path: "/dashboard/legal-check" },
-  { icon: FileText, label: "الأدوات الذكية", path: "/tools" },
+  { icon: FileText, label: "مكتبة القوالب", path: "/dashboard/templates" },
   { icon: BarChart3, label: "التقارير", path: "/dashboard/reports" },
   { icon: Settings, label: "الإعدادات", path: "/dashboard/settings" },
 ];
