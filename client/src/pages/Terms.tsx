@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, FileText, CheckCircle, XCircle, AlertTriangle, Scale, CreditCard, RefreshCw } from 'lucide-react';
 import { Link } from 'wouter';
+import { Footer } from '@/components/Footer';
 
 export default function Terms() {
   return (
@@ -338,6 +339,9 @@ export default function Terms() {
           </Card>
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

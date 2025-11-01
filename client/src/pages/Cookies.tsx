@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, Cookie, Settings, Eye, BarChart, Shield } from 'lucide-react';
 import { Link } from 'wouter';
+import { Footer } from '@/components/Footer';
 
 export default function Cookies() {
   return (
@@ -282,6 +283,9 @@ export default function Cookies() {
           </Card>
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Target, Eye, Heart, Users, Zap, Shield, Award, TrendingUp } from "lucide-react";
 import { Link } from "wouter";
+import { Footer } from '@/components/Footer';
 
 export default function About() {
   const values = [
@@ -322,13 +323,7 @@ export default function About() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t bg-muted/30 py-12">
-        <div className="container mx-auto px-4">
-          <div className="text-center text-sm text-muted-foreground">
-            <p>© 2025 رابِط. جميع الحقوق محفوظة.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

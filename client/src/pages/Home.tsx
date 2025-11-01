@@ -22,6 +22,7 @@ import {
 import { useState } from 'react';
 import { Link } from 'wouter';
 import { FAQSection } from '@/components/FAQSection';
+import { Footer } from '@/components/Footer';
 
 export default function Home() {
   const { t } = useTranslation();
@@ -725,62 +726,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t bg-muted/30 py-12">
-        <div className="container">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            {/* Brand */}
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <img src="/rabit-logo.svg" alt="Rabit" className="h-8 w-8" />
-                <span className="text-xl font-bold text-gradient-primary">رابِط</span>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                مساعدك الذكي في إدارة الموارد البشرية
-              </p>
-            </div>
-
-            {/* Quick Links */}
-            <div>
-              <h4 className="font-semibold mb-4">{t('footer.quick_links')}</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#home" className="hover:text-primary transition-colors">الرئيسية</a></li>
-                <li><a href="#tools" className="hover:text-primary transition-colors">الأدوات</a></li>
-                <li><a href="#pricing" className="hover:text-primary transition-colors">الباقات</a></li>
-                <li><a href="#about" className="hover:text-primary transition-colors">من نحن</a></li>
-              </ul>
-            </div>
-
-            {/* Contact */}
-            <div>
-              <h4 className="font-semibold mb-4">{t('footer.contact')}</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>البريد: info@rbithr.com</li>
-                <li>الهاتف: 0570700355</li>
-                <li>الموقع: الرياض، السعودية</li>
-              </ul>
-            </div>
-
-            {/* Social */}
-            <div>
-              <h4 className="font-semibold mb-4">{t('footer.social')}</h4>
-              <div className="flex gap-3">
-                <a href="#" className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary/20 transition-colors">
-                  <span className="sr-only">Twitter</span>
-                  𝕏
-                </a>
-                <a href="#" className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary/20 transition-colors">
-                  <span className="sr-only">LinkedIn</span>
-                  in
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div className="border-t pt-8 text-center text-sm text-muted-foreground">
-            {t('footer.rights')}
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

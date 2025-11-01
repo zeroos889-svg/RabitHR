@@ -14,6 +14,7 @@ import {
   Award
 } from 'lucide-react';
 import { Link } from 'wouter';
+import { Footer } from '@/components/Footer';
 
 // Case Studies Data
 const caseStudies = [
@@ -275,6 +276,9 @@ export default function CaseStudies() {
           </Card>
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

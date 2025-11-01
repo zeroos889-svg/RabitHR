@@ -24,6 +24,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Link } from 'wouter';
+import { Footer } from '@/components/Footer';
 
 // Pricing Plans
 const pricingPlans = {
@@ -538,6 +539,9 @@ export default function Pricing() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

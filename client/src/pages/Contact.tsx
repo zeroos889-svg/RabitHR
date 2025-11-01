@@ -7,6 +7,7 @@ import { Mail, Phone, MapPin, Clock, Send, MessageSquare } from "lucide-react";
 import { Link } from "wouter";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Footer } from '@/components/Footer';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -315,13 +316,7 @@ export default function Contact() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t bg-muted/30 py-12">
-        <div className="container mx-auto px-4">
-          <div className="text-center text-sm text-muted-foreground">
-            <p>© 2025 رابِط. جميع الحقوق محفوظة.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

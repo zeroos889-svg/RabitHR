@@ -22,6 +22,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { Link } from 'wouter';
+import { Footer } from '@/components/Footer';
 
 // FAQ Categories
 const faqCategories = [
@@ -361,6 +362,9 @@ export default function FAQ() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
