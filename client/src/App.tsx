@@ -5,6 +5,7 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
+import DocumentGenerator from "./pages/DocumentGenerator";
 import EndOfServiceCalculator from "./pages/EndOfServiceCalculator";
 import LeaveCalculator from "./pages/LeaveCalculator";
 import LetterGenerator from "./pages/LetterGenerator";
@@ -49,20 +50,25 @@ function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Home} />
-      <Route path="/about" component={About} />
+      <Route path={"/document-generator"} component={DocumentGenerator} />
+      <Route path={"/404"} component={NotFound} />
       <Route path="/contact" component={Contact} />
       <Route path="/faq" component={FAQ} />
       <Route path="/blog" component={Blog} />
       <Route path="/blog/:id" component={BlogPost} />
       <Route path="/privacy" component={Privacy} />
       <Route path="/terms" component={Terms} />
-      <Route path="/cookies" component={Cookies} />      <Route path={"/case-studies"} component={CaseStudies} />
-      <Route path={"/consulting"} component={Consulting} />      <Route path={"/ consulting/book"} component={ConsultingBook} />
-      <Route path={"/ consulting/experts"} component={ConsultingExperts} />
-      <Route path={"/ consulting/expert/:id"} component={ConsultingExpertProfile} />      <Route path={"/courses"} component={Courses} />
+      <Route path="/cookies" component={Cookies} />
+      <Route path={"/case-studies"} component={CaseStudies} />
+      <Route path={"/consulting"} component={Consulting} />
+      <Route path={"/consulting/book"} component={ConsultingBook} />
+      <Route path={"/consulting/experts"} component={ConsultingExperts} />
+      <Route path={"/consulting/expert/:id"} component={ConsultingExpertProfile} />
+      <Route path={"/courses"} component={Courses} />
       <Route path={"/courses/:id"} component={CourseDetail} />
       <Route path={"/knowledge-base"} component={KnowledgeBase} />
-      <Route path={"/knowledge-base/:id"} component={KnowledgeBaseArticle} />      <Route path={"/tools/end-of-service"} component={EndOfServiceCalculator} />
+      <Route path={"/knowledge-base/:id"} component={KnowledgeBaseArticle} />
+      <Route path={"/tools/end-of-service"} component={EndOfServiceCalculator} />
       <Route path={"/tools/leave-calculator"} component={LeaveCalculator} />
       <Route path={"/tools/letter-generator"} component={LetterGenerator} />
       <Route path="/pricing" component={Pricing} />
