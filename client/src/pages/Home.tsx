@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'wouter';
+import { FAQSection } from '@/components/FAQSection';
 
 export default function Home() {
   const { t } = useTranslation();
@@ -443,6 +444,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <FAQSection />
 
       {/* CTA Section */}
       <section className="py-20">

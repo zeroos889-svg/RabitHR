@@ -211,3 +211,5 @@
 - [ ] High Contrast Mode
 - [ ] Screen Reader Support
 - [ ] RTL/LTR Support كامل
+
+- [x] إضافة قسم الأسئلة الشائعة (FAQ) إلى الصفحة الرئيسية
