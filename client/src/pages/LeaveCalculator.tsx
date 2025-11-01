@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { trpc } from '@/lib/trpc';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -52,6 +53,7 @@ export default function LeaveCalculator() {
 
   // Form State
   const [employeeYears, setEmployeeYears] = useState<string>('');
+  const [monthlySalary, setMonthlySalary] = useState<string>(''); // New: Monthly salary
   const [leaveType, setLeaveType] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
@@ -60,6 +62,10 @@ export default function LeaveCalculator() {
   // AI State
   const [aiQuestion, setAiQuestion] = useState<string>('');
   const [aiResponse, setAiResponse] = useState<string>('');
+  const [isAILoading, setIsAILoading] = useState<boolean>(false);
+  
+  // tRPC
+  const askAIMutation = trpc.leave.askAI.useMutation();
 
   // Calculate leave balance
   const calculateBalance = (): LeaveBalance => {
@@ -153,14 +159,29 @@ export default function LeaveCalculator() {
     toast.success('تم حذف الإجازة');
   };
 
-  const handleAskAI = () => {
+  const handleAskAI = async () => {
     if (!aiQuestion.trim()) return;
     
+    setIsAILoading(true);
     toast.info('جاري الحصول على الإجابة...');
-    setTimeout(() => {
-      setAiResponse('مثال على إجابة الذكاء الاصطناعي حول الإجازات. سيتم ربطها بالنظام الفعلي قريباً.');
+    
+    try {
+      const response = await askAIMutation.mutateAsync({
+        question: aiQuestion,
+        context: {
+          employeeYears: parseFloat(employeeYears) || undefined,
+        },
+      });
+      
+      const answer = typeof response.answer === 'string' ? response.answer : JSON.stringify(response.answer);
+      setAiResponse(answer);
       toast.success('تم الحصول على الإجابة');
-    }, 1000);
+    } catch (error) {
+      console.error('AI Error:', error);
+      toast.error('حدث خطأ في الحصول على الإجابة');
+    } finally {
+      setIsAILoading(false);
+    }
   };
 
   const getLeaveTypeLabel = (type: string): string => {
@@ -233,18 +254,37 @@ export default function LeaveCalculator() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="employee-years">عدد سنوات الخدمة *</Label>
-                  <Input
-                    id="employee-years"
-                    type="number"
-                    placeholder="مثال: 3"
-                    value={employeeYears}
-                    onChange={(e) => setEmployeeYears(e.target.value)}
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    يؤثر على عدد أيام الإجازة السنوية المستحقة
-                  </p>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="employee-years">عدد سنوات الخدمة *</Label>
+                    <Input
+                      id="employee-years"
+                      type="number"
+                      placeholder="مثال: 3"
+                      value={employeeYears}
+                      onChange={(e) => setEmployeeYears(e.target.value)}
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      يؤثر على عدد أيام الإجازة السنوية
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="monthly-salary">الراتب الإجمالي الشهري *</Label>
+                    <div className="relative">
+                      <Input
+                        id="monthly-salary"
+                        type="number"
+                        placeholder="مثال: 10000"
+                        value={monthlySalary}
+                        onChange={(e) => setMonthlySalary(e.target.value)}
+                        className="pl-12"
+                      />
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-bold">﷼</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      لحساب تكلفة الإجازات
+                    </p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -384,14 +424,14 @@ export default function LeaveCalculator() {
                     onChange={(e) => setAiQuestion(e.target.value)}
                     rows={3}
                   />
-                  <Button
-                    onClick={handleAskAI}
-                    className="w-full bg-purple-600 hover:bg-purple-700"
-                    disabled={!aiQuestion.trim()}
-                  >
-                    <Sparkles className="h-4 w-4 ml-2" />
-                    اسأل الذكاء الاصطناعي
-                  </Button>
+                <Button
+                  onClick={handleAskAI}
+                  className="w-full bg-purple-600 hover:bg-purple-700"
+                  disabled={!aiQuestion.trim() || isAILoading}
+                >
+                  <Sparkles className="h-4 w-4 ml-2" />
+                  {isAILoading ? 'جاري المعالجة...' : 'اسأل الذكاء الاصطناعي'}
+                </Button>
                 </div>
                 
                 {aiResponse && (
