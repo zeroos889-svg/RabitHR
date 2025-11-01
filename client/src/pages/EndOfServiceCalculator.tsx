@@ -178,6 +178,53 @@ export default function EndOfServiceCalculator() {
     setShowResult(true);
   };
 
+  const generatePDFMutation = trpc.eosb.generatePDF.useMutation();
+
+  const handleExportPDF = async () => {
+    if (!result || !salary || !startDate || !endDate) {
+      toast.error('يجب إجراء الحساب أولاً');
+      return;
+    }
+
+    try {
+      toast.info('جاري إنشاء ملف PDF...');
+      
+      const response = await generatePDFMutation.mutateAsync({
+        salary: parseFloat(salary),
+        startDate,
+        endDate,
+        contractType,
+        terminationReason,
+        result: {
+          totalAmount: result.totalAmount,
+          firstFiveYears: result.firstFiveYears,
+          afterFiveYears: result.afterFiveYears,
+          percentage: result.percentage,
+          yearsCount: result.yearsCount,
+          monthsCount: result.monthsCount,
+          daysCount: result.daysCount,
+        },
+      });
+
+      // Create blob and download
+      const blob = new Blob([response.pdfContent], { type: 'text/html' });
+      const url = window.URL.createObjectURL(blob);
+      
+      // Open in new window for printing
+      const printWindow = window.open(url, '_blank');
+      if (printWindow) {
+        printWindow.onload = () => {
+          printWindow.print();
+        };
+      }
+      
+      toast.success('تم إنشاء التقرير بنجاح');
+    } catch (error) {
+      console.error('PDF generation error:', error);
+      toast.error('حدث خطأ في إنشاء التقرير');
+    }
+  };
+
   const handleReset = () => {
     setSalary('');
     setContractType('');
@@ -555,9 +602,14 @@ export default function EndOfServiceCalculator() {
 
                 {/* Action Buttons */}
                 <div className="grid grid-cols-2 gap-3 pt-4">
-                  <Button variant="outline" className="w-full">
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={handleExportPDF}
+                    disabled={generatePDFMutation.isPending}
+                  >
                     <Download className="h-4 w-4 ml-2" />
-                    تصدير PDF
+                    {generatePDFMutation.isPending ? 'جاري الإنشاء...' : 'تصدير PDF'}
                   </Button>
                   <Button variant="outline" className="w-full">
                     <Share2 className="h-4 w-4 ml-2" />
