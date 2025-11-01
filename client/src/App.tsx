@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import EndOfServiceCalculator from "./pages/EndOfServiceCalculator";
 import LeaveCalculator from "./pages/LeaveCalculator";
 import LetterGenerator from "./pages/LetterGenerator";
+import Pricing from "./pages/Pricing";
 import BrandPreview from "./pages/BrandPreview";
 
 function Router() {
@@ -18,6 +19,7 @@ function Router() {
       <Route path={"/tools/end-of-service"} component={EndOfServiceCalculator} />
       <Route path={"/tools/leave-calculator"} component={LeaveCalculator} />
       <Route path={"/tools/letter-generator"} component={LetterGenerator} />
+      <Route path="/pricing" component={Pricing} />
       <Route path="/brand-preview" component={BrandPreview} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
