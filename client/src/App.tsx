@@ -4,9 +4,11 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { CookieConsent } from "./components/CookieConsent";
 import Home from "./pages/Home";
 import DocumentGenerator from "./pages/DocumentGenerator";
 import MyDocuments from "./pages/MyDocuments";
+import AdminDiscountCodes from "./pages/AdminDiscountCodes";
 import EndOfServiceCalculator from "./pages/EndOfServiceCalculator";
 import LeaveCalculator from "./pages/LeaveCalculator";
 import LetterGenerator from "./pages/LetterGenerator";
@@ -27,6 +29,7 @@ import Templates from "./pages/dashboard/Templates";
 import Reminders from "./pages/dashboard/Reminders";
 import Tools from "./pages/dashboard/Tools";
 import About from "./pages/About";
+import RefundPolicy from "./pages/RefundPolicy";
 import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 import Blog from "./pages/Blog";
@@ -53,10 +56,12 @@ function Router() {
       <Route path={"/"} component={Home} />
       <Route path={"/document-generator"} component={DocumentGenerator} />
       <Route path={"/my-documents"} component={MyDocuments} />
+      <Route path={"/admin/discount-codes"} component={AdminDiscountCodes} />
       <Route path={"/404"} component={NotFound} />
       <Route path="/contact" component={Contact} />
       <Route path="/faq" component={FAQ} />
-      <Route path="/blog" component={Blog} />
+      <Route path={"/about"} component={About} />
+      <Route path={"/refund-policy"} component={RefundPolicy} />
       <Route path="/blog/:id" component={BlogPost} />
       <Route path="/privacy" component={Privacy} />
       <Route path="/terms" component={Terms} />
@@ -113,6 +118,7 @@ function App() {
         <TooltipProvider>
           <Toaster />
           <Router />
+          <CookieConsent />
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

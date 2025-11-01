@@ -1,6 +1,6 @@
-import { eq, and } from "drizzle-orm";
+import { eq, and, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { InsertUser, users, discountCodes, discountCodeUsage, notifications, notificationPreferences, emailLogs, smsLogs } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -479,4 +479,353 @@ export async function getPendingConsultingTickets() {
     .from(consultingTickets)
     .where(eq(consultingTickets.status, "pending"))
     .orderBy(consultingTickets.priority, desc(consultingTickets.createdAt));
+}
+
+
+// ============================================
+// Discount Codes Functions
+// ============================================
+
+/**
+ * Create a new discount code
+ */
+export async function createDiscountCode(data: {
+  code: string;
+  description?: string;
+  discountType: "percentage" | "fixed";
+  discountValue: number;
+  maxUses?: number;
+  validFrom?: Date;
+  validUntil?: Date;
+  createdBy: number;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(discountCodes).values({
+    ...data,
+    usedCount: 0,
+    isActive: true,
+  });
+  return result;
+}
+
+/**
+ * Get discount code by code string
+ */
+export async function getDiscountCodeByCode(code: string) {
+  const db = await getDb();
+  if (!db) return null;
+  
+  const result = await db
+    .select()
+    .from(discountCodes)
+    .where(eq(discountCodes.code, code))
+    .limit(1);
+  
+  return result.length > 0 ? result[0] : null;
+}
+
+/**
+ * Get all discount codes
+ */
+export async function getAllDiscountCodes() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return await db
+    .select()
+    .from(discountCodes)
+    .orderBy(desc(discountCodes.createdAt));
+}
+
+/**
+ * Update discount code
+ */
+export async function updateDiscountCode(id: number, data: Partial<{
+  description: string;
+  discountType: "percentage" | "fixed";
+  discountValue: number;
+  maxUses: number | null;
+  validFrom: Date | null;
+  validUntil: Date | null;
+  isActive: boolean;
+}>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db
+    .update(discountCodes)
+    .set({ ...data, updatedAt: new Date() })
+    .where(eq(discountCodes.id, id));
+}
+
+/**
+ * Delete discount code
+ */
+export async function deleteDiscountCode(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db
+    .delete(discountCodes)
+    .where(eq(discountCodes.id, id));
+}
+
+/**
+ * Increment discount code usage count
+ */
+export async function incrementDiscountCodeUsage(codeId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db
+    .update(discountCodes)
+    .set({ 
+      usedCount: sql`${discountCodes.usedCount} + 1`,
+      updatedAt: new Date()
+    })
+    .where(eq(discountCodes.id, codeId));
+}
+
+/**
+ * Record discount code usage
+ */
+export async function recordDiscountCodeUsage(data: {
+  codeId: number;
+  userId: number;
+  orderId?: string;
+  originalAmount: number;
+  discountAmount: number;
+  finalAmount: number;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.insert(discountCodeUsage).values(data);
+}
+
+/**
+ * Get discount code usage history
+ */
+export async function getDiscountCodeUsageHistory(codeId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return await db
+    .select()
+    .from(discountCodeUsage)
+    .where(eq(discountCodeUsage.codeId, codeId))
+    .orderBy(desc(discountCodeUsage.createdAt));
+}
+
+
+// ==================== Notifications ====================
+
+/**
+ * Create a new notification
+ */
+export async function createNotification(data: {
+  userId: number;
+  type: 'success' | 'info' | 'warning' | 'error';
+  title: string;
+  message: string;
+  link?: string;
+  icon?: string;
+}) {
+  const db = await getDb();
+  if (!db) return null;
+
+  await db.insert(notifications).values(data);
+}
+
+/**
+ * Get all notifications for a user
+ */
+export async function getUserNotifications(userId: number, limit: number = 50) {
+  const db = await getDb();
+  if (!db) return [];
+
+  return db
+    .select()
+    .from(notifications)
+    .where(eq(notifications.userId, userId))
+    .orderBy(sql`${notifications.createdAt} DESC`)
+    .limit(limit);
+}
+
+/**
+ * Get unread notifications count
+ */
+export async function getUnreadNotificationsCount(userId: number) {
+  const db = await getDb();
+  if (!db) return 0;
+
+  const result = await db
+    .select({ count: sql`COUNT(*)` })
+    .from(notifications)
+    .where(and(eq(notifications.userId, userId), eq(notifications.isRead, false)));
+
+  return Number(result[0]?.count || 0);
+}
+
+/**
+ * Mark notification as read
+ */
+export async function markNotificationAsRead(notificationId: number) {
+  const db = await getDb();
+  if (!db) return;
+
+  await db
+    .update(notifications)
+    .set({ isRead: true, readAt: new Date() })
+    .where(eq(notifications.id, notificationId));
+}
+
+/**
+ * Mark all notifications as read for a user
+ */
+export async function markAllNotificationsAsRead(userId: number) {
+  const db = await getDb();
+  if (!db) return;
+
+  await db
+    .update(notifications)
+    .set({ isRead: true, readAt: new Date() })
+    .where(and(eq(notifications.userId, userId), eq(notifications.isRead, false)));
+}
+
+/**
+ * Delete a notification
+ */
+export async function deleteNotification(notificationId: number) {
+  const db = await getDb();
+  if (!db) return;
+
+  await db.delete(notifications).where(eq(notifications.id, notificationId));
+}
+
+/**
+ * Delete all notifications for a user
+ */
+export async function deleteAllNotifications(userId: number) {
+  const db = await getDb();
+  if (!db) return;
+
+  await db.delete(notifications).where(eq(notifications.userId, userId));
+}
+
+// ==================== Notification Preferences ====================
+
+/**
+ * Get user notification preferences
+ */
+export async function getNotificationPreferences(userId: number) {
+  const db = await getDb();
+  if (!db) return null;
+
+  const result = await db
+    .select()
+    .from(notificationPreferences)
+    .where(eq(notificationPreferences.userId, userId))
+    .limit(1);
+
+  // Create default preferences if not exists
+  if (result.length === 0) {
+    await db.insert(notificationPreferences).values({ userId });
+    return {
+      userId,
+      inAppEnabled: true,
+      emailEnabled: true,
+      pushEnabled: false,
+      smsEnabled: false,
+      notifyOnBooking: true,
+      notifyOnResponse: true,
+      notifyOnReminder: true,
+      notifyOnPromotion: false,
+    };
+  }
+
+  return result[0];
+}
+
+/**
+ * Update notification preferences
+ */
+export async function updateNotificationPreferences(
+  userId: number,
+  preferences: Partial<{
+    inAppEnabled: boolean;
+    emailEnabled: boolean;
+    pushEnabled: boolean;
+    smsEnabled: boolean;
+    notifyOnBooking: boolean;
+    notifyOnResponse: boolean;
+    notifyOnReminder: boolean;
+    notifyOnPromotion: boolean;
+  }>
+) {
+  const db = await getDb();
+  if (!db) return;
+
+  // Check if preferences exist
+  const existing = await db
+    .select()
+    .from(notificationPreferences)
+    .where(eq(notificationPreferences.userId, userId))
+    .limit(1);
+
+  if (existing.length === 0) {
+    // Create with provided preferences
+    await db.insert(notificationPreferences).values({ userId, ...preferences });
+  } else {
+    // Update existing
+    await db
+      .update(notificationPreferences)
+      .set(preferences)
+      .where(eq(notificationPreferences.userId, userId));
+  }
+}
+
+// ==================== Email Logs ====================
+
+/**
+ * Log email send attempt
+ */
+export async function logEmail(data: {
+  userId?: number;
+  toEmail: string;
+  subject: string;
+  template?: string;
+  status: 'pending' | 'sent' | 'failed';
+  errorMessage?: string;
+}) {
+  const db = await getDb();
+  if (!db) return;
+
+  await db.insert(emailLogs).values({
+    ...data,
+    sentAt: data.status === 'sent' ? new Date() : undefined,
+  });
+}
+
+// ==================== SMS Logs ====================
+
+/**
+ * Log SMS send attempt
+ */
+export async function logSMS(data: {
+  userId?: number;
+  toPhone: string;
+  message: string;
+  status: 'pending' | 'sent' | 'failed';
+  errorMessage?: string;
+}) {
+  const db = await getDb();
+  if (!db) return;
+
+  await db.insert(smsLogs).values({
+    ...data,
+    sentAt: data.status === 'sent' ? new Date() : undefined,
+  });
 }

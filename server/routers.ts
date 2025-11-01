@@ -613,6 +613,238 @@ ${companyName ? `اسم الشركة: ${companyName}\n` : ''}
         }
       }),
   }),
+
+  // Discount Codes Router
+  discountCodes: router({
+    // Validate discount code (public)
+    validate: publicProcedure
+      .input(z.object({ code: z.string() }))
+      .query(async ({ input }) => {
+        const code = await db.getDiscountCodeByCode(input.code);
+        
+        if (!code) {
+          return { valid: false, message: 'الكود غير صحيح' };
+        }
+        
+        if (!code.isActive) {
+          return { valid: false, message: 'الكود غير نشط' };
+        }
+        
+        // Check max uses
+        if (code.maxUses && code.usedCount >= code.maxUses) {
+          return { valid: false, message: 'الكود وصل للحد الأقصى من الاستخدام' };
+        }
+        
+        // Check valid dates
+        const now = new Date();
+        if (code.validFrom && now < new Date(code.validFrom)) {
+          return { valid: false, message: 'الكود لم يبدأ بعد' };
+        }
+        if (code.validUntil && now > new Date(code.validUntil)) {
+          return { valid: false, message: 'الكود منتهي الصلاحية' };
+        }
+        
+        return {
+          valid: true,
+          code: {
+            id: code.id,
+            code: code.code,
+            discountType: code.discountType,
+            discountValue: code.discountValue,
+          },
+        };
+      }),
+
+    // Calculate discount
+    calculateDiscount: publicProcedure
+      .input(z.object({ 
+        code: z.string(),
+        originalAmount: z.number(),
+      }))
+      .query(async ({ input }) => {
+        const code = await db.getDiscountCodeByCode(input.code);
+        if (!code || !code.isActive) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Invalid code' });
+        }
+        
+        let discountAmount = 0;
+        if (code.discountType === 'percentage') {
+          discountAmount = Math.floor((input.originalAmount * code.discountValue) / 100);
+        } else {
+          discountAmount = code.discountValue;
+        }
+        
+        const finalAmount = Math.max(0, input.originalAmount - discountAmount);
+        
+        return {
+          originalAmount: input.originalAmount,
+          discountAmount,
+          finalAmount,
+          discountType: code.discountType,
+          discountValue: code.discountValue,
+        };
+      }),
+
+    // Admin: Get all codes
+    getAll: protectedProcedure
+      .query(async ({ ctx }) => {
+        if (ctx.user.role !== 'admin') {
+          throw new TRPCError({ code: 'FORBIDDEN' });
+        }
+        const codes = await db.getAllDiscountCodes();
+        return { codes };
+      }),
+
+    // Admin: Create code
+    create: protectedProcedure
+      .input(z.object({
+        code: z.string().min(3).max(50),
+        description: z.string().optional(),
+        discountType: z.enum(['percentage', 'fixed']),
+        discountValue: z.number().min(1),
+        maxUses: z.number().optional(),
+        validFrom: z.date().optional(),
+        validUntil: z.date().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== 'admin') {
+          throw new TRPCError({ code: 'FORBIDDEN' });
+        }
+        
+        // Check if code already exists
+        const existing = await db.getDiscountCodeByCode(input.code);
+        if (existing) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Code already exists' });
+        }
+        
+        await db.createDiscountCode({
+          ...input,
+          createdBy: ctx.user.id,
+        });
+        
+        return { success: true };
+      }),
+
+    // Admin: Update code
+    update: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        description: z.string().optional(),
+        discountType: z.enum(['percentage', 'fixed']).optional(),
+        discountValue: z.number().min(1).optional(),
+        maxUses: z.number().nullable().optional(),
+        validFrom: z.date().nullable().optional(),
+        validUntil: z.date().nullable().optional(),
+        isActive: z.boolean().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== 'admin') {
+          throw new TRPCError({ code: 'FORBIDDEN' });
+        }
+        
+        const { id, ...data } = input;
+        await db.updateDiscountCode(id, data);
+        
+        return { success: true };
+      }),
+
+    // Admin: Delete code
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== 'admin') {
+          throw new TRPCError({ code: 'FORBIDDEN' });
+        }
+        
+        await db.deleteDiscountCode(input.id);
+        return { success: true };
+      }),
+
+    // Admin: Get usage history
+    getUsageHistory: protectedProcedure
+      .input(z.object({ codeId: z.number() }))
+      .query(async ({ ctx, input }) => {
+        if (ctx.user.role !== 'admin') {
+          throw new TRPCError({ code: 'FORBIDDEN' });
+        }
+        
+        const history = await db.getDiscountCodeUsageHistory(input.codeId);
+        return { history };
+      }),
+  }),
+
+  // Notifications Router
+  notifications: router({
+    // Get all notifications for current user
+    getAll: protectedProcedure
+      .input(z.object({ limit: z.number().optional() }).optional())
+      .query(async ({ ctx, input }) => {
+        const notifications = await db.getUserNotifications(ctx.user.id, input?.limit);
+        const unreadCount = await db.getUnreadNotificationsCount(ctx.user.id);
+        return { notifications, unreadCount };
+      }),
+
+    // Get unread count
+    getUnreadCount: protectedProcedure
+      .query(async ({ ctx }) => {
+        const count = await db.getUnreadNotificationsCount(ctx.user.id);
+        return { count };
+      }),
+
+    // Mark as read
+    markAsRead: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await db.markNotificationAsRead(input.id);
+        return { success: true };
+      }),
+
+    // Mark all as read
+    markAllAsRead: protectedProcedure
+      .mutation(async ({ ctx }) => {
+        await db.markAllNotificationsAsRead(ctx.user.id);
+        return { success: true };
+      }),
+
+    // Delete notification
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await db.deleteNotification(input.id);
+        return { success: true };
+      }),
+
+    // Delete all notifications
+    deleteAll: protectedProcedure
+      .mutation(async ({ ctx }) => {
+        await db.deleteAllNotifications(ctx.user.id);
+        return { success: true };
+      }),
+
+    // Get preferences
+    getPreferences: protectedProcedure
+      .query(async ({ ctx }) => {
+        const preferences = await db.getNotificationPreferences(ctx.user.id);
+        return { preferences };
+      }),
+
+    // Update preferences
+    updatePreferences: protectedProcedure
+      .input(z.object({
+        inAppEnabled: z.boolean().optional(),
+        emailEnabled: z.boolean().optional(),
+        pushEnabled: z.boolean().optional(),
+        smsEnabled: z.boolean().optional(),
+        notifyOnBooking: z.boolean().optional(),
+        notifyOnResponse: z.boolean().optional(),
+        notifyOnReminder: z.boolean().optional(),
+        notifyOnPromotion: z.boolean().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        await db.updateNotificationPreferences(ctx.user.id, input);
+        return { success: true };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

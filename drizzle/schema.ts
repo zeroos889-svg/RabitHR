@@ -404,6 +404,91 @@ export const usageEvents = mysqlTable("usageEvents", {
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
+// 28. أكواد الخصم (Discount Codes)
+export const discountCodes = mysqlTable("discountCodes", {
+  id: int("id").autoincrement().primaryKey(),
+  code: varchar("code", { length: 50 }).notNull().unique(),
+  description: text("description"),
+  discountType: mysqlEnum("discountType", ["percentage", "fixed"]).notNull(),
+  discountValue: int("discountValue").notNull(), // percentage (0-100) or fixed amount in SAR
+  maxUses: int("maxUses"), // null = unlimited
+  usedCount: int("usedCount").default(0).notNull(),
+  validFrom: timestamp("validFrom"),
+  validUntil: timestamp("validUntil"),
+  isActive: boolean("isActive").default(true).notNull(),
+  createdBy: int("createdBy").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+// 29. استخدام أكواد الخصم (Discount Code Usage)
+export const discountCodeUsage = mysqlTable("discountCodeUsage", {
+  id: int("id").autoincrement().primaryKey(),
+  codeId: int("codeId").notNull(),
+  userId: int("userId").notNull(),
+  orderId: varchar("orderId", { length: 100 }),
+  originalAmount: int("originalAmount").notNull(),
+  discountAmount: int("discountAmount").notNull(),
+  finalAmount: int("finalAmount").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+// 30. الإشعارات (Notifications)
+export const notifications = mysqlTable("notifications", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  type: mysqlEnum("type", ["success", "info", "warning", "error"]).default("info").notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  message: text("message").notNull(),
+  link: varchar("link", { length: 500 }),
+  icon: varchar("icon", { length: 50 }),
+  isRead: boolean("isRead").default(false).notNull(),
+  readAt: timestamp("readAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+// 31. تفضيلات الإشعارات (Notification Preferences)
+export const notificationPreferences = mysqlTable("notificationPreferences", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().unique(),
+  inAppEnabled: boolean("inAppEnabled").default(true).notNull(),
+  emailEnabled: boolean("emailEnabled").default(true).notNull(),
+  pushEnabled: boolean("pushEnabled").default(false).notNull(),
+  smsEnabled: boolean("smsEnabled").default(false).notNull(),
+  // تفضيلات تفصيلية
+  notifyOnBooking: boolean("notifyOnBooking").default(true).notNull(),
+  notifyOnResponse: boolean("notifyOnResponse").default(true).notNull(),
+  notifyOnReminder: boolean("notifyOnReminder").default(true).notNull(),
+  notifyOnPromotion: boolean("notifyOnPromotion").default(false).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+// 32. سجل البريد الإلكتروني (Email Logs)
+export const emailLogs = mysqlTable("emailLogs", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId"),
+  toEmail: varchar("toEmail", { length: 320 }).notNull(),
+  subject: varchar("subject", { length: 500 }).notNull(),
+  template: varchar("template", { length: 100 }),
+  status: mysqlEnum("status", ["pending", "sent", "failed"]).default("pending").notNull(),
+  errorMessage: text("errorMessage"),
+  sentAt: timestamp("sentAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+// 33. سجل الرسائل النصية (SMS Logs)
+export const smsLogs = mysqlTable("smsLogs", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId"),
+  toPhone: varchar("toPhone", { length: 20 }).notNull(),
+  message: text("message").notNull(),
+  status: mysqlEnum("status", ["pending", "sent", "failed"]).default("pending").notNull(),
+  errorMessage: text("errorMessage"),
+  sentAt: timestamp("sentAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
 // Types
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
@@ -419,3 +504,11 @@ export type ConsultingPackage = typeof consultingPackages.$inferSelect;
 export type ConsultingTicket = typeof consultingTickets.$inferSelect;
 export type ConsultingResponse = typeof consultingResponses.$inferSelect;
 export type UsageEvent = typeof usageEvents.$inferSelect;
+export type DiscountCode = typeof discountCodes.$inferSelect;
+export type InsertDiscountCode = typeof discountCodes.$inferInsert;
+export type DiscountCodeUsage = typeof discountCodeUsage.$inferSelect;
+export type Notification = typeof notifications.$inferSelect;
+export type InsertNotification = typeof notifications.$inferInsert;
+export type NotificationPreference = typeof notificationPreferences.$inferSelect;
+export type EmailLog = typeof emailLogs.$inferSelect;
+export type SmsLog = typeof smsLogs.$inferSelect;
