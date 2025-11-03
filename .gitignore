@@ -105,3 +105,30 @@ temp/
 *.db
 *.sqlite
 *.sqlite3
+
+# Secrets and credentials
+.env.production
+.env.*.local
+*.key
+*.pem
+
+# Build cache
+.turbo/
+.next/
+dist/
+build/
+
+# Local development
+.vite/
+.vercel/
+
+# IDE specific
+.vscode/settings.json
+.idea/workspace.xml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
