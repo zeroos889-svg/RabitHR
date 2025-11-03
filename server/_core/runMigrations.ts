@@ -9,10 +9,17 @@ export async function runMigrations() {
   try {
     console.log("[Migrations] Starting database migrations...");
     
-    // Run drizzle migrations
-    execSync("drizzle-kit migrate", {
+    // Skip migrations if DATABASE_URL is not set
+    if (!process.env.DATABASE_URL) {
+      console.log("[Migrations] DATABASE_URL not set, skipping migrations");
+      return false;
+    }
+    
+    // Run drizzle migrations using pnpm
+    execSync("pnpm exec drizzle-kit migrate", {
       stdio: "inherit",
       env: { ...process.env },
+      cwd: process.cwd(),
     });
     
     console.log("[Migrations] ✓ Database migrations completed successfully!");
