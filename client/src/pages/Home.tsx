@@ -2,6 +2,8 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { trpc } from '@/lib/trpc';
+import { getLoginUrl } from '@/const';
 import { 
   Building2, 
   UserCheck, 
@@ -20,16 +22,110 @@ import {
   Menu
 } from 'lucide-react';
 import { useState } from 'react';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Link } from 'wouter';
 import { FAQSection } from '@/components/FAQSection';
 import { Footer } from '@/components/Footer';
+import { VimeoVideo } from '@/components/VimeoVideo';
+
+// Consulting Services Section Component
+function ConsultingServicesSection() {
+  const { data: typesData, isLoading } = trpc.consultant.getConsultationTypes.useQuery();
+  const consultationTypes = typesData?.consultationTypes?.slice(0, 6) || [];
+
+  if (isLoading) {
+    return (
+      <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
+        <div className="container">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">استشارات الموارد البشرية</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              جاري التحميل...
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
+      <div className="container">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">استشارات الموارد البشرية</h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            استشارات متخصصة في جميع مجالات الموارد البشرية من خبراء معتمدين
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          {consultationTypes.map((type: any, index: number) => (
+            <Card key={type.id} className="p-6 hover-lift cursor-pointer group h-full">
+              <div className="flex items-start justify-between mb-4">
+                <div className="h-14 w-14 rounded-lg bg-blue-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Headphones className="h-7 w-7 text-blue-600" />
+                </div>
+                <div className="text-right">
+                  <div className="text-sm text-muted-foreground">{type.duration} دقيقة</div>
+                  <div className="text-2xl font-bold text-blue-600">{type.price} ر.س</div>
+                </div>
+              </div>
+              <h3 className="text-xl font-bold mb-2">{type.nameAr}</h3>
+              <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                {type.descriptionAr}
+              </p>
+              <Link href="/consulting/book-new">
+                <Button className="w-full gradient-primary text-white">
+                  احجز الآن
+                  <ArrowRight className="mr-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </Card>
+          ))}
+        </div>
+
+        <div className="text-center">
+          <Link href="/consulting">
+            <Button size="lg" variant="outline" className="text-lg px-8">
+              عرض جميع الاستشارات
+              <ArrowRight className="mr-2 h-5 w-5" />
+            </Button>
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function Home() {
   const { t } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Free Month Offer Banner */}
+      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white py-3 px-4 text-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIxLTEuNzktNC00LTRzLTQgMS43OS00IDQgMS43OSA0IDQgNCA0LTEuNzkgNC00em0wLTEwYzAtMi4yMS0xLjc5LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHptMC0xMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6TTI0IDM0YzAtMi4yMS0xLjc5LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHptMC0xMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6bTAtMTBjMC0yLjIxLTEuNzktNC00LTRzLTQgMS43OS00IDQgMS43OSA0IDQgNCA0LTEuNzkgNC00ek0xMiAzNGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6bTAtMTBjMC0yLjIxLTEuNzktNC00LTRzLTQgMS43OS00IDQgMS43OSA0IDQgNCA0LTEuNzkgNC00eiIvPjwvZz48L2c+PC9zdmc+')] opacity-20"></div>
+        <div className="container relative flex items-center justify-center gap-4 flex-wrap">
+          <div className="flex items-center gap-2">
+            <span className="text-2xl">🎁</span>
+            <span className="font-bold text-lg">{t('offer.special')}</span>
+          </div>
+          <p className="text-sm md:text-base">
+            <strong>{t('offer.description')}</strong>
+          </p>
+          <Button 
+            size="sm" 
+            variant="secondary"
+            className="bg-white text-purple-600 hover:bg-white/90 font-bold"
+            onClick={() => window.location.href = getLoginUrl()}
+          >
+            {t('offer.button')}
+          </Button>
+        </div>
+      </div>
+
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
@@ -45,13 +141,13 @@ export default function Home() {
               {t('nav.home')}
             </a>
             <Link href="/consulting" className="text-sm font-medium hover:text-primary transition-colors">
-              الاستشارات
+              {t('nav.consulting') || 'الاستشارات'}
             </Link>
             <Link href="/courses" className="text-sm font-medium hover:text-primary transition-colors">
-              الدورات
+              {t('nav.courses') || 'الدورات'}
             </Link>
             <Link href="/knowledge-base" className="text-sm font-medium hover:text-primary transition-colors">
-              قاعدة المعرفة
+              {t('nav.knowledge_base') || 'قاعدة المعرفة'}
             </Link>
             <a href="#tools" className="text-sm font-medium hover:text-primary transition-colors">
               {t('nav.tools')}
@@ -64,10 +160,17 @@ export default function Home() {
           {/* Actions */}
           <div className="flex items-center gap-3">
             <LanguageSwitcher />
-            <Button variant="ghost" className="hidden sm:inline-flex">
+            <Button 
+              variant="ghost" 
+              className="hidden sm:inline-flex"
+              onClick={() => window.location.href = getLoginUrl()}
+            >
               {t('btn.login')}
             </Button>
-            <Button className="gradient-primary text-white hidden sm:inline-flex">
+            <Button 
+              className="gradient-primary text-white hidden sm:inline-flex"
+              onClick={() => window.location.href = getLoginUrl()}
+            >
               {t('btn.start_free')}
             </Button>
             <Button 
@@ -88,13 +191,13 @@ export default function Home() {
               {t('nav.home')}
             </a>
             <Link href="/consulting" className="block py-2 text-sm font-medium hover:text-primary transition-colors">
-              الاستشارات
+              {t('nav.consulting') || 'الاستشارات'}
             </Link>
             <Link href="/courses" className="block py-2 text-sm font-medium hover:text-primary transition-colors">
-              الدورات
+              {t('nav.courses') || 'الدورات'}
             </Link>
             <Link href="/knowledge-base" className="block py-2 text-sm font-medium hover:text-primary transition-colors">
-              قاعدة المعرفة
+              {t('nav.knowledge_base') || 'قاعدة المعرفة'}
             </Link>
             <a href="#tools" className="block py-2 text-sm font-medium hover:text-primary transition-colors">
               {t('nav.tools')}
@@ -109,10 +212,17 @@ export default function Home() {
               {t('nav.contact')}
             </a>
             <div className="pt-3 space-y-2">
-              <Button variant="outline" className="w-full">
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => window.location.href = getLoginUrl()}
+              >
                 {t('btn.login')}
               </Button>
-              <Button className="gradient-primary text-white w-full">
+              <Button 
+                className="gradient-primary text-white w-full"
+                onClick={() => window.location.href = getLoginUrl()}
+              >
                 {t('btn.start_free')}
               </Button>
             </div>
@@ -145,11 +255,20 @@ export default function Home() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="gradient-primary text-white text-lg px-8 hover-lift">
+                <Button 
+                  size="lg" 
+                  className="gradient-primary text-white text-lg px-8 hover-lift"
+                  onClick={() => window.location.href = getLoginUrl()}
+                >
                   {t('btn.start_free')}
                   <ArrowRight className="mr-2 h-5 w-5" />
                 </Button>
-                <Button size="lg" variant="outline" className="text-lg px-8">
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="text-lg px-8"
+                  onClick={() => setVideoModalOpen(true)}
+                >
                   <Play className="ml-2 h-5 w-5" />
                   {t('hero.watch_demo')}
                 </Button>
@@ -391,7 +510,11 @@ export default function Home() {
 
           {/* CTA */}
           <div className="text-center mt-12">
-            <Button size="lg" className="gradient-primary text-white text-lg px-8 hover-lift">
+            <Button 
+              size="lg" 
+              className="gradient-primary text-white text-lg px-8 hover-lift"
+              onClick={() => window.location.href = getLoginUrl()}
+            >
               ابدأ الآن مجاناً
               <ArrowRight className="mr-2 h-5 w-5" />
             </Button>
@@ -399,56 +522,126 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Tools Section */}
+      {/* Tools Section - أدوات الموارد البشرية الذكية */}
       <section id="tools" className="py-20 bg-muted/30">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t('tools.title')}</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">أدوات الموارد البشرية الذكية</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              أدوات ذكية مدعومة بالذكاء الاصطناعي لتسهيل عملك
+              أدوات ذكية مدعومة بالذكاء الاصطناعي لتسهيل جميع عمليات الموارد البشرية
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* End of Service Calculator */}
-            <Card className="p-6 hover-lift cursor-pointer group">
-              <div className="h-14 w-14 rounded-lg bg-blue-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Calculator className="h-7 w-7 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">{t('tools.end_of_service')}</h3>
-              <p className="text-sm text-muted-foreground mb-4">{t('tools.end_of_service.desc')}</p>
-              <Button variant="ghost" className="w-full group-hover:bg-blue-50">
-                {t('tools.try_now')}
-                <ArrowRight className="mr-2 h-4 w-4" />
-              </Button>
-            </Card>
-
-            {/* Vacation Calculator */}
-            <Card className="p-6 hover-lift cursor-pointer group">
-              <div className="h-14 w-14 rounded-lg bg-purple-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Calendar className="h-7 w-7 text-purple-600" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">{t('tools.vacation')}</h3>
-              <p className="text-sm text-muted-foreground mb-4">{t('tools.vacation.desc')}</p>
-              <Button variant="ghost" className="w-full group-hover:bg-purple-50">
-                {t('tools.try_now')}
-                <ArrowRight className="mr-2 h-4 w-4" />
-              </Button>
-            </Card>
-
-            {/* Letter Generator */}
-            <Link href="/tools/letter-generator">
-              <Card className="p-6 hover-lift cursor-pointer group">
-                <div className="h-14 w-14 rounded-lg bg-green-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <FileText className="h-7 w-7 text-green-600" />
+            <Link href="/tools/end-of-service">
+              <Card className="p-6 hover-lift cursor-pointer group h-full">
+                <div className="h-14 w-14 rounded-lg bg-blue-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Calculator className="h-7 w-7 text-blue-600" />
                 </div>
-                <h3 className="text-xl font-bold mb-2">{t('tools.letter_generator')}</h3>
-                <p className="text-sm text-muted-foreground mb-4">{t('tools.letter_generator.desc')}</p>
-                <Button variant="ghost" className="w-full group-hover:bg-green-50">
-                  {t('tools.try_now')}
+                <h3 className="text-xl font-bold mb-2">حاسبة نهاية الخدمة</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  احسب مستحقات نهاية الخدمة بدقة وفقاً لنظام العمل السعودي
+                </p>
+                <Button variant="ghost" className="w-full group-hover:bg-blue-50">
+                  جرّب الآن
                   <ArrowRight className="mr-2 h-4 w-4" />
                 </Button>
               </Card>
+            </Link>
+
+            {/* Vacation Calculator */}
+            <Link href="/tools/leave-calculator">
+              <Card className="p-6 hover-lift cursor-pointer group h-full">
+                <div className="h-14 w-14 rounded-lg bg-purple-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Calendar className="h-7 w-7 text-purple-600" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">حاسبة الإجازات</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  احسب رصيد الإجازات السنوية والمرضية والأعياد
+                </p>
+                <Button variant="ghost" className="w-full group-hover:bg-purple-50">
+                  جرّب الآن
+                  <ArrowRight className="mr-2 h-4 w-4" />
+                </Button>
+              </Card>
+            </Link>
+
+            {/* Letter Generator */}
+            <Link href="/tools/letter-generator">
+              <Card className="p-6 hover-lift cursor-pointer group h-full">
+                <div className="h-14 w-14 rounded-lg bg-green-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <FileText className="h-7 w-7 text-green-600" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">مولد الخطابات</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  أنشئ خطابات رسمية احترافية بالذكاء الاصطناعي (55+ نوع)
+                </p>
+                <Button variant="ghost" className="w-full group-hover:bg-green-50">
+                  جرّب الآن
+                  <ArrowRight className="mr-2 h-4 w-4" />
+                </Button>
+              </Card>
+            </Link>
+
+            {/* Document Generator */}
+            <Link href="/dashboard/smart-form-generator">
+              <Card className="p-6 hover-lift cursor-pointer group h-full">
+                <div className="h-14 w-14 rounded-lg bg-orange-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <FileText className="h-7 w-7 text-orange-600" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">مولد النماذج الذكي</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  أنشئ نماذج ومستندات HR مخصصة بسهولة
+                </p>
+                <Button variant="ghost" className="w-full group-hover:bg-orange-50">
+                  جرّب الآن
+                  <ArrowRight className="mr-2 h-4 w-4" />
+                </Button>
+              </Card>
+            </Link>
+
+            {/* Certificate Generator */}
+            <Link href="/dashboard/certificates">
+              <Card className="p-6 hover-lift cursor-pointer group h-full">
+                <div className="h-14 w-14 rounded-lg bg-indigo-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Shield className="h-7 w-7 text-indigo-600" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">مولد الشهادات</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  أصدر شهادات عمل وخبرة احترافية فوراً
+                </p>
+                <Button variant="ghost" className="w-full group-hover:bg-indigo-50">
+                  جرّب الآن
+                  <ArrowRight className="mr-2 h-4 w-4" />
+                </Button>
+              </Card>
+            </Link>
+
+            {/* Smart Reports */}
+            <Link href="/dashboard/reports">
+              <Card className="p-6 hover-lift cursor-pointer group h-full">
+                <div className="h-14 w-14 rounded-lg bg-pink-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <BarChart3 className="h-7 w-7 text-pink-600" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">التقارير الذكية</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  تقارير تحليلية شاملة عن أداء الموارد البشرية
+                </p>
+                <Button variant="ghost" className="w-full group-hover:bg-pink-50">
+                  جرّب الآن
+                  <ArrowRight className="mr-2 h-4 w-4" />
+                </Button>
+              </Card>
+            </Link>
+          </div>
+
+          <div className="text-center mt-12">
+            <Link href="/tools">
+              <Button size="lg" variant="outline" className="text-lg px-8">
+                عرض جميع الأدوات
+                <ArrowRight className="mr-2 h-5 w-5" />
+              </Button>
             </Link>
           </div>
         </div>
@@ -699,82 +892,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Consulting Services Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
-        <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">الخدمات الاستشارية</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              استشارات قانونية متخصصة في الموارد البشرية من خبراء معتمدين
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
-            <Card className="p-6 hover-lift cursor-pointer group">
-              <div className="h-14 w-14 rounded-lg bg-blue-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Headphones className="h-7 w-7 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">استشارة سريعة</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                استشارة نصية أو صوتية أو فيديو خلال 24 ساعة
-              </p>
-              <div className="text-2xl font-bold text-blue-600 mb-4">من 199 ريال</div>
-              <Link href="/consulting">
-                <Button variant="outline" className="w-full group-hover:bg-blue-50">
-                  اعرف أكثر
-                  <ArrowRight className="mr-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </Card>
-
-            <Card className="p-6 hover-lift cursor-pointer group border-2 border-purple-200">
-              <div className="absolute top-4 left-4">
-                <span className="bg-purple-600 text-white text-xs px-2 py-1 rounded-full">الأكثر طلباً</span>
-              </div>
-              <div className="h-14 w-14 rounded-lg bg-purple-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <FileText className="h-7 w-7 text-purple-600" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">مراجعة عقود</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                مراجعة وتدقيق عقود العمل والقرارات
-              </p>
-              <div className="text-2xl font-bold text-purple-600 mb-4">499 ريال</div>
-              <Link href="/consulting">
-                <Button className="w-full bg-purple-600 hover:bg-purple-700">
-                  احجز الآن
-                  <ArrowRight className="mr-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </Card>
-
-            <Card className="p-6 hover-lift cursor-pointer group">
-              <div className="h-14 w-14 rounded-lg bg-green-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Shield className="h-7 w-7 text-green-600" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">دراسة حالة</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                دراسة شاملة لقضية HR معقدة مع تقرير مفصل
-              </p>
-              <div className="text-2xl font-bold text-green-600 mb-4">999 ريال</div>
-              <Link href="/consulting">
-                <Button variant="outline" className="w-full group-hover:bg-green-50">
-                  اعرف أكثر
-                  <ArrowRight className="mr-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </Card>
-          </div>
-
-          <div className="text-center">
-            <Link href="/consulting">
-              <Button size="lg" className="gradient-primary text-white">
-                عرض جميع الخدمات الاستشارية
-                <ArrowRight className="mr-2 h-4 w-4" />
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* Consulting Services Section - استشارات الموارد البشرية */}
+      <ConsultingServicesSection />
 
       {/* Learning Section */}
       <section className="py-20">
@@ -884,6 +1003,13 @@ export default function Home() {
 
       {/* Footer */}
       <Footer />
+
+      {/* Video Modal */}
+      <Dialog open={videoModalOpen} onOpenChange={setVideoModalOpen}>
+        <DialogContent className="max-w-4xl p-0 overflow-hidden">
+          <VimeoVideo videoId="906999651" title="عرض توضيحي لمنصة رابِط" />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

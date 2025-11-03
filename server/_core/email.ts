@@ -216,3 +216,52 @@ export function getResponseNotificationHTML(data: {
 </html>
   `;
 }
+
+
+/**
+ * Send welcome email to new users
+ */
+export async function sendWelcomeEmail(data: { to: string; name: string }): Promise<boolean> {
+  return sendEmail({
+    to: data.to,
+    subject: 'مرحباً بك في رابِط - مساعدك الذكي للموارد البشرية',
+    html: getWelcomeEmailHTML(data.name),
+    template: 'welcome',
+  });
+}
+
+/**
+ * Send booking confirmation email
+ */
+export async function sendBookingConfirmationEmail(data: {
+  to: string;
+  userName: string;
+  packageName: string;
+  price: number;
+  bookingDate: string;
+}): Promise<boolean> {
+  return sendEmail({
+    to: data.to,
+    subject: 'تأكيد حجز الاستشارة - رابِط',
+    html: getBookingConfirmationHTML(data),
+    template: 'booking_confirmation',
+  });
+}
+
+/**
+ * Send response notification email
+ */
+export async function sendResponseNotificationEmail(data: {
+  to: string;
+  userName: string;
+  ticketTitle: string;
+  ticketId: number;
+  responsePreview: string;
+}): Promise<boolean> {
+  return sendEmail({
+    to: data.to,
+    subject: 'رد جديد على استشارتك - رابِط',
+    html: getResponseNotificationHTML(data),
+    template: 'response_notification',
+  });
+}

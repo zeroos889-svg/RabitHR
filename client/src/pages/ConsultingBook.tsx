@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useLocation } from "wouter";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
 import { 
   MessageSquare, 
   Phone, 
@@ -20,14 +21,26 @@ import {
   CheckCircle2,
   Upload,
   ArrowRight,
-  ArrowLeft
+  ArrowLeft,
+  Loader2
 } from "lucide-react";
+import { useState } from "react";
 import { Footer } from "@/components/Footer";
+import { trpc } from "@/lib/trpc";
 
 export default function ConsultingBook() {
+  const [, setLocation] = useLocation();
   const [step, setStep] = useState(1);
   const [serviceType, setServiceType] = useState("");
-  const [consultationType, setConsultationType] = useState("");
+  const [selectedExpert, setSelectedExpert] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedTime, setSelectedTime] = useState("");
+  const [topic, setTopic] = useState("");
+  const [details, setDetails] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("card");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const createTicketMutation = trpc.consulting.createTicket.useMutation();
 
   const serviceTypes = [
     {
@@ -35,9 +48,9 @@ export default function ConsultingBook() {
       title: "استشارة سريعة",
       description: "استشارة قصيرة لحل مشكلة محددة",
       types: [
-        { id: "text", icon: MessageSquare, name: "نصية", duration: "15-30 دقيقة", price: "99 ريال" },
-        { id: "voice", icon: Phone, name: "صوتية", duration: "30 دقيقة", price: "149 ريال" },
-        { id: "video", icon: Video, name: "فيديو", duration: "30-45 دقيقة", price: "199 ريال" }
+        { id: "text", icon: MessageSquare, name: "نصية", duration: "15-30 دقيقة", price: 99 },
+        { id: "voice", icon: Phone, name: "صوتية", duration: "30 دقيقة", price: 149 },
+        { id: "video", icon: Video, name: "فيديو", duration: "30-45 دقيقة", price: 199 }
       ]
     },
     {
@@ -45,9 +58,9 @@ export default function ConsultingBook() {
       title: "مراجعة عقود العمل",
       description: "مراجعة قانونية شاملة للعقود",
       packages: [
-        { id: "basic", name: "مراجعة بسيطة", price: "299 ريال", duration: "2-3 أيام" },
-        { id: "advanced", name: "مراجعة متقدمة", price: "499 ريال", duration: "3-5 أيام" },
-        { id: "new", name: "صياغة عقد جديد", price: "799 ريال", duration: "5-7 أيام" }
+        { id: "basic", name: "مراجعة بسيطة", price: 299, duration: "2-3 أيام" },
+        { id: "advanced", name: "مراجعة متقدمة", price: 499, duration: "3-5 أيام" },
+        { id: "new", name: "صياغة عقد جديد", price: 799, duration: "5-7 أيام" }
       ]
     },
     {
@@ -55,9 +68,9 @@ export default function ConsultingBook() {
       title: "تدقيق قرارات الفصل",
       description: "فحص قانوني للقرارات الإدارية",
       packages: [
-        { id: "basic", name: "تدقيق أساسي", price: "199 ريال", duration: "1-2 يوم" },
-        { id: "comprehensive", name: "تدقيق شامل", price: "399 ريال", duration: "2-3 أيام" },
-        { id: "consultation", name: "تدقيق + استشارة", price: "499 ريال", duration: "2-3 أيام" }
+        { id: "basic", name: "تدقيق أساسي", price: 199, duration: "1-2 يوم" },
+        { id: "comprehensive", name: "تدقيق شامل", price: 399, duration: "2-3 أيام" },
+        { id: "consultation", name: "تدقيق + استشارة", price: 499, duration: "2-3 أيام" }
       ]
     },
     {
@@ -65,8 +78,8 @@ export default function ConsultingBook() {
       title: "دراسة حالة HR",
       description: "دراسة تفصيلية للحالات المعقدة",
       packages: [
-        { id: "basic", name: "دراسة أساسية", price: "999 ريال", duration: "7-10 أيام" },
-        { id: "action-plan", name: "دراسة + خطة عمل", price: "1,499 ريال", duration: "10-14 يوم" }
+        { id: "basic", name: "دراسة أساسية", price: 999, duration: "7-10 أيام" },
+        { id: "action-plan", name: "دراسة + خطة عمل", price: 1499, duration: "10-14 يوم" }
       ]
     }
   ];
@@ -82,6 +95,52 @@ export default function ConsultingBook() {
     "09:00 ص", "10:00 ص", "11:00 ص", "12:00 م",
     "02:00 م", "03:00 م", "04:00 م", "05:00 م"
   ];
+
+  const getServicePrice = () => {
+    const service = serviceTypes.find(s => s.id === serviceType);
+    if (!service) return 0;
+    
+    if (service.types) {
+      const type = service.types.find(t => t.id === selectedExpert);
+      return type?.price || 0;
+    }
+    
+    if (service.packages) {
+      const pkg = service.packages.find(p => p.id === selectedExpert);
+      return pkg?.price || 0;
+    }
+    
+    return 0;
+  };
+
+  const handleSubmit = async () => {
+    if (!topic.trim() || !selectedDate || !selectedTime) {
+      toast.error("يرجى ملء جميع الحقول المطلوبة");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const result = await createTicketMutation.mutateAsync({
+        packageId: parseInt(selectedExpert),
+        subject: topic,
+        description: details,
+        priority: "medium",
+      });
+
+      toast.success("تم حجز الاستشارة بنجاح!");
+      
+      // إعادة التوجيه إلى صفحة استشاراتي
+      setTimeout(() => {
+        setLocation("/my-consultations");
+      }, 1500);
+    } catch (error) {
+      toast.error("حدث خطأ أثناء حجز الاستشارة");
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -106,7 +165,7 @@ export default function ConsultingBook() {
                 { num: 1, title: "نوع الخدمة" },
                 { num: 2, title: "اختيار المستشار" },
                 { num: 3, title: "الموعد والتفاصيل" },
-                { num: 4, title: "الدفع" }
+                { num: 4, title: "تأكيد الحجز" }
               ].map((s, idx) => (
                 <div key={idx} className="flex items-center gap-2 flex-1">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
@@ -140,7 +199,10 @@ export default function ConsultingBook() {
                         className={`cursor-pointer transition-all ${
                           serviceType === service.id ? 'border-primary shadow-lg' : 'hover:border-primary/50'
                         }`}
-                        onClick={() => setServiceType(service.id)}
+                        onClick={() => {
+                          setServiceType(service.id);
+                          setSelectedExpert("");
+                        }}
                       >
                         <CardHeader>
                           <CardTitle className="text-xl">{service.title}</CardTitle>
@@ -156,7 +218,7 @@ export default function ConsultingBook() {
                                     <span className="font-medium">{type.name}</span>
                                     <span className="text-sm text-muted-foreground">({type.duration})</span>
                                   </div>
-                                  <span className="font-bold text-primary">{type.price}</span>
+                                  <span className="font-bold text-primary">{type.price} ريال</span>
                                 </div>
                               ))}
                             </div>
@@ -169,7 +231,7 @@ export default function ConsultingBook() {
                                     <div className="font-medium">{pkg.name}</div>
                                     <div className="text-sm text-muted-foreground">{pkg.duration}</div>
                                   </div>
-                                  <span className="font-bold text-primary">{pkg.price}</span>
+                                  <span className="font-bold text-primary">{pkg.price} ريال</span>
                                 </div>
                               ))}
                             </div>
@@ -195,33 +257,64 @@ export default function ConsultingBook() {
             {step === 2 && (
               <div className="space-y-8">
                 <div>
-                  <h2 className="text-2xl font-bold mb-6">اختر المستشار</h2>
+                  <h2 className="text-2xl font-bold mb-6">اختر المستشار أو الباقة</h2>
                   <div className="grid md:grid-cols-2 gap-6">
-                    {experts.map((expert) => (
-                      <Card key={expert.id} className="hover:shadow-lg transition-shadow cursor-pointer">
-                        <CardHeader>
-                          <div className="flex items-start gap-4">
-                            <div className="text-4xl">{expert.avatar}</div>
-                            <div className="flex-1">
-                              <CardTitle className="text-lg">{expert.name}</CardTitle>
-                              <CardDescription>{expert.specialty}</CardDescription>
-                              <div className="flex items-center gap-4 mt-2 text-sm">
-                                <div className="flex items-center gap-1">
-                                  <span className="text-yellow-500">★</span>
-                                  <span className="font-semibold">{expert.rating}</span>
-                                </div>
-                                <div className="text-muted-foreground">
-                                  {expert.consultations} استشارة
+                    {serviceTypes.find(s => s.id === serviceType)?.types ? (
+                      experts.map((expert) => (
+                        <Card 
+                          key={expert.id} 
+                          className={`hover:shadow-lg transition-all cursor-pointer ${
+                            selectedExpert === expert.id ? 'border-primary shadow-lg' : ''
+                          }`}
+                          onClick={() => setSelectedExpert(expert.id)}
+                        >
+                          <CardHeader>
+                            <div className="flex items-start gap-4">
+                              <div className="text-4xl">{expert.avatar}</div>
+                              <div className="flex-1">
+                                <CardTitle className="text-lg">{expert.name}</CardTitle>
+                                <CardDescription>{expert.specialty}</CardDescription>
+                                <div className="flex items-center gap-4 mt-2 text-sm">
+                                  <div className="flex items-center gap-1">
+                                    <span className="text-yellow-500">★</span>
+                                    <span className="font-semibold">{expert.rating}</span>
+                                  </div>
+                                  <div className="text-muted-foreground">
+                                    {expert.consultations} استشارة
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        </CardHeader>
-                        <CardContent>
-                          <Button className="w-full">اختيار</Button>
-                        </CardContent>
-                      </Card>
-                    ))}
+                          </CardHeader>
+                          <CardContent>
+                            <Button className="w-full" variant={selectedExpert === expert.id ? "default" : "outline"}>
+                              {selectedExpert === expert.id ? "✓ مختار" : "اختيار"}
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      ))
+                    ) : (
+                      serviceTypes.find(s => s.id === serviceType)?.packages?.map((pkg) => (
+                        <Card 
+                          key={pkg.id}
+                          className={`hover:shadow-lg transition-all cursor-pointer ${
+                            selectedExpert === pkg.id ? 'border-primary shadow-lg' : ''
+                          }`}
+                          onClick={() => setSelectedExpert(pkg.id)}
+                        >
+                          <CardHeader>
+                            <CardTitle>{pkg.name}</CardTitle>
+                            <CardDescription>{pkg.duration}</CardDescription>
+                          </CardHeader>
+                          <CardContent className="space-y-4">
+                            <div className="text-2xl font-bold text-primary">{pkg.price} ريال</div>
+                            <Button className="w-full" variant={selectedExpert === pkg.id ? "default" : "outline"}>
+                              {selectedExpert === pkg.id ? "✓ مختار" : "اختيار"}
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      ))
+                    )}
                   </div>
                 </div>
 
@@ -230,7 +323,7 @@ export default function ConsultingBook() {
                     <ArrowLeft className="ml-2 h-5 w-5" />
                     السابق
                   </Button>
-                  <Button size="lg" onClick={() => setStep(3)}>
+                  <Button size="lg" disabled={!selectedExpert} onClick={() => setStep(3)}>
                     التالي
                     <ArrowRight className="mr-2 h-5 w-5" />
                   </Button>
@@ -250,11 +343,17 @@ export default function ConsultingBook() {
                     <div className="grid md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <Label htmlFor="date">التاريخ</Label>
-                        <Input type="date" id="date" />
+                        <Input 
+                          type="date" 
+                          id="date" 
+                          value={selectedDate}
+                          onChange={(e) => setSelectedDate(e.target.value)}
+                          min={new Date().toISOString().split('T')[0]}
+                        />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="time">الوقت</Label>
-                        <Select>
+                        <Select value={selectedTime} onValueChange={setSelectedTime}>
                           <SelectTrigger>
                             <SelectValue placeholder="اختر الوقت" />
                           </SelectTrigger>
@@ -268,8 +367,13 @@ export default function ConsultingBook() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="topic">موضوع الاستشارة</Label>
-                      <Input id="topic" placeholder="مثال: مراجعة عقد عمل" />
+                      <Label htmlFor="topic">موضوع الاستشارة *</Label>
+                      <Input 
+                        id="topic" 
+                        placeholder="مثال: مراجعة عقد عمل"
+                        value={topic}
+                        onChange={(e) => setTopic(e.target.value)}
+                      />
                     </div>
 
                     <div className="space-y-2">
@@ -278,20 +382,9 @@ export default function ConsultingBook() {
                         id="details" 
                         placeholder="اشرح تفاصيل الاستشارة..."
                         rows={5}
+                        value={details}
+                        onChange={(e) => setDetails(e.target.value)}
                       />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label>المستندات (اختياري)</Label>
-                      <div className="border-2 border-dashed rounded-lg p-8 text-center hover:border-primary transition-colors cursor-pointer">
-                        <Upload className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
-                        <p className="text-sm text-muted-foreground">
-                          اسحب الملفات هنا أو انقر للرفع
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          PDF, DOC, DOCX (حتى 10MB)
-                        </p>
-                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -309,7 +402,7 @@ export default function ConsultingBook() {
               </div>
             )}
 
-            {/* Step 4: Payment */}
+            {/* Step 4: Confirmation */}
             {step === 4 && (
               <div className="space-y-8">
                 <Card>
@@ -319,52 +412,28 @@ export default function ConsultingBook() {
                   <CardContent className="space-y-4">
                     <div className="flex justify-between py-3 border-b">
                       <span className="text-muted-foreground">نوع الخدمة</span>
-                      <span className="font-semibold">استشارة فيديو</span>
+                      <span className="font-semibold">{serviceTypes.find(s => s.id === serviceType)?.title}</span>
                     </div>
                     <div className="flex justify-between py-3 border-b">
-                      <span className="text-muted-foreground">المستشار</span>
-                      <span className="font-semibold">د. أحمد المالكي</span>
+                      <span className="text-muted-foreground">الباقة/المستشار</span>
+                      <span className="font-semibold">
+                        {serviceTypes.find(s => s.id === serviceType)?.types?.find(t => t.id === selectedExpert)?.name ||
+                         serviceTypes.find(s => s.id === serviceType)?.packages?.find(p => p.id === selectedExpert)?.name ||
+                         experts.find(e => e.id === selectedExpert)?.name}
+                      </span>
                     </div>
                     <div className="flex justify-between py-3 border-b">
                       <span className="text-muted-foreground">التاريخ والوقت</span>
-                      <span className="font-semibold">2024-01-15 | 10:00 ص</span>
+                      <span className="font-semibold">{selectedDate} | {selectedTime}</span>
                     </div>
                     <div className="flex justify-between py-3 border-b">
-                      <span className="text-muted-foreground">المدة</span>
-                      <span className="font-semibold">30-45 دقيقة</span>
+                      <span className="text-muted-foreground">الموضوع</span>
+                      <span className="font-semibold">{topic}</span>
                     </div>
                     <div className="flex justify-between py-4 text-lg font-bold">
                       <span>الإجمالي</span>
-                      <span className="text-primary">199 ريال</span>
+                      <span className="text-primary">{getServicePrice()} ريال</span>
                     </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle>طريقة الدفع</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <RadioGroup defaultValue="card">
-                      <div className="flex items-center space-x-2 space-x-reverse p-4 border rounded-lg mb-3">
-                        <RadioGroupItem value="card" id="card" />
-                        <Label htmlFor="card" className="flex-1 cursor-pointer">
-                          بطاقة ائتمان (Visa, Mastercard, Mada)
-                        </Label>
-                      </div>
-                      <div className="flex items-center space-x-2 space-x-reverse p-4 border rounded-lg mb-3">
-                        <RadioGroupItem value="apple" id="apple" />
-                        <Label htmlFor="apple" className="flex-1 cursor-pointer">
-                          Apple Pay
-                        </Label>
-                      </div>
-                      <div className="flex items-center space-x-2 space-x-reverse p-4 border rounded-lg">
-                        <RadioGroupItem value="stc" id="stc" />
-                        <Label htmlFor="stc" className="flex-1 cursor-pointer">
-                          STC Pay
-                        </Label>
-                      </div>
-                    </RadioGroup>
                   </CardContent>
                 </Card>
 
@@ -373,9 +442,23 @@ export default function ConsultingBook() {
                     <ArrowLeft className="ml-2 h-5 w-5" />
                     السابق
                   </Button>
-                  <Button size="lg" className="bg-green-600 hover:bg-green-700">
-                    تأكيد الحجز والدفع
-                    <CheckCircle2 className="mr-2 h-5 w-5" />
+                  <Button 
+                    size="lg" 
+                    className="bg-green-600 hover:bg-green-700"
+                    onClick={handleSubmit}
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                        جاري الحجز...
+                      </>
+                    ) : (
+                      <>
+                        تأكيد الحجز
+                        <CheckCircle2 className="mr-2 h-5 w-5" />
+                      </>
+                    )}
                   </Button>
                 </div>
               </div>

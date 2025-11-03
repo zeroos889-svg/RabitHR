@@ -1,7 +1,9 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
+import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
+import { adminRouter } from "./adminRouter";
+import { chatRouter } from "./chatRouter";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { invokeLLM } from "./_core/llm";
@@ -11,6 +13,7 @@ export const appRouter = router({
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
+    
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
@@ -18,6 +21,67 @@ export const appRouter = router({
         success: true,
       } as const;
     }),
+
+    // Register new user with email/password
+    register: publicProcedure
+      .input(z.object({
+        name: z.string().min(2, "الاسم يجب أن يكون حرفين على الأقل"),
+        email: z.string().email("البريد الإلكتروني غير صحيح"),
+        password: z.string().min(8, "كلمة المرور يجب أن تكون 8 أحرف على الأقل"),
+        phoneNumber: z.string().optional(),
+        userType: z.enum(['employee', 'individual', 'company']).optional(),
+      }))
+      .mutation(async ({ input }) => {
+        try {
+          const user = await db.createUserWithPassword(input);
+          return {
+            success: true,
+            user: {
+              id: user.id,
+              name: user.name,
+              email: user.email,
+            },
+          };
+        } catch (error: any) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: error.message || 'فشل في إنشاء الحساب',
+          });
+        }
+      }),
+
+    // Login with email/password
+    login: publicProcedure
+      .input(z.object({
+        email: z.string().email("البريد الإلكتروني غير صحيح"),
+        password: z.string().min(1, "كلمة المرور مطلوبة"),
+        rememberMe: z.boolean().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        try {
+          const user = await db.verifyUserLogin(input.email, input.password);
+          
+          // Create session (simplified - in production, use proper session management)
+          // For now, we'll return user data and let frontend handle OAuth redirect
+          
+          return {
+            success: true,
+            user: {
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              role: user.role,
+              userType: user.userType,
+            },
+            message: "تم تسجيل الدخول بنجاح",
+          };
+        } catch (error: any) {
+          throw new TRPCError({
+            code: 'UNAUTHORIZED',
+            message: error.message || 'فشل في تسجيل الدخول',
+          });
+        }
+      }),
   }),
 
   // End of Service Benefit Calculator
@@ -466,6 +530,37 @@ ${companyName ? `اسم الشركة: ${companyName}\n` : ''}
         return { responses };
       }),
 
+    // Upload file to S3
+    uploadFile: protectedProcedure
+      .input(z.object({
+        fileName: z.string(),
+        fileType: z.string(),
+        fileData: z.string(), // base64 encoded
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const { storagePut } = await import("./storage");
+        
+        // Generate unique file key
+        const timestamp = Date.now();
+        const randomSuffix = Math.random().toString(36).substring(2, 8);
+        const fileExtension = input.fileName.split('.').pop();
+        const fileKey = `consulting/${ctx.user.id}/${timestamp}-${randomSuffix}.${fileExtension}`;
+        
+        // Convert base64 to buffer
+        const base64Data = input.fileData.split(',')[1] || input.fileData;
+        const fileBuffer = Buffer.from(base64Data, 'base64');
+        
+        // Upload to S3
+        const { url } = await storagePut(fileKey, fileBuffer, input.fileType);
+        
+        return { 
+          success: true, 
+          url,
+          fileKey,
+          fileName: input.fileName,
+        };
+      }),
+
     // Add response to ticket
     addResponse: protectedProcedure
       .input(z.object({
@@ -842,6 +937,575 @@ ${companyName ? `اسم الشركة: ${companyName}\n` : ''}
       }))
       .mutation(async ({ ctx, input }) => {
         await db.updateNotificationPreferences(ctx.user.id, input);
+        return { success: true };
+      }),
+  }),
+
+  // Admin Panel
+  admin: adminRouter,
+
+  // Live Chat
+  chat: chatRouter,
+
+  // User Profile
+  profile: router({
+    // Get current user profile
+    getProfile: protectedProcedure.query(async ({ ctx }) => {
+      const user = await db.getUserByOpenId(ctx.user.openId);
+      if (!user) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' });
+      }
+      return { user };
+    }),
+
+    // Update profile
+    updateProfile: protectedProcedure
+      .input(z.object({
+        name: z.string().min(2).optional(),
+        email: z.string().email().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const updated = await db.updateUserProfile(ctx.user.openId, input);
+        return { success: true, user: updated };
+      }),
+
+    // Upload profile picture
+    uploadProfilePicture: protectedProcedure
+      .input(z.object({
+        imageUrl: z.string().url(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const updated = await db.updateUserProfilePicture(ctx.user.openId, input.imageUrl);
+        return { success: true, user: updated };
+      }),
+  }),
+
+  // Consultant System Router
+  consultant: router({
+    // Register as consultant
+    register: protectedProcedure
+      .input(z.object({
+        fullNameAr: z.string().min(2),
+        fullNameEn: z.string().min(2),
+        email: z.string().email(),
+        phone: z.string().min(10),
+        city: z.string().optional(),
+        profilePicture: z.string().optional(),
+        mainSpecialization: z.string(),
+        subSpecializations: z.array(z.string()).optional(),
+        yearsOfExperience: z.number().min(0),
+        qualifications: z.array(z.string()).optional(),
+        certifications: z.array(z.string()).optional(),
+        bioAr: z.string().optional(),
+        bioEn: z.string().optional(),
+        ibanNumber: z.string().optional(),
+        bankName: z.string().optional(),
+        accountHolderName: z.string().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        // Check if already registered
+        const existing = await db.getConsultantByUserId(ctx.user.id);
+        if (existing) {
+          throw new TRPCError({ 
+            code: 'BAD_REQUEST', 
+            message: 'لقد قمت بالتسجيل مسبقاً' 
+          });
+        }
+
+        const consultantId = await db.createConsultant({
+          userId: ctx.user.id,
+          ...input,
+          subSpecializations: input.subSpecializations ? JSON.stringify(input.subSpecializations) : null,
+          qualifications: input.qualifications ? JSON.stringify(input.qualifications) : null,
+          certifications: input.certifications ? JSON.stringify(input.certifications) : null,
+        });
+
+        return { success: true, consultantId };
+      }),
+
+    // Get my consultant profile
+    getMyProfile: protectedProcedure
+      .query(async ({ ctx }) => {
+        const consultant = await db.getConsultantByUserId(ctx.user.id);
+        return { consultant };
+      }),
+
+    // Upload document
+    uploadDocument: protectedProcedure
+      .input(z.object({
+        documentType: z.enum(["cv", "certificate", "id", "license", "other"]),
+        documentName: z.string(),
+        documentUrl: z.string().url(),
+        fileSize: z.number().optional(),
+        mimeType: z.string().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const consultant = await db.getConsultantByUserId(ctx.user.id);
+        if (!consultant) {
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'Consultant not found' });
+        }
+
+        const docId = await db.createConsultantDocument({
+          consultantId: consultant.id,
+          ...input,
+        });
+
+        return { success: true, documentId: docId };
+      }),
+
+    // Get my documents
+    getMyDocuments: protectedProcedure
+      .query(async ({ ctx }) => {
+        const consultant = await db.getConsultantByUserId(ctx.user.id);
+        if (!consultant) return { documents: [] };
+
+        const documents = await db.getConsultantDocuments(consultant.id);
+        return { documents };
+      }),
+
+    // Get all specializations
+    getSpecializations: publicProcedure
+      .query(async () => {
+        const specializations = await db.getAllSpecializations();
+        return { specializations };
+      }),
+
+    // Get all consultation types
+    getConsultationTypes: publicProcedure
+      .query(async () => {
+        const types = await db.getAllConsultationTypes();
+        return { types };
+      }),
+
+    // Get approved consultants (public)
+    getApprovedConsultants: publicProcedure
+      .query(async () => {
+        const consultants = await db.getApprovedConsultants();
+        return { consultants };
+      }),
+
+    // Upload file (for booking attachments)
+    uploadFile: protectedProcedure
+      .input(z.object({
+        fileName: z.string(),
+        fileData: z.string(), // base64
+        mimeType: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        try {
+          const { storagePut } = await import('./storage');
+          
+          // Extract base64 data
+          const base64Data = input.fileData.split(',')[1] || input.fileData;
+          const buffer = Buffer.from(base64Data, 'base64');
+          
+          // Generate unique filename
+          const timestamp = Date.now();
+          const randomStr = Math.random().toString(36).substring(7);
+          const ext = input.fileName.split('.').pop();
+          const fileKey = `consultation-files/${timestamp}-${randomStr}.${ext}`;
+          
+          // Upload to S3
+          const { url } = await storagePut(fileKey, buffer, input.mimeType);
+          
+          return { success: true, url };
+        } catch (error: any) {
+          throw new TRPCError({ 
+            code: 'INTERNAL_SERVER_ERROR', 
+            message: 'فشل رفع الملف' 
+          });
+        }
+      }),
+
+    // Create booking
+    createBooking: protectedProcedure
+      .input(z.object({
+        consultationTypeId: z.number(),
+        consultantId: z.number(),
+        scheduledDate: z.string(),
+        scheduledTime: z.string(),
+        description: z.string().min(10),
+        requiredInfo: z.string().optional(),
+        attachments: z.string().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        // Verify consultant exists and is approved
+        const consultant = await db.getConsultantById(input.consultantId);
+        if (!consultant || consultant.status !== 'approved') {
+          throw new TRPCError({ 
+            code: 'BAD_REQUEST', 
+            message: 'المستشار غير متاح' 
+          });
+        }
+
+        // Create booking
+        const bookingId = await db.createConsultationBooking({
+          userId: ctx.user.id,
+          consultantId: input.consultantId,
+          consultationTypeId: input.consultationTypeId,
+          scheduledDate: input.scheduledDate,
+          scheduledTime: input.scheduledTime,
+          description: input.description,
+          requiredInfo: input.requiredInfo,
+          attachments: input.attachments,
+          status: 'pending',
+        });
+
+        return { success: true, bookingId };
+      }),
+
+    // Send message in consultation
+    sendMessage: protectedProcedure
+      .input(z.object({
+        bookingId: z.number(),
+        message: z.string().min(1),
+        attachments: z.string().optional(),
+        isAiAssisted: z.boolean().optional(),
+        aiSuggestion: z.string().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        // Verify user is part of this consultation
+        const booking = await db.getConsultationBookingById(input.bookingId);
+        if (!booking) {
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'Booking not found' });
+        }
+
+        // Determine sender type
+        const consultant = await db.getConsultantByUserId(ctx.user.id);
+        const senderType = consultant ? 'consultant' : 'client';
+
+        // Verify authorization
+        if (senderType === 'client' && booking.userId !== ctx.user.id) {
+          throw new TRPCError({ code: 'FORBIDDEN' });
+        }
+        if (senderType === 'consultant' && booking.consultantId !== consultant?.id) {
+          throw new TRPCError({ code: 'FORBIDDEN' });
+        }
+
+        const messageId = await db.sendConsultationMessage({
+          bookingId: input.bookingId,
+          senderId: ctx.user.id,
+          senderType,
+          message: input.message,
+          attachments: input.attachments,
+          isAiAssisted: input.isAiAssisted,
+          aiSuggestion: input.aiSuggestion,
+        });
+
+        return { success: true, messageId };
+      }),
+
+    // Get messages for consultation
+    getMessages: protectedProcedure
+      .input(z.object({ bookingId: z.number() }))
+      .query(async ({ input, ctx }) => {
+        // Verify user is part of this consultation
+        const booking = await db.getConsultationBookingById(input.bookingId);
+        if (!booking) {
+          throw new TRPCError({ code: 'NOT_FOUND' });
+        }
+
+        const consultant = await db.getConsultantByUserId(ctx.user.id);
+        const isConsultant = consultant && booking.consultantId === consultant.id;
+        const isClient = booking.userId === ctx.user.id;
+
+        if (!isConsultant && !isClient) {
+          throw new TRPCError({ code: 'FORBIDDEN' });
+        }
+
+        const messages = await db.getConsultationMessages(input.bookingId);
+        return { messages };
+      }),
+
+    // Get AI suggestion for consultant
+    getAiSuggestion: protectedProcedure
+      .input(z.object({
+        bookingId: z.number(),
+        clientMessage: z.string(),
+        conversationHistory: z.array(z.object({
+          role: z.enum(['client', 'consultant']),
+          message: z.string(),
+        })).optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        // Verify user is consultant
+        const consultant = await db.getConsultantByUserId(ctx.user.id);
+        if (!consultant) {
+          throw new TRPCError({ code: 'FORBIDDEN', message: 'هذه الخاصية للمستشارين فقط' });
+        }
+
+        // Verify booking belongs to consultant
+        const booking = await db.getConsultationBookingById(input.bookingId);
+        if (!booking || booking.consultantId !== consultant.id) {
+          throw new TRPCError({ code: 'FORBIDDEN' });
+        }
+
+        try {
+          const { invokeLLM } = await import('./_core/llm');
+
+          // Build conversation context
+          let contextMessages: any[] = [
+            {
+              role: 'system',
+              content: `أنت مساعد ذكي للمستشارين في مجال الموارد البشرية.
+مهمتك: مساعدة المستشار في صياغة رد احترافي ومفيد على استفسار العميل.
+
+إرشادات:
+1. استخدم لغة عربية فصحى واضحة
+2. كن محترفاً ومتعاطفاً
+3. قدّم حلولاً عملية ومحددة
+4. استند إلى أفضل الممارسات في الموارد البشرية
+5. اقترح خطوات عملية إذا أمكن
+6. لا تقدم نصائح قانونية محددة (اقترح استشارة محامي إذا لزم)
+
+المستشار: ${consultant.fullNameAr}
+التخصص: ${consultant.mainSpecialization}
+سنوات الخبرة: ${consultant.yearsOfExperience}`,
+            },
+          ];
+
+          // Add conversation history if provided
+          if (input.conversationHistory && input.conversationHistory.length > 0) {
+            contextMessages.push(
+              ...input.conversationHistory.map((msg) => ({
+                role: msg.role === 'client' ? 'user' : 'assistant',
+                content: msg.message,
+              }))
+            );
+          }
+
+          // Add current client message
+          contextMessages.push({
+            role: 'user',
+            content: `رسالة العميل: "${input.clientMessage}"
+
+اقترح رداً احترافياً ومفيداً يمكن للمستشار استخدامه أو تعديله.`,
+          });
+
+          const response = await invokeLLM({
+            messages: contextMessages,
+          });
+
+          const suggestion = response.choices[0]?.message?.content || 'عذراً، لم أتمكن من إنشاء اقتراح.';
+
+          return { success: true, suggestion };
+        } catch (error) {
+          console.error('AI Suggestion Error:', error);
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'حدث خطأ في إنشاء الاقتراح',
+          });
+        }
+      }),
+
+    // Update consultation status
+    updateConsultationStatus: protectedProcedure
+      .input(z.object({
+        bookingId: z.number(),
+        status: z.enum(['pending', 'confirmed', 'in-progress', 'completed', 'cancelled']),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        // Verify user is consultant
+        const consultant = await db.getConsultantByUserId(ctx.user.id);
+        if (!consultant) {
+          throw new TRPCError({ code: 'FORBIDDEN' });
+        }
+
+        const booking = await db.getConsultationBookingById(input.bookingId);
+        if (!booking || booking.consultantId !== consultant.id) {
+          throw new TRPCError({ code: 'FORBIDDEN' });
+        }
+
+        await db.updateConsultationStatus(input.bookingId, input.status);
+        return { success: true };
+      }),
+
+    // Rate consultation (client only)
+    rateConsultation: protectedProcedure
+      .input(z.object({
+        bookingId: z.number(),
+        rating: z.number().min(1).max(5),
+        comment: z.string().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const booking = await db.getConsultationBookingById(input.bookingId);
+        if (!booking) {
+          throw new TRPCError({ code: 'NOT_FOUND' });
+        }
+
+        // Verify user is the client
+        if (booking.userId !== ctx.user.id) {
+          throw new TRPCError({ code: 'FORBIDDEN' });
+        }
+
+        // Verify consultation is completed
+        if (booking.status !== 'completed') {
+          throw new TRPCError({ 
+            code: 'BAD_REQUEST', 
+            message: 'يجب إكمال الاستشارة قبل التقييم' 
+          });
+        }
+
+        await db.rateConsultation({
+          bookingId: input.bookingId,
+          consultantId: booking.consultantId!,
+          clientId: ctx.user.id,
+          rating: input.rating,
+          comment: input.comment,
+        });
+
+        return { success: true };
+      }),
+  }),
+
+  // Admin - Consultant Management
+  adminConsultant: router({
+    // Get pending consultants
+    getPending: protectedProcedure
+      .query(async ({ ctx }) => {
+        // TODO: Add admin role check
+        if (ctx.user.role !== 'admin') {
+          throw new TRPCError({ code: 'FORBIDDEN' });
+        }
+        const consultants = await db.getPendingConsultants();
+        return { consultants };
+      }),
+
+    // Approve consultant
+    approve: protectedProcedure
+      .input(z.object({
+        consultantId: z.number(),
+        commissionRate: z.number().min(0).max(100).optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        if (ctx.user.role !== 'admin') {
+          throw new TRPCError({ code: 'FORBIDDEN' });
+        }
+
+        const consultant = await db.approveConsultant(
+          input.consultantId,
+          ctx.user.id,
+          input.commissionRate
+        );
+
+        return { success: true, consultant };
+      }),
+
+    // Reject consultant
+    reject: protectedProcedure
+      .input(z.object({
+        consultantId: z.number(),
+        reason: z.string(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        if (ctx.user.role !== 'admin') {
+          throw new TRPCError({ code: 'FORBIDDEN' });
+        }
+
+        const consultant = await db.rejectConsultant(
+          input.consultantId,
+          input.reason
+        );
+
+        return { success: true, consultant };
+      }),
+  }),
+
+  // PDPL - Privacy & Data Protection
+  privacy: router({
+    // Get consent status
+    getConsentStatus: protectedProcedure
+      .query(async ({ ctx }) => {
+        const status = await db.getConsentStatus(ctx.user.id);
+        return status;
+      }),
+
+    // Withdraw consent
+    withdrawConsent: protectedProcedure
+      .mutation(async ({ ctx }) => {
+        await db.withdrawConsent(ctx.user.id);
+        return { success: true };
+      }),
+
+    // Get all user data (right to access)
+    getMyData: protectedProcedure
+      .query(async ({ ctx }) => {
+        const data = await db.getUserAllData(ctx.user.id);
+        return data;
+      }),
+
+    // Create data subject request
+    createRequest: protectedProcedure
+      .input(z.object({
+        type: z.enum(["access", "correct", "delete", "withdraw", "object"]),
+        payload: z.string().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        await db.createDataSubjectRequest({
+          userId: ctx.user.id,
+          type: input.type,
+          payloadJson: input.payload,
+        });
+        return { success: true };
+      }),
+  }),
+
+  // Admin - PDPL Management
+  adminPdpl: router({
+    // Get all data subject requests
+    getRequests: protectedProcedure
+      .query(async ({ ctx }) => {
+        if (ctx.user.role !== 'admin') {
+          throw new TRPCError({ code: 'FORBIDDEN' });
+        }
+        // TODO: Implement
+        return { requests: [] };
+      }),
+
+    // Get security incidents
+    getIncidents: protectedProcedure
+      .query(async ({ ctx }) => {
+        if (ctx.user.role !== 'admin') {
+          throw new TRPCError({ code: 'FORBIDDEN' });
+        }
+        // TODO: Implement
+        return { incidents: [] };
+      }),
+
+    // Create security incident
+    createIncident: protectedProcedure
+      .input(z.object({
+        description: z.string(),
+        cause: z.string().optional(),
+        affectedDataCategories: z.string().optional(),
+        affectedUsersCount: z.number().optional(),
+        riskLevel: z.enum(["low", "medium", "high"]),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        if (ctx.user.role !== 'admin') {
+          throw new TRPCError({ code: 'FORBIDDEN' });
+        }
+
+        await db.createSecurityIncident(input);
+        return { success: true };
+      }),
+
+    // Update incident
+    updateIncident: protectedProcedure
+      .input(z.object({
+        incidentId: z.number(),
+        reportedToSdaiaAt: z.date().optional(),
+        reportedToUsersAt: z.date().optional(),
+        status: z.enum(["new", "investigating", "reported", "resolved"]).optional(),
+        isLate: z.boolean().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        if (ctx.user.role !== 'admin') {
+          throw new TRPCError({ code: 'FORBIDDEN' });
+        }
+
+        const { incidentId, ...updates } = input;
+        await db.updateSecurityIncident(incidentId, updates);
         return { success: true };
       }),
   }),

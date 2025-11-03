@@ -30,24 +30,16 @@ export default function About() {
 
   const team = [
     {
-      name: "أحمد السعيد",
+      name: "صالح العقيل",
       role: "المؤسس والرئيس التنفيذي",
-      description: "خبرة 15 عاماً في مجال الموارد البشرية والتكنولوجيا"
+      description: "خبير في مجال الموارد البشرية والتحول الرقمي",
+      linkedin: "https://www.linkedin.com/in/saleh0alaqil"
     },
     {
-      name: "سارة محمد",
-      role: "مديرة المنتج",
-      description: "متخصصة في تصميم تجربة المستخدم وتطوير المنتجات"
-    },
-    {
-      name: "خالد العتيبي",
-      role: "المدير التقني",
-      description: "خبير في بناء الأنظمة السحابية والذكاء الاصطناعي"
-    },
-    {
-      name: "نورة الدوسري",
-      role: "مديرة نجاح العملاء",
-      description: "متخصصة في بناء علاقات طويلة الأمد مع العملاء"
+      name: "منصور الجابر",
+      role: "المؤسس المشارك",
+      description: "متخصص في تطوير الأعمال والاستراتيجية",
+      linkedin: "https://www.linkedin.com/in/mansouraljaber11a"
     }
   ];
 
@@ -257,6 +249,16 @@ export default function About() {
                     <p className="text-sm text-primary font-medium">{member.role}</p>
                   </div>
                   <p className="text-sm text-muted-foreground">{member.description}</p>
+                  {member.linkedin && (
+                    <a 
+                      href={member.linkedin} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline text-sm inline-block"
+                    >
+                      LinkedIn →
+                    </a>
+                  )}
                 </CardContent>
               </Card>
             ))}
@@ -319,6 +321,17 @@ export default function About() {
               </div>
             </CardContent>
           </Card>
+        </div>
+      </section>
+
+      {/* Commercial Register Notice */}
+      <section className="py-8 bg-yellow-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center">
+            <p className="text-sm text-yellow-800">
+              <strong>ملاحظة:</strong> السجل التجاري تحت الإصدار. هذه النسخة التجريبية من منصة رابِط.
+            </p>
+          </div>
         </div>
       </section>
 

@@ -12,6 +12,9 @@ const resources = {
       "nav.pricing": "الباقات",
       "nav.about": "من نحن",
       "nav.contact": "تواصل معنا",
+      "nav.consulting": "الاستشارات",
+      "nav.courses": "الدورات",
+      "nav.knowledge_base": "قاعدة المعرفة",
       "btn.login": "تسجيل الدخول",
       "btn.start_free": "ابدأ مجاناً",
       
@@ -60,10 +63,10 @@ const resources = {
       // الباقات
       "pricing.title": "الباقات",
       "pricing.compare": "قارن بين الباقات",
-      "pricing.starter": "Starter",
-      "pricing.professional": "Professional",
-      "pricing.enterprise": "Enterprise",
-      "pricing.custom": "Custom",
+      "pricing.starter": "باقة البداية",
+      "pricing.professional": "الباقة الاحترافية",
+      "pricing.enterprise": "الباقة المتقدمة",
+      "pricing.custom": "باقة مخصصة",
       "pricing.per_month": "ريال/شهر",
       "pricing.custom_price": "سعر مخصص",
       
@@ -144,9 +147,22 @@ const resources = {
       "common.download": "تحميل",
       "common.print": "طباعة",
       "common.share": "مشاركة",
+      
+      // Free Offer Banner
+      "offer.special": "عرض خاص!",
+      "offer.description": "شهر مجاني لجميع الخدمات والاستشارات عند التسجيل الآن!",
+      "offer.button": "ابدأ الآن مجاناً",
+      
+      // Cookie Consent
+      "cookie.title": "🍪 نستخدم ملفات تعريف الارتباط (Cookies)",
+      "cookie.description": "نستخدم ملفات تعريف الارتباط لتحسين تجربتك على موقعنا، وتحليل حركة المرور، وتخصيص المحتوى. باستخدامك لهذا الموقع، فإنك توافق على استخدامنا لملفات تعريف الارتباط وفقاً لـ",
+      "cookie.policy": "سياسة ملفات تعريف الارتباط",
+      "cookie.privacy": "سياسة الخصوصية",
+      "cookie.accept": "قبول",
+      "cookie.reject": "رفض",
     }
   },
-  en: {
+    en: {
     translation: {
       // Header
       "nav.home": "Home",
@@ -154,6 +170,9 @@ const resources = {
       "nav.pricing": "Pricing",
       "nav.about": "About Us",
       "nav.contact": "Contact",
+      "nav.consulting": "Consulting",
+      "nav.courses": "Courses",
+      "nav.knowledge_base": "Knowledge Base",
       "btn.login": "Login",
       "btn.start_free": "Start Free",
       
@@ -286,6 +305,19 @@ const resources = {
       "common.download": "Download",
       "common.print": "Print",
       "common.share": "Share",
+      
+      // Free Offer Banner
+      "offer.special": "Special Offer!",
+      "offer.description": "Free month for all services and consultations when you register now!",
+      "offer.button": "Start Now Free",
+      
+      // Cookie Consent
+      "cookie.title": "🍪 We Use Cookies",
+      "cookie.description": "We use cookies to improve your experience on our site, analyze traffic, and customize content. By using this site, you agree to our use of cookies in accordance with our",
+      "cookie.policy": "Cookie Policy",
+      "cookie.privacy": "Privacy Policy",
+      "cookie.accept": "Accept",
+      "cookie.reject": "Reject",
     }
   }
 };

@@ -28,6 +28,13 @@ export default function Terms() {
           </div>
         </div>
 
+        {/* Commercial Register Notice */}
+        <div className="bg-yellow-50 border-r-4 border-yellow-400 p-4 rounded-lg mb-6">
+          <p className="text-sm text-yellow-800">
+            <strong>ملاحظة:</strong> السجل التجاري تحت الإصدار. هذه النسخة التجريبية من المنصة.
+          </p>
+        </div>
+
         {/* Content */}
         <div className="space-y-6">
           {/* Introduction */}

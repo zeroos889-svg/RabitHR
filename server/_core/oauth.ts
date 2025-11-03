@@ -28,6 +28,7 @@ export function registerOAuthRoutes(app: Express) {
         return;
       }
 
+      // Upsert user
       await db.upsertUser({
         openId: userInfo.openId,
         name: userInfo.name || null,
@@ -35,6 +36,31 @@ export function registerOAuthRoutes(app: Express) {
         loginMethod: userInfo.loginMethod ?? userInfo.platform ?? null,
         lastSignedIn: new Date(),
       });
+
+      // Get user from DB to get userId
+      const user = await db.getUserByOpenId(userInfo.openId);
+      
+      // Save privacy consent if exists (from signup)
+      // Note: In production, you'd pass this via state parameter or session
+      // For now, we'll save consent with default version on first login
+      if (user) {
+        const existingConsent = await db.getConsentStatus(user.id);
+        if (!existingConsent) {
+          // First time user - save consent
+          const ipAddress = req.headers['x-forwarded-for'] as string || 
+                           req.headers['x-real-ip'] as string || 
+                           req.socket.remoteAddress || 
+                           'unknown';
+          const userAgent = req.headers['user-agent'] || 'unknown';
+          
+          await db.saveUserConsent({
+            userId: user.id,
+            policyVersion: '1.0',
+            ipAddress,
+            userAgent,
+          });
+        }
+      }
 
       const sessionToken = await sdk.createSessionToken(userInfo.openId, {
         name: userInfo.name || "",

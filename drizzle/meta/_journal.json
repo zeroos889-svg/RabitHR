@@ -36,6 +36,62 @@
       "when": 1762018876994,
       "tag": "0004_public_hawkeye",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1762020608592,
+      "tag": "0005_abandoned_sauron",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1762024962678,
+      "tag": "0006_nappy_moira_mactaggert",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1762031316382,
+      "tag": "0007_magical_pride",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1762031978700,
+      "tag": "0008_early_spacker_dave",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1762032859244,
+      "tag": "0009_watery_proemial_gods",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1762033624466,
+      "tag": "0010_typical_white_queen",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "5",
+      "when": 1762034807111,
+      "tag": "0011_hesitant_black_crow",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "5",
+      "when": 1762038335991,
+      "tag": "0012_fresh_goblin_queen",
+      "breakpoints": true
     }
   ]
 }

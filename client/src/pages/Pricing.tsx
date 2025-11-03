@@ -203,9 +203,11 @@ export default function Pricing() {
                 ))}
               </div>
 
-              <Button className={`w-full bg-gradient-to-r ${pricingPlans.employee.color} hover:opacity-90`}>
-                {pricingPlans.employee.cta}
-              </Button>
+              <Link href="/signup">
+                <Button className={`w-full bg-gradient-to-r ${pricingPlans.employee.color} hover:opacity-90`}>
+                  {pricingPlans.employee.cta}
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -253,9 +255,11 @@ export default function Pricing() {
                 ))}
               </div>
 
-              <Button className={`w-full bg-gradient-to-r ${pricingPlans.freelancer.color} hover:opacity-90`}>
-                {pricingPlans.freelancer.cta}
-              </Button>
+              <Link href="/signup">
+                <Button className={`w-full bg-gradient-to-r ${pricingPlans.freelancer.color} hover:opacity-90`}>
+                  {pricingPlans.freelancer.cta}
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -307,9 +311,11 @@ export default function Pricing() {
                 ))}
               </div>
 
-              <Button className={`w-full bg-gradient-to-r ${pricingPlans.company.color} hover:opacity-90`}>
-                {pricingPlans.company.cta}
-              </Button>
+              <Link href="/signup">
+                <Button className={`w-full bg-gradient-to-r ${pricingPlans.company.color} hover:opacity-90`}>
+                  {pricingPlans.company.cta}
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         </div>
@@ -529,12 +535,16 @@ export default function Pricing() {
               انضم إلى آلاف المستخدمين الذين يثقون برابِط لإدارة شؤونهم الوظيفية
             </p>
             <div className="flex gap-4 justify-center flex-wrap">
-              <Button size="lg" variant="secondary" className="bg-white text-blue-600 hover:bg-gray-100">
-                ابدأ مجاناً
-              </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                تواصل معنا
-              </Button>
+              <Link href="/signup">
+                <Button size="lg" variant="secondary" className="bg-white text-blue-600 hover:bg-gray-100">
+                  ابدأ مجاناً
+                </Button>
+              </Link>
+              <Link href="/contact">
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                  تواصل معنا
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>

@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { X, Cookie } from 'lucide-react';
 import { Link } from 'wouter';
+import { useTranslation } from 'react-i18next';
 
 export function CookieConsent() {
+  const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -34,17 +36,16 @@ export function CookieConsent() {
           <div className="flex items-start gap-3 flex-1">
             <Cookie className="h-6 w-6 text-purple-600 flex-shrink-0 mt-1" />
             <div>
-              <h3 className="font-bold text-lg mb-1">🍪 نستخدم ملفات تعريف الارتباط (Cookies)</h3>
+              <h3 className="font-bold text-lg mb-1">{t('cookie.title')}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                نستخدم ملفات تعريف الارتباط لتحسين تجربتك على موقعنا، وتحليل حركة المرور، وتخصيص المحتوى.
-                باستخدامك لهذا الموقع، فإنك توافق على استخدامنا لملفات تعريف الارتباط وفقاً لـ
+                {t('cookie.description')}
                 {' '}
                 <Link href="/cookies" className="text-purple-600 hover:underline font-medium">
-                  سياسة ملفات تعريف الارتباط
+                  {t('cookie.policy')}
                 </Link>
                 {' '}و{' '}
                 <Link href="/privacy" className="text-purple-600 hover:underline font-medium">
-                  سياسة الخصوصية
+                  {t('cookie.privacy')}
                 </Link>
                 .
               </p>
@@ -58,14 +59,14 @@ export function CookieConsent() {
               onClick={handleReject}
               className="min-w-[100px]"
             >
-              رفض
+              {t('cookie.reject')}
             </Button>
             <Button
               size="sm"
               onClick={handleAccept}
               className="min-w-[100px] bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800"
             >
-              قبول
+              {t('cookie.accept')}
             </Button>
             <Button
               variant="ghost"

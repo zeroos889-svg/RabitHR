@@ -1,6 +1,7 @@
 import { eq, and, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, discountCodes, discountCodeUsage, notifications, notificationPreferences, emailLogs, smsLogs } from "../drizzle/schema";
+import { InsertUser, users, passwords, InsertPassword, discountCodes, discountCodeUsage, notifications, notificationPreferences, emailLogs, smsLogs } from "../drizzle/schema";
+import bcrypt from 'bcryptjs';
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -87,6 +88,130 @@ export async function getUserByOpenId(openId: string) {
   const result = await db.select().from(users).where(eq(users.openId, openId)).limit(1);
 
   return result.length > 0 ? result[0] : undefined;
+}
+
+// ==========================================
+// Authentication Helpers
+// ==========================================
+
+/**
+ * Hash password using bcrypt
+ */
+export async function hashPassword(password: string): Promise<string> {
+  const salt = await bcrypt.genSalt(10);
+  return bcrypt.hash(password, salt);
+}
+
+/**
+ * Verify password against hash
+ */
+export async function verifyPassword(password: string, hash: string): Promise<boolean> {
+  return bcrypt.compare(password, hash);
+}
+
+/**
+ * Create new user with email/password
+ */
+export async function createUserWithPassword(data: {
+  name: string;
+  email: string;
+  password: string;
+  phoneNumber?: string;
+  userType?: 'employee' | 'individual' | 'company';
+}) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  try {
+    // Check if email already exists
+    const existingUser = await db.select().from(users).where(eq(users.email, data.email)).limit(1);
+    if (existingUser.length > 0) {
+      throw new Error("البريد الإلكتروني مستخدم بالفعل");
+    }
+
+    // Hash password
+    const passwordHash = await hashPassword(data.password);
+
+    // Create user
+    const userResult = await db.insert(users).values({
+      name: data.name,
+      email: data.email,
+      phoneNumber: data.phoneNumber || null,
+      userType: data.userType || null,
+      loginMethod: 'email',
+      emailVerified: false,
+      profileCompleted: false,
+      openId: null,
+    });
+
+    const userId = Number(userResult.insertId);
+
+    // Save password
+    await db.insert(passwords).values({
+      userId,
+      passwordHash,
+    });
+
+    // Get created user
+    const newUser = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+    return newUser[0];
+  } catch (error) {
+    console.error("[Database] Failed to create user:", error);
+    throw error;
+  }
+}
+
+/**
+ * Get user by email
+ */
+export async function getUserByEmail(email: string) {
+  const db = await getDb();
+  if (!db) {
+    return undefined;
+  }
+
+  const result = await db.select().from(users).where(eq(users.email, email)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+/**
+ * Verify user login with email/password
+ */
+export async function verifyUserLogin(email: string, password: string) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  try {
+    // Get user
+    const user = await getUserByEmail(email);
+    if (!user) {
+      throw new Error("البريد الإلكتروني أو كلمة المرور غير صحيحة");
+    }
+
+    // Get password hash
+    const passwordRecord = await db.select().from(passwords).where(eq(passwords.userId, user.id)).limit(1);
+    if (passwordRecord.length === 0) {
+      throw new Error("هذا الحساب مسجل عبر OAuth");
+    }
+
+    // Verify password
+    const isValid = await verifyPassword(password, passwordRecord[0].passwordHash);
+    if (!isValid) {
+      throw new Error("البريد الإلكتروني أو كلمة المرور غير صحيحة");
+    }
+
+    // Update last signed in
+    await db.update(users).set({ lastSignedIn: new Date() }).where(eq(users.id, user.id));
+
+    return user;
+  } catch (error) {
+    console.error("[Database] Failed to verify login:", error);
+    throw error;
+  }
 }
 
 // TODO: add feature queries here as your schema grows.
@@ -828,4 +953,629 @@ export async function logSMS(data: {
     ...data,
     sentAt: data.status === 'sent' ? new Date() : undefined,
   });
+}
+
+
+// ==========================================
+// User Profile Helpers
+// ==========================================
+
+/**
+ * Update user profile information
+ */
+export async function updateUserProfile(
+  openId: string,
+  data: {
+    name?: string;
+    email?: string;
+  }
+) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const updateData: any = {
+    updatedAt: new Date(),
+  };
+
+  if (data.name !== undefined) {
+    updateData.name = data.name;
+  }
+  if (data.email !== undefined) {
+    updateData.email = data.email;
+  }
+
+  await db
+    .update(users)
+    .set(updateData)
+    .where(eq(users.openId, openId));
+
+  // Return updated user
+  return await getUserByOpenId(openId);
+}
+
+/**
+ * Update user profile picture
+ */
+export async function updateUserProfilePicture(openId: string, imageUrl: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  await db
+    .update(users)
+    .set({
+      profilePicture: imageUrl,
+      updatedAt: new Date(),
+    })
+    .where(eq(users.openId, openId));
+
+  // Return updated user
+  return await getUserByOpenId(openId);
+}
+
+
+// ==========================================
+// Consultant System Helpers
+// ==========================================
+
+import {
+  consultants,
+  consultantDocuments,
+  specializations,
+  consultationTypes,
+  consultationBookings,
+  consultantEarnings,
+  consultantAvailability,
+  consultantBlockedDates,
+  consultantReviews,
+  Consultant,
+  InsertConsultant,
+  ConsultantDocument,
+  InsertConsultantDocument,
+} from "../drizzle/schema";
+
+/**
+ * Create a new consultant application
+ */
+export async function createConsultant(data: Omit<InsertConsultant, 'id'>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const result = await db.insert(consultants).values(data);
+  return result[0].insertId;
+}
+
+/**
+ * Get consultant by userId
+ */
+export async function getConsultantByUserId(userId: number) {
+  const db = await getDb();
+  if (!db) return null;
+
+  const result = await db
+    .select()
+    .from(consultants)
+    .where(eq(consultants.userId, userId))
+    .limit(1);
+
+  return result.length > 0 ? result[0] : null;
+}
+
+/**
+ * Get consultant by id
+ */
+export async function getConsultantById(id: number) {
+  const db = await getDb();
+  if (!db) return null;
+
+  const result = await db
+    .select()
+    .from(consultants)
+    .where(eq(consultants.id, id))
+    .limit(1);
+
+  return result.length > 0 ? result[0] : null;
+}
+
+/**
+ * Update consultant
+ */
+export async function updateConsultant(id: number, data: Partial<Consultant>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  await db
+    .update(consultants)
+    .set({ ...data, updatedAt: new Date() })
+    .where(eq(consultants.id, id));
+
+  return await getConsultantById(id);
+}
+
+/**
+ * Upload consultant document
+ */
+export async function createConsultantDocument(data: Omit<InsertConsultantDocument, 'id'>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const result = await db.insert(consultantDocuments).values(data);
+  return result[0].insertId;
+}
+
+/**
+ * Get consultant documents
+ */
+export async function getConsultantDocuments(consultantId: number) {
+  const db = await getDb();
+  if (!db) return [];
+
+  return await db
+    .select()
+    .from(consultantDocuments)
+    .where(eq(consultantDocuments.consultantId, consultantId))
+    .orderBy(consultantDocuments.createdAt);
+}
+
+/**
+ * Get all specializations
+ */
+export async function getAllSpecializations() {
+  const db = await getDb();
+  if (!db) return [];
+
+  return await db
+    .select()
+    .from(specializations)
+    .where(eq(specializations.isActive, true))
+    .orderBy(specializations.orderIndex);
+}
+
+/**
+ * Get all consultation types
+ */
+export async function getAllConsultationTypes() {
+  const db = await getDb();
+  if (!db) return [];
+
+  return await db
+    .select()
+    .from(consultationTypes)
+    .where(eq(consultationTypes.isActive, true))
+    .orderBy(consultationTypes.orderIndex);
+}
+
+/**
+ * Get pending consultants (for admin approval)
+ */
+export async function getPendingConsultants() {
+  const db = await getDb();
+  if (!db) return [];
+
+  return await db
+    .select()
+    .from(consultants)
+    .where(eq(consultants.status, "pending"))
+    .orderBy(desc(consultants.createdAt));
+}
+
+/**
+ * Get approved consultants
+ */
+export async function getApprovedConsultants() {
+  const db = await getDb();
+  if (!db) return [];
+
+  return await db
+    .select()
+    .from(consultants)
+    .where(eq(consultants.status, "approved"))
+    .orderBy(desc(consultants.averageRating));
+}
+
+/**
+ * Approve consultant
+ */
+export async function approveConsultant(id: number, approvedBy: number, commissionRate?: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const updateData: any = {
+    status: "approved",
+    approvedAt: new Date(),
+    approvedBy,
+    updatedAt: new Date(),
+  };
+
+  if (commissionRate !== undefined) {
+    updateData.commissionRate = commissionRate;
+  }
+
+  await db
+    .update(consultants)
+    .set(updateData)
+    .where(eq(consultants.id, id));
+
+  return await getConsultantById(id);
+}
+
+/**
+ * Reject consultant
+ */
+export async function rejectConsultant(id: number, rejectionReason: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  await db
+    .update(consultants)
+    .set({
+      status: "rejected",
+      rejectionReason,
+      updatedAt: new Date(),
+    })
+    .where(eq(consultants.id, id));
+
+  return await getConsultantById(id);
+}
+
+
+// ============================================
+// Consultation Messages Functions
+// ============================================
+
+/**
+ * إرسال رسالة في الاستشارة
+ */
+export async function sendConsultationMessage(data: {
+  bookingId: number;
+  senderId: number;
+  senderType: "client" | "consultant";
+  message: string;
+  attachments?: string;
+  isAiAssisted?: boolean;
+  aiSuggestion?: string;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const result = await db.insert(consultationMessages).values({
+    bookingId: data.bookingId,
+    senderId: data.senderId,
+    senderType: data.senderType,
+    message: data.message,
+    attachments: data.attachments || null,
+    isAiAssisted: data.isAiAssisted || false,
+    aiSuggestion: data.aiSuggestion || null,
+    isRead: false,
+  });
+
+  return Number((result as any).insertId || (result as any)[0]?.insertId || 0);
+}
+
+/**
+ * جلب رسائل الاستشارة
+ */
+export async function getConsultationMessages(bookingId: number) {
+  const db = await getDb();
+  if (!db) return [];
+
+  const messages = await db
+    .select()
+    .from(consultationMessages)
+    .where(eq(consultationMessages.bookingId, bookingId))
+    .orderBy(consultationMessages.createdAt);
+
+  return messages;
+}
+
+/**
+ * تحديث حالة القراءة
+ */
+export async function markMessageAsRead(messageId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  await db
+    .update(consultationMessages)
+    .set({ isRead: true, readAt: new Date() })
+    .where(eq(consultationMessages.id, messageId));
+}
+
+/**
+ * تحديث حالة الاستشارة
+ */
+export async function updateConsultationStatus(
+  bookingId: number,
+  status: "pending" | "confirmed" | "in-progress" | "completed" | "cancelled"
+) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  await db
+    .update(consultationBookings)
+    .set({ status, updatedAt: new Date() })
+    .where(eq(consultationBookings.id, bookingId));
+}
+
+/**
+ * جلب تفاصيل الحجز
+ */
+export async function getConsultationBookingById(bookingId: number) {
+  const db = await getDb();
+  if (!db) return null;
+
+  const result = await db
+    .select()
+    .from(consultationBookings)
+    .where(eq(consultationBookings.id, bookingId))
+    .limit(1);
+
+  return result[0] || null;
+}
+
+/**
+ * تقييم الاستشارة
+ */
+export async function rateConsultation(data: {
+  bookingId: number;
+  consultantId: number;
+  clientId: number;
+  rating: number;
+  comment?: string;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  // إضافة التقييم
+  await db.insert(consultantReviews).values({
+    consultantId: data.consultantId,
+    clientId: data.clientId,
+    bookingId: data.bookingId,
+    rating: data.rating,
+    comment: data.comment || null,
+    isVerified: true,
+    isVisible: true,
+  });
+
+  // تحديث متوسط التقييم للمستشار
+  const reviews = await db
+    .select()
+    .from(consultantReviews)
+    .where(eq(consultantReviews.consultantId, data.consultantId));
+
+  const avgRating = reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / reviews.length;
+  const totalReviews = reviews.length;
+
+  await db
+    .update(consultants)
+    .set({ 
+      averageRating: avgRating,
+      totalReviews: totalReviews,
+      updatedAt: new Date(),
+    })
+    .where(eq(consultants.id, data.consultantId));
+}
+
+
+// ============================================
+// PDPL Functions (حماية البيانات الشخصية)
+// ============================================
+
+/**
+ * حفظ موافقة المستخدم على سياسة الخصوصية
+ */
+export async function saveUserConsent(data: {
+  userId: number;
+  policyVersion: string;
+  ipAddress?: string;
+  userAgent?: string;
+}) {
+  const db = await getDb();
+  if (!db) return null;
+
+  const { users, userConsents } = await import("../drizzle/schema");
+  
+  const result = await db.insert(userConsents).values({
+    userId: data.userId,
+    policyVersion: data.policyVersion,
+    ipAddress: data.ipAddress,
+    userAgent: data.userAgent,
+    consentedAt: new Date(),
+  });
+
+  return result;
+}
+
+/**
+ * سحب الموافقة
+ */
+export async function withdrawConsent(userId: number) {
+  const db = await getDb();
+  if (!db) return null;
+
+  const { userConsents } = await import("../drizzle/schema");
+  const { eq, isNull } = await import("drizzle-orm");
+
+  await db.update(userConsents)
+    .set({ withdrawnAt: new Date() })
+    .where(eq(userConsents.userId, userId));
+
+  return true;
+}
+
+/**
+ * الحصول على حالة الموافقة
+ */
+export async function getConsentStatus(userId: number) {
+  const db = await getDb();
+  if (!db) return null;
+
+  const { userConsents } = await import("../drizzle/schema");
+  const { eq, isNull, desc } = await import("drizzle-orm");
+
+  const result = await db.select()
+    .from(userConsents)
+    .where(eq(userConsents.userId, userId))
+    .orderBy(desc(userConsents.consentedAt))
+    .limit(1);
+
+  if (result.length === 0) return null;
+
+  const consent = result[0];
+  return {
+    hasConsent: !consent.withdrawnAt,
+    policyVersion: consent.policyVersion,
+    consentedAt: consent.consentedAt,
+    withdrawnAt: consent.withdrawnAt,
+  };
+}
+
+/**
+ * إنشاء طلب حقوق البيانات (DSR)
+ */
+export async function createDataSubjectRequest(data: {
+  userId: number;
+  type: "access" | "correct" | "delete" | "withdraw" | "object";
+  payloadJson?: string;
+}) {
+  const db = await getDb();
+  if (!db) return null;
+
+  const { dataSubjectRequests } = await import("../drizzle/schema");
+
+  const result = await db.insert(dataSubjectRequests).values({
+    userId: data.userId,
+    type: data.type,
+    payloadJson: data.payloadJson,
+    status: "new",
+  });
+
+  return result;
+}
+
+/**
+ * الحصول على جميع بيانات المستخدم (لحق الوصول)
+ */
+export async function getUserAllData(userId: number) {
+  const db = await getDb();
+  if (!db) return null;
+
+  const { users } = await import("../drizzle/schema");
+  const { eq } = await import("drizzle-orm");
+
+  // جلب بيانات المستخدم الأساسية
+  const userData = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+
+  if (userData.length === 0) return null;
+
+  // يمكن إضافة المزيد من البيانات هنا (الاستشارات، المستندات، إلخ)
+  return {
+    user: userData[0],
+    // TODO: إضافة بيانات إضافية حسب الحاجة
+  };
+}
+
+/**
+ * تسجيل حادث أمني
+ */
+export async function createSecurityIncident(data: {
+  description: string;
+  cause?: string;
+  affectedDataCategories?: string;
+  affectedUsersCount?: number;
+  riskLevel: "low" | "medium" | "high";
+}) {
+  const db = await getDb();
+  if (!db) return null;
+
+  const { securityIncidents } = await import("../drizzle/schema");
+
+  const result = await db.insert(securityIncidents).values({
+    detectedAt: new Date(),
+    description: data.description,
+    cause: data.cause,
+    affectedDataCategories: data.affectedDataCategories,
+    affectedUsersCount: data.affectedUsersCount,
+    riskLevel: data.riskLevel,
+    status: "new",
+  });
+
+  return result;
+}
+
+/**
+ * تحديث حالة حادث أمني
+ */
+export async function updateSecurityIncident(
+  incidentId: number,
+  updates: {
+    reportedToSdaiaAt?: Date;
+    reportedToUsersAt?: Date;
+    status?: "new" | "investigating" | "reported" | "resolved";
+    isLate?: boolean;
+  }
+) {
+  const db = await getDb();
+  if (!db) return null;
+
+  const { securityIncidents } = await import("../drizzle/schema");
+  const { eq } = await import("drizzle-orm");
+
+  await db.update(securityIncidents)
+    .set(updates)
+    .where(eq(securityIncidents.id, incidentId));
+
+  return true;
+}
+
+/**
+ * تسجيل نقل بيانات
+ */
+export async function createDataTransfer(data: {
+  customerId?: number;
+  legalBasis: "adequacy" | "scc" | "explicit_consent" | "vital_interest" | "central_processing";
+  destinationCountry: string;
+  dataCategories?: string;
+  riskAssessmentRef?: string;
+}) {
+  const db = await getDb();
+  if (!db) return null;
+
+  const { dataTransfers } = await import("../drizzle/schema");
+
+  const result = await db.insert(dataTransfers).values(data);
+
+  return result;
+}
+
+
+// Create consultation booking
+export async function createConsultationBooking(data: {
+  userId: number;
+  consultantId: number;
+  consultationTypeId: number;
+  scheduledDate: string;
+  scheduledTime: string;
+  description: string;
+  requiredInfo?: string;
+  attachments?: string;
+  status: string;
+}) {
+  const database = await getDb();
+  if (!database) {
+    throw new Error('Database not available');
+  }
+
+  const result = await database.insert(consultationBookings).values({
+    userId: data.userId,
+    consultantId: data.consultantId,
+    consultationTypeId: data.consultationTypeId,
+    scheduledDate: new Date(data.scheduledDate),
+    scheduledTime: data.scheduledTime,
+    description: data.description,
+    requiredInfo: data.requiredInfo || null,
+    attachments: data.attachments || null,
+    status: data.status,
+  });
+
+  return Number(result.insertId);
 }
