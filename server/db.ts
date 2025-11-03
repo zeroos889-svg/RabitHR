@@ -1017,21 +1017,7 @@ export async function updateUserProfilePicture(openId: string, imageUrl: string)
 // Consultant System Helpers
 // ==========================================
 
-import {
-  consultants,
-  consultantDocuments,
-  specializations,
-  consultationTypes,
-  consultationBookings,
-  consultantEarnings,
-  consultantAvailability,
-  consultantBlockedDates,
-  consultantReviews,
-  Consultant,
-  InsertConsultant,
-  ConsultantDocument,
-  InsertConsultantDocument,
-} from "../drizzle/schema";
+// Note: consultants, consultationBookings, and other tables are already imported at the top
 
 /**
  * Create a new consultant application
