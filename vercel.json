@@ -3,7 +3,6 @@
   "installCommand": "pnpm install",
   "devCommand": "pnpm dev",
   "framework": "vite",
-  "outputDirectory": "dist/public",
   "env": [
     "DATABASE_URL",
     "JWT_SECRET",
@@ -24,5 +23,15 @@
     "server/_core/index.ts": {
       "runtime": "nodejs18.x"
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/api/trpc/:path*",
+      "destination": "/server/_core/index.ts"
+    },
+    {
+      "source": "/api/oauth/:path*",
+      "destination": "/server/_core/index.ts"
+    }
+  ]
 }
