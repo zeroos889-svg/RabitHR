@@ -3,7 +3,7 @@
   "installCommand": "pnpm install",
   "devCommand": "pnpm dev",
   "framework": "vite",
-  "outputDirectory": "dist",
+  "outputDirectory": "dist/public",
   "env": [
     "DATABASE_URL",
     "JWT_SECRET",

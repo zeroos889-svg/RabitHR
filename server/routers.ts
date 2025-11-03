@@ -965,6 +965,7 @@ ${companyName ? `اسم الشركة: ${companyName}\n` : ''}
         email: z.string().email().optional(),
       }))
       .mutation(async ({ input, ctx }) => {
+        if (!ctx.user.openId) throw new TRPCError({ code: 'UNAUTHORIZED' });
         const updated = await db.updateUserProfile(ctx.user.openId, input);
         return { success: true, user: updated };
       }),
@@ -975,6 +976,7 @@ ${companyName ? `اسم الشركة: ${companyName}\n` : ''}
         imageUrl: z.string().url(),
       }))
       .mutation(async ({ input, ctx }) => {
+        if (!ctx.user.openId) throw new TRPCError({ code: 'UNAUTHORIZED' });
         const updated = await db.updateUserProfilePicture(ctx.user.openId, input.imageUrl);
         return { success: true, user: updated };
       }),
@@ -1334,7 +1336,7 @@ ${companyName ? `اسم الشركة: ${companyName}\n` : ''}
         }
 
         // Verify user is the client
-        if (booking.userId !== ctx.user.id) {
+        if (booking.clientId !== ctx.user.id) {
           throw new TRPCError({ code: 'FORBIDDEN' });
         }
 

@@ -1,6 +1,6 @@
 import { eq, and, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, passwords, InsertPassword, discountCodes, discountCodeUsage, notifications, notificationPreferences, emailLogs, smsLogs } from "../drizzle/schema";
+import { InsertUser, users, passwords, InsertPassword, discountCodes, discountCodeUsage, notifications, notificationPreferences, emailLogs, smsLogs, consultationMessages, consultants, consultationBookings } from "../drizzle/schema";
 import bcrypt from 'bcryptjs';
 import { ENV } from './_core/env';
 
@@ -146,7 +146,7 @@ export async function createUserWithPassword(data: {
       openId: null,
     });
 
-    const userId = Number(userResult.insertId);
+    const userId = Number((userResult as any).insertId || 0);
 
     // Save password
     await db.insert(passwords).values({
@@ -1577,5 +1577,5 @@ export async function createConsultationBooking(data: {
     status: data.status,
   });
 
-  return Number(result.insertId);
+  return Number((result as any).insertId || 0);
 }
