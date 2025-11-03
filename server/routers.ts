@@ -1175,7 +1175,7 @@ ${companyName ? `اسم الشركة: ${companyName}\n` : ''}
         const senderType = consultant ? 'consultant' : 'client';
 
         // Verify authorization
-        if (senderType === 'client' && booking.userId !== ctx.user.id) {
+        if (senderType === 'client' && booking.clientId !== ctx.user.id) {
           throw new TRPCError({ code: 'FORBIDDEN' });
         }
         if (senderType === 'consultant' && booking.consultantId !== consultant?.id) {
@@ -1207,7 +1207,7 @@ ${companyName ? `اسم الشركة: ${companyName}\n` : ''}
 
         const consultant = await db.getConsultantByUserId(ctx.user.id);
         const isConsultant = consultant && booking.consultantId === consultant.id;
-        const isClient = booking.userId === ctx.user.id;
+        const isClient = booking.clientId === ctx.user.id;
 
         if (!isConsultant && !isClient) {
           throw new TRPCError({ code: 'FORBIDDEN' });
