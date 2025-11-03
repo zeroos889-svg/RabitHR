@@ -58,6 +58,13 @@ export const ENV = {
   
   // OpenAI
   openaiApiKey: process.env.OPENAI_API_KEY ?? "",
+  
+  // Storage/Forge (Optional)
+  forgeApiUrl: process.env.BUILT_IN_FORGE_API_URL ?? "",
+  forgeApiKey: process.env.BUILT_IN_FORGE_API_KEY ?? "",
+  
+  // Owner OpenID (Optional)
+  ownerOpenId: process.env.OWNER_OPEN_ID ?? "",
 };
 
 /**

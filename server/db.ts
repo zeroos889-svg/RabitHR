@@ -239,14 +239,14 @@ export async function getPasswordByUserId(userId: number) {
  * Create a lightweight user (used by auth/register)
  * Returns the new user id
  */
-export async function createUser(data: { email: string; name?: string | null; role?: string | null; }) {
+export async function createUser(data: { email: string; name?: string | null; role?: "user" | "admin" | null; }) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
 
   const result = await db.insert(users).values({
     email: data.email,
     name: data.name ?? null,
-    role: data.role ?? 'user',
+    role: (data.role === "admin" || data.role === "user") ? data.role : 'user',
     loginMethod: 'email',
     emailVerified: false,
     profileCompleted: false,
