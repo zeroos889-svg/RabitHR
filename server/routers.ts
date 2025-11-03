@@ -951,6 +951,7 @@ ${companyName ? `اسم الشركة: ${companyName}\n` : ''}
   profile: router({
     // Get current user profile
     getProfile: protectedProcedure.query(async ({ ctx }) => {
+      if (!ctx.user.openId) throw new TRPCError({ code: 'UNAUTHORIZED' });
       const user = await db.getUserByOpenId(ctx.user.openId);
       if (!user) {
         throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' });
