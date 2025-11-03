@@ -568,7 +568,8 @@ export async function runEmbeddedMigrations(connection: any) {
 
     for (const statement of statements) {
       try {
-        await connection.execute(statement as any);
+        // Use query() instead of execute() for DDL statements (CREATE TABLE, etc.)
+        await (connection as any).query(statement);
       } catch (error: any) {
         // Ignore "table already exists" errors
         if (error.code === 'ER_TABLE_EXISTS_ERROR' || error.message?.includes('already exists')) {
