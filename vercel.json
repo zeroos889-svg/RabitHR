@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm build",
+  "buildCommand": "pnpm build && pnpm db:push",
   "installCommand": "pnpm install",
   "devCommand": "pnpm dev",
   "framework": "vite",
