@@ -63,7 +63,7 @@ export async function runSQLMigrations() {
           name VARCHAR(255) NOT NULL UNIQUE,
           executed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
-      `);
+      ` as any);
 
       // Get already executed migrations
       const [executed] = await connection.execute(
@@ -92,12 +92,12 @@ export async function runSQLMigrations() {
             .filter((s) => s.length > 0);
 
           for (const statement of statements) {
-            await connection.execute(statement);
+            await connection.execute(statement as any);
           }
 
           // Record migration as executed
           await connection.execute(
-            "INSERT INTO __drizzle_migrations (name) VALUES (?)",
+            "INSERT INTO __drizzle_migrations (name) VALUES (?)" as any,
             [file]
           );
 
