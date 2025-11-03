@@ -1392,9 +1392,8 @@ export async function rateConsultation(data: {
     clientId: data.clientId,
     bookingId: data.bookingId,
     rating: data.rating,
-    comment: data.comment || null,
-    isVerified: true,
-    isVisible: true,
+    review: data.comment || null,
+    isPublished: true,
   });
 
   // تحديث متوسط التقييم للمستشار
@@ -1409,8 +1408,7 @@ export async function rateConsultation(data: {
   await db
     .update(consultants)
     .set({ 
-      averageRating: avgRating,
-      totalReviews: totalReviews,
+      averageRating: Math.round(avgRating * 100), // تحويل إلى نظام 500 (5.00 * 100)
       updatedAt: new Date(),
     })
     .where(eq(consultants.id, data.consultantId));
