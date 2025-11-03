@@ -26,10 +26,25 @@ export async function runSQLMigrations() {
       waitForConnections: true,
       connectionLimit: 1,
       queueLimit: 0,
+      ssl: {
+        rejectUnauthorized: false, // Allow self-signed certificates
+      }
     };
 
     // Create connection
-    const connection = await mysql.createConnection(config);
+    let connection;
+    try {
+      connection = await mysql.createConnection(config);
+    } catch (error: any) {
+      // If SSL fails, try without it (for local development)
+      if (error.code === 'PROTOCOL_CONNECTION_LOST' || error.code === 'ER_UNKNOWN_ERROR') {
+        console.log("[SQL Migrations] Retrying without SSL...");
+        const configNoSSL = { ...config, ssl: false };
+        connection = await mysql.createConnection(configNoSSL);
+      } else {
+        throw error;
+      }
+    }
 
     try {
       // Get list of migration files
