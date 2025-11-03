@@ -1,6 +1,6 @@
 import { eq, and, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, passwords, InsertPassword, discountCodes, discountCodeUsage, notifications, notificationPreferences, emailLogs, smsLogs, consultationMessages, consultants, consultationBookings } from "../drizzle/schema";
+import { InsertUser, users, passwords, InsertPassword, discountCodes, discountCodeUsage, notifications, notificationPreferences, emailLogs, smsLogs, consultationMessages, consultants, consultationBookings, consultantDocuments, specializations, consultationTypes, consultantReviews, InsertConsultant, Consultant, InsertConsultantDocument } from "../drizzle/schema";
 import bcrypt from 'bcryptjs';
 import { ENV } from './_core/env';
 
