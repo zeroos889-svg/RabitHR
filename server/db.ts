@@ -214,6 +214,81 @@ export async function verifyUserLogin(email: string, password: string) {
   }
 }
 
+/**
+ * Get password record by user id.
+ * This helper returns an object containing `hashedPassword` to match
+ * the expectations of `server/_core/auth.ts` which reads `hashedPassword`.
+ */
+export async function getPasswordByUserId(userId: number) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get password: database not available");
+    return undefined;
+  }
+
+  const result = await db.select().from(passwords).where(eq(passwords.userId, userId)).limit(1);
+  if (result.length === 0) return undefined;
+
+  const row: any = result[0];
+  // normalize column names: some DB dumps use `hashedPassword`, drizzle schema uses `passwordHash`.
+  const hashed = row.hashedPassword ?? row.passwordHash ?? row.password ?? null;
+  return { ...row, hashedPassword: hashed };
+}
+
+/**
+ * Create a lightweight user (used by auth/register)
+ * Returns the new user id
+ */
+export async function createUser(data: { email: string; name?: string | null; role?: string | null; }) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const result = await db.insert(users).values({
+    email: data.email,
+    name: data.name ?? null,
+    role: data.role ?? 'user',
+    loginMethod: 'email',
+    emailVerified: false,
+    profileCompleted: false,
+    openId: null,
+  });
+
+  // Drizzle returns insertId in different shapes depending on driver
+  const insertedId = Number((result as any).insertId || (result as any)[0]?.insertId || 0);
+  return insertedId;
+}
+
+/**
+ * Save password hash for a user
+ */
+export async function savePassword(userId: number, passwordHash: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  await db.insert(passwords).values({ userId, passwordHash });
+}
+
+/**
+ * Get user by numeric id
+ */
+export async function getUserById(userId: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+
+  const result = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+/**
+ * Update user's lastSignedIn timestamp
+ */
+export async function updateUserLastSignedIn(userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  await db.update(users).set({ lastSignedIn: new Date() }).where(eq(users.id, userId));
+}
+
 // TODO: add feature queries here as your schema grows.
 
 // ==========================================
