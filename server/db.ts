@@ -117,7 +117,7 @@ export async function createUserWithPassword(data: {
   email: string;
   password: string;
   phoneNumber?: string;
-  userType?: 'employee' | 'individual' | 'company';
+  userType?: 'employee' | 'individual' | 'company' | 'consultant';
 }) {
   const db = await getDb();
   if (!db) {
