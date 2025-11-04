@@ -21,7 +21,7 @@ production
 
 #### الخيار 1: Railway MySQL (موصى به - جاهز للاستخدام)
 ```
-mysql://root:CMMyDTJYozRfFgTcccnMfcEpwRbqqWMz@shortline.proxy.rlwy.net:18829/railway
+mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
 ```
 
 #### الخيار 2: TiDB Cloud (للمشاريع الكبيرة)
@@ -184,7 +184,7 @@ vercel link
 # أضف المتغيرات
 vercel env add NODE_ENV production
 # للخيار 1: Railway
-vercel env add DATABASE_URL "mysql://root:CMMyDTJYozRfFgTcccnMfcEpwRbqqWMz@shortline.proxy.rlwy.net:18829/railway"
+vercel env add DATABASE_URL "mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway"
 
 # أو للخيار 2: TiDB
 vercel env add DATABASE_URL "mysql://3aDHzR1a2i2PxnQ.root:YOUR_PASSWORD@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test"

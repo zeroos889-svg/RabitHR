@@ -219,7 +219,7 @@
 
 ### 🟦 Railway MySQL:
 ```
-URL: mysql://root:CMMyDTJYozRfFgTcccnMfcEpwRbqqWMz@shortline.proxy.rlwy.net:18829/railway
+URL: mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
 Status: ✅ جاهز للاستخدام مباشرة
 Recommended: للمشاريع الصغيرة والمتوسطة
 ```

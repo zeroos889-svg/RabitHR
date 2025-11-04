@@ -6,7 +6,7 @@
 
 **الخيار 1: Railway MySQL** (موصى به للبداية)
 ```
-mysql://root:CMMyDTJYozRfFgTcccnMfcEpwRbqqWMz@shortline.proxy.rlwy.net:18829/railway
+mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
 ```
 
 **الخيار 2: TiDB Cloud** (موصى به للمشاريع الكبيرة)
@@ -71,7 +71,7 @@ production
 
 # 2. قاعدة البيانات (استخدم الرابط الذي لديك)
 DATABASE_URL
-mysql://root:CMMyDTJYozRfFgTcccnMfcEpwRbqqWMz@shortline.proxy.rlwy.net:18829/railway
+mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
 
 # 3. مفتاح JWT (من الخطوة 1)
 JWT_SECRET
@@ -145,7 +145,7 @@ notepad .env
 # 4. أضف السطر التالي (اختر أحد الخيارين):
 
 # الخيار 1: Railway (جاهز - موصى به)
-DATABASE_URL=mysql://root:CMMyDTJYozRfFgTcccnMfcEpwRbqqWMz@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
 
 # الخيار 2: TiDB (استبدل <PASSWORD> بكلمة المرور من TiDB Dashboard)
 # DATABASE_URL=mysql://3aDHzR1a2i2PxnQ.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test

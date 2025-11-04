@@ -62,7 +62,7 @@
 
 ### الخيار 1: Railway MySQL (موصى به)
 ```bash
-DATABASE_URL=mysql://root:CMMyDTJYozRfFgTcccnMfcEpwRbqqWMz@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
 ```
 ✅ جاهز للاستخدام مباشرة - لا يحتاج إعداد
 

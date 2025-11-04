@@ -46,15 +46,17 @@
 ### 🟦 الخيار 1: Railway MySQL
 
 #### رابط الاتصال:
+⚠️ **تحذير أمني**: احصل على كلمة المرور من Railway Dashboard ولا تشاركها أبداً
+
 ```bash
-DATABASE_URL=mysql://root:CMMyDTJYozRfFgTcccnMfcEpwRbqqWMz@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
 ```
 
 #### معلومات الاتصال:
 - **المضيف**: `shortline.proxy.rlwy.net`
 - **المنفذ**: `18829`
 - **المستخدم**: `root`
-- **كلمة المرور**: `CMMyDTJYozRfFgTcccnMfcEpwRbqqWMz`
+- **كلمة المرور**: احصل عليها من Railway Dashboard → Service → Variables
 - **قاعدة البيانات**: `railway`
 
 #### المميزات:
@@ -109,7 +111,7 @@ DATABASE_URL=mysql://3aDHzR1a2i2PxnQ.root:<PASSWORD>@gateway01.eu-central-1.prod
 # ------------------
 
 # استخدم Railway (جاهز للعمل مباشرة)
-DATABASE_URL=mysql://root:CMMyDTJYozRfFgTcccnMfcEpwRbqqWMz@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
 
 # أو استخدم TiDB (استبدل <PASSWORD>)
 # DATABASE_URL=mysql://3aDHzR1a2i2PxnQ.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
@@ -122,7 +124,7 @@ DATABASE_URL=mysql://root:CMMyDTJYozRfFgTcccnMfcEpwRbqqWMz@shortline.proxy.rlwy.
 #### للاستخدام Railway:
 ```
 Key: DATABASE_URL
-Value: mysql://root:CMMyDTJYozRfFgTcccnMfcEpwRbqqWMz@shortline.proxy.rlwy.net:18829/railway
+Value: mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
 ```
 
 #### للاستخدام TiDB:
@@ -173,7 +175,7 @@ pnpm db:push
 mysql -h shortline.proxy.rlwy.net \
   -P 18829 \
   -u root \
-  -pCMMyDTJYozRfFgTcccnMfcEpwRbqqWMz \
+  -p<RAILWAY_PASSWORD> \
   railway
 ```
 
@@ -193,13 +195,13 @@ mysql -h gateway01.eu-central-1.prod.aws.tidbcloud.com \
 ### للبداية (Development):
 ```bash
 # استخدم Railway - جاهز ومباشر
-DATABASE_URL=mysql://root:CMMyDTJYozRfFgTcccnMfcEpwRbqqWMz@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
 ```
 
 ### للإنتاج (Production - قليل المستخدمين):
 ```bash
 # استخدم Railway - كافي تماماً
-DATABASE_URL=mysql://root:CMMyDTJYozRfFgTcccnMfcEpwRbqqWMz@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
 ```
 
 ### للإنتاج (Production - كثير المستخدمين):
@@ -246,19 +248,19 @@ DATABASE_URL=mysql://3aDHzR1a2i2PxnQ.root:<PASSWORD>@gateway01.eu-central-1.prod
 ### سيناريو 1: تطوير محلي
 ```bash
 # استخدم Railway - سريع وسهل
-DATABASE_URL=mysql://root:CMMyDTJYozRfFgTcccnMfcEpwRbqqWMz@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
 ```
 
 ### سيناريو 2: عرض تجريبي للعميل
 ```bash
 # استخدم Railway - كافي تماماً
-DATABASE_URL=mysql://root:CMMyDTJYozRfFgTcccnMfcEpwRbqqWMz@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
 ```
 
 ### سيناريو 3: إطلاق رسمي (50-500 مستخدم)
 ```bash
 # استخدم Railway - أداء ممتاز
-DATABASE_URL=mysql://root:CMMyDTJYozRfFgTcccnMfcEpwRbqqWMz@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
 ```
 
 ### سيناريو 4: إطلاق رسمي (500+ مستخدم)

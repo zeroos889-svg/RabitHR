@@ -51,7 +51,7 @@
 
 #### 🟦 الخيار 1: Railway MySQL (موصى به للبداية)
 ```bash
-DATABASE_URL=mysql://root:CMMyDTJYozRfFgTcccnMfcEpwRbqqWMz@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
 ```
 - ✅ جاهز للاستخدام مباشرة
 - ✅ لا يحتاج إعداد إضافي
@@ -101,7 +101,7 @@ NODE_ENV = production
 
 # 2. قاعدة البيانات (اختر واحدة)
 # للخيار 1: Railway
-DATABASE_URL = mysql://root:CMMyDTJYozRfFgTcccnMfcEpwRbqqWMz@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL = mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
 
 # أو للخيار 2: TiDB (استبدل <PASSWORD>)
 # DATABASE_URL = mysql://3aDHzR1a2i2PxnQ.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
@@ -171,7 +171,7 @@ notepad .env
 
 # 3. أضف DATABASE_URL (اختر واحدة):
 # Railway:
-DATABASE_URL=mysql://root:CMMyDTJYozRfFgTcccnMfcEpwRbqqWMz@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
 # أو TiDB:
 # DATABASE_URL=mysql://3aDHzR1a2i2PxnQ.root:YOUR_PASSWORD@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
 
