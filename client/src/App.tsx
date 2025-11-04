@@ -1,92 +1,120 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { CookieConsent } from "./components/CookieConsent";
 import { ChatWidget } from "./components/ChatWidget";
-import Home from "./pages/Home";
-import Signup from "./pages/Signup";
-import Login from "./pages/Login";
-import SignupEmployee from "./pages/SignupEmployee";
-import AccountType from "./pages/AccountType";
-import SignupConsultant from '@/pages/SignupConsultant';
-import ConsultantLogin from '@/pages/ConsultantLogin';
-import DocumentGenerator from "./pages/DocumentGenerator";
-import MyDocuments from "./pages/MyDocuments";
-import AdminDiscountCodes from "./pages/AdminDiscountCodes";
-import EndOfServiceCalculator from "./pages/EndOfServiceCalculator";
-import LeaveCalculator from "./pages/LeaveCalculator";
-import LetterGenerator from "./pages/LetterGenerator";
-import Pricing from "./pages/Pricing";
-import CompanyDashboard from "./pages/dashboard/CompanyDashboard";
-import Employees from "./pages/dashboard/Employees";
-import ATS from "./pages/dashboard/ATS";
-import Tickets from "./pages/dashboard/Tickets";
-import Tasks from "./pages/dashboard/Tasks";
-import Reports from "@/pages/dashboard/Reports";
-import Settings from "@/pages/dashboard/Settings";
-import Certificates from "@/pages/dashboard/Certificates";
-import LegalCheck from "@/pages/dashboard/LegalCheck";
-import VerifyDecision from "./pages/VerifyDecision";
-import Services from "./pages/Services";
-import BrandPreview from "./pages/BrandPreview";
-import Templates from "./pages/dashboard/Templates";
-import Reminders from "./pages/dashboard/Reminders";
-import DashboardTools from "./pages/dashboard/Tools";
-import About from "./pages/About";
-import RefundPolicy from "./pages/RefundPolicy";
-import Contact from "./pages/Contact";
-import FAQ from "./pages/FAQ";
-import Blog from "./pages/Blog";
-import Notifications from "./pages/dashboard/Notifications";
-import BlogPost from "./pages/BlogPost";
-import Privacy from "./pages/Privacy";
-import Terms from "./pages/Terms";
-import Cookies from "./pages/Cookies";
-import CaseStudies from "./pages/CaseStudies";
-import Consulting from "./pages/Consulting";
-import ConsultingBook from "./pages/ConsultingBook";
-import ConsultantsList from "./pages/ConsultantsList";
-import ConsultingServices from "./pages/ConsultingServices";
-import HowToBook from "./pages/HowToBook";
-import ConsultingExperts from "./pages/ConsultingExperts";
-import ConsultingBookingNew from "./pages/ConsultingBookingNew";
-import ConsultingExpertProfile from "./pages/ConsultingExpertProfile";
-import Courses from "./pages/Courses";
-import CourseDetail from "./pages/CourseDetail";
-import KnowledgeBase from "./pages/KnowledgeBase";
-import KnowledgeBaseArticle from "./pages/KnowledgeBaseArticle";
-import Knowledge from "./pages/Knowledge";
-import ToolsPage from "./pages/Tools";
-import AdminDashboard from "./pages/dashboard/AdminDashboard";
-import AdminDashboardNew from "./pages/admin/Dashboard";
-import AdminUsers from "./pages/admin/Users";
-import AdminSubscriptions from "./pages/admin/Subscriptions";
-import AdminBookings from "./pages/admin/Bookings";
-import AdminAuditLogs from "./pages/admin/AuditLogs";
-import AdminChat from "./pages/admin/Chat";
-import { AdminLayout } from "./components/AdminLayout";
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import MyConsultations from "./pages/MyConsultations";
-import ConsultationDetail from "./pages/ConsultationDetail";
-import ConsultantDashboard from "./pages/ConsultantDashboard";
-import Profile from "./pages/Profile";
-import ConsultationChat from "./pages/ConsultationChat";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import MyData from "./pages/MyData";
-import DataProtectionContact from "./pages/DataProtectionContact";
-import AdminDataRequests from "./pages/admin/DataRequests";
-import AdminSecurityIncidents from "./pages/admin/SecurityIncidents";
-import ConsultantRegister from "./pages/ConsultantRegister";
-import CookiesPolicy from "./pages/CookiesPolicy";
-import Payment from "./pages/Payment";
+import { AdminLayout } from "./components/AdminLayout";
+
+// Loading component
+const PageLoader = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+  </div>
+);
+
+// Lazy load pages - Public pages (loaded first)
+const Home = lazy(() => import("./pages/Home"));
+const Login = lazy(() => import("./pages/Login"));
+const AccountType = lazy(() => import("./pages/AccountType"));
+const NotFound = lazy(() => import("@/pages/NotFound"));
+
+// Auth pages
+const SignupEmployee = lazy(() => import("./pages/SignupEmployee"));
+const SignupConsultant = lazy(() => import("@/pages/SignupConsultant"));
+const ConsultantLogin = lazy(() => import("@/pages/ConsultantLogin"));
+const ConsultantRegister = lazy(() => import("./pages/ConsultantRegister"));
+
+// Dashboard pages (high priority - loaded on demand)
+const CompanyDashboard = lazy(() => import("./pages/dashboard/CompanyDashboard"));
+const ConsultantDashboard = lazy(() => import("./pages/ConsultantDashboard"));
+const AdminDashboard = lazy(() => import("./pages/dashboard/AdminDashboard"));
+const AdminDashboardNew = lazy(() => import("./pages/admin/Dashboard"));
+const Profile = lazy(() => import("./pages/Profile"));
+
+// Document & Tools
+const DocumentGenerator = lazy(() => import("./pages/DocumentGenerator"));
+const MyDocuments = lazy(() => import("./pages/MyDocuments"));
+const EndOfServiceCalculator = lazy(() => import("./pages/EndOfServiceCalculator"));
+const LeaveCalculator = lazy(() => import("./pages/LeaveCalculator"));
+const LetterGenerator = lazy(() => import("./pages/LetterGenerator"));
+const ToolsPage = lazy(() => import("./pages/Tools"));
+const DashboardTools = lazy(() => import("./pages/dashboard/Tools"));
+
+// Dashboard sub-pages
+const Employees = lazy(() => import("./pages/dashboard/Employees"));
+const ATS = lazy(() => import("./pages/dashboard/ATS"));
+const Tickets = lazy(() => import("./pages/dashboard/Tickets"));
+const Tasks = lazy(() => import("./pages/dashboard/Tasks"));
+const Reports = lazy(() => import("@/pages/dashboard/Reports"));
+const Settings = lazy(() => import("@/pages/dashboard/Settings"));
+const Certificates = lazy(() => import("@/pages/dashboard/Certificates"));
+const LegalCheck = lazy(() => import("@/pages/dashboard/LegalCheck"));
+const Templates = lazy(() => import("./pages/dashboard/Templates"));
+const Reminders = lazy(() => import("./pages/dashboard/Reminders"));
+const Notifications = lazy(() => import("./pages/dashboard/Notifications"));
+
+// Consulting pages
+const Consulting = lazy(() => import("./pages/Consulting"));
+const ConsultingBook = lazy(() => import("./pages/ConsultingBook"));
+const ConsultantsList = lazy(() => import("./pages/ConsultantsList"));
+const ConsultingServices = lazy(() => import("./pages/ConsultingServices"));
+const HowToBook = lazy(() => import("./pages/HowToBook"));
+const ConsultingExperts = lazy(() => import("./pages/ConsultingExperts"));
+const ConsultingBookingNew = lazy(() => import("./pages/ConsultingBookingNew"));
+const ConsultingExpertProfile = lazy(() => import("./pages/ConsultingExpertProfile"));
+const MyConsultations = lazy(() => import("./pages/MyConsultations"));
+const ConsultationDetail = lazy(() => import("./pages/ConsultationDetail"));
+const ConsultationChat = lazy(() => import("./pages/ConsultationChat"));
+
+// Content pages
+const About = lazy(() => import("./pages/About"));
+const Contact = lazy(() => import("./pages/Contact"));
+const FAQ = lazy(() => import("./pages/FAQ"));
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
+const Courses = lazy(() => import("./pages/Courses"));
+const CourseDetail = lazy(() => import("./pages/CourseDetail"));
+const KnowledgeBase = lazy(() => import("./pages/KnowledgeBase"));
+const KnowledgeBaseArticle = lazy(() => import("./pages/KnowledgeBaseArticle"));
+const Knowledge = lazy(() => import("./pages/Knowledge"));
+const CaseStudies = lazy(() => import("./pages/CaseStudies"));
+
+// Legal & Policy pages
+const Privacy = lazy(() => import("./pages/Privacy"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const Terms = lazy(() => import("./pages/Terms"));
+const Cookies = lazy(() => import("./pages/Cookies"));
+const CookiesPolicy = lazy(() => import("./pages/CookiesPolicy"));
+const RefundPolicy = lazy(() => import("./pages/RefundPolicy"));
+const MyData = lazy(() => import("./pages/MyData"));
+const DataProtectionContact = lazy(() => import("./pages/DataProtectionContact"));
+
+// Admin pages
+const AdminUsers = lazy(() => import("./pages/admin/Users"));
+const AdminSubscriptions = lazy(() => import("./pages/admin/Subscriptions"));
+const AdminBookings = lazy(() => import("./pages/admin/Bookings"));
+const AdminAuditLogs = lazy(() => import("./pages/admin/AuditLogs"));
+const AdminChat = lazy(() => import("./pages/admin/Chat"));
+const AdminDiscountCodes = lazy(() => import("./pages/AdminDiscountCodes"));
+const AdminDataRequests = lazy(() => import("./pages/admin/DataRequests"));
+const AdminSecurityIncidents = lazy(() => import("./pages/admin/SecurityIncidents"));
+
+// Other pages
+const Pricing = lazy(() => import("./pages/Pricing"));
+const Services = lazy(() => import("./pages/Services"));
+const BrandPreview = lazy(() => import("./pages/BrandPreview"));
+const VerifyDecision = lazy(() => import("./pages/VerifyDecision"));
+const Payment = lazy(() => import("./pages/Payment"));
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
-    <Switch>
+    <Suspense fallback={<PageLoader />}>
+      <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/signup"} component={AccountType} />
       <Route path={"/signup/employee"} component={SignupEmployee} />
@@ -164,7 +192,8 @@ function Router() {
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
-    </Switch>
+      </Switch>
+    </Suspense>
   );
 }
 
