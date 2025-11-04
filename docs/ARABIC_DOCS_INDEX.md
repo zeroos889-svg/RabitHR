@@ -33,7 +33,9 @@
 
 ### للمبتدئين
 
-```mermaid
+**مسار التعلم:**
+
+```
 1. VERCEL_QUICKSTART_AR.md
    ↓
 2. VERCEL_VS_LOCAL_AR.md
@@ -205,7 +207,7 @@
 
 - [GitHub Repository](https://github.com/zeroos889-svg/RabitHR)
 - [موقع رابِط](https://rabit.sa)
-- LinkedIn: راب��ت للموارد البشرية
+- LinkedIn: رابط للموارد البشرية
 
 ---
 

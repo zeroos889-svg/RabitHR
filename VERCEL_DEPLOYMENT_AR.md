@@ -574,7 +574,7 @@ https://your-app-name.vercel.app
 - 📧 **البريد الإلكتروني**: info@rabithr.com
 - 📱 **الجوال**: 0570700355
 - 🌐 **الموقع**: [rabit.sa](https://rabit.sa)
-- 💼 **LinkedIn**: [راب��ط للموارد البشرية](https://linkedin.com/company/rabithr)
+- 💼 **LinkedIn**: [رابط للموارد البشرية](https://linkedin.com/company/rabithr)
 
 ---
 
