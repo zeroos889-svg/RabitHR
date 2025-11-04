@@ -5,13 +5,13 @@ import { Input } from '@/components/ui/input';
 import { CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 
 interface PaymentProps {
-  planName: string;
-  price: number;
+  planName?: string;
+  price?: number;
   currency?: string;
   onSuccess?: () => void;
 }
 
-export default function Payment({ planName, price, currency = 'SAR', onSuccess }: PaymentProps) {
+export default function Payment({ planName = 'خطة قياسية', price = 0, currency = 'SAR', onSuccess }: PaymentProps) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);

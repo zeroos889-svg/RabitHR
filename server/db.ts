@@ -1374,6 +1374,42 @@ export async function getConsultationBookingById(bookingId: number) {
 }
 
 /**
+ * إنشاء حجز استشارة جديد
+ */
+export async function createConsultationBooking(data: {
+  userId: number;
+  consultantId: number;
+  consultationTypeId: number;
+  scheduledDate: string;
+  scheduledTime: string;
+  description: string;
+  requiredInfo?: string;
+  attachments?: string;
+  status?: "pending" | "confirmed" | "in-progress" | "completed" | "cancelled" | "no-show";
+}) {
+  const db = await getDb();
+  if (!db) throw new Error('Database not available');
+
+  // Generate booking number
+  const bookingNumber = `BK-${Date.now()}-${Math.random().toString(36).substring(7).toUpperCase()}`;
+
+  const result = await db.insert(consultationBookings).values({
+    bookingNumber,
+    clientId: data.userId,
+    consultantId: data.consultantId,
+    consultationTypeId: data.consultationTypeId,
+    scheduledDate: new Date(data.scheduledDate),
+    scheduledTime: data.scheduledTime,
+    clientNotes: data.description || null,
+    totalAmount: 0, // يمكن حسابه لاحقاً
+    finalAmount: 0,
+    status: data.status || 'pending',
+  });
+
+  return Number((result as any).insertId || 0);
+}
+
+/**
  * تقييم الاستشارة
  */
 export async function rateConsultation(data: {
