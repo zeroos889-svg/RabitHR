@@ -219,14 +219,14 @@
 
 ### 🟦 Railway MySQL:
 ```
-URL: mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
+URL: mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:3306/railway
 Status: ✅ جاهز للاستخدام مباشرة
 Recommended: للمشاريع الصغيرة والمتوسطة
 ```
 
 ### 🟩 TiDB Cloud:
 ```
-URL: mysql://3aDHzR1a2i2PxnQ.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
+URL: mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
 Status: ✅ جاهز (يحتاج كلمة مرور من Dashboard)
 Recommended: للمشاريع الكبيرة والمتنامية
 ```

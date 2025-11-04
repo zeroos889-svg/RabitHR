@@ -49,12 +49,12 @@
 ⚠️ **تحذير أمني**: احصل على كلمة المرور من Railway Dashboard ولا تشاركها أبداً
 
 ```bash
-DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:3306/railway
 ```
 
 #### معلومات الاتصال:
-- **المضيف**: `shortline.proxy.rlwy.net`
-- **المنفذ**: `18829`
+- **المضيف**: `containers-us-west-xxx.railway.app`
+- **المنفذ**: `3306`
 - **المستخدم**: `root`
 - **كلمة المرور**: احصل عليها من Railway Dashboard → Service → Variables
 - **قاعدة البيانات**: `railway`
@@ -73,13 +73,13 @@ DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/rail
 ⚠️ **مهم**: استبدل `<PASSWORD>` بكلمة المرور الفعلية من لوحة تحكم TiDB
 
 ```bash
-DATABASE_URL=mysql://3aDHzR1a2i2PxnQ.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
+DATABASE_URL=mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
 ```
 
 #### معلومات الاتصال:
 - **المضيف**: `gateway01.eu-central-1.prod.aws.tidbcloud.com`
 - **المنفذ**: `4000`
-- **المستخدم**: `3aDHzR1a2i2PxnQ.root`
+- **المستخدم**: `<USERNAME>.root`
 - **كلمة المرور**: `<احصل عليها من TiDB Dashboard>`
 - **قاعدة البيانات**: `test`
 
@@ -111,10 +111,10 @@ DATABASE_URL=mysql://3aDHzR1a2i2PxnQ.root:<PASSWORD>@gateway01.eu-central-1.prod
 # ------------------
 
 # استخدم Railway (جاهز للعمل مباشرة)
-DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:3306/railway
 
 # أو استخدم TiDB (استبدل <PASSWORD>)
-# DATABASE_URL=mysql://3aDHzR1a2i2PxnQ.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
+# DATABASE_URL=mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
 ```
 
 ### في Vercel:
@@ -124,13 +124,13 @@ DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/rail
 #### للاستخدام Railway:
 ```
 Key: DATABASE_URL
-Value: mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
+Value: mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:3306/railway
 ```
 
 #### للاستخدام TiDB:
 ```
 Key: DATABASE_URL
-Value: mysql://3aDHzR1a2i2PxnQ.root:YOUR_PASSWORD_HERE@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
+Value: mysql://<USERNAME>.root:YOUR_PASSWORD_HERE@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
 ```
 
 ---
@@ -172,8 +172,8 @@ pnpm db:push
 
 ### Railway:
 ```bash
-mysql -h shortline.proxy.rlwy.net \
-  -P 18829 \
+mysql -h containers-us-west-xxx.railway.app \
+  -P 3306 \
   -u root \
   -p<RAILWAY_PASSWORD> \
   railway
@@ -183,7 +183,7 @@ mysql -h shortline.proxy.rlwy.net \
 ```bash
 mysql -h gateway01.eu-central-1.prod.aws.tidbcloud.com \
   -P 4000 \
-  -u 3aDHzR1a2i2PxnQ.root \
+  -u <USERNAME>.root \
   -p \
   test
 ```
@@ -195,19 +195,19 @@ mysql -h gateway01.eu-central-1.prod.aws.tidbcloud.com \
 ### للبداية (Development):
 ```bash
 # استخدم Railway - جاهز ومباشر
-DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:3306/railway
 ```
 
 ### للإنتاج (Production - قليل المستخدمين):
 ```bash
 # استخدم Railway - كافي تماماً
-DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:3306/railway
 ```
 
 ### للإنتاج (Production - كثير المستخدمين):
 ```bash
 # استخدم TiDB - أداء أفضل
-DATABASE_URL=mysql://3aDHzR1a2i2PxnQ.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
+DATABASE_URL=mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
 ```
 
 ---
@@ -248,25 +248,25 @@ DATABASE_URL=mysql://3aDHzR1a2i2PxnQ.root:<PASSWORD>@gateway01.eu-central-1.prod
 ### سيناريو 1: تطوير محلي
 ```bash
 # استخدم Railway - سريع وسهل
-DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:3306/railway
 ```
 
 ### سيناريو 2: عرض تجريبي للعميل
 ```bash
 # استخدم Railway - كافي تماماً
-DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:3306/railway
 ```
 
 ### سيناريو 3: إطلاق رسمي (50-500 مستخدم)
 ```bash
 # استخدم Railway - أداء ممتاز
-DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:3306/railway
 ```
 
 ### سيناريو 4: إطلاق رسمي (500+ مستخدم)
 ```bash
 # استخدم TiDB - توسع أفضل
-DATABASE_URL=mysql://3aDHzR1a2i2PxnQ.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
+DATABASE_URL=mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
 ```
 
 ---
@@ -277,7 +277,7 @@ DATABASE_URL=mysql://3aDHzR1a2i2PxnQ.root:<PASSWORD>@gateway01.eu-central-1.prod
 ```bash
 # تحقق من:
 1. الرابط صحيح بدون مسافات
-2. المنفذ 18829 غير محجوب
+2. المنفذ 3306 غير محجوب
 3. جرّب من Railway Dashboard
 ```
 

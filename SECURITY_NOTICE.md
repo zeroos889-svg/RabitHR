@@ -28,7 +28,7 @@
 ```bash
 # احصل على الرابط الكامل من Railway Dashboard
 # النموذج: mysql://root:<PASSWORD>@host:port/database
-DATABASE_URL=mysql://root:<GET_FROM_RAILWAY>@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL=mysql://root:<GET_FROM_RAILWAY>@containers-us-west-xxx.railway.app:3306/railway
 ```
 
 ### TiDB Cloud:
@@ -45,7 +45,7 @@ DATABASE_URL=mysql://root:<GET_FROM_RAILWAY>@shortline.proxy.rlwy.net:18829/rail
 ```bash
 # احصل على كلمة المرور من TiDB Dashboard
 # النموذج: mysql://user:<PASSWORD>@host:port/database
-DATABASE_URL=mysql://3aDHzR1a2i2PxnQ.root:<GET_FROM_TIDB>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
+DATABASE_URL=mysql://<USERNAME>.root:<GET_FROM_TIDB>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
 ```
 
 ---
