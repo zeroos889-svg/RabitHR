@@ -62,6 +62,9 @@ export const ENV = {
   // Forge Storage API
   forgeApiUrl: process.env.BUILT_IN_FORGE_API_URL ?? "",
   forgeApiKey: process.env.BUILT_IN_FORGE_API_KEY ?? "",
+  
+  // Redis Cache
+  redisUrl: process.env.REDIS_URL ?? "redis://localhost:6379",
 };
 
 /**
