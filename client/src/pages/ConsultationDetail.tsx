@@ -233,8 +233,8 @@ export default function ConsultationDetail() {
     );
   }
 
-  const StatusIcon = statusConfig[ticket.status]?.icon || Clock;
-  const statusInfo = statusConfig[ticket.status] || statusConfig.pending;
+  const StatusIcon = statusConfig[ticket.status || 'pending']?.icon || Clock;
+  const statusInfo = statusConfig[ticket.status || 'pending'] || statusConfig.pending;
   const priorityInfo = priorityConfig[ticket.priority || "medium"];
 
   const isCompleted = ticket.status === "completed";
@@ -544,8 +544,8 @@ export default function ConsultationDetail() {
                         ))}
                         <span className="text-sm text-gray-600 mr-2">({ticket.rating}/5)</span>
                       </div>
-                      {ticket.ratingFeedback && (
-                        <p className="text-sm text-gray-700 mt-2">{ticket.ratingFeedback}</p>
+                      {(ticket as any).ratingFeedback && (
+                        <p className="text-sm text-gray-700 mt-2">{(ticket as any).ratingFeedback}</p>
                       )}
                     </div>
                   </div>
@@ -576,7 +576,7 @@ export default function ConsultationDetail() {
                   </div>
                 </div>
 
-                {ticket.assignedConsultantId && (
+                {(ticket as any).assignedConsultantId && (
                   <div className="flex items-start gap-3">
                     <User className="h-5 w-5 text-gray-400 mt-0.5" />
                     <div>

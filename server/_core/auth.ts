@@ -13,9 +13,10 @@ import { hashPassword, verifyPassword } from "./password";
 /**
  * Register authentication routes
  */
-export function registerAuthRoutes(app: Express) {
+export function registerAuthRoutes(app: Express, authLimiter?: any) {
   // Login with email and password
-  app.post("/api/auth/login", async (req: Request, res: Response) => {
+  const loginMiddleware = authLimiter ? [authLimiter] : [];
+  app.post("/api/auth/login", ...loginMiddleware, async (req: Request, res: Response) => {
     try {
       const { email, password } = req.body;
 
@@ -51,7 +52,7 @@ export function registerAuthRoutes(app: Express) {
       // Create session token
       const sessionToken = await createSessionToken({
         userId: user.id,
-        email: user.email,
+        email: user.email || '',
         role: user.role,
       });
 
@@ -75,7 +76,7 @@ export function registerAuthRoutes(app: Express) {
   });
 
   // Register new user
-  app.post("/api/auth/register", async (req: Request, res: Response) => {
+  app.post("/api/auth/register", ...loginMiddleware, async (req: Request, res: Response) => {
     try {
       const { email, password, name } = req.body;
 

@@ -58,6 +58,13 @@ export const ENV = {
   
   // OpenAI
   openaiApiKey: process.env.OPENAI_API_KEY ?? "",
+  
+  // Forge Storage API
+  forgeApiUrl: process.env.BUILT_IN_FORGE_API_URL ?? "",
+  forgeApiKey: process.env.BUILT_IN_FORGE_API_KEY ?? "",
+  
+  // Redis Cache
+  redisUrl: process.env.REDIS_URL ?? "redis://localhost:6379",
 };
 
 /**

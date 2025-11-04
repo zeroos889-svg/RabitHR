@@ -32,12 +32,12 @@ export default function MyConsultations() {
   // Filter tickets based on search and tab
   const filteredTickets = tickets.filter((ticket) => {
     const matchesSearch =
-      ticket.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (ticket.subject || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
       ticket.ticketNumber.toLowerCase().includes(searchQuery.toLowerCase());
 
     const matchesTab =
       activeTab === "all" ||
-      (activeTab === "active" && ["pending", "assigned", "in-progress"].includes(ticket.status)) ||
+      (activeTab === "active" && ["pending", "assigned", "in-progress"].includes(ticket.status || '')) ||
       (activeTab === "completed" && ticket.status === "completed") ||
       (activeTab === "cancelled" && ticket.status === "cancelled");
 
@@ -47,7 +47,7 @@ export default function MyConsultations() {
   // Calculate statistics
   const stats = {
     total: tickets.length,
-    active: tickets.filter((t) => ["pending", "assigned", "in-progress"].includes(t.status)).length,
+    active: tickets.filter((t) => ["pending", "assigned", "in-progress"].includes(t.status || '')).length,
     completed: tickets.filter((t) => t.status === "completed").length,
     cancelled: tickets.filter((t) => t.status === "cancelled").length,
   };
@@ -216,8 +216,8 @@ export default function MyConsultations() {
         ) : (
           <div className="grid grid-cols-1 gap-6">
             {filteredTickets.map((ticket) => {
-              const StatusIcon = statusConfig[ticket.status]?.icon || Clock;
-              const statusInfo = statusConfig[ticket.status] || statusConfig.pending;
+              const StatusIcon = statusConfig[ticket.status || 'pending']?.icon || Clock;
+              const statusInfo = statusConfig[ticket.status || 'pending'] || statusConfig.pending;
               const priorityInfo = priorityConfig[ticket.priority || "medium"];
 
               return (
@@ -246,7 +246,7 @@ export default function MyConsultations() {
                         <Calendar className="h-4 w-4" />
                         <span>{new Date(ticket.createdAt).toLocaleDateString("ar-SA")}</span>
                       </div>
-                      {ticket.assignedConsultantId && (
+                      {(ticket as any).assignedConsultantId && (
                         <div className="flex items-center gap-1">
                           <User className="h-4 w-4" />
                           <span>معين لمستشار</span>

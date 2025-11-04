@@ -39,7 +39,7 @@ export async function runSQLMigrations() {
       // If SSL fails, try without it (for local development)
       if (error.code === 'PROTOCOL_CONNECTION_LOST' || error.code === 'ER_UNKNOWN_ERROR') {
         console.log("[SQL Migrations] Retrying without SSL...");
-        const configNoSSL = { ...config, ssl: false };
+        const configNoSSL: any = { ...config, ssl: false };
         connection = await mysql.createConnection(configNoSSL);
       } else {
         throw error;

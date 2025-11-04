@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
@@ -37,7 +37,7 @@ export default function Profile() {
   );
 
   // Update form when profile data changes
-  React.useEffect(() => {
+  useEffect(() => {
     if (profileData?.user) {
       setName(profileData.user.name || "");
       setEmail(profileData.user.email || "");
