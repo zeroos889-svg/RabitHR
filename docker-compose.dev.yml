@@ -1,0 +1,86 @@
+version: '3.8'
+
+# Development docker-compose override
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+      args:
+        NODE_VERSION: 18
+        PNPM_VERSION: latest
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/dist
+    environment:
+      - NODE_ENV=development
+    command: pnpm dev
+    ports:
+      - "3000:3000"
+      - "5173:5173"  # Vite dev server
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 4G
+
+  db:
+    ports:
+      - "3306:3306"
+    command:
+      - --default-authentication-plugin=mysql_native_password
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --max_connections=200
+      - --general-log=1
+      - --general-log-file=/var/log/mysql/general.log
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./logs/mysql:/var/log/mysql
+
+  redis:
+    command: redis-server --appendonly yes --loglevel debug
+    volumes:
+      - redis_data:/data
+      - ./logs/redis:/var/log/redis
+
+  # phpMyAdmin for database management
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: rabithr-phpmyadmin
+    environment:
+      - PMA_HOST=db
+      - PMA_PORT=3306
+      - PMA_USER=root
+      - PMA_PASSWORD=${MYSQL_ROOT_PASSWORD:-rootpassword}
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    networks:
+      - rabithr-network
+
+  # Redis Commander for Redis management
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: rabithr-redis-commander
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+    networks:
+      - rabithr-network
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  rabithr-network:
+    driver: bridge

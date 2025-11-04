@@ -1,0 +1,25 @@
+version: '3.8'
+
+# SSL/TLS with Let's Encrypt
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
+
+services:
+  certbot:
+    image: certbot/certbot:latest
+    container_name: rabithr-certbot
+    volumes:
+      - ./ssl/certbot/conf:/etc/letsencrypt
+      - ./ssl/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --quiet; sleep 12h & wait $${!}; done;'"
+    networks:
+      - rabithr-network
+
+  nginx:
+    volumes:
+      - ./ssl/certbot/conf:/etc/letsencrypt:ro
+      - ./ssl/certbot/www:/var/www/certbot:ro
+      - ./nginx-ssl.conf:/etc/nginx/nginx.conf:ro
+
+networks:
+  rabithr-network:
+    external: true

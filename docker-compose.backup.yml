@@ -1,0 +1,40 @@
+version: '3.8'
+
+# Automated Backup System
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.backup.yml up -d
+
+services:
+  backup-cron:
+    image: alpine:latest
+    container_name: rabithr-backup-cron
+    volumes:
+      - ./scripts:/scripts:ro
+      - ./backups:/backups
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - TZ=Asia/Riyadh
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-rootpassword}
+      - BACKUP_RETENTION_DAYS=30
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_S3_BUCKET=${AWS_S3_BUCKET}
+    command: |
+      sh -c '
+        apk add --no-cache docker-cli aws-cli mysql-client dcron
+        
+        # إنشاء cron job
+        echo "0 2 * * * cd /scripts && ./backup.sh > /backups/cron.log 2>&1" > /etc/crontabs/root
+        echo "0 3 * * 0 cd /scripts && ./cleanup-old-backups.sh > /backups/cleanup.log 2>&1" >> /etc/crontabs/root
+        
+        echo "Backup cron started. Schedule: Daily at 2 AM"
+        crond -f -l 2
+      '
+    restart: unless-stopped
+    networks:
+      - rabithr-network
+    depends_on:
+      - db
+
+networks:
+  rabithr-network:
+    external: true
