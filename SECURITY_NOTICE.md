@@ -89,8 +89,8 @@ JWT_SECRET=<YOUR_SECRET_HERE>
 
 ❌ **خطأ**:
 ```bash
-DATABASE_URL=mysql://root:CMMyDTJYozRfFgTcccnMfcEpwRbqqWMz@host:port/db
-JWT_SECRET=actual-secret-key-here
+DATABASE_URL=mysql://root:MyRealPassword123@host:port/db
+JWT_SECRET=my-actual-secret-key-here
 ```
 
 ### 4. أعد تعيين كلمات المرور المكشوفة
