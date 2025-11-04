@@ -123,6 +123,11 @@ http://localhost:3000
 - [🔄 محلي vs سحابي](./docs/VERCEL_VS_LOCAL_AR.md)
 - [🔒 إشعار أمني](./SECURITY_NOTICE.md) - **مهم جداً!**
 
+### 🌐 English Deployment Guides:
+- [🚀 Vercel Deployment Guide (EN)](./VERCEL_DEPLOYMENT_EN.md) - **Complete step-by-step guide**
+- [🔧 Troubleshooting Guide (EN)](./VERCEL_TROUBLESHOOTING_EN.md) - **Fix common issues**
+- [🔐 Security Note (EN)](./SECURITY_NOTE.md) - **Environment variables security**
+
 ---
 
 ## 🧪 بيانات الاختبار
