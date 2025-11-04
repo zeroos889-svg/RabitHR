@@ -10,15 +10,29 @@ import bcrypt from 'bcryptjs';
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
+let _connectionAttempts = 0;
+const MAX_CONNECTION_ATTEMPTS = 3;
 
 // Lazily create the drizzle instance so local tooling can run without a DB.
+// مُحسّن للعمل مع Railway database مع إعادة المحاولة التلقائية
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
       _db = drizzle(process.env.DATABASE_URL);
+      _connectionAttempts = 0; // إعادة تعيين عداد المحاولات عند النجاح
+      console.log("[Database] Connected successfully to Railway database");
     } catch (error) {
-      console.warn("[Database] Failed to connect:", error);
+      _connectionAttempts++;
+      console.warn(`[Database] Connection attempt ${_connectionAttempts}/${MAX_CONNECTION_ATTEMPTS} failed:`, error);
+      
+      // إعادة المحاولة في حالة الفشل
+      if (_connectionAttempts < MAX_CONNECTION_ATTEMPTS) {
+        await new Promise(resolve => setTimeout(resolve, 1000 * _connectionAttempts)); // تأخير متزايد
+        return getDb(); // محاولة الاتصال مرة أخرى
+      }
+      
       _db = null;
+      console.error("[Database] Max connection attempts reached. Database unavailable.");
     }
   }
   return _db;
@@ -1381,40 +1395,57 @@ export async function getConsultationBookingById(bookingId: number) {
 /**
  * تقييم الاستشارة
  */
+// ثابت لتحويل التقييم من نطاق 1-5 إلى 0-500 (المخزن في قاعدة البيانات)
+const RATING_SCALE_MULTIPLIER = 100;
+
 export async function rateConsultation(data: {
   bookingId: number;
   consultantId: number;
   clientId: number;
   rating: number;
-  comment?: string;
+  review?: string;
 }) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
 
-  // إضافة التقييم
-  await db.insert(consultantReviews).values({
-    consultantId: data.consultantId,
-    clientId: data.clientId,
-    bookingId: data.bookingId,
-    rating: data.rating,
-    review: data.comment || null,
-  });
+  // التحقق من صحة التقييم (يجب أن يكون بين 1 و 5)
+  if (data.rating < 1 || data.rating > 5) {
+    throw new Error("Rating must be between 1 and 5");
+  }
 
-  // تحديث متوسط التقييم للمستشار
-  const reviews = await db
-    .select()
-    .from(consultantReviews)
-    .where(eq(consultantReviews.consultantId, data.consultantId));
+  try {
+    // إضافة التقييم
+    await db.insert(consultantReviews).values({
+      consultantId: data.consultantId,
+      clientId: data.clientId,
+      bookingId: data.bookingId,
+      rating: data.rating,
+      review: data.review || null,
+    });
 
-  const avgRating = reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / reviews.length;
+    // تحديث متوسط التقييم للمستشار
+    const reviews = await db
+      .select()
+      .from(consultantReviews)
+      .where(eq(consultantReviews.consultantId, data.consultantId));
 
-  await db
-    .update(consultants)
-    .set({ 
-      averageRating: Math.round(avgRating * 100), // تحويل إلى من 0 إلى 500
-      updatedAt: new Date(),
-    })
-    .where(eq(consultants.id, data.consultantId));
+    if (reviews.length === 0) {
+      throw new Error("No reviews found for consultant");
+    }
+
+    const avgRating = reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / reviews.length;
+
+    await db
+      .update(consultants)
+      .set({ 
+        averageRating: Math.round(avgRating * RATING_SCALE_MULTIPLIER),
+        updatedAt: new Date(),
+      })
+      .where(eq(consultants.id, data.consultantId));
+  } catch (error) {
+    console.error('[Database] Error rating consultation:', error);
+    throw error;
+  }
 }
 
 
@@ -1629,21 +1660,28 @@ export async function createConsultationBooking(data: {
     throw new Error('Database not available');
   }
 
-  // توليد رقم حجز فريد
-  const bookingNumber = `CB${Date.now()}${Math.floor(Math.random() * 1000)}`;
+  // استيراد nanoid لتوليد معرفات فريدة وآمنة
+  const { nanoid } = await import('nanoid');
+  // توليد رقم حجز فريد باستخدام nanoid لضمان عدم التكرار
+  const bookingNumber = `CB-${nanoid(10)}`;
 
-  const result = await database.insert(consultationBookings).values({
-    bookingNumber: bookingNumber,
-    clientId: data.userId,
-    consultantId: data.consultantId,
-    consultationTypeId: data.consultationTypeId,
-    scheduledDate: new Date(data.scheduledDate),
-    scheduledTime: data.scheduledTime,
-    totalAmount: data.totalAmount || 0,
-    finalAmount: data.finalAmount || 0,
-    clientNotes: data.description || null,
-    status: data.status,
-  });
+  try {
+    const result = await database.insert(consultationBookings).values({
+      bookingNumber: bookingNumber,
+      clientId: data.userId,
+      consultantId: data.consultantId,
+      consultationTypeId: data.consultationTypeId,
+      scheduledDate: new Date(data.scheduledDate),
+      scheduledTime: data.scheduledTime,
+      totalAmount: data.totalAmount || 0,
+      finalAmount: data.finalAmount || 0,
+      clientNotes: data.description || null,
+      status: data.status,
+    });
 
-  return Number((result as any).insertId || 0);
+    return Number((result as any).insertId || 0);
+  } catch (error) {
+    console.error('[Database] Error creating consultation booking:', error);
+    throw new Error('Failed to create consultation booking. Please try again.');
+  }
 }
