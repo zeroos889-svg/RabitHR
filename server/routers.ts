@@ -29,7 +29,7 @@ export const appRouter = router({
         email: z.string().email("البريد الإلكتروني غير صحيح"),
         password: z.string().min(8, "كلمة المرور يجب أن تكون 8 أحرف على الأقل"),
         phoneNumber: z.string().optional(),
-        userType: z.enum(['employee', 'individual', 'company']).optional(),
+        userType: z.enum(['employee', 'individual', 'company', 'consultant']).optional(),
       }))
       .mutation(async ({ input }) => {
         try {
