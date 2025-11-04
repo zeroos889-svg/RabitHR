@@ -3,7 +3,7 @@
  * Monitors all system components and dependencies
  */
 
-import { db } from '../db';
+import { getDb } from '../db';
 
 export interface HealthCheckResult {
   status: 'healthy' | 'degraded' | 'unhealthy';
@@ -35,8 +35,19 @@ async function checkDatabase(): Promise<ComponentHealth> {
   const start = Date.now();
   
   try {
+    // Get database instance
+    const db = await getDb();
+    
+    if (!db) {
+      return {
+        status: 'down',
+        responseTime: Date.now() - start,
+        message: 'Database connection not available',
+      };
+    }
+    
     // Simple query to test connection
-    await db.query('SELECT 1');
+    await db.execute('SELECT 1');
     
     const responseTime = Date.now() - start;
     
@@ -254,7 +265,9 @@ export async function performHealthCheck(): Promise<HealthCheckResult> {
  */
 export async function simpleHealthCheck(): Promise<boolean> {
   try {
-    await db.query('SELECT 1');
+    const db = await getDb();
+    if (!db) return false;
+    await db.execute('SELECT 1');
     return true;
   } catch {
     return false;

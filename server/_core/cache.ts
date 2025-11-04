@@ -198,5 +198,13 @@ export const CACHE_TTL = {
   VERY_LONG: 86400, // 24 hours
 };
 
+/**
+ * Get Redis client for direct operations
+ * @returns Redis client instance
+ */
+export function getCache(): Redis {
+  return getRedisClient();
+}
+
 // تصدير instance جاهز للاستخدام
 export const cache = new CacheManager();
