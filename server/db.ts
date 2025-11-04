@@ -9,26 +9,51 @@ import {
 import bcrypt from 'bcryptjs';
 import { ENV } from './_core/env';
 
-let _db: ReturnType<typeof drizzle> | null = null;
-let _connectionAttempts = 0;
+/**
+ * Database Configuration Constants
+ */
 const MAX_CONNECTION_ATTEMPTS = 3;
+const CONNECTION_RETRY_DELAY_MS = 1000;
 
-// Lazily create the drizzle instance so local tooling can run without a DB.
-// مُحسّن للعمل مع Railway database مع إعادة المحاولة التلقائية
+/**
+ * Singleton database instance
+ * @private
+ */
+let _db: ReturnType<typeof drizzle> | null = null;
+
+/**
+ * Counter for tracking database connection attempts
+ * @private
+ */
+let _connectionAttempts = 0;
+
+/**
+ * Get or create database connection instance with automatic retry logic
+ * Optimized for Railway MySQL database with exponential backoff
+ * 
+ * @returns {Promise<ReturnType<typeof drizzle> | null>} Database instance or null if connection fails
+ * @throws Never throws - returns null on failure after max attempts
+ * 
+ * @example
+ * const db = await getDb();
+ * if (!db) {
+ *   throw new Error("Database unavailable");
+ * }
+ */
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
       _db = drizzle(process.env.DATABASE_URL);
-      _connectionAttempts = 0; // إعادة تعيين عداد المحاولات عند النجاح
+      _connectionAttempts = 0;
       console.log("[Database] Connected successfully to Railway database");
     } catch (error) {
       _connectionAttempts++;
       console.warn(`[Database] Connection attempt ${_connectionAttempts}/${MAX_CONNECTION_ATTEMPTS} failed:`, error);
       
-      // إعادة المحاولة في حالة الفشل
       if (_connectionAttempts < MAX_CONNECTION_ATTEMPTS) {
-        await new Promise(resolve => setTimeout(resolve, 1000 * _connectionAttempts)); // تأخير متزايد
-        return getDb(); // محاولة الاتصال مرة أخرى
+        // Exponential backoff: wait 1s, 2s, 3s between attempts
+        await new Promise(resolve => setTimeout(resolve, CONNECTION_RETRY_DELAY_MS * _connectionAttempts));
+        return getDb();
       }
       
       _db = null;
@@ -1393,11 +1418,38 @@ export async function getConsultationBookingById(bookingId: number) {
 }
 
 /**
- * تقييم الاستشارة
+ * Rating scale multiplier constant
+ * Converts ratings from 1-5 scale to 0-500 scale for database storage
+ * This allows for more precise rating calculations and display
  */
-// ثابت لتحويل التقييم من نطاق 1-5 إلى 0-500 (المخزن في قاعدة البيانات)
 const RATING_SCALE_MULTIPLIER = 100;
+const MIN_RATING = 1;
+const MAX_RATING = 5;
 
+/**
+ * Submit a rating and review for a consultation
+ * Automatically recalculates and updates the consultant's average rating
+ * 
+ * @param {Object} data - Rating data
+ * @param {number} data.bookingId - Unique booking identifier
+ * @param {number} data.consultantId - Consultant being rated
+ * @param {number} data.clientId - Client submitting the rating
+ * @param {number} data.rating - Rating value (1-5)
+ * @param {string} [data.review] - Optional review text
+ * 
+ * @throws {Error} If database is unavailable
+ * @throws {Error} If rating is not between 1 and 5
+ * @throws {Error} If database operation fails
+ * 
+ * @example
+ * await rateConsultation({
+ *   bookingId: 123,
+ *   consultantId: 456,
+ *   clientId: 789,
+ *   rating: 5,
+ *   review: "Excellent service!"
+ * });
+ */
 export async function rateConsultation(data: {
   bookingId: number;
   consultantId: number;
@@ -1406,15 +1458,17 @@ export async function rateConsultation(data: {
   review?: string;
 }) {
   const db = await getDb();
-  if (!db) throw new Error("Database not available");
+  if (!db) {
+    throw new Error("Database not available");
+  }
 
-  // التحقق من صحة التقييم (يجب أن يكون بين 1 و 5)
-  if (data.rating < 1 || data.rating > 5) {
-    throw new Error("Rating must be between 1 and 5");
+  // Validate rating is within acceptable range
+  if (data.rating < MIN_RATING || data.rating > MAX_RATING) {
+    throw new Error(`Rating must be between ${MIN_RATING} and ${MAX_RATING}`);
   }
 
   try {
-    // إضافة التقييم
+    // Insert new review
     await db.insert(consultantReviews).values({
       consultantId: data.consultantId,
       clientId: data.clientId,
@@ -1423,28 +1477,44 @@ export async function rateConsultation(data: {
       review: data.review || null,
     });
 
-    // تحديث متوسط التقييم للمستشار
-    // التقييمات مخزنة من 1-5 في consultantReviews، نحتاج تحويلها إلى 0-500 للمستشار
-    const reviews = await db
-      .select()
-      .from(consultantReviews)
-      .where(eq(consultantReviews.consultantId, data.consultantId));
-
-    // حساب المتوسط من التقييمات الحالية
-    const avgRating = reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / reviews.length;
-
-    await db
-      .update(consultants)
-      .set({ 
-        // تحويل من نطاق 1-5 إلى 0-500 للتخزين
-        averageRating: Math.round(avgRating * RATING_SCALE_MULTIPLIER),
-        updatedAt: new Date(),
-      })
-      .where(eq(consultants.id, data.consultantId));
+    // Recalculate consultant's average rating
+    await updateConsultantAverageRating(db, data.consultantId);
   } catch (error) {
     console.error('[Database] Error rating consultation:', error);
     throw error;
   }
+}
+
+/**
+ * Helper function to update consultant's average rating
+ * Calculates average from all reviews and converts to 0-500 scale
+ * 
+ * @private
+ * @param {ReturnType<typeof drizzle>} db - Database instance
+ * @param {number} consultantId - Consultant ID to update
+ */
+async function updateConsultantAverageRating(
+  db: NonNullable<Awaited<ReturnType<typeof getDb>>>,
+  consultantId: number
+) {
+  const reviews = await db
+    .select()
+    .from(consultantReviews)
+    .where(eq(consultantReviews.consultantId, consultantId));
+
+  if (reviews.length === 0) {
+    return;
+  }
+
+  const avgRating = reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / reviews.length;
+
+  await db
+    .update(consultants)
+    .set({ 
+      averageRating: Math.round(avgRating * RATING_SCALE_MULTIPLIER),
+      updatedAt: new Date(),
+    })
+    .where(eq(consultants.id, consultantId));
 }
 
 
@@ -1640,7 +1710,46 @@ export async function createDataTransfer(data: {
 }
 
 
-// Create consultation booking
+/**
+ * Booking number prefix for consultation bookings
+ */
+const BOOKING_NUMBER_PREFIX = 'CB';
+const BOOKING_NUMBER_LENGTH = 10;
+
+/**
+ * Create a new consultation booking
+ * Generates a unique booking number using nanoid for security and uniqueness
+ * 
+ * @param {Object} data - Booking data
+ * @param {number} data.userId - Client user ID
+ * @param {number} data.consultantId - Assigned consultant ID
+ * @param {number} data.consultationTypeId - Type of consultation
+ * @param {string} data.scheduledDate - Booking date (ISO string)
+ * @param {string} data.scheduledTime - Booking time (HH:mm format)
+ * @param {string} data.description - Client's description/notes
+ * @param {number} [data.totalAmount=0] - Total amount in halalas
+ * @param {number} [data.finalAmount=0] - Final amount after discounts in halalas
+ * @param {string} [data.requiredInfo] - Additional required information
+ * @param {string} [data.attachments] - JSON string of attachment URLs
+ * @param {string} data.status - Initial booking status
+ * 
+ * @returns {Promise<number>} The ID of the newly created booking
+ * @throws {Error} If database is unavailable
+ * @throws {Error} If booking creation fails
+ * 
+ * @example
+ * const bookingId = await createConsultationBooking({
+ *   userId: 123,
+ *   consultantId: 456,
+ *   consultationTypeId: 1,
+ *   scheduledDate: "2024-12-01",
+ *   scheduledTime: "14:00",
+ *   description: "Need HR consultation",
+ *   totalAmount: 50000,
+ *   finalAmount: 45000,
+ *   status: "pending"
+ * });
+ */
 export async function createConsultationBooking(data: {
   userId: number;
   consultantId: number;
@@ -1659,26 +1768,30 @@ export async function createConsultationBooking(data: {
     throw new Error('Database not available');
   }
 
-  // استيراد nanoid لتوليد معرفات فريدة وآمنة
-  const { nanoid } = await import('nanoid');
-  // توليد رقم حجز فريد باستخدام nanoid لضمان عدم التكرار
-  const bookingNumber = `CB-${nanoid(10)}`;
-
   try {
+    // Generate unique booking number using nanoid
+    const { nanoid } = await import('nanoid');
+    const bookingNumber = `${BOOKING_NUMBER_PREFIX}-${nanoid(BOOKING_NUMBER_LENGTH)}`;
+
     const result = await database.insert(consultationBookings).values({
-      bookingNumber: bookingNumber,
+      bookingNumber,
       clientId: data.userId,
       consultantId: data.consultantId,
       consultationTypeId: data.consultationTypeId,
       scheduledDate: new Date(data.scheduledDate),
       scheduledTime: data.scheduledTime,
-      totalAmount: data.totalAmount || 0,
-      finalAmount: data.finalAmount || 0,
+      totalAmount: data.totalAmount ?? 0,
+      finalAmount: data.finalAmount ?? 0,
       clientNotes: data.description || null,
       status: data.status,
     });
 
-    return Number((result as any).insertId || 0);
+    const insertId = Number((result as any).insertId);
+    if (!insertId) {
+      throw new Error('Failed to retrieve booking ID after insertion');
+    }
+
+    return insertId;
   } catch (error) {
     console.error('[Database] Error creating consultation booking:', error);
     throw new Error('Failed to create consultation booking. Please try again.');
