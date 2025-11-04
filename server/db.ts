@@ -1,6 +1,11 @@
 import { eq, and, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, passwords, InsertPassword, discountCodes, discountCodeUsage, notifications, notificationPreferences, emailLogs, smsLogs, consultationMessages, consultants, consultationBookings } from "../drizzle/schema";
+import { 
+  InsertUser, users, passwords, InsertPassword, discountCodes, discountCodeUsage, 
+  notifications, notificationPreferences, emailLogs, smsLogs, consultationMessages, 
+  consultants, consultationBookings, consultantReviews, consultantDocuments,
+  specializations, consultationTypes, Consultant, InsertConsultant, InsertConsultantDocument
+} from "../drizzle/schema";
 import bcrypt from 'bcryptjs';
 import { ENV } from './_core/env';
 
@@ -1392,9 +1397,7 @@ export async function rateConsultation(data: {
     clientId: data.clientId,
     bookingId: data.bookingId,
     rating: data.rating,
-    comment: data.comment || null,
-    isVerified: true,
-    isVisible: true,
+    review: data.comment || null,
   });
 
   // تحديث متوسط التقييم للمستشار
@@ -1404,13 +1407,11 @@ export async function rateConsultation(data: {
     .where(eq(consultantReviews.consultantId, data.consultantId));
 
   const avgRating = reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / reviews.length;
-  const totalReviews = reviews.length;
 
   await db
     .update(consultants)
     .set({ 
-      averageRating: avgRating,
-      totalReviews: totalReviews,
+      averageRating: Math.round(avgRating * 100), // تحويل إلى من 0 إلى 500
       updatedAt: new Date(),
     })
     .where(eq(consultants.id, data.consultantId));
@@ -1617,24 +1618,30 @@ export async function createConsultationBooking(data: {
   scheduledDate: string;
   scheduledTime: string;
   description: string;
+  totalAmount?: number;
+  finalAmount?: number;
   requiredInfo?: string;
   attachments?: string;
-  status: string;
+  status: "pending" | "confirmed" | "in-progress" | "completed" | "cancelled" | "no-show";
 }) {
   const database = await getDb();
   if (!database) {
     throw new Error('Database not available');
   }
 
+  // توليد رقم حجز فريد
+  const bookingNumber = `CB${Date.now()}${Math.floor(Math.random() * 1000)}`;
+
   const result = await database.insert(consultationBookings).values({
-    userId: data.userId,
+    bookingNumber: bookingNumber,
+    clientId: data.userId,
     consultantId: data.consultantId,
     consultationTypeId: data.consultationTypeId,
     scheduledDate: new Date(data.scheduledDate),
     scheduledTime: data.scheduledTime,
-    description: data.description,
-    requiredInfo: data.requiredInfo || null,
-    attachments: data.attachments || null,
+    totalAmount: data.totalAmount || 0,
+    finalAmount: data.finalAmount || 0,
+    clientNotes: data.description || null,
     status: data.status,
   });
 
