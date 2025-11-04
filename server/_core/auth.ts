@@ -51,7 +51,7 @@ export function registerAuthRoutes(app: Express) {
       // Create session token
       const sessionToken = await createSessionToken({
         userId: user.id,
-        email: user.email || '',
+        email: user.email as string,
         role: user.role,
       });
 

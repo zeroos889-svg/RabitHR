@@ -20,7 +20,8 @@ export async function createContext(
     if (token) {
       const payload = await verifySessionToken(token);
       if (payload) {
-        user = (await db.getUserById(payload.userId)) || null;
+        const fetchedUser = await db.getUserById(payload.userId);
+        user = fetchedUser !== undefined ? fetchedUser : null;
       }
     }
   } catch (error) {

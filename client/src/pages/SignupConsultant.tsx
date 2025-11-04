@@ -132,7 +132,7 @@ export default function SignupConsultant() {
       email: formData.email,
       phoneNumber: formData.phoneNumber || undefined,
       password: formData.password,
-      userType: 'consultant',
+      userType: 'consultant' as "employee" | "individual" | "company" | "consultant",
     });
   };
 
