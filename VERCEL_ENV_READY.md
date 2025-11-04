@@ -19,15 +19,15 @@ production
 
 **اختر واحدة من الخيارات التالية:**
 
-#### الخيار 1: Railway MySQL (موصى به - جاهز للاستخدام)
+#### الخيار 1: Railway MySQL (موصى به)
 ```
-mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
+mysql://root:<YOUR_PASSWORD>@containers-us-west-xxx.railway.app:3306/railway
 ```
 
 #### الخيار 2: TiDB Cloud (للمشاريع الكبيرة)
 ⚠️ **مهم**: استبدل `<PASSWORD>` بكلمة المرور من TiDB Dashboard
 ```
-mysql://3aDHzR1a2i2PxnQ.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
+mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/database
 ```
 
 📚 **للمقارنة**: راجع [DATABASE_OPTIONS.md](./DATABASE_OPTIONS.md)
@@ -184,10 +184,10 @@ vercel link
 # أضف المتغيرات
 vercel env add NODE_ENV production
 # للخيار 1: Railway
-vercel env add DATABASE_URL "mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway"
+vercel env add DATABASE_URL "mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:3306/railway"
 
 # أو للخيار 2: TiDB
-vercel env add DATABASE_URL "mysql://3aDHzR1a2i2PxnQ.root:YOUR_PASSWORD@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test"
+vercel env add DATABASE_URL "mysql://<USERNAME>.root:YOUR_PASSWORD@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/database"
 vercel env add JWT_SECRET "your-secret-here"
 # ... بقية المتغيرات
 ```

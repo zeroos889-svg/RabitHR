@@ -53,10 +53,10 @@
 #### ✅ .env.example - قواعد بيانات متعددة:
 ```bash
 # الخيار 1: Railway MySQL (جاهز)
-DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:3306/railway
 
 # الخيار 2: TiDB Cloud (جاهز)
-DATABASE_URL=mysql://3aDHzR1a2i2PxnQ.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
+DATABASE_URL=mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
 
 # الخيار 3: محلي
 DATABASE_URL=mysql://root:password@localhost:3306/rabithr_dev
@@ -148,7 +148,7 @@ $ pnpm run build
 ✅ لا يحتاج إعداد إضافي
 ✅ كلمة المرور موجودة
 
-URL: mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
+URL: mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:3306/railway
 ```
 
 **موصى به لـ**:
@@ -162,7 +162,7 @@ URL: mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
 ✅ أداء عالي جداً
 ✅ توسع غير محدود
 
-URL: mysql://3aDHzR1a2i2PxnQ.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
+URL: mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
 ```
 
 **موصى به لـ**:

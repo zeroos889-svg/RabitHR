@@ -51,7 +51,7 @@
 
 #### 🟦 الخيار 1: Railway MySQL (موصى به للبداية)
 ```bash
-DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:3306/railway
 ```
 - ✅ جاهز للاستخدام مباشرة
 - ✅ لا يحتاج إعداد إضافي
@@ -59,7 +59,7 @@ DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/rail
 
 #### 🟩 الخيار 2: TiDB Cloud (للمشاريع الكبيرة)
 ```bash
-DATABASE_URL=mysql://3aDHzR1a2i2PxnQ.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
+DATABASE_URL=mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
 ```
 - ⚠️ احتاج كلمة المرور من TiDB Dashboard
 - ✅ أداء عالي جداً
@@ -101,10 +101,10 @@ NODE_ENV = production
 
 # 2. قاعدة البيانات (اختر واحدة)
 # للخيار 1: Railway
-DATABASE_URL = mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL = mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:3306/railway
 
 # أو للخيار 2: TiDB (استبدل <PASSWORD>)
-# DATABASE_URL = mysql://3aDHzR1a2i2PxnQ.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
+# DATABASE_URL = mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
 
 # 3. مفاتيح الأمان (أنشئ مفاتيح قوية)
 JWT_SECRET = [أنشئ باستخدام: openssl rand -base64 32]
@@ -171,9 +171,9 @@ notepad .env
 
 # 3. أضف DATABASE_URL (اختر واحدة):
 # Railway:
-DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@shortline.proxy.rlwy.net:18829/railway
+DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:3306/railway
 # أو TiDB:
-# DATABASE_URL=mysql://3aDHzR1a2i2PxnQ.root:YOUR_PASSWORD@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
+# DATABASE_URL=mysql://<USERNAME>.root:YOUR_PASSWORD@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
 
 # 4. ثبّت التبعيات
 npm install -g pnpm
