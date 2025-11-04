@@ -1424,20 +1424,19 @@ export async function rateConsultation(data: {
     });
 
     // تحديث متوسط التقييم للمستشار
+    // التقييمات مخزنة من 1-5 في consultantReviews، نحتاج تحويلها إلى 0-500 للمستشار
     const reviews = await db
       .select()
       .from(consultantReviews)
       .where(eq(consultantReviews.consultantId, data.consultantId));
 
-    if (reviews.length === 0) {
-      throw new Error("No reviews found for consultant");
-    }
-
+    // حساب المتوسط من التقييمات الحالية
     const avgRating = reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / reviews.length;
 
     await db
       .update(consultants)
       .set({ 
+        // تحويل من نطاق 1-5 إلى 0-500 للتخزين
         averageRating: Math.round(avgRating * RATING_SCALE_MULTIPLIER),
         updatedAt: new Date(),
       })

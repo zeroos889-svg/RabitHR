@@ -6,25 +6,36 @@
 
 ### رابط الاتصال
 ```
-mysql://root:tAgAbzwoAyJuQboglLVJRlZgOWFiBalH@gondola.proxy.rlwy.net:54474/railway
+mysql://USER:PASSWORD@HOST:PORT/DATABASE
 ```
 
+⚠️ **ملاحظة أمنية**: احصل على بيانات الاتصال من لوحة تحكم Railway الخاصة بك.
+
 ### تفاصيل الاتصال
-- **المضيف (Host)**: gondola.proxy.rlwy.net
-- **المنفذ (Port)**: 54474
-- **المستخدم (User)**: root
-- **كلمة المرور (Password)**: tAgAbzwoAyJuQboglLVJRlZgOWFiBalH
-- **قاعدة البيانات (Database)**: railway
+احصل على هذه المعلومات من Railway Dashboard:
+- **المضيف (Host)**: يتم توفيره من Railway
+- **المنفذ (Port)**: يتم توفيره من Railway
+- **المستخدم (User)**: عادةً root
+- **كلمة المرور (Password)**: يتم توليدها تلقائياً من Railway
+- **قاعدة البيانات (Database)**: عادةً railway
 
 ## خطوات الإعداد
 
 ### 1. تكوين ملف البيئة
 
-تأكد من أن ملف `.env` يحتوي على رابط الاتصال الصحيح:
+أنشئ ملف `.env` من نسخة المثال:
 
 ```bash
-DATABASE_URL=mysql://root:tAgAbzwoAyJuQboglLVJRlZgOWFiBalH@gondola.proxy.rlwy.net:54474/railway
+cp .env.example .env
 ```
+
+ثم حدّث `DATABASE_URL` برابط الاتصال الخاص بك من Railway:
+
+```bash
+DATABASE_URL=mysql://USER:PASSWORD@HOST:PORT/railway
+```
+
+احصل على بيانات الاتصال من لوحة تحكم Railway → قاعدة البيانات → Connect
 
 ### 2. تطبيق Schema على قاعدة البيانات
 
