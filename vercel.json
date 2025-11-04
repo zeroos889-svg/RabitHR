@@ -3,10 +3,33 @@
   "installCommand": "pnpm install",
   "devCommand": "pnpm dev",
   "framework": "vite",
+  "outputDirectory": "dist",
+  "regions": ["iad1"],
   "env": [
+    "NODE_ENV",
     "DATABASE_URL",
     "JWT_SECRET",
-    "NODE_ENV",
+    "SESSION_SECRET",
+    "VITE_APP_URL",
+    "VITE_APP_TITLE",
+    "VITE_APP_LOGO",
+    "REDIS_URL",
+    "RESEND_API_KEY",
+    "RESEND_FROM_EMAIL",
+    "OPENAI_API_KEY",
+    "AWS_ACCESS_KEY_ID",
+    "AWS_SECRET_ACCESS_KEY",
+    "AWS_REGION",
+    "AWS_S3_BUCKET",
+    "VITE_SENTRY_DSN",
+    "SENTRY_AUTH_TOKEN",
+    "MOYASAR_API_KEY",
+    "MOYASAR_SECRET_KEY",
+    "TAP_API_KEY",
+    "TAP_SECRET_KEY",
+    "SMS_API_KEY",
+    "SMS_SENDER_ID",
+    "GOOGLE_MAPS_API_KEY",
     "VITE_APP_ID",
     "OAUTH_SERVER_URL",
     "VITE_OAUTH_PORTAL_URL",
@@ -15,13 +38,13 @@
     "VITE_FRONTEND_FORGE_API_KEY",
     "VITE_FRONTEND_FORGE_API_URL",
     "OWNER_OPEN_ID",
-    "OWNER_NAME",
-    "VITE_APP_TITLE",
-    "VITE_APP_LOGO"
+    "OWNER_NAME"
   ],
   "functions": {
     "server/_core/index.ts": {
-      "runtime": "nodejs18.x"
+      "runtime": "nodejs18.x",
+      "maxDuration": 60,
+      "memory": 1024
     }
   },
   "rewrites": [
@@ -32,6 +55,46 @@
     {
       "source": "/api/oauth/:path*",
       "destination": "/server/_core/index.ts"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "/server/_core/index.ts"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
   ]
 }
