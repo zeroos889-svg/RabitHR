@@ -1,10 +1,14 @@
+# Build arguments for flexibility
+ARG NODE_VERSION=18
+ARG PNPM_VERSION=latest
+
 # Build stage
-FROM node:18-alpine AS builder
+FROM node:${NODE_VERSION}-alpine AS builder
 
 WORKDIR /app
 
 # Install pnpm using corepack (built-in with Node 18)
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN corepack enable && corepack prepare pnpm@${PNPM_VERSION} --activate
 
 # Copy package files
 COPY package.json pnpm-lock.yaml ./
@@ -18,8 +22,19 @@ COPY . .
 # Build the application
 RUN pnpm build
 
+# Pruner stage - remove unnecessary files
+FROM node:${NODE_VERSION}-alpine AS pruner
+
+WORKDIR /app
+
+# Copy built files
+COPY --from=builder /app/dist ./dist
+
+# Remove source maps in production
+RUN find dist -name "*.map" -delete
+
 # Production stage
-FROM node:18-alpine
+FROM node:${NODE_VERSION}-alpine
 
 WORKDIR /app
 
@@ -35,8 +50,8 @@ RUN pnpm install --prod --frozen-lockfile
 # Create non-root user for security
 RUN addgroup -g 1001 -S nodejs && adduser -S nodejs -u 1001
 
-# Copy built files from builder and change ownership
-COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
+# Copy built files from pruner (optimized) and builder
+COPY --from=pruner --chown=nodejs:nodejs /app/dist ./dist
 COPY --from=builder --chown=nodejs:nodejs /app/drizzle ./drizzle
 
 # Copy public assets if they exist separately
