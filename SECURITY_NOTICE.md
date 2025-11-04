@@ -57,14 +57,14 @@ DATABASE_URL=mysql://3aDHzR1a2i2PxnQ.root:<GET_FROM_TIDB>@gateway01.eu-central-1
 ✅ **صحيح**:
 ```bash
 # في ملف .env (مُستثنى من Git)
-DATABASE_URL=mysql://root:actual_password_here@host:port/db
-JWT_SECRET=actual_secret_here
+DATABASE_URL=mysql://root:your_secure_password@host:port/db
+JWT_SECRET=your_jwt_secret_min_32_chars
 ```
 
 ❌ **خطأ**:
 ```javascript
 // في الكود المصدري
-const dbPassword = "actual_password_here"; // لا تفعل هذا أبداً!
+const dbPassword = "hardcoded_password_123"; // لا تفعل هذا أبداً!
 ```
 
 ### 2. استخدم .gitignore
@@ -89,8 +89,8 @@ JWT_SECRET=<YOUR_SECRET_HERE>
 
 ❌ **خطأ**:
 ```bash
-DATABASE_URL=mysql://root:MyRealPassword123@host:port/db
-JWT_SECRET=my-actual-secret-key-here
+DATABASE_URL=mysql://root:hardcoded_pass_123@host:port/db
+JWT_SECRET=hardcoded-jwt-key-example
 ```
 
 ### 4. أعد تعيين كلمات المرور المكشوفة
