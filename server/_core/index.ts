@@ -5,6 +5,7 @@ import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { registerAuthRoutes } from "./auth";
 import { checkEnv } from "./env";
+// @ts-ignore - No type definitions available
 import cookieParser from "cookie-parser";
 import { appRouter } from "../routers";
 import { createContext } from "./context";

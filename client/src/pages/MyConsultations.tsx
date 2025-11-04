@@ -37,7 +37,7 @@ export default function MyConsultations() {
 
     const matchesTab =
       activeTab === "all" ||
-      (activeTab === "active" && ["pending", "assigned", "in-progress"].includes(ticket.status)) ||
+      (activeTab === "active" && ["pending", "assigned", "in-progress"].includes(ticket.status || '')) ||
       (activeTab === "completed" && ticket.status === "completed") ||
       (activeTab === "cancelled" && ticket.status === "cancelled");
 
@@ -47,7 +47,7 @@ export default function MyConsultations() {
   // Calculate statistics
   const stats = {
     total: tickets.length,
-    active: tickets.filter((t) => ["pending", "assigned", "in-progress"].includes(t.status)).length,
+    active: tickets.filter((t) => ["pending", "assigned", "in-progress"].includes(t.status || '')).length,
     completed: tickets.filter((t) => t.status === "completed").length,
     cancelled: tickets.filter((t) => t.status === "cancelled").length,
   };

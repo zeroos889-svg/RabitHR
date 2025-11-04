@@ -290,12 +290,12 @@ export async function createUser(data: { email: string; name?: string | null; ro
   const result = await db.insert(users).values({
     email: data.email,
     name: data.name ?? null,
-    role: data.role ?? 'user',
+    role: (data.role ?? 'user') as 'user' | 'admin',
     loginMethod: 'email',
     emailVerified: false,
     profileCompleted: false,
     openId: null,
-  });
+  } as any);
 
   // Drizzle returns insertId in different shapes depending on driver
   const insertedId = Number((result as any).insertId || (result as any)[0]?.insertId || 0);
@@ -309,7 +309,7 @@ export async function savePassword(userId: number, passwordHash: string) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
 
-  await db.insert(passwords).values({ userId, passwordHash });
+  await db.insert(passwords).values({ userId, passwordHash } as any);
 }
 
 /**

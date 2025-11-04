@@ -46,7 +46,7 @@ export default function ConsultingBookingNew() {
   // Queries
   const { data: typesData, isLoading: loadingTypes } = trpc.consultant.getConsultationTypes.useQuery();
   const { data: consultantsData, isLoading: loadingConsultants } = trpc.consultant.getApprovedConsultants.useQuery(
-    selectedTypeId ? { specializationId: undefined } : undefined,
+    undefined,
     { enabled: step >= 2 }
   );
   
@@ -498,11 +498,11 @@ export default function ConsultingBookingNew() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">المدة:</span>
-                      <span className="font-medium">{selectedType?.duration} دقيقة</span>
+                      <span className="font-medium">{selectedType?.estimatedDuration} دقيقة</span>
                     </div>
                     <div className="border-t pt-2 mt-2 flex justify-between text-lg">
                       <span className="font-bold">الإجمالي:</span>
-                      <span className="font-bold text-purple-600">{selectedType?.price} ريال</span>
+                      <span className="font-bold text-purple-600">{selectedType?.basePriceSAR} ريال</span>
                     </div>
                   </div>
                 </Card>
