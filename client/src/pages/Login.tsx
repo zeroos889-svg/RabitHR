@@ -36,7 +36,7 @@ export default function Login() {
           setLocation('/admin');
         } else if (data.user.userType === 'company') {
           setLocation('/dashboard');
-        } else if (data.user.userType === 'consultant') {
+        } else if ((data.user as any).userType === 'consultant') {
           setLocation('/consultant/dashboard');
         } else if (data.user.userType === 'employee') {
           setLocation('/employee/dashboard');

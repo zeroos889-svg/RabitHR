@@ -37,7 +37,7 @@ export default function Profile() {
   );
 
   // Update form when profile data changes
-  React.useEffect(() => {
+  useEffect(() => {
     if (profileData?.user) {
       setName(profileData.user.name || "");
       setEmail(profileData.user.email || "");

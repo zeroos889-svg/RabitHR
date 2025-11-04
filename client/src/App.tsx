@@ -94,7 +94,7 @@ function Router() {
       <Route path={"/login"} component={Login} />
       <Route path={"/consultant/login"} component={ConsultantLogin} />
       <Route path={"/employee/dashboard"} component={() => <ProtectedRoute requiredRole="employee"><CompanyDashboard /></ProtectedRoute>} />
-      <Route path={"/payment"} component={() => <ProtectedRoute><Payment /></ProtectedRoute>} />
+      <Route path={"/payment"} component={() => <ProtectedRoute><Payment planName="اشتراك قياسي" price={500} /></ProtectedRoute>} />
       <Route path="/profile" component={() => <ProtectedRoute><Profile /></ProtectedRoute>} />
       <Route path="/document-generator" component={() => <ProtectedRoute><DocumentGenerator /></ProtectedRoute>} />
       <Route path="/my-documents" component={() => <ProtectedRoute><MyDocuments /></ProtectedRoute>} />

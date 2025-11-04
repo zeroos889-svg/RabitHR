@@ -34,7 +34,7 @@ export default function ConsultantLogin() {
       
       // Redirect based on user type
       setTimeout(() => {
-        if (data.user.userType === 'consultant') {
+        if ((data.user as any).userType === 'consultant') {
           setLocation('/consultant/dashboard');
         } else {
           setLocation('/dashboard');
