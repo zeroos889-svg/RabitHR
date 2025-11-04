@@ -1,6 +1,6 @@
 # Build arguments for flexibility
 ARG NODE_VERSION=18
-ARG PNPM_VERSION=latest
+ARG PNPM_VERSION=10.4.1
 
 # Build stage
 FROM node:${NODE_VERSION}-alpine AS builder
@@ -12,6 +12,9 @@ RUN corepack enable && corepack prepare pnpm@${PNPM_VERSION} --activate
 
 # Copy package files
 COPY package.json pnpm-lock.yaml ./
+
+# Copy patches used by pnpm (required for patched dependencies)
+COPY patches ./patches
 
 # Install dependencies
 RUN pnpm install --frozen-lockfile
@@ -36,13 +39,19 @@ RUN find dist -name "*.map" -delete
 # Production stage
 FROM node:${NODE_VERSION}-alpine
 
+# Re-declare build arguments for production stage
+ARG PNPM_VERSION=10.4.1
+
 WORKDIR /app
 
 # Install pnpm using corepack (built-in with Node 18)
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN corepack enable && corepack prepare pnpm@${PNPM_VERSION} --activate
 
 # Copy package files
 COPY package.json pnpm-lock.yaml ./
+
+# Copy patches used by pnpm (required for patched dependencies)
+COPY patches ./patches
 
 # Install production dependencies only
 RUN pnpm install --prod --frozen-lockfile
