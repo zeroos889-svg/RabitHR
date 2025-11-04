@@ -46,7 +46,7 @@ export default function ConsultingBookingNew() {
   // Queries
   const { data: typesData, isLoading: loadingTypes } = trpc.consultant.getConsultationTypes.useQuery();
   const { data: consultantsData, isLoading: loadingConsultants } = trpc.consultant.getApprovedConsultants.useQuery(
-    selectedTypeId ? { specializationId: undefined } : undefined,
+    undefined,
     { enabled: step >= 2 }
   );
   

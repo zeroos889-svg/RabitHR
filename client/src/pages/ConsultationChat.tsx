@@ -64,7 +64,7 @@ export default function ConsultationChat() {
   // Get AI suggestion mutation
   const getAiSuggestionMutation = trpc.consultant.getAiSuggestion.useMutation({
     onSuccess: (data) => {
-      setMessage(data.suggestion);
+      setMessage(typeof data.suggestion === 'string' ? data.suggestion : '');
       toast.success("تم إنشاء الاقتراح بنجاح!");
       setIsLoadingAi(false);
     },

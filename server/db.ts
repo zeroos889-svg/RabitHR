@@ -1607,34 +1607,4 @@ export async function createDataTransfer(data: {
 }
 
 
-// Create consultation booking
-export async function createConsultationBooking(data: {
-  userId: number;
-  consultantId: number;
-  consultationTypeId: number;
-  scheduledDate: string;
-  scheduledTime: string;
-  description: string;
-  requiredInfo?: string;
-  attachments?: string;
-  status: string;
-}) {
-  const database = await getDb();
-  if (!database) {
-    throw new Error('Database not available');
-  }
 
-  const result = await database.insert(consultationBookings).values({
-    userId: data.userId,
-    consultantId: data.consultantId,
-    consultationTypeId: data.consultationTypeId,
-    scheduledDate: new Date(data.scheduledDate),
-    scheduledTime: data.scheduledTime,
-    description: data.description,
-    requiredInfo: data.requiredInfo || null,
-    attachments: data.attachments || null,
-    status: data.status,
-  });
-
-  return Number((result as any).insertId || 0);
-}
