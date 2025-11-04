@@ -53,7 +53,7 @@ export default function ConsultingBookingNew() {
   const uploadFileMutation = trpc.consultant.uploadFile.useMutation();
   const createBookingMutation = trpc.consultant.createBooking.useMutation();
   
-  const selectedType = typesData?.consultationTypes?.find((t: any) => t.id === selectedTypeId);
+  const selectedType = typesData?.types?.find((t: any) => t.id === selectedTypeId);
   const selectedConsultant = consultantsData?.consultants?.find((c: any) => c.id === selectedConsultantId);
   
   // Parse required documents and info
@@ -191,7 +191,7 @@ export default function ConsultingBookingNew() {
               </div>
               
               <div className="grid md:grid-cols-2 gap-4">
-                {typesData?.consultationTypes?.map((type: any) => (
+                {typesData?.types?.map((type: any) => (
                   <Card
                     key={type.id}
                     className={`p-4 cursor-pointer transition-all hover:shadow-lg ${

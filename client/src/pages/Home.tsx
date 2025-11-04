@@ -31,7 +31,7 @@ import { VimeoVideo } from '@/components/VimeoVideo';
 // Consulting Services Section Component
 function ConsultingServicesSection() {
   const { data: typesData, isLoading } = trpc.consultant.getConsultationTypes.useQuery();
-  const consultationTypes = typesData?.consultationTypes?.slice(0, 6) || [];
+  const consultationTypes = typesData?.types?.slice(0, 6) || [];
 
   if (isLoading) {
     return (

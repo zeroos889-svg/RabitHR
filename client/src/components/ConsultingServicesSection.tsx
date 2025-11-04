@@ -71,7 +71,7 @@ export function ConsultingServicesSection() {
   }
 
   // Display first 6 types
-  const displayTypes = types?.consultationTypes?.slice(0, 6) || [];
+  const displayTypes = types?.types?.slice(0, 6) || [];
 
   return (
     <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
@@ -79,7 +79,7 @@ export function ConsultingServicesSection() {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">الخدمات الاستشارية</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            استشارات متخصصة في الموارد البشرية من خبراء معتمدين - أكثر من {types?.consultationTypes?.length || 10} نوع استشارة
+            استشارات متخصصة في الموارد البشرية من خبراء معتمدين - أكثر من {types?.types?.length || 10} نوع استشارة
           </p>
         </div>
 
@@ -144,7 +144,7 @@ export function ConsultingServicesSection() {
         <div className="text-center">
           <Link href="/consulting">
             <Button size="lg" className="gradient-primary text-white">
-              عرض جميع الخدمات الاستشارية ({types?.consultationTypes?.length || 10})
+              عرض جميع الخدمات الاستشارية ({types?.types?.length || 10})
               <ArrowRight className="mr-2 h-4 w-4" />
             </Button>
           </Link>
