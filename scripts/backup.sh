@@ -54,6 +54,17 @@ if [ $? -eq 0 ]; then
     COMPRESSED_SIZE=$(du -h "$BACKUP_FILE.gz" | cut -f1)
     echo -e "${GREEN}✅ تم الضغط بنجاح! الحجم الجديد: $COMPRESSED_SIZE${NC}"
     
+    # رفع إلى S3 (إذا كان مفعّل)
+    if [ -n "$AWS_S3_BUCKET" ] && [ -n "$AWS_ACCESS_KEY_ID" ]; then
+        echo -e "${YELLOW}☁️  رفع النسخة إلى S3...${NC}"
+        aws s3 cp "$BACKUP_FILE.gz" "s3://$AWS_S3_BUCKET/backups/$(basename $BACKUP_FILE.gz)"
+        if [ $? -eq 0 ]; then
+            echo -e "${GREEN}✅ تم الرفع إلى S3 بنجاح!${NC}"
+        else
+            echo -e "${RED}⚠️  فشل الرفع إلى S3${NC}"
+        fi
+    fi
+    
     # حذف النسخ القديمة (الاحتفاظ بآخر 7 نسخ)
     echo -e "${YELLOW}🧹 حذف النسخ القديمة...${NC}"
     ls -t "$BACKUP_DIR"/rabithr_backup_*.sql.gz 2>/dev/null | tail -n +8 | xargs -r rm
