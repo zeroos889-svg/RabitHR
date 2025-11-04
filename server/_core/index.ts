@@ -7,6 +7,9 @@ import { registerAuthRoutes } from "./auth";
 import { checkEnv } from "./env";
 // @ts-ignore - No type definitions available
 import cookieParser from "cookie-parser";
+import helmet from "helmet";
+import compression from "compression";
+import { apiLimiter, authLimiter } from "./rateLimit";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
@@ -61,13 +64,45 @@ async function startServer() {
   const app = express();
   const server = createServer(app);
   
+  // Security Headers - Helmet
+  app.use(helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:", "https:"],
+        connectSrc: ["'self'"],
+        fontSrc: ["'self'"],
+        objectSrc: ["'none'"],
+        mediaSrc: ["'self'"],
+        frameSrc: ["'none'"],
+      },
+    },
+    hsts: {
+      maxAge: 31536000,
+      includeSubDomains: true,
+      preload: true
+    },
+  }));
+  
+  // Response Compression
+  app.use(compression({
+    level: 6, // Compression level (0-9)
+    threshold: 1024, // Only compress responses larger than 1KB
+  }));
+  
+  // Rate Limiting - General API
+  app.use('/api/', apiLimiter);
+  
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   app.use(cookieParser());
   
-  // Authentication routes
-  registerAuthRoutes(app);
+  // Authentication routes with strict rate limiting
+  registerAuthRoutes(app, authLimiter);
+  
   // tRPC API
   app.use(
     "/api/trpc",
