@@ -13,6 +13,11 @@ import { runSQLMigrations } from "./sqlMigrations";
 import { runEmbeddedMigrations } from "./embeddedMigrations";
 import mysql from "mysql2/promise";
 
+/**
+ * Check if a port is available for use
+ * @param port - Port number to check
+ * @returns Promise resolving to true if port is available
+ */
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
     const server = net.createServer();
@@ -23,6 +28,12 @@ function isPortAvailable(port: number): Promise<boolean> {
   });
 }
 
+/**
+ * Find an available port starting from a given port number
+ * @param startPort - Starting port number (default: 3000)
+ * @returns Promise resolving to an available port number
+ * @throws {Error} If no available port found in range
+ */
 async function findAvailablePort(startPort: number = 3000): Promise<number> {
   for (let port = startPort; port < startPort + 20; port++) {
     if (await isPortAvailable(port)) {
@@ -32,6 +43,11 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
   throw new Error(`No available port found starting from ${startPort}`);
 }
 
+/**
+ * Initialize and start the Express server
+ * Sets up middleware, runs migrations, and starts listening on available port
+ * @throws {Error} If migrations fail or server cannot start
+ */
 async function startServer() {
   // Check environment variables
   checkEnv();

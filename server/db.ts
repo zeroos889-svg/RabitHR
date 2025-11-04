@@ -19,6 +19,11 @@ export async function getDb() {
   return _db;
 }
 
+/**
+ * Insert or update a user in the database
+ * @param user - User data to upsert
+ * @throws {Error} If openId is missing or database operation fails
+ */
 export async function upsertUser(user: InsertUser): Promise<void> {
   if (!user.openId) {
     throw new Error("User openId is required for upsert");
