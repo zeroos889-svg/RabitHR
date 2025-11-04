@@ -1354,7 +1354,7 @@ ${companyName ? `اسم الشركة: ${companyName}\n` : ''}
           consultantId: booking.consultantId!,
           clientId: ctx.user.id,
           rating: input.rating,
-          comment: input.comment,
+          review: input.comment,
         });
 
         return { success: true };
