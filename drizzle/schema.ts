@@ -15,7 +15,7 @@ export const users = mysqlTable("users", {
   loginMethod: varchar("loginMethod", { length: 64 }), // 'oauth', 'email', 'google', 'apple', etc.
   profilePicture: text("profilePicture"),
   role: mysqlEnum("role", ["user", "admin"]).default("user").notNull(),
-  userType: mysqlEnum("userType", ["employee", "individual", "company"]),
+  userType: mysqlEnum("userType", ["employee", "individual", "company", "consultant"]),
   emailVerified: boolean("emailVerified").default(false),
   profileCompleted: boolean("profileCompleted").default(false),
   createdAt: timestamp("createdAt").defaultNow().notNull(),

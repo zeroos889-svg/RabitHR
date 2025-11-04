@@ -33,7 +33,7 @@ export default function ConsultantDashboard() {
   // Filter tickets based on search and tab
   const filteredTickets = tickets.filter((ticket) => {
     const matchesSearch =
-      ticket.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (ticket.subject || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
       ticket.ticketNumber.toLowerCase().includes(searchQuery.toLowerCase());
 
     const matchesTab =
@@ -269,8 +269,8 @@ export default function ConsultantDashboard() {
         ) : (
           <div className="grid grid-cols-1 gap-6">
             {filteredTickets.map((ticket) => {
-              const StatusIcon = statusConfig[ticket.status]?.icon || Clock;
-              const statusInfo = statusConfig[ticket.status] || statusConfig.pending;
+              const StatusIcon = statusConfig[ticket.status || 'pending']?.icon || Clock;
+              const statusInfo = statusConfig[ticket.status || 'pending'] || statusConfig.pending;
               const priorityInfo = priorityConfig[ticket.priority || "medium"];
 
               // Check if SLA is approaching

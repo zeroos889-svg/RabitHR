@@ -1077,7 +1077,7 @@ ${companyName ? `اسم الشركة: ${companyName}\n` : ''}
     getConsultationTypes: publicProcedure
       .query(async () => {
         const types = await db.getAllConsultationTypes();
-        return { types };
+        return { types, consultationTypes: types };
       }),
 
     // Get approved consultants (public)

@@ -233,8 +233,8 @@ export default function ConsultationDetail() {
     );
   }
 
-  const StatusIcon = statusConfig[ticket.status]?.icon || Clock;
-  const statusInfo = statusConfig[ticket.status] || statusConfig.pending;
+  const StatusIcon = statusConfig[ticket.status || 'pending']?.icon || Clock;
+  const statusInfo = statusConfig[ticket.status || 'pending'] || statusConfig.pending;
   const priorityInfo = priorityConfig[ticket.priority || "medium"];
 
   const isCompleted = ticket.status === "completed";
