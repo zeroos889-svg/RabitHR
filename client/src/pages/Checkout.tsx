@@ -73,20 +73,20 @@ export default function Checkout() {
     cvv: "",
   });
 
-  // Discount code mutation
-  const validateDiscountMutation = trpc.discountCodes.validate.useMutation({
-    onSuccess: (data) => {
-      setAppliedDiscount({
-        code: discountCode,
-        discount: data.discount,
-        discountType: data.discountType as "percentage" | "fixed",
-      });
-      toast.success("تم تطبيق كود الخصم بنجاح!");
-    },
-    onError: (error) => {
-      toast.error(error.message || "كود الخصم غير صالح");
-    },
-  });
+  // Discount code mutation - TODO: Uncomment when backend is ready
+  // const validateDiscountMutation = trpc.discountCodes.validate.useMutation({
+  //   onSuccess: (data: any) => {
+  //     setAppliedDiscount({
+  //       code: discountCode,
+  //       discount: data.discount,
+  //       discountType: data.discountType as "percentage" | "fixed",
+  //     });
+  //     toast.success("تم تطبيق كود الخصم بنجاح!");
+  //   },
+  //   onError: (error: any) => {
+  //     toast.error(error.message || "كود الخصم غير صالح");
+  //   },
+  // });
 
   // Calculate final price
   const calculateFinalPrice = () => {
@@ -109,10 +109,12 @@ export default function Checkout() {
       return;
     }
 
-    await validateDiscountMutation.mutateAsync({
-      code: discountCode,
-      packageId: selectedPackage.id,
-    });
+    // TODO: Implement discount code validation
+    toast.info("سيتم تفعيل هذه الميزة قريباً");
+    // await validateDiscountMutation.mutateAsync({
+    //   code: discountCode,
+    //   packageId: selectedPackage.id,
+    // });
   };
 
   const handlePayment = async (e: React.FormEvent) => {
@@ -465,13 +467,9 @@ export default function Checkout() {
                       type="button"
                       variant="outline"
                       onClick={handleApplyDiscount}
-                      disabled={validateDiscountMutation.isPending || !!appliedDiscount}
+                      disabled={!!appliedDiscount}
                     >
-                      {validateDiscountMutation.isPending ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : (
-                        <Tag className="h-4 w-4" />
-                      )}
+                      <Tag className="h-4 w-4" />
                     </Button>
                   </div>
                   {appliedDiscount && (

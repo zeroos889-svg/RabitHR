@@ -85,8 +85,8 @@ export default function SignupCompany() {
       await registerMutation.mutateAsync({
         email: companyData.email,
         password: Math.random().toString(36).slice(-8), // Generate temporary password
-        fullName: companyData.adminName,
-        phone: companyData.phone,
+        name: companyData.adminName,
+        phoneNumber: companyData.phone,
         userType: "company",
       });
     } catch (error) {
