@@ -3,9 +3,21 @@ import path from "path";
 
 export default defineConfig({
   root: path.resolve(import.meta.dirname),
+  resolve: {
+    alias: {
+      "@": path.resolve(import.meta.dirname, "client", "src"),
+      "@shared": path.resolve(import.meta.dirname, "shared"),
+      "@assets": path.resolve(import.meta.dirname, "attached_assets"),
+    },
+  },
   test: {
     environment: "node",
-    include: ["server/**/*.test.ts", "server/**/*.spec.ts"],
+    include: [
+      "server/**/*.test.ts",
+      "server/**/*.spec.ts",
+      "client/**/*.test.{ts,tsx}",
+      "client/**/*.spec.{ts,tsx}",
+    ],
     // Allow CI to pass even when there are currently no test files
     passWithNoTests: true,
   },
