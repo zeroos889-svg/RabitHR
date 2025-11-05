@@ -98,8 +98,19 @@ export function isValidPassword(password: string): boolean {
   );
 }
 
-// Rate Limiting Middleware
+// ⚠️ WARNING: In-memory rate limiting
+// This is NOT suitable for production with multiple server instances
+// For production, use Redis or express-rate-limit with Redis store
 const requestCounts = new Map<string, { count: number; resetTime: number }>();
+
+// Log warning once in production
+if (process.env.NODE_ENV === "production") {
+  console.warn(
+    "⚠️  Rate limiting is using in-memory storage. " +
+    "This will not work correctly across multiple server instances. " +
+    "Consider using Redis with express-rate-limit for production."
+  );
+}
 
 export function rateLimitMiddleware(
   maxRequests: number = 100,

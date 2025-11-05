@@ -46,6 +46,19 @@ const defaultLang = localStorage.getItem("i18nextLng") || "ar";
 document.documentElement.dir = defaultLang === "ar" ? "rtl" : "ltr";
 document.documentElement.lang = defaultLang;
 
+// Initialize analytics if configured
+if (import.meta.env.VITE_ANALYTICS_ENDPOINT && import.meta.env.VITE_ANALYTICS_WEBSITE_ID) {
+  try {
+    const script = document.createElement('script');
+    script.defer = true;
+    script.src = import.meta.env.VITE_ANALYTICS_ENDPOINT + '/umami';
+    script.dataset.websiteId = import.meta.env.VITE_ANALYTICS_WEBSITE_ID;
+    document.head.appendChild(script);
+  } catch (error) {
+    console.warn("Failed to initialize analytics:", error);
+  }
+}
+
 const queryClient = new QueryClient();
 
 const redirectToLoginIfUnauthorized = (error: unknown) => {
@@ -56,7 +69,13 @@ const redirectToLoginIfUnauthorized = (error: unknown) => {
 
   if (!isUnauthorized) return;
 
-  window.location.href = getLoginUrl();
+  try {
+    window.location.href = getLoginUrl();
+  } catch (err) {
+    console.error("Failed to redirect to login:", err);
+    // Fallback to login page
+    window.location.href = "/login";
+  }
 };
 
 queryClient.getQueryCache().subscribe(event => {

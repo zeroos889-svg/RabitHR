@@ -97,9 +97,19 @@ function logError(error: Error, req?: Request) {
 }
 
 /**
+ * Error interface for better type safety
+ */
+interface ErrorWithStatus extends Error {
+  statusCode?: number;
+  status?: string;
+  code?: string;
+  isOperational?: boolean;
+}
+
+/**
  * Development error response
  */
-function sendErrorDev(err: any, req: Request, res: Response) {
+function sendErrorDev(err: ErrorWithStatus, req: Request, res: Response) {
   res.status(err.statusCode || 500).json({
     status: "error",
     error: err,
@@ -118,7 +128,7 @@ function sendErrorDev(err: any, req: Request, res: Response) {
 /**
  * Production error response
  */
-function sendErrorProd(err: any, req: Request, res: Response) {
+function sendErrorProd(err: ErrorWithStatus, req: Request, res: Response) {
   // Operational, trusted error: send message to client
   if (err.isOperational) {
     res.status(err.statusCode || 500).json({
@@ -142,7 +152,7 @@ function sendErrorProd(err: any, req: Request, res: Response) {
  * Global error handler middleware
  */
 export function errorHandler(
-  err: any,
+  err: ErrorWithStatus,
   req: Request,
   res: Response,
   next: NextFunction
@@ -165,7 +175,13 @@ export function errorHandler(
  * Async error wrapper
  * Wraps async route handlers to catch errors automatically
  */
-export function asyncHandler(fn: Function) {
+type AsyncRouteHandler = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => Promise<void> | Promise<any>;
+
+export function asyncHandler(fn: AsyncRouteHandler) {
   return (req: Request, res: Response, next: NextFunction) => {
     Promise.resolve(fn(req, res, next)).catch(next);
   };
