@@ -132,6 +132,14 @@ async function startServer() {
   server.listen(port, () => {
     console.log(`Server running on http://localhost:${port}/`);
   });
+  
+  return app;
 }
 
-startServer().catch(console.error);
+// Start server for local development or Docker
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  startServer().catch(console.error);
+}
+
+// Export for Vercel serverless
+export default startServer;

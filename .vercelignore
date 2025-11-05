@@ -1,0 +1,56 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Development files
+*.log
+*.md
+!README.md
+.env
+.env.local
+.env.*.local
+
+# Testing
+coverage
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+__tests__
+
+# Build artifacts (keep dist for static files)
+.turbo
+.cache
+
+# Version control
+.git
+.gitignore
+
+# Documentation (keep only essential)
+docs/
+research/
+backups/
+
+# Large files not needed for deployment
+*.tar.gz
+*.zip
+video-reference.png
+rabit-*.tar.gz
+
+# Database and scripts not needed
+*.sql
+seed-*.mjs
+update-*.mjs
+drizzle/meta
+drizzle/migrations
+
+# Docker files
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# CI/CD
+.github/
+
+# Monitoring
+monitoring/

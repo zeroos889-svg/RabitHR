@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "NODE_ENV=development tsx watch server/_core/index.ts",
     "build": "vite build && esbuild server/_core/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
+    "vercel-build": "vite build",
     "start": "NODE_ENV=production node dist/index.js",
     "check": "tsc --noEmit",
     "format": "prettier --write .",
@@ -108,6 +109,7 @@
     "@types/node": "^24.7.0",
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",
+    "@vercel/node": "^3.0.21",
     "@vitejs/plugin-react": "^5.0.4",
     "@vitest/ui": "^4.0.6",
     "add": "^2.0.6",
