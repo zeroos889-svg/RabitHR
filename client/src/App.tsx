@@ -25,8 +25,11 @@ const NotFound = lazy(() => import("@/pages/NotFound"));
 // Auth pages
 const SignupEmployee = lazy(() => import("./pages/SignupEmployee"));
 const SignupConsultant = lazy(() => import("@/pages/SignupConsultant"));
+const SignupCompany = lazy(() => import("./pages/SignupCompany"));
 const ConsultantLogin = lazy(() => import("@/pages/ConsultantLogin"));
 const ConsultantRegister = lazy(() => import("./pages/ConsultantRegister"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 
 // Dashboard pages (high priority - loaded on demand)
 const CompanyDashboard = lazy(
@@ -129,7 +132,10 @@ function Router() {
         <Route path={"/signup"} component={AccountType} />
         <Route path={"/signup/employee"} component={SignupEmployee} />
         <Route path={"/signup/consultant"} component={SignupConsultant} />
+        <Route path={"/signup/company"} component={SignupCompany} />
         <Route path={"/login"} component={Login} />
+        <Route path={"/forgot-password"} component={ForgotPassword} />
+        <Route path={"/reset-password/:token"} component={ResetPassword} />
         <Route path={"/consultant/login"} component={ConsultantLogin} />
         <Route
           path={"/employee/dashboard"}
