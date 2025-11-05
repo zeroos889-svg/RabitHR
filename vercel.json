@@ -3,10 +3,11 @@
   "installCommand": "pnpm install",
   "devCommand": "pnpm dev",
   "framework": "vite",
+  "ignoreCommand": "[[ \"$VERCEL_GIT_COMMIT_REF\" != \"main\" ]] && echo 'skip'",
   "env": {},
   "functions": {
     "server/_core/index.ts": {
-      "runtime": "nodejs18.x"
+      "runtime": "nodejs20.x"
     }
   },
   "rewrites": [
