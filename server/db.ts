@@ -71,10 +71,13 @@ export async function getDb() {
         `Connection attempt ${_connectionAttempts}/${MAX_CONNECTION_ATTEMPTS} failed`,
         {
           context: "Database",
-          error: error instanceof Error ? {
-            name: error.name,
-            message: error.message,
-          } : undefined,
+          error:
+            error instanceof Error
+              ? {
+                  name: error.name,
+                  message: error.message,
+                }
+              : undefined,
         }
       );
 
@@ -84,7 +87,7 @@ export async function getDb() {
         logger.info(`Retrying database connection in ${delay}ms...`, {
           context: "Database",
         });
-        
+
         await new Promise(resolve => setTimeout(resolve, delay));
         return getDb();
       }

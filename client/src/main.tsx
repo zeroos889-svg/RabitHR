@@ -47,11 +47,14 @@ document.documentElement.dir = defaultLang === "ar" ? "rtl" : "ltr";
 document.documentElement.lang = defaultLang;
 
 // Initialize analytics if configured
-if (import.meta.env.VITE_ANALYTICS_ENDPOINT && import.meta.env.VITE_ANALYTICS_WEBSITE_ID) {
+if (
+  import.meta.env.VITE_ANALYTICS_ENDPOINT &&
+  import.meta.env.VITE_ANALYTICS_WEBSITE_ID
+) {
   try {
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.defer = true;
-    script.src = import.meta.env.VITE_ANALYTICS_ENDPOINT + '/umami';
+    script.src = import.meta.env.VITE_ANALYTICS_ENDPOINT + "/umami";
     script.dataset.websiteId = import.meta.env.VITE_ANALYTICS_WEBSITE_ID;
     document.head.appendChild(script);
   } catch (error) {

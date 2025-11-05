@@ -1,4 +1,5 @@
 # Phase 4: Strategic Growth & AI Integration Plan
+
 ## خطة النمو الاستراتيجي وتكامل الذكاء الاصطناعي
 
 **التاريخ**: 2025-11-05  
@@ -16,15 +17,18 @@
 ## 📊 المحاور الاستراتيجية الخمسة
 
 ### 1️⃣ HR AI Assistant Module (HRBot)
+
 **الهدف**: مساعد ذكاء اصطناعي خاص للاستشارات HR
 
 #### الميزات الأساسية
+
 - 💬 **محادثة ذكية**: الإجابة على استفسارات HR (سياسات، قوانين العمل السعودي)
 - 📝 **توليد الوثائق**: إنشاء خطابات، عقود، شهادات تلقائياً
 - 📊 **تحليل البيانات**: تحليل بيانات الموظفين وتقديم رؤى
 - 🔒 **الخصوصية**: عزل كامل للبيانات السرية
 
 #### التقنيات المقترحة
+
 ```typescript
 // Stack
 - OpenAI GPT-4 API أو Azure OpenAI
@@ -46,22 +50,27 @@ server/ai/
 ```
 
 #### خطة التنفيذ
+
 **المرحلة 1** (أسبوع 1-2):
+
 - [ ] إعداد OpenAI API integration
 - [ ] إنشاء prompts أساسية بالعربية والإنجليزية
 - [ ] بناء chat interface بسيط
 
 **المرحلة 2** (أسبوع 3-4):
+
 - [ ] إضافة context من قاعدة البيانات
 - [ ] تكامل مع Saudi Labor Law knowledge base
 - [ ] Rate limiting وأمان API
 
 **المرحلة 3** (أسبوع 5-6):
+
 - [ ] توليد الوثائق بالـ AI
 - [ ] تحليلات متقدمة
 - [ ] Testing شامل
 
 #### الأمان والخصوصية
+
 ```typescript
 // Data isolation
 - لا إرسال بيانات حساسة للـ OpenAI
@@ -73,9 +82,11 @@ server/ai/
 ---
 
 ### 2️⃣ HR Analytics Dashboard
+
 **الهدف**: لوحة تحكم BI متقدمة للمقاييس HR
 
 #### المقاييس الرئيسية (KPIs)
+
 1. **التوطين (Saudization)**
    - نسبة السعوديين مقابل الأجانب
    - توزيع حسب الإدارات
@@ -97,6 +108,7 @@ server/ai/
    - Employee satisfaction scores
 
 #### التصميم التقني
+
 ```typescript
 // Component Structure
 client/src/pages/analytics/
@@ -119,6 +131,7 @@ client/src/pages/analytics/
 ```
 
 #### API Endpoints
+
 ```typescript
 // Backend APIs
 GET /api/analytics/saudization
@@ -143,9 +156,11 @@ GET /api/analytics/overview
 ---
 
 ### 3️⃣ Smart Event & Notification Engine
+
 **الهدف**: نظام تنبيهات ذكي استباقي
 
 #### أنواع التنبيهات
+
 1. **العقود**
    - انتهاء صلاحية العقد (30/60/90 يوم)
    - انتهاء فترة التجربة
@@ -167,6 +182,7 @@ GET /api/analytics/overview
    - مخالفات محتملة
 
 #### البنية التقنية
+
 ```typescript
 // Cron Jobs (Vercel Cron)
 api/cron/
@@ -200,6 +216,7 @@ CREATE TABLE events_log (
 ```
 
 #### Implementation Plan
+
 ```typescript
 // Event Engine Core
 server/events/
@@ -217,9 +234,11 @@ server/events/
 ---
 
 ### 4️⃣ Multi-Tenant Architecture
+
 **الهدف**: دعم شركات متعددة في نفس المنصة
 
 #### المفاهيم الأساسية
+
 ```typescript
 // Tenant Isolation Strategies
 1. Schema per tenant (أثقل، أكثر عزلاً)
@@ -233,6 +252,7 @@ server/events/
 ```
 
 #### Database Schema Updates
+
 ```sql
 -- Add company_id to all tables
 ALTER TABLE users ADD COLUMN company_id INT NOT NULL;
@@ -271,20 +291,21 @@ CREATE TABLE companies (
 ```
 
 #### Authentication Updates
+
 ```typescript
 // Middleware للـ tenant resolution
-server/middleware/tenant.ts
+server / middleware / tenant.ts;
 
 export function resolveTenant(req: Request, res: Response, next: NextFunction) {
   // Method 1: Subdomain (company1.rabithr.com)
-  const subdomain = req.hostname.split('.')[0];
-  
+  const subdomain = req.hostname.split(".")[0];
+
   // Method 2: Custom domain
   const customDomain = req.hostname;
-  
+
   // Method 3: Header (for API)
-  const tenantId = req.headers['x-tenant-id'];
-  
+  const tenantId = req.headers["x-tenant-id"];
+
   // Load company and attach to request
   req.company = await getCompanyBySlugOrDomain(subdomain || customDomain);
   next();
@@ -292,19 +313,20 @@ export function resolveTenant(req: Request, res: Response, next: NextFunction) {
 
 // All DB queries must filter by company_id
 const employees = await db.query(
-  'SELECT * FROM employees WHERE company_id = ?',
+  "SELECT * FROM employees WHERE company_id = ?",
   [req.company.id]
 );
 ```
 
 #### UI/UX Updates
+
 ```typescript
 // Dynamic branding
 client/src/hooks/useCompany.ts
 
 export function useCompany() {
   const { data: company } = useQuery(['company'], fetchCompany);
-  
+
   return {
     name: company?.name,
     logo: company?.logo_url,
@@ -322,9 +344,11 @@ export function useCompany() {
 ---
 
 ### 5️⃣ Public HR API (v1)
+
 **الهدف**: واجهة برمجية عامة للتكامل الخارجي
 
 #### Endpoints الأساسية
+
 ```typescript
 // Authentication
 POST /api/v1/auth/token           // Get JWT token
@@ -353,54 +377,57 @@ GET /api/v1/analytics/saudization // Saudization metrics
 ```
 
 #### Security Implementation
+
 ```typescript
 // JWT-based authentication
-server/api/v1/auth.ts
+server / api / v1 / auth.ts;
 
 export async function generateAPIToken(companyId: number, scope: string[]) {
   const token = jwt.sign(
     {
       company_id: companyId,
       scope: scope,
-      type: 'api_token'
+      type: "api_token",
     },
     process.env.JWT_SECRET,
-    { expiresIn: '30d' }
+    { expiresIn: "30d" }
   );
-  
+
   return token;
 }
 
 // Rate limiting (per API key)
-import rateLimit from 'express-rate-limit';
+import rateLimit from "express-rate-limit";
 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // 100 requests per window
-  keyGenerator: (req) => req.apiKey,
-  message: 'Too many requests from this API key'
+  keyGenerator: req => req.apiKey,
+  message: "Too many requests from this API key",
 });
 
 // Scope validation
 function requireScope(scope: string) {
   return (req, res, next) => {
     if (!req.token.scope.includes(scope)) {
-      return res.status(403).json({ error: 'Insufficient permissions' });
+      return res.status(403).json({ error: "Insufficient permissions" });
     }
     next();
   };
 }
 
 // Usage
-router.get('/employees', 
+router.get(
+  "/employees",
   authenticateAPIToken,
-  requireScope('employees:read'),
+  requireScope("employees:read"),
   apiLimiter,
   getEmployees
 );
 ```
 
 #### API Documentation
+
 ```typescript
 // OpenAPI/Swagger
 docs/api/
@@ -420,31 +447,37 @@ docs/api/
 ### Timeline (12 أسبوع)
 
 #### Sprint 1-2 (أسبوع 1-2): Foundation
+
 - [ ] إعداد multi-tenant architecture
 - [ ] تحديث database schema
 - [ ] Tenant middleware وauthentication
 
 #### Sprint 3-4 (أسبوع 3-4): AI Integration
+
 - [ ] HR AI Assistant - المرحلة 1
 - [ ] OpenAI integration
 - [ ] Basic chat interface
 
 #### Sprint 5-6 (أسبوع 5-6): Analytics
+
 - [ ] Analytics dashboard UI
 - [ ] KPIs implementation
 - [ ] Real-time data fetching
 
 #### Sprint 7-8 (أسبوع 7-8): Events & Notifications
+
 - [ ] Event engine core
 - [ ] Cron jobs setup
 - [ ] Notification system
 
 #### Sprint 9-10 (أسبوع 9-10): Public API
+
 - [ ] API endpoints development
 - [ ] Authentication & authorization
 - [ ] Rate limiting & security
 
 #### Sprint 11-12 (أسبوع 11-12): Testing & Documentation
+
 - [ ] Integration testing
 - [ ] API documentation
 - [ ] User guides (Arabic/English)
@@ -455,6 +488,7 @@ docs/api/
 ## 📋 المتطلبات التقنية
 
 ### Dependencies الجديدة
+
 ```json
 {
   "dependencies": {
@@ -472,23 +506,20 @@ docs/api/
 ```
 
 ### Infrastructure Updates
+
 ```yaml
 # vercel.json - Add cron jobs
 {
-  "crons": [
-    {
-      "path": "/api/cron/check-contracts",
-      "schedule": "0 9 * * *"
-    },
-    {
-      "path": "/api/cron/process-attendance",
-      "schedule": "0 * * * *"
-    }
-  ]
+  "crons":
+    [
+      { "path": "/api/cron/check-contracts", "schedule": "0 9 * * *" },
+      { "path": "/api/cron/process-attendance", "schedule": "0 * * * *" },
+    ],
 }
 ```
 
 ### Environment Variables
+
 ```env
 # AI Services
 OPENAI_API_KEY=sk-...
@@ -514,6 +545,7 @@ API_RATE_LIMIT=100
 ## 🔒 الأمان والخصوصية
 
 ### Data Privacy
+
 1. **AI Data Handling**
    - Anonymize personal data قبل إرسالها للـ AI
    - No storing of AI conversations مع بيانات حساسة
@@ -535,6 +567,7 @@ API_RATE_LIMIT=100
 ## 📊 Success Metrics
 
 ### KPIs لقياس النجاح
+
 1. **AI Assistant**
    - عدد الاستفسارات المعالجة يومياً
    - معدل رضا المستخدمين (feedback)
@@ -567,6 +600,7 @@ API_RATE_LIMIT=100
 ### للبدء في Phase 4:
 
 1. **إنشاء Branch جديد**
+
    ```bash
    git checkout -b feature/phase4-ai-integration
    ```
@@ -594,12 +628,14 @@ API_RATE_LIMIT=100
 ## 📚 المراجع والموارد
 
 ### Documentation
+
 - OpenAI API: https://platform.openai.com/docs
 - LangChain: https://js.langchain.com/docs
 - Vercel Cron: https://vercel.com/docs/cron-jobs
 - Multi-tenancy patterns: https://docs.microsoft.com/en-us/azure/architecture/
 
 ### Best Practices
+
 - GDPR compliance for AI
 - Saudi Data Protection Law
 - API security standards (OWASP)

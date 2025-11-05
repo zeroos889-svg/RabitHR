@@ -16,8 +16,8 @@ const csrfTokens = new Map<string, { token: string; expires: number }>();
 if (process.env.NODE_ENV === "production") {
   console.warn(
     "⚠️  CSRF tokens are stored in memory. " +
-    "This will not work correctly with multiple server instances. " +
-    "Consider using Redis or a database for production."
+      "This will not work correctly with multiple server instances. " +
+      "Consider using Redis or a database for production."
   );
 }
 

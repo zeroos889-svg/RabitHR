@@ -54,31 +54,35 @@ class Logger {
         error: "❌",
         fatal: "💀",
       };
-      
+
       let output = `${levelEmoji[entry.level]} [${time}] ${entry.level.toUpperCase()}`;
-      
+
       if (entry.context) {
         output += ` [${entry.context}]`;
       }
-      
+
       output += `: ${entry.message}`;
-      
+
       if (entry.data) {
         output += `\n  Data: ${JSON.stringify(entry.data, null, 2)}`;
       }
-      
+
       if (entry.error) {
         output += `\n  Error: ${entry.error.message}`;
         if (entry.error.stack) {
           output += `\n${entry.error.stack}`;
         }
       }
-      
+
       return output;
     }
   }
 
-  private log(level: LogLevel, message: string, meta?: Partial<Omit<LogEntry, "timestamp" | "level" | "message">>) {
+  private log(
+    level: LogLevel,
+    message: string,
+    meta?: Partial<Omit<LogEntry, "timestamp" | "level" | "message">>
+  ) {
     if (!this.shouldLog(level)) return;
 
     const entry: LogEntry = {
@@ -105,23 +109,38 @@ class Logger {
     // }
   }
 
-  debug(message: string, meta?: Partial<Omit<LogEntry, "timestamp" | "level" | "message">>) {
+  debug(
+    message: string,
+    meta?: Partial<Omit<LogEntry, "timestamp" | "level" | "message">>
+  ) {
     this.log("debug", message, meta);
   }
 
-  info(message: string, meta?: Partial<Omit<LogEntry, "timestamp" | "level" | "message">>) {
+  info(
+    message: string,
+    meta?: Partial<Omit<LogEntry, "timestamp" | "level" | "message">>
+  ) {
     this.log("info", message, meta);
   }
 
-  warn(message: string, meta?: Partial<Omit<LogEntry, "timestamp" | "level" | "message">>) {
+  warn(
+    message: string,
+    meta?: Partial<Omit<LogEntry, "timestamp" | "level" | "message">>
+  ) {
     this.log("warn", message, meta);
   }
 
-  error(message: string, meta?: Partial<Omit<LogEntry, "timestamp" | "level" | "message">>) {
+  error(
+    message: string,
+    meta?: Partial<Omit<LogEntry, "timestamp" | "level" | "message">>
+  ) {
     this.log("error", message, meta);
   }
 
-  fatal(message: string, meta?: Partial<Omit<LogEntry, "timestamp" | "level" | "message">>) {
+  fatal(
+    message: string,
+    meta?: Partial<Omit<LogEntry, "timestamp" | "level" | "message">>
+  ) {
     this.log("fatal", message, meta);
   }
 
@@ -139,9 +158,16 @@ class Logger {
   }
 
   // Helper for logging HTTP requests
-  logRequest(method: string, url: string, statusCode: number, responseTime: number, ip?: string) {
-    const level = statusCode >= 500 ? "error" : statusCode >= 400 ? "warn" : "info";
-    
+  logRequest(
+    method: string,
+    url: string,
+    statusCode: number,
+    responseTime: number,
+    ip?: string
+  ) {
+    const level =
+      statusCode >= 500 ? "error" : statusCode >= 400 ? "warn" : "info";
+
     this.log(level, `${method} ${url} ${statusCode} - ${responseTime}ms`, {
       context: "HTTP",
       request: {

@@ -1,4 +1,5 @@
 # Phase 4: GitHub Issues Templates
+
 ## قوالب Issues للمرحلة 4
 
 استخدم هذه القوالب لإنشاء Issues في GitHub.
@@ -16,13 +17,16 @@
 **Milestone**: Phase 4 - Sprint 1-2
 
 **Description**:
-```markdown
+
+````markdown
 ## 🎯 الهدف
+
 تجهيز البنية التحتية لدعم شركات متعددة (tenants) في نفس المنصة مع عزل كامل للبيانات.
 
 ## 📋 المهام الرئيسية
 
 ### Database Schema Updates
+
 - [ ] إنشاء `companies` table
   ```sql
   CREATE TABLE companies (
@@ -36,29 +40,35 @@
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   );
   ```
+````
+
 - [ ] إضافة `company_id` لجميع الجداول الموجودة
 - [ ] إضافة indexes على `company_id`
 - [ ] إنشاء migration scripts
 
 ### Middleware & Authentication
+
 - [ ] إنشاء `server/middleware/tenant.ts`
 - [ ] Tenant resolution (subdomain/domain/header)
 - [ ] تحديث authentication للتحقق من company_id
 - [ ] إضافة company context لجميع requests
 
 ### Application Layer
+
 - [ ] تحديث جميع DB queries لتصفية بـ company_id
 - [ ] إنشاء `useCompany()` hook في React
 - [ ] Dynamic branding per company
 - [ ] Company settings management UI
 
 ### Testing
+
 - [ ] Unit tests للـ tenant middleware
 - [ ] Integration tests للـ data isolation
 - [ ] Performance testing مع multiple tenants
 - [ ] Security audit للـ tenant isolation
 
 ## ✅ معايير القبول (Acceptance Criteria)
+
 - [ ] يمكن إنشاء شركات جديدة عبر admin panel
 - [ ] كل company لديه عزل كامل للبيانات
 - [ ] Subdomain routing يعمل (company1.rabithr.com)
@@ -67,18 +77,22 @@
 - [ ] جميع الـ tests تنجح
 
 ## 📊 تقدير الوقت
+
 **2 أسابيع** (Sprint 1-2)
 
 ## 🔗 ملفات ذات صلة
+
 - `docs/phase4_growth_plan.md` - Section 4: Multi-Tenant Architecture
 - `server/db.ts` - سيحتاج تحديث
 - `server/middleware/` - مجلد جديد
 
 ## 📝 ملاحظات
+
 - استخدام shared schema approach (company_id في كل جدول)
 - Row-Level Security في MySQL
 - Testing شامل ضروري للتأكد من data isolation
-```
+
+````
 
 ---
 
@@ -154,7 +168,7 @@
 - استخدام GPT-4 للدقة العالية
 - Caching للإجابات المكررة
 - Fallback للأخطاء
-```
+````
 
 ---
 
@@ -169,18 +183,20 @@
 **Milestone**: Phase 4 - Sprint 5-6
 
 **Description**:
+
 ```markdown
 ## 🎯 الهدف
+
 لوحة تحكم تحليلية متقدمة لعرض مؤشرات الأداء الرئيسية HR.
 
 ## 📋 المهام الرئيسية
 
 ### KPIs Implementation
+
 - [ ] **Saudization Metrics**
   - نسبة السعوديين/الأجانب
   - توزيع حسب الأقسام
   - تقدم نحو الأهداف
-  
 - [ ] **Employee Turnover**
   - معدل الدوران شهرياً/سنوياً
   - تحليل أسباب المغادرة
@@ -197,6 +213,7 @@
   - Employee satisfaction
 
 ### UI Components
+
 - [ ] `AnalyticsDashboard.tsx` main page
 - [ ] `SaudizationWidget.tsx`
 - [ ] `TurnoverWidget.tsx`
@@ -206,6 +223,7 @@
 - [ ] Export to PDF/Excel
 
 ### Backend APIs
+
 - [ ] `GET /api/analytics/saudization`
 - [ ] `GET /api/analytics/turnover`
 - [ ] `GET /api/analytics/attendance`
@@ -214,6 +232,7 @@
 - [ ] Caching للـ heavy queries
 
 ### Charts & Visualization
+
 - [ ] Line charts للـ trends
 - [ ] Donut charts للـ distribution
 - [ ] Bar charts للـ comparisons
@@ -221,6 +240,7 @@
 - [ ] Interactive tooltips
 
 ## ✅ معايير القبول
+
 - [ ] جميع KPIs تعرض بيانات دقيقة
 - [ ] Real-time updates (أو near real-time)
 - [ ] Charts responsive على mobile
@@ -229,13 +249,16 @@
 - [ ] Performance optimized (< 2s load time)
 
 ## 📊 تقدير الوقت
+
 **2 أسابيع** (Sprint 5-6)
 
 ## 🔗 Dependencies
+
 - recharts ^2.5.0
 - date-fns ^2.30.0
 
 ## 📝 ملاحظات
+
 - استخدام TanStack Query للـ data fetching
 - Memoization للـ expensive calculations
 ```
@@ -253,13 +276,16 @@
 **Milestone**: Phase 4 - Sprint 7-8
 
 **Description**:
-```markdown
+
+````markdown
 ## 🎯 الهدف
+
 نظام تنبيهات ذكي استباقي لمراقبة العقود، الرواتب، الحضور والامتثال.
 
 ## 📋 المهام الرئيسية
 
 ### Database Schema
+
 - [ ] إنشاء `events_log` table
   ```sql
   CREATE TABLE events_log (
@@ -275,14 +301,17 @@
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   );
   ```
+````
 
 ### Cron Jobs (Vercel Cron)
+
 - [ ] `api/cron/check-contracts.ts` - يومياً 9 صباحاً
 - [ ] `api/cron/process-attendance.ts` - كل ساعة
 - [ ] `api/cron/salary-alerts.ts` - أسبوعياً
 - [ ] `api/cron/compliance-check.ts` - يومياً
 
 ### Event Rules
+
 - [ ] **Contract Events**
   - انتهاء صلاحية (30/60/90 يوم)
   - انتهاء فترة التجربة
@@ -304,12 +333,14 @@
   - مخالفات محتملة
 
 ### Notification Channels
+
 - [ ] In-app notifications UI
 - [ ] Email notifications (SendGrid)
 - [ ] SMS notifications (Twilio) - للحرج فقط
 - [ ] Notification preferences per user
 
 ### Event Dashboard
+
 - [ ] Events list view
 - [ ] Filter by severity/type
 - [ ] Acknowledge/Resolve actions
@@ -317,6 +348,7 @@
 - [ ] Statistics & charts
 
 ## ✅ معايير القبول
+
 - [ ] Cron jobs تعمل بشكل موثوق
 - [ ] Events يتم اكتشافها بدقة
 - [ ] Notifications تُرسل في الوقت المناسب
@@ -325,16 +357,20 @@
 - [ ] Dashboard واضح وسهل الاستخدام
 
 ## 📊 تقدير الوقت
+
 **2 أسابيع** (Sprint 7-8)
 
 ## 🔗 Dependencies
+
 - @sendgrid/mail ^7.7.0
 - twilio ^4.0.0
 
 ## 📝 ملاحظات
+
 - Vercel Cron limitations: max 12 jobs
 - استخدام database queue للـ heavy processing
-```
+
+````
 
 ---
 
@@ -424,13 +460,14 @@
 - API versioning (/v1, /v2, etc)
 - Backward compatibility مهمة
 - Rate limits يمكن تعديلها per plan
-```
+````
 
 ---
 
 ## 📊 Project Board Structure
 
 ### Columns
+
 1. **📋 Backlog** - جميع الـ issues
 2. **🎯 Sprint Planning** - للـ sprint القادم
 3. **🚧 In Progress** - قيد التنفيذ
@@ -438,6 +475,7 @@
 5. **✅ Done** - مكتمل
 
 ### Sprint Labels
+
 - `sprint-1-2` - Multi-tenant
 - `sprint-3-4` - AI Assistant
 - `sprint-5-6` - Analytics
