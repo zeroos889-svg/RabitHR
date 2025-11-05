@@ -10,6 +10,7 @@ import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import compression from "compression";
 import { apiLimiter, authLimiter } from "./rateLimit";
+import { doubleSubmitCsrfProtection } from "./csrf";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
@@ -100,6 +101,9 @@ async function startServer() {
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   app.use(cookieParser());
   
+  // CSRF Protection for all routes
+  app.use(doubleSubmitCsrfProtection);
+  
   // Authentication routes with strict rate limiting
   registerAuthRoutes(app, authLimiter);
   
@@ -128,6 +132,14 @@ async function startServer() {
   server.listen(port, () => {
     console.log(`Server running on http://localhost:${port}/`);
   });
+  
+  return app;
 }
 
-startServer().catch(console.error);
+// Start server for local development or Docker
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  startServer().catch(console.error);
+}
+
+// Export for Vercel serverless
+export default startServer;
