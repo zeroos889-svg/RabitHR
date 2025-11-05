@@ -43,4 +43,5 @@ EXPOSE 3000
 ENV NODE_ENV=production
 
 # Start the application
-CMD ["node", "dist/server/_core/index.js"]
+# Server bundle is emitted to dist/index.js by esbuild (see package.json build script)
+CMD ["node", "dist/index.js"]

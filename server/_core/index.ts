@@ -94,6 +94,10 @@ async function startServer() {
 
   // Authentication routes
   registerAuthRoutes(app);
+  // Health check endpoint for load balancers/platforms
+  app.get("/healthz", (_req, res) => {
+    res.status(200).json({ ok: true });
+  });
   // tRPC API
   app.use(
     "/api/trpc",
