@@ -123,6 +123,8 @@ const BrandPreview = lazy(() => import("./pages/BrandPreview"));
 const VerifyDecision = lazy(() => import("./pages/VerifyDecision"));
 const Payment = lazy(() => import("./pages/Payment"));
 const Checkout = lazy(() => import("./pages/Checkout"));
+const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
+const PaymentFailed = lazy(() => import("./pages/PaymentFailed"));
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -155,6 +157,8 @@ function Router() {
           )}
         />
         <Route path={"/checkout"} component={Checkout} />
+        <Route path={"/payment-success"} component={PaymentSuccess} />
+        <Route path={"/payment-failed"} component={PaymentFailed} />
         <Route
           path="/profile"
           component={() => (
