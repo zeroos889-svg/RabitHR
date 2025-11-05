@@ -6,5 +6,7 @@ export default defineConfig({
   test: {
     environment: "node",
     include: ["server/**/*.test.ts", "server/**/*.spec.ts"],
+    // Allow CI to pass even when there are currently no test files
+    passWithNoTests: true,
   },
 });
