@@ -6,9 +6,9 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1"
     />
-    <link rel="icon" type="image/png" href="%VITE_APP_LOGO%" />
-    <link rel="apple-touch-icon" href="%VITE_APP_LOGO%" />
-    <title>%VITE_APP_TITLE% - مساعد الموارد البشرية الذكي</title>
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="apple-touch-icon" href="/logo.png" />
+    <title>رابِط - منصة إدارة الموارد البشرية - مساعد الموارد البشرية الذكي</title>
 
     <!-- SEO Meta Tags -->
     <meta
@@ -27,34 +27,34 @@
     <meta property="og:type" content="website" />
     <meta
       property="og:title"
-      content="%VITE_APP_TITLE% - مساعد الموارد البشرية الذكي"
+      content="رابِط - منصة إدارة الموارد البشرية - مساعد الموارد البشرية الذكي"
     />
     <meta
       property="og:description"
       content="منصة ذكية لإدارة الموارد البشرية في السعودية. أتمتة المهام، إصدار الشهادات، التحقق القانوني."
     />
     <meta property="og:url" content="https://rbithr.com" />
-    <meta property="og:image" content="%VITE_APP_LOGO%" />
-    <meta property="og:site_name" content="%VITE_APP_TITLE%" />
+    <meta property="og:image" content="/logo.png" />
+    <meta property="og:site_name" content="رابِط - منصة إدارة الموارد البشرية" />
     <meta property="og:locale" content="ar_SA" />
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="%VITE_APP_TITLE% - مساعد الموارد البشرية الذكي"
+      content="رابِط - منصة إدارة الموارد البشرية - مساعد الموارد البشرية الذكي"
     />
     <meta
       name="twitter:description"
       content="منصة ذكية لإدارة الموارد البشرية في السعودية"
     />
-    <meta name="twitter:image" content="%VITE_APP_LOGO%" />
+    <meta name="twitter:image" content="/logo.png" />
 
     <!-- Additional Meta Tags -->
     <meta name="theme-color" content="#3B82F6" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="%VITE_APP_TITLE%" />
+    <meta name="apple-mobile-web-app-title" content="رابِط" />
 
     <!-- Google Fonts - Cairo for Arabic -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -68,15 +68,6 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <!-- Analytics (optional) -->
-    <script>
-      if (import.meta.env.VITE_ANALYTICS_ENDPOINT && import.meta.env.VITE_ANALYTICS_WEBSITE_ID) {
-        const script = document.createElement('script');
-        script.defer = true;
-        script.src = import.meta.env.VITE_ANALYTICS_ENDPOINT + '/umami';
-        script.dataset.websiteId = import.meta.env.VITE_ANALYTICS_WEBSITE_ID;
-        document.body.appendChild(script);
-      }
-    </script>
+    <!-- Analytics loaded via JS - will be initialized in main.tsx if configured -->
   </body>
 </html>

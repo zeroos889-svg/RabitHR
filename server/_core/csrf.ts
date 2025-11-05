@@ -6,8 +6,20 @@
 import { Request, Response, NextFunction } from "express";
 import crypto from "crypto";
 
+// ⚠️ WARNING: In-memory token storage
+// This is NOT suitable for production with multiple server instances
+// For production, use Redis or a database to store CSRF tokens
 // تخزين CSRF tokens (في الإنتاج استخدم Redis أو Database)
 const csrfTokens = new Map<string, { token: string; expires: number }>();
+
+// Log warning in production
+if (process.env.NODE_ENV === "production") {
+  console.warn(
+    "⚠️  CSRF tokens are stored in memory. " +
+    "This will not work correctly with multiple server instances. " +
+    "Consider using Redis or a database for production."
+  );
+}
 
 // مدة صلاحية الـ token (ساعة واحدة)
 const TOKEN_EXPIRY = 60 * 60 * 1000; // 1 hour in milliseconds

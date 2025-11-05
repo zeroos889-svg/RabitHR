@@ -24,6 +24,10 @@ function isSecureRequest(req: Request) {
 export function getSessionCookieOptions(
   req: Request
 ): Pick<CookieOptions, "domain" | "httpOnly" | "path" | "sameSite" | "secure"> {
+  // Domain calculation is currently disabled to avoid issues with 
+  // different deployment environments (localhost, Vercel, custom domains)
+  // Enable and test if you need domain-specific cookie behavior
+  
   // const hostname = req.hostname;
   // const shouldSetDomain =
   //   hostname &&
@@ -39,10 +43,14 @@ export function getSessionCookieOptions(
   //       ? hostname
   //       : undefined;
 
+  const isProduction = process.env.NODE_ENV === "production";
+  const isSecure = isSecureRequest(req);
+
   return {
     httpOnly: true,
     path: "/",
-    sameSite: "none",
-    secure: isSecureRequest(req),
+    // Use "lax" for development, "none" for production (if cross-site needed)
+    sameSite: isProduction && isSecure ? "none" : "lax",
+    secure: isSecure,
   };
 }

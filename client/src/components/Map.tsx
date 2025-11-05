@@ -51,7 +51,7 @@ declare global {
   }
 }
 
-const API_KEY = import.meta.env.VITE_FRONTEND_FORGE_API_KEY;
+const API_KEY = import.meta.env.VITE_FRONTEND_FORGE_API_KEY || "";
 const FORGE_BASE_URL =
   import.meta.env.VITE_FRONTEND_FORGE_API_URL ||
   "https://forge.butterfly-effect.dev";
@@ -74,6 +74,12 @@ export function MapView({
   const map = useRef<any>(null);
 
   useEffect(() => {
+    // Check if API key is available
+    if (!API_KEY) {
+      console.warn("Google Maps API key is not configured. Map features will be disabled.");
+      return;
+    }
+
     if (!window.google) {
       const scriptUrl = `${MAPS_PROXY_URL}/maps/api/js?key=${API_KEY}&libraries=places,drawing,geometry,visualization,marker`;
 
@@ -100,9 +106,10 @@ export function MapView({
 
           setTimeout(() => clearInterval(checkGoogle), 10000);
         })
-        .catch(error =>
-          console.error("Failed to fetch Google Maps script:", error)
-        );
+        .catch(error => {
+          console.error("Failed to fetch Google Maps script:", error);
+          // Optionally show user-friendly error message
+        });
     } else {
       initMap();
     }
