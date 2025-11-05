@@ -123,6 +123,7 @@ const BrandPreview = lazy(() => import("./pages/BrandPreview"));
 const VerifyDecision = lazy(() => import("./pages/VerifyDecision"));
 const Payment = lazy(() => import("./pages/Payment"));
 const Checkout = lazy(() => import("./pages/Checkout"));
+const CheckoutNew = lazy(() => import("./pages/CheckoutNew"));
 const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
 const PaymentFailed = lazy(() => import("./pages/PaymentFailed"));
 
@@ -156,7 +157,8 @@ function Router() {
             </ProtectedRoute>
           )}
         />
-        <Route path={"/checkout"} component={Checkout} />
+        <Route path={"/checkout"} component={CheckoutNew} />
+        <Route path={"/checkout-old"} component={Checkout} />
         <Route path={"/payment-success"} component={PaymentSuccess} />
         <Route path={"/payment-failed"} component={PaymentFailed} />
         <Route
