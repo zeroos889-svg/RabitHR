@@ -1,8 +1,35 @@
 # robots.txt for Rabit HR Platform
+
+# Allow all crawlers
 User-agent: *
 Allow: /
+
+# Disallow admin and private pages
+Disallow: /admin/
 Disallow: /dashboard/
+Disallow: /consultant-dashboard
+Disallow: /my-consultations
+Disallow: /my-documents
+Disallow: /profile
+
+# Disallow auth pages
+Disallow: /login
+Disallow: /signup/
+Disallow: /forgot-password
+Disallow: /reset-password/
+
+# Disallow payment pages
+Disallow: /checkout
+Disallow: /payment
+Disallow: /payment-success
+Disallow: /payment-failed
+
+# Disallow API endpoints
 Disallow: /api/
+Disallow: /trpc/
+
+# Crawl-delay
+Crawl-delay: 1
 
 # Sitemap
 Sitemap: https://rbithr.com/sitemap.xml

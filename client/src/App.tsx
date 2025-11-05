@@ -25,8 +25,11 @@ const NotFound = lazy(() => import("@/pages/NotFound"));
 // Auth pages
 const SignupEmployee = lazy(() => import("./pages/SignupEmployee"));
 const SignupConsultant = lazy(() => import("@/pages/SignupConsultant"));
+const SignupCompany = lazy(() => import("./pages/SignupCompany"));
 const ConsultantLogin = lazy(() => import("@/pages/ConsultantLogin"));
 const ConsultantRegister = lazy(() => import("./pages/ConsultantRegister"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 
 // Dashboard pages (high priority - loaded on demand)
 const CompanyDashboard = lazy(
@@ -119,6 +122,12 @@ const Services = lazy(() => import("./pages/Services"));
 const BrandPreview = lazy(() => import("./pages/BrandPreview"));
 const VerifyDecision = lazy(() => import("./pages/VerifyDecision"));
 const Payment = lazy(() => import("./pages/Payment"));
+const Checkout = lazy(() => import("./pages/Checkout"));
+const CheckoutNew = lazy(() => import("./pages/CheckoutNew"));
+const MoyasarCallback = lazy(() => import("./pages/MoyasarCallback"));
+const TapCallback = lazy(() => import("./pages/TapCallback"));
+const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
+const PaymentFailed = lazy(() => import("./pages/PaymentFailed"));
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -129,7 +138,10 @@ function Router() {
         <Route path={"/signup"} component={AccountType} />
         <Route path={"/signup/employee"} component={SignupEmployee} />
         <Route path={"/signup/consultant"} component={SignupConsultant} />
+        <Route path={"/signup/company"} component={SignupCompany} />
         <Route path={"/login"} component={Login} />
+        <Route path={"/forgot-password"} component={ForgotPassword} />
+        <Route path={"/reset-password/:token"} component={ResetPassword} />
         <Route path={"/consultant/login"} component={ConsultantLogin} />
         <Route
           path={"/employee/dashboard"}
@@ -147,6 +159,12 @@ function Router() {
             </ProtectedRoute>
           )}
         />
+        <Route path={"/checkout"} component={CheckoutNew} />
+        <Route path={"/checkout-old"} component={Checkout} />
+        <Route path={"/payment/moyasar/callback"} component={MoyasarCallback} />
+        <Route path={"/payment/tap/callback"} component={TapCallback} />
+        <Route path={"/payment-success"} component={PaymentSuccess} />
+        <Route path={"/payment-failed"} component={PaymentFailed} />
         <Route
           path="/profile"
           component={() => (

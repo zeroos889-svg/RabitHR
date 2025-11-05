@@ -4,6 +4,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { adminRouter } from "./adminRouter";
 import { chatRouter } from "./chatRouter";
+import { paymentRouter } from "./paymentRouter";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { invokeLLM } from "./_core/llm";
@@ -1017,6 +1018,9 @@ ${companyName ? `اسم الشركة: ${companyName}\n` : ""}
 
   // Live Chat
   chat: chatRouter,
+
+  // Payment System
+  payment: paymentRouter,
 
   // User Profile
   profile: router({

@@ -23,7 +23,7 @@ function isSecureRequest(req: Request) {
 
 export function getSessionCookieOptions(
   req: Request
-): Pick<CookieOptions, "domain" | "httpOnly" | "path" | "sameSite" | "secure"> {
+): Pick<CookieOptions, "httpOnly" | "path" | "sameSite" | "secure"> {
   // Domain calculation is currently disabled to avoid issues with
   // different deployment environments (localhost, Vercel, custom domains)
   // Enable and test if you need domain-specific cookie behavior
