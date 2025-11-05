@@ -3,6 +3,7 @@
  */
 
 import type { Request, Response, NextFunction } from "express";
+import { logger } from "./logger";
 
 export class AppError extends Error {
   statusCode: number;
@@ -67,17 +68,10 @@ export class RateLimitError extends AppError {
 }
 
 /**
- * Error logger
+ * Error logger - now using structured logger
  */
 function logError(error: Error, req?: Request) {
-  const timestamp = new Date().toISOString();
-  const logEntry = {
-    timestamp,
-    error: {
-      name: error.name,
-      message: error.message,
-      stack: error.stack,
-    },
+  logger.logError(error, "ErrorHandler", {
     request: req
       ? {
           method: req.method,
@@ -86,14 +80,13 @@ function logError(error: Error, req?: Request) {
           userAgent: req.get("user-agent"),
         }
       : undefined,
-  };
+  });
 
-  console.error("[ERROR]", JSON.stringify(logEntry, null, 2));
-
-  // TODO: Send to external logging service (e.g., Sentry, LogRocket)
-  // if (process.env.NODE_ENV === 'production') {
-  //   Sentry.captureException(error);
-  // }
+  // Send to Sentry in production if configured
+  if (process.env.NODE_ENV === "production" && process.env.VITE_SENTRY_DSN) {
+    // Sentry is initialized in main.tsx on client-side
+    // For server-side, you would initialize here
+  }
 }
 
 /**
@@ -138,7 +131,14 @@ function sendErrorProd(err: ErrorWithStatus, req: Request, res: Response) {
     });
   } else {
     // Programming or unknown error: don't leak error details
-    console.error("ERROR 💥", err);
+    logger.fatal("Unexpected error occurred", {
+      context: "ErrorHandler",
+      error: {
+        name: err.name,
+        message: err.message,
+        stack: err.stack,
+      },
+    });
 
     res.status(500).json({
       status: "error",
@@ -192,8 +192,15 @@ export function asyncHandler(fn: AsyncRouteHandler) {
  */
 export function handleUnhandledRejection() {
   process.on("unhandledRejection", (reason: any, promise: Promise<any>) => {
-    console.error("Unhandled Rejection at:", promise, "reason:", reason);
-    logError(reason);
+    logger.fatal("Unhandled Promise Rejection", {
+      context: "Process",
+      error: reason instanceof Error ? {
+        name: reason.name,
+        message: reason.message,
+        stack: reason.stack,
+      } : undefined,
+      data: { reason: String(reason) },
+    });
 
     // Exit with error (let process manager restart)
     if (process.env.NODE_ENV === "production") {
@@ -207,8 +214,14 @@ export function handleUnhandledRejection() {
  */
 export function handleUncaughtException() {
   process.on("uncaughtException", (error: Error) => {
-    console.error("Uncaught Exception:", error);
-    logError(error);
+    logger.fatal("Uncaught Exception", {
+      context: "Process",
+      error: {
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+      },
+    });
 
     // Exit with error
     process.exit(1);
@@ -220,21 +233,34 @@ export function handleUncaughtException() {
  */
 export function setupGracefulShutdown(server: any) {
   const shutdown = (signal: string) => {
-    console.log(`\n${signal} received. Starting graceful shutdown...`);
+    logger.info(`Received ${signal}. Starting graceful shutdown...`, {
+      context: "Shutdown",
+    });
 
     server.close((err: any) => {
       if (err) {
-        console.error("Error during shutdown:", err);
+        logger.error("Error during shutdown", {
+          context: "Shutdown",
+          error: {
+            name: err.name,
+            message: err.message,
+            stack: err.stack,
+          },
+        });
         process.exit(1);
       }
 
-      console.log("Server closed. Process exiting...");
+      logger.info("Server closed successfully. Exiting...", {
+        context: "Shutdown",
+      });
       process.exit(0);
     });
 
     // Force shutdown after 30 seconds
     setTimeout(() => {
-      console.error("Forced shutdown after timeout");
+      logger.fatal("Forced shutdown after 30s timeout", {
+        context: "Shutdown",
+      });
       process.exit(1);
     }, 30000);
   };

@@ -28,8 +28,15 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    // Enable source maps for better debugging in production
+    sourcemap: process.env.NODE_ENV === "production" ? "hidden" : true,
+    // Enable minification
+    minify: "esbuild",
+    // Target modern browsers for smaller bundles
+    target: "es2020",
     rollupOptions: {
       output: {
+        // Optimize chunk splitting
         manualChunks: {
           "react-vendor": ["react", "react-dom"],
           "ui-vendor": [
@@ -52,9 +59,15 @@ export default defineConfig({
             "@trpc/react-query",
           ],
         },
+        // Add content hashing for cache busting
+        entryFileNames: "assets/[name]-[hash].js",
+        chunkFileNames: "assets/[name]-[hash].js",
+        assetFileNames: "assets/[name]-[hash][extname]",
       },
     },
     chunkSizeWarningLimit: 1000,
+    // Report compressed size for better insight
+    reportCompressedSize: true,
   },
   server: {
     host: true,
