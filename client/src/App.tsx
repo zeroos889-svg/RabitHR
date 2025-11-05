@@ -124,6 +124,8 @@ const VerifyDecision = lazy(() => import("./pages/VerifyDecision"));
 const Payment = lazy(() => import("./pages/Payment"));
 const Checkout = lazy(() => import("./pages/Checkout"));
 const CheckoutNew = lazy(() => import("./pages/CheckoutNew"));
+const MoyasarCallback = lazy(() => import("./pages/MoyasarCallback"));
+const TapCallback = lazy(() => import("./pages/TapCallback"));
 const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
 const PaymentFailed = lazy(() => import("./pages/PaymentFailed"));
 
@@ -159,6 +161,8 @@ function Router() {
         />
         <Route path={"/checkout"} component={CheckoutNew} />
         <Route path={"/checkout-old"} component={Checkout} />
+        <Route path={"/payment/moyasar/callback"} component={MoyasarCallback} />
+        <Route path={"/payment/tap/callback"} component={TapCallback} />
         <Route path={"/payment-success"} component={PaymentSuccess} />
         <Route path={"/payment-failed"} component={PaymentFailed} />
         <Route
