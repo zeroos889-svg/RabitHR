@@ -122,6 +122,7 @@ const Services = lazy(() => import("./pages/Services"));
 const BrandPreview = lazy(() => import("./pages/BrandPreview"));
 const VerifyDecision = lazy(() => import("./pages/VerifyDecision"));
 const Payment = lazy(() => import("./pages/Payment"));
+const Checkout = lazy(() => import("./pages/Checkout"));
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -153,6 +154,7 @@ function Router() {
             </ProtectedRoute>
           )}
         />
+        <Route path={"/checkout"} component={Checkout} />
         <Route
           path="/profile"
           component={() => (
