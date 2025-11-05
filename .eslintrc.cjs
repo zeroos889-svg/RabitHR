@@ -38,6 +38,11 @@ module.exports = {
       "warn",
       { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
     ],
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/ban-types": "warn",
+    "@typescript-eslint/no-var-requires": "warn",
+    "react/no-unescaped-entities": "off",
+    "prefer-const": "warn",
   },
   overrides: [
     {
