@@ -1,7 +1,6 @@
 import "dotenv/config";
 import express from "express";
 import { createServer } from "http";
-import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { registerAuthRoutes } from "./auth";
 import { checkEnv } from "./env";
@@ -9,32 +8,30 @@ import { checkEnv } from "./env";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import compression from "compression";
+import morgan from "morgan";
 import { apiLimiter, authLimiter } from "./rateLimit";
 import { doubleSubmitCsrfProtection } from "./csrf";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
-import { runSQLMigrations } from "./sqlMigrations";
 import { runEmbeddedMigrations } from "./embeddedMigrations";
+import { simpleHealthCheck } from "./healthCheck";
+import { errorHandler, initializeErrorHandling } from "./errorHandler";
 import mysql from "mysql2/promise";
 
-function isPortAvailable(port: number): Promise<boolean> {
-  return new Promise(resolve => {
-    const server = net.createServer();
-    server.listen(port, () => {
-      server.close(() => resolve(true));
-    });
-    server.on("error", () => resolve(false));
-  });
-}
+/**
+ * Get port from environment or use default
+ * Railway and other cloud platforms set PORT environment variable
+ */
+function getPort(): number {
+  const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
-async function findAvailablePort(startPort: number = 3000): Promise<number> {
-  for (let port = startPort; port < startPort + 20; port++) {
-    if (await isPortAvailable(port)) {
-      return port;
-    }
+  if (isNaN(port) || port < 1 || port > 65535) {
+    console.warn(`Invalid PORT value: ${process.env.PORT}, using default 3000`);
+    return 3000;
   }
-  throw new Error(`No available port found starting from ${startPort}`);
+
+  return port;
 }
 
 async function startServer() {
@@ -64,6 +61,17 @@ async function startServer() {
 
   const app = express();
   const server = createServer(app);
+
+  // Initialize error handling (uncaught exceptions, unhandled rejections, graceful shutdown)
+  initializeErrorHandling(server);
+
+  // Request Logging
+  const logFormat =
+    process.env.NODE_ENV === "production"
+      ? "combined" // Apache combined log format for production
+      : "dev"; // Colorful and concise for development
+
+  app.use(morgan(logFormat));
 
   // Security Headers - Helmet
   app.use(
@@ -105,6 +113,24 @@ async function startServer() {
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   app.use(cookieParser());
 
+  // Health Check Endpoint (for Railway and load balancers)
+  app.get("/health", async (req, res) => {
+    try {
+      const isHealthy = await simpleHealthCheck();
+      if (isHealthy) {
+        res
+          .status(200)
+          .json({ status: "ok", timestamp: new Date().toISOString() });
+      } else {
+        res
+          .status(503)
+          .json({ status: "error", message: "Database connection failed" });
+      }
+    } catch (error) {
+      res.status(503).json({ status: "error", message: "Health check failed" });
+    }
+  });
+
   // CSRF Protection for all routes
   app.use(doubleSubmitCsrfProtection);
 
@@ -126,15 +152,18 @@ async function startServer() {
     serveStatic(app);
   }
 
-  const preferredPort = parseInt(process.env.PORT || "3000");
-  const port = await findAvailablePort(preferredPort);
+  // Global Error Handler Middleware (must be last)
+  app.use(errorHandler);
 
-  if (port !== preferredPort) {
-    console.log(`Port ${preferredPort} is busy, using port ${port} instead`);
-  }
+  // Get port from environment (Railway sets this automatically)
+  const port = getPort();
 
-  server.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}/`);
+  server.listen(port, "0.0.0.0", () => {
+    const env = process.env.NODE_ENV || "development";
+    console.log(`[${env}] Server running on http://0.0.0.0:${port}/`);
+    console.log(
+      `[${env}] Health check available at http://0.0.0.0:${port}/health`
+    );
   });
 
   return app;
