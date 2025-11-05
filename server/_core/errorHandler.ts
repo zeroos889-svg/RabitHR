@@ -194,11 +194,14 @@ export function handleUnhandledRejection() {
   process.on("unhandledRejection", (reason: any, promise: Promise<any>) => {
     logger.fatal("Unhandled Promise Rejection", {
       context: "Process",
-      error: reason instanceof Error ? {
-        name: reason.name,
-        message: reason.message,
-        stack: reason.stack,
-      } : undefined,
+      error:
+        reason instanceof Error
+          ? {
+              name: reason.name,
+              message: reason.message,
+              stack: reason.stack,
+            }
+          : undefined,
       data: { reason: String(reason) },
     });
 

@@ -76,7 +76,9 @@ export function MapView({
   useEffect(() => {
     // Check if API key is available
     if (!API_KEY) {
-      console.warn("Google Maps API key is not configured. Map features will be disabled.");
+      console.warn(
+        "Google Maps API key is not configured. Map features will be disabled."
+      );
       return;
     }
 

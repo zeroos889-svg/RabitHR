@@ -1,4 +1,5 @@
 # Phase 4: Quick Start Guide
+
 ## دليل البدء السريع - المرحلة 4
 
 **التاريخ**: 2025-11-05  
@@ -9,6 +10,7 @@
 ## 🎯 نظرة سريعة
 
 تحويل RabitHR إلى منصة SaaS ذكية مع:
+
 - 🤖 مساعد AI للموارد البشرية
 - 📊 Analytics متقدمة
 - 🔔 نظام تنبيهات ذكي
@@ -38,6 +40,7 @@ git push -u origin feature/phase4-ai-integration
 استخدم القوالب التالية لإنشاء 5 issues رئيسية:
 
 ### Issue #1: Multi-Tenant Architecture Foundation
+
 ```markdown
 **Title**: [Phase 4] Multi-Tenant Architecture - Foundation Setup
 
@@ -45,6 +48,7 @@ git push -u origin feature/phase4-ai-integration
 تجهيز البنية التحتية لدعم شركات متعددة في نفس المنصة.
 
 **Tasks**:
+
 - [ ] تحديث Database schema (إضافة company_id لجميع الجداول)
 - [ ] إنشاء companies table
 - [ ] إضافة tenant middleware
@@ -57,6 +61,7 @@ git push -u origin feature/phase4-ai-integration
 ```
 
 ### Issue #2: HR AI Assistant Integration
+
 ```markdown
 **Title**: [Phase 4] HR AI Assistant (HRBot) - OpenAI Integration
 
@@ -64,6 +69,7 @@ git push -u origin feature/phase4-ai-integration
 دمج مساعد ذكاء اصطناعي للإجابة على استفسارات HR وتوليد الوثائق.
 
 **Tasks**:
+
 - [ ] إعداد OpenAI API integration
 - [ ] إنشاء chat interface (React component)
 - [ ] بناء context management system
@@ -77,6 +83,7 @@ git push -u origin feature/phase4-ai-integration
 ```
 
 ### Issue #3: Analytics Dashboard
+
 ```markdown
 **Title**: [Phase 4] HR Analytics Dashboard - KPIs & BI Layer
 
@@ -84,6 +91,7 @@ git push -u origin feature/phase4-ai-integration
 لوحة تحكم متقدمة لعرض مؤشرات الأداء الرئيسية HR.
 
 **Tasks**:
+
 - [ ] تصميم Analytics UI (Recharts)
 - [ ] إنشاء API endpoints للـ analytics
 - [ ] Saudization metrics widget
@@ -98,6 +106,7 @@ git push -u origin feature/phase4-ai-integration
 ```
 
 ### Issue #4: Smart Event & Notification Engine
+
 ```markdown
 **Title**: [Phase 4] Event Engine - Automated HR Alerts System
 
@@ -105,6 +114,7 @@ git push -u origin feature/phase4-ai-integration
 نظام تنبيهات ذكي لمراقبة العقود، الرواتب، والحضور.
 
 **Tasks**:
+
 - [ ] إنشاء events_log table
 - [ ] إعداد Vercel Cron jobs
 - [ ] Contract expiry alerts
@@ -119,6 +129,7 @@ git push -u origin feature/phase4-ai-integration
 ```
 
 ### Issue #5: Public HR API v1
+
 ```markdown
 **Title**: [Phase 4] Public API v1 - RESTful Endpoints & JWT Auth
 
@@ -126,6 +137,7 @@ git push -u origin feature/phase4-ai-integration
 واجهة برمجية عامة للتكامل الخارجي مع أنظمة أخرى.
 
 **Tasks**:
+
 - [ ] تصميم API endpoints (/employees, /attendance, etc)
 - [ ] JWT authentication system
 - [ ] Rate limiting per API key
@@ -164,6 +176,7 @@ pnpm add node-cron
 ### تحديث Environment Variables
 
 أضف إلى `.env`:
+
 ```env
 # OpenAI
 OPENAI_API_KEY=sk-...
@@ -234,6 +247,7 @@ client/src/
 ## 🚀 الخطوة 5: البدء في Sprint 1
 
 ### يوم 1-2: إعداد البنية
+
 ```bash
 # إنشاء المجلدات الأساسية
 mkdir -p server/ai/chatbot
@@ -244,6 +258,7 @@ mkdir -p client/src/pages/analytics
 ```
 
 ### يوم 3-5: Database Migration
+
 ```sql
 -- إنشاء companies table
 CREATE TABLE companies (
@@ -262,10 +277,11 @@ ALTER TABLE employees ADD COLUMN company_id INT NOT NULL DEFAULT 1;
 ```
 
 ### يوم 6-10: Tenant Middleware
+
 ```typescript
 // server/middleware/tenant.ts
 export function resolveTenant(req, res, next) {
-  const subdomain = req.hostname.split('.')[0];
+  const subdomain = req.hostname.split(".")[0];
   req.company = await getCompanyBySlug(subdomain);
   next();
 }
@@ -300,12 +316,14 @@ export function resolveTenant(req, res, next) {
 ## 🎯 Success Criteria
 
 **Sprint 1-2 Complete** عندما:
+
 - ✅ Multi-tenant middleware يعمل
 - ✅ Company isolation مُختبر
 - ✅ Database schema مُحدّث
 - ✅ Authentication يدعم tenants
 
 **Phase 4 Complete** عندما:
+
 - ✅ جميع الـ 5 modules مُنفّذة
 - ✅ Testing شامل (unit + integration)
 - ✅ Documentation كاملة

@@ -24,7 +24,7 @@ class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       const isArabic = document.documentElement.lang === "ar";
-      
+
       return (
         <div className="flex items-center justify-center min-h-screen p-8 bg-background">
           <div className="flex flex-col items-center w-full max-w-2xl p-8">
@@ -34,11 +34,9 @@ class ErrorBoundary extends Component<Props, State> {
             />
 
             <h2 className="text-xl mb-4 text-center">
-              {isArabic 
-                ? "حدث خطأ غير متوقع" 
-                : "An unexpected error occurred"}
+              {isArabic ? "حدث خطأ غير متوقع" : "An unexpected error occurred"}
             </h2>
-            
+
             <p className="text-sm text-muted-foreground mb-6 text-center">
               {isArabic
                 ? "نعتذر عن الإزعاج. يرجى تحديث الصفحة أو المحاولة لاحقاً."
