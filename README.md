@@ -113,6 +113,15 @@ http://localhost:3000
 - [ملخص شامل](./FINAL_SUMMARY.md)
 - [البدء السريع](./QUICK_START.md)
 
+### 🔐 المتغيرات البيئية:
+- [📖 دليل المتغيرات الشامل](./ENV_README.md) - **ابدأ هنا!**
+- [🚀 دليل الإعداد السريع](./ENV_SETUP_GUIDE.md)
+- [🚂 متغيرات Railway (Backend)](./ENV_RAILWAY.md)
+- [▲ متغيرات Vercel (Frontend)](./ENV_VERCEL.md)
+- [🐙 أسرار GitHub (CI/CD)](./ENV_GITHUB.md)
+- [🇸🇦 التوثيق الشامل بالعربية](./ENV_VARIABLES_AR.md)
+- [🇬🇧 English Documentation](./ENV_VARIABLES_EN.md)
+
 ### 🚀 النشر على Vercel:
 - [✅ دليل الربط النهائي](./VERCEL_DEPLOYMENT_COMPLETE.md) - **ابدأ هنا!**
 - [⚡ البدء السريع (5 دقائق)](./VERCEL_QUICKSTART_AR.md)
