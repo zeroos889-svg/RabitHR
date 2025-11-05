@@ -17,6 +17,9 @@ build
 .env.*
 !.env.example
 
+# Keep patches for pnpm
+!patches
+
 # IDE
 .vscode
 .idea
