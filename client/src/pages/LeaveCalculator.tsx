@@ -1,15 +1,27 @@
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { trpc } from '@/lib/trpc';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
-import { Badge } from '@/components/ui/badge';
-import { Textarea } from '@/components/ui/textarea';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { trpc } from "@/lib/trpc";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Calendar as CalendarIcon,
   Download,
@@ -23,9 +35,9 @@ import {
   PieChart,
   BarChart3,
   FileText,
-} from 'lucide-react';
-import { Link } from 'wouter';
-import { toast } from 'sonner';
+} from "lucide-react";
+import { Link } from "wouter";
+import { toast } from "sonner";
 
 // Types
 interface LeaveEntry {
@@ -34,7 +46,7 @@ interface LeaveEntry {
   startDate: string;
   endDate: string;
   days: number;
-  status: 'approved' | 'pending' | 'rejected';
+  status: "approved" | "pending" | "rejected";
   notes?: string;
 }
 
@@ -49,71 +61,95 @@ interface LeaveBalance {
 
 export default function LeaveCalculator() {
   const { t, i18n } = useTranslation();
-  const isRTL = i18n.language === 'ar';
+  const isRTL = i18n.language === "ar";
 
   // Form State
-  const [employeeYears, setEmployeeYears] = useState<string>('');
-  const [monthlySalary, setMonthlySalary] = useState<string>(''); // New: Monthly salary
-  const [leaveType, setLeaveType] = useState<string>('');
-  const [startDate, setStartDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
+  const [employeeYears, setEmployeeYears] = useState<string>("");
+  const [monthlySalary, setMonthlySalary] = useState<string>(""); // New: Monthly salary
+  const [leaveType, setLeaveType] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
   const [leaveEntries, setLeaveEntries] = useState<LeaveEntry[]>([]);
-  
+
   // AI State
-  const [aiQuestion, setAiQuestion] = useState<string>('');
-  const [aiResponse, setAiResponse] = useState<string>('');
+  const [aiQuestion, setAiQuestion] = useState<string>("");
+  const [aiResponse, setAiResponse] = useState<string>("");
   const [isAILoading, setIsAILoading] = useState<boolean>(false);
-  
+
   // tRPC
   const askAIMutation = trpc.leave.askAI.useMutation();
 
   // Calculate leave balance
   const calculateBalance = (): LeaveBalance => {
     const years = parseFloat(employeeYears) || 0;
-    
+
     // Annual leave: 21 days (1-4 years), 30 days (5+ years)
     const annualTotal = years >= 5 ? 30 : 21;
     const annualUsed = leaveEntries
-      .filter(e => e.type === 'annual' && e.status === 'approved')
+      .filter(e => e.type === "annual" && e.status === "approved")
       .reduce((sum, e) => sum + e.days, 0);
-    
+
     // Sick leave: 120 days total (30 full + 60 at 75% + 30 unpaid)
     const sickTotal = 120;
     const sickUsed = leaveEntries
-      .filter(e => e.type === 'sick' && e.status === 'approved')
+      .filter(e => e.type === "sick" && e.status === "approved")
       .reduce((sum, e) => sum + e.days, 0);
-    
+
     // Maternity: 70 days (10 weeks)
     const maternityTotal = 70;
     const maternityUsed = leaveEntries
-      .filter(e => e.type === 'maternity' && e.status === 'approved')
+      .filter(e => e.type === "maternity" && e.status === "approved")
       .reduce((sum, e) => sum + e.days, 0);
-    
+
     // Hajj: 10 days (once in service)
     const hajjTotal = 10;
     const hajjUsed = leaveEntries
-      .filter(e => e.type === 'hajj' && e.status === 'approved')
+      .filter(e => e.type === "hajj" && e.status === "approved")
       .reduce((sum, e) => sum + e.days, 0);
-    
+
     // Marriage: 5 days (once in service)
     const marriageTotal = 5;
     const marriageUsed = leaveEntries
-      .filter(e => e.type === 'marriage' && e.status === 'approved')
+      .filter(e => e.type === "marriage" && e.status === "approved")
       .reduce((sum, e) => sum + e.days, 0);
-    
+
     // Bereavement: 5 days
     const bereavementTotal = 5;
     const bereavementUsed = leaveEntries
-      .filter(e => e.type === 'bereavement' && e.status === 'approved')
+      .filter(e => e.type === "bereavement" && e.status === "approved")
       .reduce((sum, e) => sum + e.days, 0);
 
     return {
-      annual: { total: annualTotal, used: annualUsed, remaining: annualTotal - annualUsed },
-      sick: { total: sickTotal, used: sickUsed, remaining: sickTotal - sickUsed },
-      maternity: { total: maternityTotal, used: maternityUsed, remaining: maternityTotal - maternityUsed },
-      hajj: { total: hajjTotal, used: hajjUsed, remaining: hajjTotal - hajjUsed },
-      marriage: { total: marriageTotal, used: marriageUsed, remaining: marriageTotal - marriageUsed },
-      bereavement: { total: bereavementTotal, used: bereavementUsed, remaining: bereavementTotal - bereavementUsed },
+      annual: {
+        total: annualTotal,
+        used: annualUsed,
+        remaining: annualTotal - annualUsed,
+      },
+      sick: {
+        total: sickTotal,
+        used: sickUsed,
+        remaining: sickTotal - sickUsed,
+      },
+      maternity: {
+        total: maternityTotal,
+        used: maternityUsed,
+        remaining: maternityTotal - maternityUsed,
+      },
+      hajj: {
+        total: hajjTotal,
+        used: hajjUsed,
+        remaining: hajjTotal - hajjUsed,
+      },
+      marriage: {
+        total: marriageTotal,
+        used: marriageUsed,
+        remaining: marriageTotal - marriageUsed,
+      },
+      bereavement: {
+        total: bereavementTotal,
+        used: bereavementUsed,
+        remaining: bereavementTotal - bereavementUsed,
+      },
     };
   };
 
@@ -130,41 +166,41 @@ export default function LeaveCalculator() {
 
   const handleAddLeave = () => {
     if (!leaveType || !startDate || !endDate) {
-      toast.error('يرجى ملء جميع الحقول');
+      toast.error("يرجى ملء جميع الحقول");
       return;
     }
 
     const days = calculateDays(startDate, endDate);
-    
+
     const newEntry: LeaveEntry = {
       id: Date.now().toString(),
       type: leaveType,
       startDate,
       endDate,
       days,
-      status: 'approved',
+      status: "approved",
     };
 
     setLeaveEntries([...leaveEntries, newEntry]);
-    toast.success('تم إضافة الإجازة بنجاح');
-    
+    toast.success("تم إضافة الإجازة بنجاح");
+
     // Reset form
-    setLeaveType('');
-    setStartDate('');
-    setEndDate('');
+    setLeaveType("");
+    setStartDate("");
+    setEndDate("");
   };
 
   const handleDeleteLeave = (id: string) => {
     setLeaveEntries(leaveEntries.filter(e => e.id !== id));
-    toast.success('تم حذف الإجازة');
+    toast.success("تم حذف الإجازة");
   };
 
   const handleAskAI = async () => {
     if (!aiQuestion.trim()) return;
-    
+
     setIsAILoading(true);
-    toast.info('جاري الحصول على الإجابة...');
-    
+    toast.info("جاري الحصول على الإجابة...");
+
     try {
       const response = await askAIMutation.mutateAsync({
         question: aiQuestion,
@@ -172,13 +208,16 @@ export default function LeaveCalculator() {
           employeeYears: parseFloat(employeeYears) || undefined,
         },
       });
-      
-      const answer = typeof response.answer === 'string' ? response.answer : JSON.stringify(response.answer);
+
+      const answer =
+        typeof response.answer === "string"
+          ? response.answer
+          : JSON.stringify(response.answer);
       setAiResponse(answer);
-      toast.success('تم الحصول على الإجابة');
+      toast.success("تم الحصول على الإجابة");
     } catch (error) {
-      console.error('AI Error:', error);
-      toast.error('حدث خطأ في الحصول على الإجابة');
+      console.error("AI Error:", error);
+      toast.error("حدث خطأ في الحصول على الإجابة");
     } finally {
       setIsAILoading(false);
     }
@@ -186,24 +225,26 @@ export default function LeaveCalculator() {
 
   const getLeaveTypeLabel = (type: string): string => {
     const labels: Record<string, string> = {
-      'annual': 'إجازة سنوية',
-      'sick': 'إجازة مرضية',
-      'maternity': 'إجازة أمومة',
-      'hajj': 'إجازة حج',
-      'marriage': 'إجازة زواج',
-      'bereavement': 'إجازة وفاة',
-      'exam': 'إجازة امتحانات',
+      annual: "إجازة سنوية",
+      sick: "إجازة مرضية",
+      maternity: "إجازة أمومة",
+      hajj: "إجازة حج",
+      marriage: "إجازة زواج",
+      bereavement: "إجازة وفاة",
+      exam: "إجازة امتحانات",
     };
     return labels[type] || type;
   };
 
   const getStatusColor = (status: string): string => {
     const colors: Record<string, string> = {
-      'approved': 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400',
-      'pending': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400',
-      'rejected': 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400',
+      approved:
+        "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400",
+      pending:
+        "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400",
+      rejected: "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400",
     };
-    return colors[status] || '';
+    return colors[status] || "";
   };
 
   return (
@@ -262,24 +303,28 @@ export default function LeaveCalculator() {
                       type="number"
                       placeholder="مثال: 3"
                       value={employeeYears}
-                      onChange={(e) => setEmployeeYears(e.target.value)}
+                      onChange={e => setEmployeeYears(e.target.value)}
                     />
                     <p className="text-xs text-muted-foreground">
                       يؤثر على عدد أيام الإجازة السنوية
                     </p>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="monthly-salary">الراتب الإجمالي الشهري *</Label>
+                    <Label htmlFor="monthly-salary">
+                      الراتب الإجمالي الشهري *
+                    </Label>
                     <div className="relative">
                       <Input
                         id="monthly-salary"
                         type="number"
                         placeholder="مثال: 10000"
                         value={monthlySalary}
-                        onChange={(e) => setMonthlySalary(e.target.value)}
+                        onChange={e => setMonthlySalary(e.target.value)}
                         className="pl-12"
                       />
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-bold">﷼</span>
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-bold">
+                        ﷼
+                      </span>
                     </div>
                     <p className="text-xs text-muted-foreground">
                       لحساب تكلفة الإجازات
@@ -308,12 +353,22 @@ export default function LeaveCalculator() {
                       <SelectValue placeholder="اختر نوع الإجازة" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="annual">إجازة سنوية (21-30 يوم)</SelectItem>
-                      <SelectItem value="sick">إجازة مرضية (120 يوم)</SelectItem>
-                      <SelectItem value="maternity">إجازة أمومة (70 يوم)</SelectItem>
+                      <SelectItem value="annual">
+                        إجازة سنوية (21-30 يوم)
+                      </SelectItem>
+                      <SelectItem value="sick">
+                        إجازة مرضية (120 يوم)
+                      </SelectItem>
+                      <SelectItem value="maternity">
+                        إجازة أمومة (70 يوم)
+                      </SelectItem>
                       <SelectItem value="hajj">إجازة حج (10 أيام)</SelectItem>
-                      <SelectItem value="marriage">إجازة زواج (5 أيام)</SelectItem>
-                      <SelectItem value="bereavement">إجازة وفاة (3-5 أيام)</SelectItem>
+                      <SelectItem value="marriage">
+                        إجازة زواج (5 أيام)
+                      </SelectItem>
+                      <SelectItem value="bereavement">
+                        إجازة وفاة (3-5 أيام)
+                      </SelectItem>
                       <SelectItem value="exam">إجازة امتحانات</SelectItem>
                     </SelectContent>
                   </Select>
@@ -326,7 +381,7 @@ export default function LeaveCalculator() {
                       id="start-date"
                       type="date"
                       value={startDate}
-                      onChange={(e) => setStartDate(e.target.value)}
+                      onChange={e => setStartDate(e.target.value)}
                     />
                   </div>
                   <div className="space-y-2">
@@ -335,7 +390,7 @@ export default function LeaveCalculator() {
                       id="end-date"
                       type="date"
                       value={endDate}
-                      onChange={(e) => setEndDate(e.target.value)}
+                      onChange={e => setEndDate(e.target.value)}
                     />
                   </div>
                 </div>
@@ -368,27 +423,35 @@ export default function LeaveCalculator() {
                     <Clock className="h-5 w-5 text-primary" />
                     سجل الإجازات
                   </CardTitle>
-                  <CardDescription>
-                    جميع الإجازات المسجلة
-                  </CardDescription>
+                  <CardDescription>جميع الإجازات المسجلة</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {leaveEntries.map((entry) => (
+                    {leaveEntries.map(entry => (
                       <div
                         key={entry.id}
                         className="flex items-center justify-between p-4 bg-muted/50 rounded-lg"
                       >
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="font-semibold">{getLeaveTypeLabel(entry.type)}</span>
+                            <span className="font-semibold">
+                              {getLeaveTypeLabel(entry.type)}
+                            </span>
                             <Badge className={getStatusColor(entry.status)}>
-                              {entry.status === 'approved' ? 'معتمدة' : entry.status}
+                              {entry.status === "approved"
+                                ? "معتمدة"
+                                : entry.status}
                             </Badge>
                           </div>
                           <p className="text-sm text-muted-foreground">
-                            {new Date(entry.startDate).toLocaleDateString('ar-SA')} - {new Date(entry.endDate).toLocaleDateString('ar-SA')}
-                            {' '}({entry.days} يوم)
+                            {new Date(entry.startDate).toLocaleDateString(
+                              "ar-SA"
+                            )}{" "}
+                            -{" "}
+                            {new Date(entry.endDate).toLocaleDateString(
+                              "ar-SA"
+                            )}{" "}
+                            ({entry.days} يوم)
                           </p>
                         </div>
                         <Button
@@ -421,19 +484,19 @@ export default function LeaveCalculator() {
                   <Textarea
                     placeholder="مثال: كم يوم إجازة سنوية أستحق بعد 3 سنوات خدمة؟"
                     value={aiQuestion}
-                    onChange={(e) => setAiQuestion(e.target.value)}
+                    onChange={e => setAiQuestion(e.target.value)}
                     rows={3}
                   />
-                <Button
-                  onClick={handleAskAI}
-                  className="w-full bg-purple-600 hover:bg-purple-700"
-                  disabled={!aiQuestion.trim() || isAILoading}
-                >
-                  <Sparkles className="h-4 w-4 ml-2" />
-                  {isAILoading ? 'جاري المعالجة...' : 'اسأل الذكاء الاصطناعي'}
-                </Button>
+                  <Button
+                    onClick={handleAskAI}
+                    className="w-full bg-purple-600 hover:bg-purple-700"
+                    disabled={!aiQuestion.trim() || isAILoading}
+                  >
+                    <Sparkles className="h-4 w-4 ml-2" />
+                    {isAILoading ? "جاري المعالجة..." : "اسأل الذكاء الاصطناعي"}
+                  </Button>
                 </div>
-                
+
                 {aiResponse && (
                   <div className="p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg border border-purple-200 dark:border-purple-800">
                     <p className="text-sm">{aiResponse}</p>
@@ -452,9 +515,7 @@ export default function LeaveCalculator() {
                   <PieChart className="h-5 w-5 text-primary" />
                   رصيد الإجازات
                 </CardTitle>
-                <CardDescription>
-                  الرصيد المتبقي لكل نوع إجازة
-                </CardDescription>
+                <CardDescription>الرصيد المتبقي لكل نوع إجازة</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {/* Annual Leave */}
@@ -468,7 +529,9 @@ export default function LeaveCalculator() {
                   <div className="h-2 bg-muted rounded-full overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-blue-500 to-blue-600"
-                      style={{ width: `${(balance.annual.remaining / balance.annual.total) * 100}%` }}
+                      style={{
+                        width: `${(balance.annual.remaining / balance.annual.total) * 100}%`,
+                      }}
                     />
                   </div>
                 </div>
@@ -486,7 +549,9 @@ export default function LeaveCalculator() {
                   <div className="h-2 bg-muted rounded-full overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-red-500 to-red-600"
-                      style={{ width: `${(balance.sick.remaining / balance.sick.total) * 100}%` }}
+                      style={{
+                        width: `${(balance.sick.remaining / balance.sick.total) * 100}%`,
+                      }}
                     />
                   </div>
                 </div>
@@ -497,22 +562,30 @@ export default function LeaveCalculator() {
                 <div className="space-y-3">
                   <div className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
                     <span className="text-sm font-medium">إجازة أمومة</span>
-                    <Badge variant="secondary">{balance.maternity.remaining} يوم</Badge>
+                    <Badge variant="secondary">
+                      {balance.maternity.remaining} يوم
+                    </Badge>
                   </div>
-                  
+
                   <div className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
                     <span className="text-sm font-medium">إجازة حج</span>
-                    <Badge variant="secondary">{balance.hajj.remaining} يوم</Badge>
+                    <Badge variant="secondary">
+                      {balance.hajj.remaining} يوم
+                    </Badge>
                   </div>
-                  
+
                   <div className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
                     <span className="text-sm font-medium">إجازة زواج</span>
-                    <Badge variant="secondary">{balance.marriage.remaining} يوم</Badge>
+                    <Badge variant="secondary">
+                      {balance.marriage.remaining} يوم
+                    </Badge>
                   </div>
-                  
+
                   <div className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
                     <span className="text-sm font-medium">إجازة وفاة</span>
-                    <Badge variant="secondary">{balance.bereavement.remaining} يوم</Badge>
+                    <Badge variant="secondary">
+                      {balance.bereavement.remaining} يوم
+                    </Badge>
                   </div>
                 </div>
 
@@ -540,8 +613,13 @@ export default function LeaveCalculator() {
                   <div className="text-sm text-blue-900 dark:text-blue-100">
                     <p className="font-medium mb-2">معلومات مهمة</p>
                     <ul className="space-y-1 text-xs opacity-90">
-                      <li>• الإجازة السنوية: 21 يوم (1-4 سنوات)، 30 يوم (5+ سنوات)</li>
-                      <li>• الإجازة المرضية: 30 يوم بأجر كامل + 60 يوم بـ75% + 30 يوم بدون أجر</li>
+                      <li>
+                        • الإجازة السنوية: 21 يوم (1-4 سنوات)، 30 يوم (5+ سنوات)
+                      </li>
+                      <li>
+                        • الإجازة المرضية: 30 يوم بأجر كامل + 60 يوم بـ75% + 30
+                        يوم بدون أجر
+                      </li>
                       <li>• إجازة الأمومة: 10 أسابيع بأجر كامل</li>
                       <li>• إجازة الحج: مرة واحدة طوال الخدمة</li>
                     </ul>

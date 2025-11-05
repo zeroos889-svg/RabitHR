@@ -7,6 +7,7 @@ This document explains the Continuous Integration (CI) workflow for the RabitHR 
 ## Quick Summary
 
 The CI workflow performs the following checks:
+
 1. ✅ **TypeScript validation** - Ensures type safety
 2. ✅ **Code linting** - Checks code formatting with Prettier
 3. ✅ **Tests** - Runs unit and integration tests
@@ -15,6 +16,7 @@ The CI workflow performs the following checks:
 ## Workflow Configuration
 
 ### Trigger Events
+
 ```yaml
 on:
   push:
@@ -26,6 +28,7 @@ on:
 ### Environment Variables
 
 The workflow uses the following GitHub Secrets:
+
 - `DATABASE_URL` - MySQL database connection string (Railway)
 - `JWT_SECRET` - Secret key for JWT token generation
 - `SESSION_SECRET` - Secret key for session management
@@ -34,22 +37,23 @@ The workflow uses the following GitHub Secrets:
 
 ### Workflow Steps
 
-| Step | Command | Purpose |
-|------|---------|---------|
-| ⬇️ Checkout | `actions/checkout@v4` | Clone repository |
-| 🟢 Setup Node.js 20 | `actions/setup-node@v4` | Install Node.js 20 with pnpm caching |
-| 📦 Enable Corepack | `corepack enable` | Enable pnpm package manager |
-| 📥 Install dependencies | `pnpm install --frozen-lockfile` | Install all dependencies |
-| 🧠 TypeScript Check | `pnpm tsc --noEmit` | Validate TypeScript types |
-| 🎨 Lint | `pnpm lint` | Check code formatting |
-| 🧪 Tests | `pnpm test` | Run test suite |
-| 🏗️ Build | `pnpm build` | Build for production |
+| Step                    | Command                          | Purpose                              |
+| ----------------------- | -------------------------------- | ------------------------------------ |
+| ⬇️ Checkout             | `actions/checkout@v4`            | Clone repository                     |
+| 🟢 Setup Node.js 20     | `actions/setup-node@v4`          | Install Node.js 20 with pnpm caching |
+| 📦 Enable Corepack      | `corepack enable`                | Enable pnpm package manager          |
+| 📥 Install dependencies | `pnpm install --frozen-lockfile` | Install all dependencies             |
+| 🧠 TypeScript Check     | `pnpm tsc --noEmit`              | Validate TypeScript types            |
+| 🎨 Lint                 | `pnpm lint`                      | Check code formatting                |
+| 🧪 Tests                | `pnpm test`                      | Run test suite                       |
+| 🏗️ Build                | `pnpm build`                     | Build for production                 |
 
 ## Important Notes
 
 ### Environment Secrets Usage
 
 All secrets are referenced via `${{ secrets.SECRET_NAME }}` and are:
+
 - ✅ Used only for CI testing and builds
 - ✅ NOT printed in logs
 - ✅ NOT hardcoded in code
@@ -58,6 +62,7 @@ All secrets are referenced via `${{ secrets.SECRET_NAME }}` and are:
 ### Test Handling
 
 The workflow handles Redis-dependent tests gracefully:
+
 - Tests that require Redis (like `cache.test.ts`) may fail in CI
 - The workflow continues even if Redis tests fail
 - Non-Redis tests (like `db.test.ts`) run normally
@@ -77,7 +82,7 @@ deploy-frontend:
   runs-on: ubuntu-latest
   needs: ci
   if: github.ref == 'refs/heads/main'
-  
+
   steps:
     - name: Deploy to Vercel
       uses: amondnet/vercel-action@v25
@@ -88,6 +93,7 @@ deploy-frontend:
 ```
 
 **Requirements**:
+
 - Create a Vercel token at [vercel.com/account/tokens](https://vercel.com/account/tokens)
 - Get `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` from project settings
 - Add these as GitHub Secrets
@@ -104,16 +110,17 @@ deploy-backend:
   runs-on: ubuntu-latest
   needs: ci
   if: github.ref == 'refs/heads/main'
-  
+
   steps:
     - name: Deploy to Railway
       uses: bervProject/railway-deploy@main
       with:
         railway_token: ${{ secrets.RAILWAY_TOKEN }}
-        service: 'backend'
+        service: "backend"
 ```
 
 **Requirements**:
+
 - Create a Railway token at [railway.app/account/tokens](https://railway.app/account/tokens)
 - Add `RAILWAY_TOKEN` as a GitHub Secret
 
@@ -163,6 +170,7 @@ services:
 **Problem**: Tests fail in CI but work locally
 
 **Solution**:
+
 1. Check if Redis-dependent tests are failing (expected)
 2. Verify all environment variables are set
 3. Run tests locally with same Node.js version (20)
@@ -172,6 +180,7 @@ services:
 **Problem**: Build fails with errors
 
 **Solution**:
+
 1. Check GitHub Actions logs for details
 2. Test build locally: `pnpm build`
 3. Ensure all required environment variables are set
@@ -181,6 +190,7 @@ services:
 **Problem**: TypeScript check fails
 
 **Solution**:
+
 1. Run locally: `pnpm tsc --noEmit`
 2. Fix all TypeScript errors
 3. Ensure all type definitions are up to date
@@ -188,17 +198,20 @@ services:
 ## Architecture
 
 ### Frontend
+
 - **Build**: pnpm + Vite
 - **Deploy**: Vercel
 - **Env vars**: Prefixed with `VITE_` (e.g., `VITE_API_URL`)
 
 ### Backend
+
 - **Stack**: Node.js/TypeScript + Express + tRPC + Drizzle
 - **Host**: Railway
 - **Database**: MySQL on Railway
 - **Env vars**: Managed on Railway, not in GitHub
 
 ### Database
+
 - **Type**: MySQL
 - **Location**: Railway
 - **Connection**: via `DATABASE_URL` secret

@@ -1,6 +1,7 @@
 # RabitHR Platform - Complete Deployment Guide
 
 ## 📋 Table of Contents
+
 1. [Overview](#overview)
 2. [Prerequisites](#prerequisites)
 3. [Environment Setup](#environment-setup)
@@ -16,6 +17,7 @@
 ## 🎯 Overview
 
 RabitHR is a comprehensive Human Resources Management platform built with modern technologies:
+
 - **Frontend**: React 19 + Vite
 - **Backend**: Node.js + Express + tRPC
 - **Database**: MySQL (compatible with TiDB, Railway, PlanetScale)
@@ -27,17 +29,20 @@ RabitHR is a comprehensive Human Resources Management platform built with modern
 ## 📦 Prerequisites
 
 ### Required Tools
+
 - Node.js 18.x or higher
 - pnpm 10.4.1
 - Git
 - MySQL database (local or cloud)
 
 ### Optional Tools
+
 - Docker & Docker Compose
 - Vercel CLI
 - Redis (for caching)
 
 ### Installation Commands
+
 ```bash
 # Install Node.js (if not installed)
 # Visit: https://nodejs.org/
@@ -55,17 +60,20 @@ pnpm --version  # Should be 10.4.1
 ## 🔧 Environment Setup
 
 ### 1. Clone Repository
+
 ```bash
 git clone https://github.com/zeroos889-svg/RabitHR.git
 cd RabitHR
 ```
 
 ### 2. Install Dependencies
+
 ```bash
 pnpm install
 ```
 
 ### 3. Configure Environment Variables
+
 ```bash
 # Copy example file
 cp .env.example .env
@@ -77,23 +85,27 @@ nano .env
 ### Required Environment Variables
 
 #### Database (Required)
+
 ```env
 DATABASE_URL=mysql://username:password@host:port/database
 ```
 
 #### Security (Required)
+
 ```env
 JWT_SECRET=your-secret-key-min-32-chars
 SESSION_SECRET=your-session-secret-key
 ```
 
 #### Application (Required)
+
 ```env
 NODE_ENV=production
 VITE_APP_URL=https://your-domain.com
 ```
 
 #### Optional Services
+
 ```env
 # Redis Cache
 REDIS_URL=redis://host:port
@@ -117,6 +129,7 @@ VITE_SENTRY_DSN=your_sentry_dsn
 ```
 
 ### 4. Generate Secrets
+
 ```bash
 # Generate JWT_SECRET
 openssl rand -base64 32
@@ -132,6 +145,7 @@ openssl rand -base64 32
 ### Method 1: Deploy via GitHub (Recommended)
 
 #### Step 1: Push to GitHub
+
 ```bash
 git add .
 git commit -m "feat: prepare for deployment"
@@ -139,20 +153,25 @@ git push origin main
 ```
 
 #### Step 2: Connect to Vercel
+
 1. Go to [vercel.com](https://vercel.com)
 2. Click "Add New Project"
 3. Import your GitHub repository
 4. Select the RabitHR project
 
 #### Step 3: Configure Build Settings
+
 Vercel will automatically detect settings from `vercel.json`:
+
 - **Framework**: Vite
 - **Build Command**: `pnpm build`
 - **Install Command**: `pnpm install`
 - **Output Directory**: `dist`
 
 #### Step 4: Add Environment Variables
+
 In Vercel Dashboard:
+
 1. Go to **Settings** → **Environment Variables**
 2. Add all required variables from `.env.example`
 3. For each variable:
@@ -161,6 +180,7 @@ In Vercel Dashboard:
    - **Environments**: Select Production, Preview, Development
 
 **Critical Variables to Add:**
+
 ```
 NODE_ENV=production
 DATABASE_URL=mysql://user:pass@host:port/db
@@ -170,6 +190,7 @@ VITE_APP_URL=https://your-domain.vercel.app
 ```
 
 #### Step 5: Deploy
+
 Click **"Deploy"** and wait for the build to complete.
 
 ### Method 2: Deploy via Vercel CLI
@@ -199,16 +220,18 @@ vercel --prod
 ## 🐳 Docker Deployment
 
 ### Prerequisites
+
 - Docker installed
 - Docker Compose installed
 
 ### Using Docker Compose (Recommended)
 
 #### 1. Update docker-compose.yml
+
 Ensure `docker-compose.yml` has correct environment variables:
 
 ```yaml
-version: '3.8'
+version: "3.8"
 services:
   app:
     build: .
@@ -235,6 +258,7 @@ volumes:
 ```
 
 #### 2. Build and Run
+
 ```bash
 # Build image
 docker-compose build
@@ -252,11 +276,13 @@ docker-compose down
 ### Using Docker Only
 
 #### 1. Build Image
+
 ```bash
 docker build -t rabithr:latest .
 ```
 
 #### 2. Run Container
+
 ```bash
 docker run -d \
   --name rabithr \
@@ -269,6 +295,7 @@ docker run -d \
 ```
 
 #### 3. Verify
+
 ```bash
 # Check if container is running
 docker ps
@@ -342,6 +369,7 @@ pnpm drizzle-kit migrate
 ### 1. Secrets Management
 
 **DO:**
+
 - ✅ Store secrets in environment variables
 - ✅ Use `.env` for local development
 - ✅ Use Vercel Environment Variables for production
@@ -349,12 +377,14 @@ pnpm drizzle-kit migrate
 - ✅ Use strong, randomly generated secrets
 
 **DON'T:**
+
 - ❌ Commit `.env` to Git
 - ❌ Share secrets in code or comments
 - ❌ Use weak or predictable secrets
 - ❌ Hardcode credentials
 
 ### 2. Database Security
+
 - Enable SSL/TLS for database connections
 - Use strong database passwords
 - Whitelist only necessary IPs
@@ -362,6 +392,7 @@ pnpm drizzle-kit migrate
 - Monitor for suspicious activity
 
 ### 3. Application Security
+
 - Keep dependencies updated: `pnpm update`
 - Run security audits: `pnpm audit`
 - Use HTTPS only
@@ -370,6 +401,7 @@ pnpm drizzle-kit migrate
 - Use security headers (already configured in `vercel.json`)
 
 ### 4. Access Control
+
 - Use strong admin passwords
 - Implement 2FA for admin accounts
 - Regular security audits
@@ -382,6 +414,7 @@ pnpm drizzle-kit migrate
 ### Build Failures
 
 #### Issue: "Module not found"
+
 ```bash
 # Clear cache and reinstall
 rm -rf node_modules pnpm-lock.yaml
@@ -389,6 +422,7 @@ pnpm install
 ```
 
 #### Issue: "TypeScript errors"
+
 ```bash
 # Check for errors
 pnpm check
@@ -400,12 +434,14 @@ pnpm format
 ### Database Connection Issues
 
 #### Issue: "ETIMEDOUT" or "ECONNREFUSED"
+
 - Verify DATABASE_URL is correct
 - Check if database server is running
 - Verify IP whitelist includes your server
 - Check firewall settings
 
 #### Issue: "Access denied"
+
 - Verify username and password
 - Check user has correct permissions
 - Ensure SSL settings are correct
@@ -413,11 +449,13 @@ pnpm format
 ### Vercel Deployment Issues
 
 #### Issue: "env should be object"
+
 - **Solution**: This has been fixed in `vercel.json`
 - Ensure environment variables are set in Vercel Dashboard
 - Not in `vercel.json` file
 
 #### Issue: "Build timeout"
+
 - Upgrade to Vercel Pro for longer build times
 - Optimize build process
 - Enable caching
@@ -425,10 +463,12 @@ pnpm format
 ### Docker Issues
 
 #### Issue: "ENOENT: no such file or directory, open '/app/patches/...'"
+
 - **Solution**: Already fixed in Dockerfile
 - Ensure `COPY patches ./patches` is before `pnpm install`
 
 #### Issue: "Network error during pnpm install"
+
 - Check internet connection
 - Try using npm registry mirror
 - Increase Docker build timeout
@@ -440,16 +480,19 @@ pnpm format
 ### Regular Tasks
 
 #### Daily
+
 - Monitor application logs
 - Check error rates
 - Verify backup success
 
 #### Weekly
+
 - Review security alerts
 - Check database performance
 - Update dependencies (if needed)
 
 #### Monthly
+
 - Security audit
 - Performance optimization
 - Database cleanup
@@ -490,6 +533,7 @@ mysql -u username -p database_name < backup_20250105.sql
 ### Monitor Application
 
 #### Using Vercel Dashboard
+
 1. Go to your project in Vercel
 2. Click "Analytics"
 3. Monitor:
@@ -499,6 +543,7 @@ mysql -u username -p database_name < backup_20250105.sql
    - Cache hit rate
 
 #### Using Sentry (if configured)
+
 1. Check error reports
 2. Monitor performance
 3. Set up alerts
@@ -508,6 +553,7 @@ mysql -u username -p database_name < backup_20250105.sql
 ## 📞 Support & Resources
 
 ### Documentation
+
 - [Main README](./README.md)
 - [Vercel Deployment (Arabic)](./VERCEL_DEPLOYMENT_AR.md)
 - [Vercel Deployment (English)](./VERCEL_DEPLOYMENT_EN.md)
@@ -515,12 +561,14 @@ mysql -u username -p database_name < backup_20250105.sql
 - [Security Review](./SECURITY_REVIEW.md)
 
 ### External Resources
+
 - [Vercel Documentation](https://vercel.com/docs)
 - [Drizzle ORM Documentation](https://orm.drizzle.team/)
 - [React Documentation](https://react.dev/)
 - [Node.js Documentation](https://nodejs.org/docs/)
 
 ### Community
+
 - GitHub Issues: Report bugs and request features
 - GitHub Discussions: Ask questions and share ideas
 
@@ -531,6 +579,7 @@ mysql -u username -p database_name < backup_20250105.sql
 Before going live, ensure:
 
 ### Pre-Deployment
+
 - [ ] All environment variables configured
 - [ ] Database is set up and accessible
 - [ ] Secrets are strong and secure
@@ -540,6 +589,7 @@ Before going live, ensure:
 - [ ] TypeScript check passes: `pnpm check`
 
 ### Deployment
+
 - [ ] Code pushed to GitHub
 - [ ] Vercel project linked
 - [ ] Environment variables added in Vercel
@@ -547,6 +597,7 @@ Before going live, ensure:
 - [ ] Initial deployment successful
 
 ### Post-Deployment
+
 - [ ] Application accessible at production URL
 - [ ] Database connection working
 - [ ] Authentication working
@@ -565,6 +616,7 @@ Your RabitHR platform is now deployed and ready to use!
 **Production URL**: `https://your-project.vercel.app`
 
 **Next Steps**:
+
 1. Test all features thoroughly
 2. Set up monitoring and alerts
 3. Configure regular backups

@@ -5,9 +5,7 @@
   "devCommand": "pnpm dev",
   "framework": "vite",
   "outputDirectory": "dist/public",
-  "regions": [
-    "iad1"
-  ],
+  "regions": ["iad1"],
   "env": {
     "NODE_ENV": "production"
   },

@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 # Development docker-compose override
 # Usage: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
@@ -21,11 +21,11 @@ services:
     command: pnpm dev
     ports:
       - "3000:3000"
-      - "5173:5173"  # Vite dev server
+      - "5173:5173" # Vite dev server
     deploy:
       resources:
         limits:
-          cpus: '4'
+          cpus: "4"
           memory: 4G
 
   db:

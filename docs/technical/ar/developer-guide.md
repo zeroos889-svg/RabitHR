@@ -27,18 +27,18 @@
 
 ### المكونات الأساسية
 
-| المكون | التقنية | الوصف |
-|--------|---------|-------|
-| Frontend Framework | React 19 | مكتبة JavaScript لبناء واجهات المستخدم |
-| Type System | TypeScript 5.3 | نظام الأنواع الثابتة لـ JavaScript |
-| Styling | Tailwind CSS 4 | إطار عمل CSS utility-first |
-| UI Components | shadcn/ui | مكونات واجهة مستخدم جاهزة |
-| Backend Framework | Express 4 | إطار عمل Node.js للخادم |
-| API Layer | tRPC 11 | طبقة APIs مكتوبة بالكامل |
-| Database | MySQL 8 / TiDB 7 | قاعدة بيانات علائقية |
-| ORM | Drizzle ORM | أداة ربط قاعدة البيانات |
-| Authentication | Manus OAuth + JWT | نظام المصادقة المتكامل |
-| Package Manager | pnpm 9 | مدير الحزم السريع |
+| المكون             | التقنية           | الوصف                                  |
+| ------------------ | ----------------- | -------------------------------------- |
+| Frontend Framework | React 19          | مكتبة JavaScript لبناء واجهات المستخدم |
+| Type System        | TypeScript 5.3    | نظام الأنواع الثابتة لـ JavaScript     |
+| Styling            | Tailwind CSS 4    | إطار عمل CSS utility-first             |
+| UI Components      | shadcn/ui         | مكونات واجهة مستخدم جاهزة              |
+| Backend Framework  | Express 4         | إطار عمل Node.js للخادم                |
+| API Layer          | tRPC 11           | طبقة APIs مكتوبة بالكامل               |
+| Database           | MySQL 8 / TiDB 7  | قاعدة بيانات علائقية                   |
+| ORM                | Drizzle ORM       | أداة ربط قاعدة البيانات                |
+| Authentication     | Manus OAuth + JWT | نظام المصادقة المتكامل                 |
+| Package Manager    | pnpm 9            | مدير الحزم السريع                      |
 
 ## هيكل المشروع
 
@@ -147,7 +147,7 @@ import { trpc } from "@/lib/trpc";
 export default function NewFeature() {
   // استخدام tRPC لجلب البيانات
   const { data, isLoading } = trpc.feature.list.useQuery();
-  
+
   // استخدام mutation للتعديل
   const mutation = trpc.feature.create.useMutation({
     onSuccess: () => {
@@ -262,13 +262,15 @@ export const appRouter = router({
       const db = await getDb();
       return db.select().from(features);
     }),
-    
+
     // API محمي (يحتاج تسجيل دخول)
     create: protectedProcedure
-      .input(z.object({
-        name: z.string(),
-        description: z.string(),
-      }))
+      .input(
+        z.object({
+          name: z.string(),
+          description: z.string(),
+        })
+      )
       .mutation(async ({ input, ctx }) => {
         const db = await getDb();
         await db.insert(features).values({
@@ -296,7 +298,7 @@ export async function getFeatureById(id: number) {
     .from(features)
     .where(eq(features.id, id))
     .limit(1);
-  
+
   return result.length > 0 ? result[0] : undefined;
 }
 
@@ -349,18 +351,18 @@ await login.mutateAsync({
 
 تحتوي قاعدة البيانات على 55 جدولاً مقسمة إلى مجموعات:
 
-| المجموعة | الجداول | الوصف |
-|----------|---------|-------|
-| المستخدمون | users, passwords, companies | بيانات المستخدمين والشركات |
-| الموظفون | employees, contracts, salaries | إدارة الموظفين والعقود |
-| التوظيف | jobs, candidates, applications | نظام تتبع المتقدمين (ATS) |
-| الاستشارات | consultationTypes, consultations, bookings | خدمات الاستشارات |
-| التدريب | courses, enrollments, certificates | الدورات والشهادات |
-| الإجازات | leaveRequests, leaveBalances | إدارة الإجازات |
-| الحضور | attendance, shifts | نظام الحضور والانصراف |
-| التذاكر | tickets, ticketMessages | نظام الدعم الفني |
-| المهام | tasks, taskAssignments | إدارة المهام |
-| التقارير | reports, analytics | التقارير والإحصائيات |
+| المجموعة   | الجداول                                    | الوصف                      |
+| ---------- | ------------------------------------------ | -------------------------- |
+| المستخدمون | users, passwords, companies                | بيانات المستخدمين والشركات |
+| الموظفون   | employees, contracts, salaries             | إدارة الموظفين والعقود     |
+| التوظيف    | jobs, candidates, applications             | نظام تتبع المتقدمين (ATS)  |
+| الاستشارات | consultationTypes, consultations, bookings | خدمات الاستشارات           |
+| التدريب    | courses, enrollments, certificates         | الدورات والشهادات          |
+| الإجازات   | leaveRequests, leaveBalances               | إدارة الإجازات             |
+| الحضور     | attendance, shifts                         | نظام الحضور والانصراف      |
+| التذاكر    | tickets, ticketMessages                    | نظام الدعم الفني           |
+| المهام     | tasks, taskAssignments                     | إدارة المهام               |
+| التقارير   | reports, analytics                         | التقارير والإحصائيات       |
 
 ### إضافة جدول جديد
 
@@ -371,7 +373,9 @@ export const myNewTable = mysqlTable("my_new_table", {
   id: int("id").autoincrement().primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
   description: text("description"),
-  userId: int("user_id").notNull().references(() => users.id),
+  userId: int("user_id")
+    .notNull()
+    .references(() => users.id),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
 });
@@ -478,11 +482,11 @@ const { url } = await storageGet(`documents/${userId}/file.pdf`);
 استخدم Vitest لاختبار الوظائف:
 
 ```typescript
-import { describe, it, expect } from 'vitest';
-import { calculateEndOfService } from './calculations';
+import { describe, it, expect } from "vitest";
+import { calculateEndOfService } from "./calculations";
 
-describe('calculateEndOfService', () => {
-  it('should calculate correctly for 5 years', () => {
+describe("calculateEndOfService", () => {
+  it("should calculate correctly for 5 years", () => {
     const result = calculateEndOfService(5, 10000);
     expect(result).toBe(50000);
   });
@@ -494,8 +498,8 @@ describe('calculateEndOfService', () => {
 اختبر tRPC procedures:
 
 ```typescript
-import { appRouter } from './server/routers';
-import { createContext } from './server/_core/context';
+import { appRouter } from "./server/routers";
+import { createContext } from "./server/_core/context";
 
 const caller = appRouter.createCaller(await createContext());
 

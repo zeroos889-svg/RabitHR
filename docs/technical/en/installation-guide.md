@@ -16,12 +16,12 @@ Before beginning the installation process, ensure the following requirements are
 
 ### Hardware Requirements
 
-| Component | Minimum | Recommended |
-|-----------|---------|-------------|
-| CPU | 2 cores | 4+ cores |
-| RAM | 4 GB | 8+ GB |
-| Storage | 20 GB | 50+ GB |
-| Internet Connection | 10 Mbps | 100+ Mbps |
+| Component           | Minimum | Recommended |
+| ------------------- | ------- | ----------- |
+| CPU                 | 2 cores | 4+ cores    |
+| RAM                 | 4 GB    | 8+ GB       |
+| Storage             | 20 GB   | 50+ GB      |
+| Internet Connection | 10 Mbps | 100+ Mbps   |
 
 ### Software Requirements
 

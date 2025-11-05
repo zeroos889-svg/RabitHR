@@ -1,21 +1,27 @@
-import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { useAuth } from '@/_core/hooks/useAuth';
-import { trpc } from '@/lib/trpc';
-import { toast } from 'sonner';
-import { 
-  Download, 
-  Edit, 
-  Trash2, 
-  Ban, 
-  Shield, 
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { trpc } from "@/lib/trpc";
+import { toast } from "sonner";
+import {
+  Download,
+  Edit,
+  Trash2,
+  Ban,
+  Shield,
   AlertCircle,
   CheckCircle,
-  ChevronLeft
-} from 'lucide-react';
-import { Link, useLocation } from 'wouter';
+  ChevronLeft,
+} from "lucide-react";
+import { Link, useLocation } from "wouter";
 
 /**
  * صفحة "بياناتي" - حقوق صاحب البيانات (PDPL)
@@ -24,7 +30,7 @@ import { Link, useLocation } from 'wouter';
 export default function MyData() {
   const { user, loading } = useAuth();
   const [, setLocation] = useLocation();
-  const [requestPayload, setRequestPayload] = useState('');
+  const [requestPayload, setRequestPayload] = useState("");
   const [activeRequest, setActiveRequest] = useState<string | null>(null);
 
   // Queries
@@ -34,14 +40,14 @@ export default function MyData() {
   // Mutations
   const withdrawConsentMutation = trpc.privacy.withdrawConsent.useMutation({
     onSuccess: () => {
-      toast.success('تم سحب الموافقة بنجاح');
+      toast.success("تم سحب الموافقة بنجاح");
     },
   });
 
   const createRequestMutation = trpc.privacy.createRequest.useMutation({
     onSuccess: () => {
-      toast.success('تم إرسال الطلب بنجاح. سنرد عليك خلال 30 يوم عمل.');
-      setRequestPayload('');
+      toast.success("تم إرسال الطلب بنجاح. سنرد عليك خلال 30 يوم عمل.");
+      setRequestPayload("");
       setActiveRequest(null);
     },
   });
@@ -55,26 +61,32 @@ export default function MyData() {
   }
 
   if (!user) {
-    setLocation('/login');
+    setLocation("/login");
     return null;
   }
 
-  const handleRequest = (type: "access" | "correct" | "delete" | "withdraw" | "object") => {
+  const handleRequest = (
+    type: "access" | "correct" | "delete" | "withdraw" | "object"
+  ) => {
     if (type === "access") {
       // تحميل البيانات مباشرة
       const dataStr = JSON.stringify(userData, null, 2);
-      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const dataBlob = new Blob([dataStr], { type: "application/json" });
       const url = URL.createObjectURL(dataBlob);
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
       link.download = `my-data-${new Date().toISOString()}.json`;
       link.click();
-      toast.success('تم تحميل بياناتك بنجاح');
+      toast.success("تم تحميل بياناتك بنجاح");
       return;
     }
 
     if (type === "withdraw") {
-      if (confirm('هل أنت متأكد من سحب موافقتك؟ قد يؤثر ذلك على قدرتك على استخدام بعض الخدمات.')) {
+      if (
+        confirm(
+          "هل أنت متأكد من سحب موافقتك؟ قد يؤثر ذلك على قدرتك على استخدام بعض الخدمات."
+        )
+      ) {
         withdrawConsentMutation.mutate();
       }
       return;
@@ -135,8 +147,15 @@ export default function MyData() {
                   لديك موافقة نشطة على سياسة الخصوصية
                 </p>
                 <div className="bg-slate-50 p-3 rounded-lg text-sm space-y-1">
-                  <p><strong>الإصدار:</strong> {consentStatus.policyVersion}</p>
-                  <p><strong>تاريخ الموافقة:</strong> {new Date(consentStatus.consentedAt).toLocaleDateString('ar-SA')}</p>
+                  <p>
+                    <strong>الإصدار:</strong> {consentStatus.policyVersion}
+                  </p>
+                  <p>
+                    <strong>تاريخ الموافقة:</strong>{" "}
+                    {new Date(consentStatus.consentedAt).toLocaleDateString(
+                      "ar-SA"
+                    )}
+                  </p>
                 </div>
               </div>
             ) : (
@@ -146,7 +165,10 @@ export default function MyData() {
                 </p>
                 {consentStatus?.withdrawnAt && (
                   <p className="text-sm text-muted-foreground">
-                    تاريخ السحب: {new Date(consentStatus.withdrawnAt).toLocaleDateString('ar-SA')}
+                    تاريخ السحب:{" "}
+                    {new Date(consentStatus.withdrawnAt).toLocaleDateString(
+                      "ar-SA"
+                    )}
                   </p>
                 )}
               </div>
@@ -170,7 +192,7 @@ export default function MyData() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button 
+              <Button
                 onClick={() => handleRequest("access")}
                 className="w-full md:w-auto"
               >
@@ -197,21 +219,23 @@ export default function MyData() {
                   <Textarea
                     placeholder="اذكر البيانات التي تريد تصحيحها والتصحيح المطلوب..."
                     value={requestPayload}
-                    onChange={(e) => setRequestPayload(e.target.value)}
+                    onChange={e => setRequestPayload(e.target.value)}
                     rows={4}
                   />
                   <div className="flex gap-2">
-                    <Button 
+                    <Button
                       onClick={submitRequest}
-                      disabled={!requestPayload || createRequestMutation.isPending}
+                      disabled={
+                        !requestPayload || createRequestMutation.isPending
+                      }
                     >
                       إرسال الطلب
                     </Button>
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       onClick={() => {
                         setActiveRequest(null);
-                        setRequestPayload('');
+                        setRequestPayload("");
                       }}
                     >
                       إلغاء
@@ -219,7 +243,7 @@ export default function MyData() {
                   </div>
                 </div>
               ) : (
-                <Button 
+                <Button
                   onClick={() => handleRequest("correct")}
                   variant="outline"
                   className="w-full md:w-auto"
@@ -252,22 +276,22 @@ export default function MyData() {
                   <Textarea
                     placeholder="اذكر سبب طلب الحذف (اختياري)..."
                     value={requestPayload}
-                    onChange={(e) => setRequestPayload(e.target.value)}
+                    onChange={e => setRequestPayload(e.target.value)}
                     rows={3}
                   />
                   <div className="flex gap-2">
-                    <Button 
+                    <Button
                       onClick={submitRequest}
                       variant="destructive"
                       disabled={createRequestMutation.isPending}
                     >
                       تأكيد طلب الحذف
                     </Button>
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       onClick={() => {
                         setActiveRequest(null);
-                        setRequestPayload('');
+                        setRequestPayload("");
                       }}
                     >
                       إلغاء
@@ -275,7 +299,7 @@ export default function MyData() {
                   </div>
                 </div>
               ) : (
-                <Button 
+                <Button
                   onClick={() => handleRequest("delete")}
                   variant="destructive"
                   className="w-full md:w-auto"
@@ -294,9 +318,7 @@ export default function MyData() {
                 <Ban className="h-5 w-5 text-amber-600" />
                 الحق في الاعتراض
               </CardTitle>
-              <CardDescription>
-                اعترض على معالجة معينة لبياناتك
-              </CardDescription>
+              <CardDescription>اعترض على معالجة معينة لبياناتك</CardDescription>
             </CardHeader>
             <CardContent>
               {activeRequest === "object" ? (
@@ -304,21 +326,23 @@ export default function MyData() {
                   <Textarea
                     placeholder="اذكر المعالجة التي تعترض عليها والسبب..."
                     value={requestPayload}
-                    onChange={(e) => setRequestPayload(e.target.value)}
+                    onChange={e => setRequestPayload(e.target.value)}
                     rows={4}
                   />
                   <div className="flex gap-2">
-                    <Button 
+                    <Button
                       onClick={submitRequest}
-                      disabled={!requestPayload || createRequestMutation.isPending}
+                      disabled={
+                        !requestPayload || createRequestMutation.isPending
+                      }
                     >
                       إرسال الاعتراض
                     </Button>
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       onClick={() => {
                         setActiveRequest(null);
-                        setRequestPayload('');
+                        setRequestPayload("");
                       }}
                     >
                       إلغاء
@@ -326,7 +350,7 @@ export default function MyData() {
                   </div>
                 </div>
               ) : (
-                <Button 
+                <Button
                   onClick={() => handleRequest("object")}
                   variant="outline"
                   className="w-full md:w-auto"
@@ -350,11 +374,14 @@ export default function MyData() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button 
+              <Button
                 onClick={() => handleRequest("withdraw")}
                 variant="outline"
                 className="w-full md:w-auto"
-                disabled={!consentStatus?.hasConsent || withdrawConsentMutation.isPending}
+                disabled={
+                  !consentStatus?.hasConsent ||
+                  withdrawConsentMutation.isPending
+                }
               >
                 <Shield className="h-4 w-4 mr-2" />
                 سحب الموافقة
@@ -374,7 +401,15 @@ export default function MyData() {
                   <li>سنرد على طلبك خلال 30 يوم عمل</li>
                   <li>قد نطلب منك تأكيد هويتك قبل تنفيذ الطلب</li>
                   <li>بعض الطلبات قد تؤثر على قدرتك على استخدام الخدمة</li>
-                  <li>للاستفسارات: <a href="mailto:dpo@rabit.sa" className="text-blue-700 hover:underline">dpo@rabit.sa</a></li>
+                  <li>
+                    للاستفسارات:{" "}
+                    <a
+                      href="mailto:dpo@rabit.sa"
+                      className="text-blue-700 hover:underline"
+                    >
+                      dpo@rabit.sa
+                    </a>
+                  </li>
                 </ul>
               </div>
             </div>

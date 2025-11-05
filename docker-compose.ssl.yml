@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 # SSL/TLS with Let's Encrypt
 # Usage: docker-compose -f docker-compose.yml -f docker-compose.ssl.yml up -d

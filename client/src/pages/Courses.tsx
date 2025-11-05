@@ -1,13 +1,20 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { 
-  BookOpen, 
-  Clock, 
-  Users, 
+import {
+  BookOpen,
+  Clock,
+  Users,
   Star,
   Search,
   Filter,
@@ -18,7 +25,7 @@ import {
   Briefcase,
   Scale,
   FileText,
-  Target
+  Target,
 } from "lucide-react";
 import { Footer } from "@/components/Footer";
 
@@ -32,7 +39,7 @@ export default function Courses() {
     { id: "labor-law", name: "نظام العمل", icon: Scale },
     { id: "recruitment", name: "التوظيف", icon: Users },
     { id: "performance", name: "إدارة الأداء", icon: TrendingUp },
-    { id: "relations", name: "العلاقات الوظيفية", icon: Briefcase }
+    { id: "relations", name: "العلاقات الوظيفية", icon: Briefcase },
   ];
 
   const courses = [
@@ -51,7 +58,7 @@ export default function Courses() {
       instructor: "د. أحمد المالكي",
       image: "📚",
       features: ["شهادة إتمام", "وصول مدى الحياة", "تحديثات مجانية"],
-      popular: true
+      popular: true,
     },
     {
       id: "2",
@@ -68,7 +75,7 @@ export default function Courses() {
       instructor: "أ. فاطمة العتيبي",
       image: "⚖️",
       features: ["شهادة معتمدة", "حالات عملية", "دعم المدرب"],
-      popular: true
+      popular: true,
     },
     {
       id: "3",
@@ -84,7 +91,7 @@ export default function Courses() {
       price: 499,
       instructor: "د. محمد السعيد",
       image: "📊",
-      features: ["مشروع عملي", "قوالب جاهزة", "ورشة تطبيقية"]
+      features: ["مشروع عملي", "قوالب جاهزة", "ورشة تطبيقية"],
     },
     {
       id: "4",
@@ -100,7 +107,7 @@ export default function Courses() {
       price: 449,
       instructor: "أ. نورة الشمري",
       image: "🎯",
-      features: ["دليل المقابلات", "نماذج التقييم", "أمثلة واقعية"]
+      features: ["دليل المقابلات", "نماذج التقييم", "أمثلة واقعية"],
     },
     {
       id: "5",
@@ -116,7 +123,7 @@ export default function Courses() {
       price: 599,
       instructor: "د. خالد الدوسري",
       image: "💰",
-      features: ["حاسبات Excel", "دراسات سوق", "استشارة مباشرة"]
+      features: ["حاسبات Excel", "دراسات سوق", "استشارة مباشرة"],
     },
     {
       id: "6",
@@ -132,8 +139,8 @@ export default function Courses() {
       price: 449,
       instructor: "أ. سارة القحطاني",
       image: "🤝",
-      features: ["سيناريوهات واقعية", "نماذج قانونية", "دعم مستمر"]
-    }
+      features: ["سيناريوهات واقعية", "نماذج قانونية", "دعم مستمر"],
+    },
   ];
 
   const programs = [
@@ -153,9 +160,9 @@ export default function Courses() {
         "شهادة معتمدة",
         "وصول لمدة 12 شهر",
         "دعم مباشر من المدربين",
-        "ورش عمل شهرية"
-      ]
-    }
+        "ورش عمل شهرية",
+      ],
+    },
   ];
 
   const subscriptionPlans = [
@@ -167,8 +174,8 @@ export default function Courses() {
         "وصول لجميع الدورات",
         "محتوى جديد شهرياً",
         "إلغاء في أي وقت",
-        "دعم فني"
-      ]
+        "دعم فني",
+      ],
     },
     {
       name: "خطة الاحتراف",
@@ -180,22 +187,24 @@ export default function Courses() {
         "شهادات معتمدة",
         "دعم مباشر من المدربين",
         "ورش عمل شهرية",
-        "أولوية في الرد"
-      ]
-    }
+        "أولوية في الرد",
+      ],
+    },
   ];
 
   const stats = [
     { value: "+5000", label: "طالب نشط" },
     { value: "50+", label: "دورة تدريبية" },
     { value: "4.8/5", label: "متوسط التقييم" },
-    { value: "95%", label: "نسبة الإكمال" }
+    { value: "95%", label: "نسبة الإكمال" },
   ];
 
   const filteredCourses = courses.filter(course => {
-    const matchesCategory = selectedCategory === "all" || course.category === selectedCategory;
-    const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         course.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory =
+      selectedCategory === "all" || course.category === selectedCategory;
+    const matchesSearch =
+      course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      course.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -215,16 +224,16 @@ export default function Courses() {
             <p className="text-xl text-muted-foreground mb-8">
               دورات تدريبية متخصصة من خبراء الموارد البشرية في المملكة
             </p>
-            
+
             {/* Search */}
             <div className="relative max-w-xl mx-auto">
               <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <Input 
-                type="search" 
-                placeholder="ابحث عن دورة..." 
+              <Input
+                type="search"
+                placeholder="ابحث عن دورة..."
                 className="pr-10 h-12 text-lg"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
               />
             </div>
           </div>
@@ -240,7 +249,9 @@ export default function Courses() {
                 <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
                   {stat.value}
                 </div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
+                <div className="text-sm text-muted-foreground">
+                  {stat.label}
+                </div>
               </div>
             ))}
           </div>
@@ -251,10 +262,12 @@ export default function Courses() {
       <section className="py-8 border-b bg-background sticky top-0 z-10 shadow-sm">
         <div className="container">
           <div className="flex items-center gap-4 overflow-x-auto pb-2">
-            {categories.map((category) => (
+            {categories.map(category => (
               <Button
                 key={category.id}
-                variant={selectedCategory === category.id ? "default" : "outline"}
+                variant={
+                  selectedCategory === category.id ? "default" : "outline"
+                }
                 className="flex-shrink-0"
                 onClick={() => setSelectedCategory(category.id)}
               >
@@ -323,7 +336,10 @@ export default function Courses() {
                       <h4 className="font-semibold mb-3">ما ستحصل عليه:</h4>
                       <ul className="space-y-2">
                         {programs[0].features.map((feature, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-sm">
+                          <li
+                            key={idx}
+                            className="flex items-start gap-2 text-sm"
+                          >
                             <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
                             <span>{feature}</span>
                           </li>
@@ -348,7 +364,9 @@ export default function Courses() {
         <div className="container">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl md:text-3xl font-bold">
-              {selectedCategory === "all" ? "جميع الدورات" : categories.find(c => c.id === selectedCategory)?.name}
+              {selectedCategory === "all"
+                ? "جميع الدورات"
+                : categories.find(c => c.id === selectedCategory)?.name}
             </h2>
             <div className="text-sm text-muted-foreground">
               {filteredCourses.length} دورة
@@ -356,8 +374,11 @@ export default function Courses() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredCourses.map((course) => (
-              <Card key={course.id} className="flex flex-col hover:shadow-lg transition-shadow">
+            {filteredCourses.map(course => (
+              <Card
+                key={course.id}
+                className="flex flex-col hover:shadow-lg transition-shadow"
+              >
                 {course.popular && (
                   <Badge className="absolute top-4 left-4 z-10">
                     الأكثر طلباً
@@ -365,8 +386,12 @@ export default function Courses() {
                 )}
                 <CardHeader>
                   <div className="text-5xl mb-4">{course.image}</div>
-                  <CardTitle className="text-xl line-clamp-2">{course.title}</CardTitle>
-                  <CardDescription className="line-clamp-2">{course.description}</CardDescription>
+                  <CardTitle className="text-xl line-clamp-2">
+                    {course.title}
+                  </CardTitle>
+                  <CardDescription className="line-clamp-2">
+                    {course.description}
+                  </CardDescription>
                   <div className="flex items-center gap-2 pt-2">
                     <Badge variant="secondary">{course.level}</Badge>
                     <Badge variant="outline">{course.category}</Badge>
@@ -388,7 +413,9 @@ export default function Courses() {
                       <div className="flex items-center gap-1">
                         <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
                         <span className="font-semibold">{course.rating}</span>
-                        <span className="text-muted-foreground">({course.reviews})</span>
+                        <span className="text-muted-foreground">
+                          ({course.reviews})
+                        </span>
                       </div>
                       <div className="flex items-center gap-1 text-muted-foreground">
                         <Users className="h-4 w-4" />
@@ -401,7 +428,10 @@ export default function Courses() {
                     <div className="border-t pt-3">
                       <ul className="space-y-1">
                         {course.features.map((feature, idx) => (
-                          <li key={idx} className="flex items-center gap-2 text-xs">
+                          <li
+                            key={idx}
+                            className="flex items-center gap-2 text-xs"
+                          >
                             <CheckCircle2 className="h-3 w-3 text-primary" />
                             <span>{feature}</span>
                           </li>
@@ -438,7 +468,10 @@ export default function Courses() {
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {subscriptionPlans.map((plan, index) => (
-              <Card key={index} className={plan.popular ? "border-primary shadow-lg" : ""}>
+              <Card
+                key={index}
+                className={plan.popular ? "border-primary shadow-lg" : ""}
+              >
                 {plan.popular && (
                   <Badge className="absolute -top-3 left-1/2 -translate-x-1/2">
                     الأكثر شعبية
@@ -448,7 +481,9 @@ export default function Courses() {
                   <CardTitle className="text-2xl">{plan.name}</CardTitle>
                   <div className="text-4xl font-bold text-primary mt-4">
                     {plan.price} ريال
-                    <span className="text-lg text-muted-foreground">/{plan.period}</span>
+                    <span className="text-lg text-muted-foreground">
+                      /{plan.period}
+                    </span>
                   </div>
                 </CardHeader>
                 <CardContent>
@@ -462,7 +497,10 @@ export default function Courses() {
                   </ul>
                 </CardContent>
                 <CardFooter>
-                  <Button className="w-full" variant={plan.popular ? "default" : "outline"}>
+                  <Button
+                    className="w-full"
+                    variant={plan.popular ? "default" : "outline"}
+                  >
                     ابدأ الآن
                   </Button>
                 </CardFooter>

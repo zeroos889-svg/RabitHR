@@ -1,29 +1,31 @@
 /**
  * Email Service using Resend
- * 
+ *
  * This service handles all email sending functionality using Resend API.
  * Resend provides 3,000 free emails per month.
- * 
+ *
  * Setup:
  * 1. Get API key from https://resend.com
  * 2. Add RESEND_API_KEY to .env file
  * 3. Verify your domain (optional but recommended for production)
  */
 
-import { Resend } from 'resend';
+import { Resend } from "resend";
 
 const resendApiKey = process.env.RESEND_API_KEY;
-const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@rabit.sa';
+const fromEmail = process.env.RESEND_FROM_EMAIL || "noreply@rabit.sa";
 
 // Initialize Resend client
 let resend: Resend | null = null;
 
 if (resendApiKey) {
   resend = new Resend(resendApiKey);
-  console.log('✅ Resend email service initialized');
+  console.log("✅ Resend email service initialized");
 } else {
-  console.warn('⚠️  RESEND_API_KEY not found in environment variables');
-  console.warn('⚠️  Email sending will be disabled. Add RESEND_API_KEY to enable.');
+  console.warn("⚠️  RESEND_API_KEY not found in environment variables");
+  console.warn(
+    "⚠️  Email sending will be disabled. Add RESEND_API_KEY to enable."
+  );
 }
 
 /**
@@ -67,7 +69,7 @@ export const emailTemplates = {
   }),
 
   passwordReset: (name: string, resetUrl: string, expiresIn: string) => ({
-    subject: 'إعادة تعيين كلمة المرور - منصة رابِط',
+    subject: "إعادة تعيين كلمة المرور - منصة رابِط",
     html: `
       <!DOCTYPE html>
       <html dir="rtl" lang="ar">
@@ -138,11 +140,11 @@ export async function sendEmail(params: {
   from?: string;
 }) {
   if (!resend) {
-    console.error('❌ Cannot send email: Resend is not initialized');
-    console.error('💡 Add RESEND_API_KEY to .env file to enable email sending');
+    console.error("❌ Cannot send email: Resend is not initialized");
+    console.error("💡 Add RESEND_API_KEY to .env file to enable email sending");
     return {
       success: false,
-      error: 'Email service is not configured',
+      error: "Email service is not configured",
     };
   }
 
@@ -156,16 +158,18 @@ export async function sendEmail(params: {
       html,
     });
 
-    console.log(`✅ Email sent successfully to ${Array.isArray(to) ? to.join(', ') : to}`);
+    console.log(
+      `✅ Email sent successfully to ${Array.isArray(to) ? to.join(", ") : to}`
+    );
     return {
       success: true,
       data: result,
     };
   } catch (error) {
-    console.error('❌ Failed to send email:', error);
+    console.error("❌ Failed to send email:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
     };
   }
 }
@@ -178,7 +182,10 @@ export async function sendWelcomeEmail(params: {
   name: string;
   loginUrl: string;
 }) {
-  const { subject, html } = emailTemplates.welcome(params.name, params.loginUrl);
+  const { subject, html } = emailTemplates.welcome(
+    params.name,
+    params.loginUrl
+  );
   return sendEmail({
     to: params.to,
     subject,
@@ -198,7 +205,7 @@ export async function sendPasswordResetEmail(params: {
   const { subject, html } = emailTemplates.passwordReset(
     params.name,
     params.resetUrl,
-    params.expiresIn || '1 ساعة'
+    params.expiresIn || "1 ساعة"
   );
   return sendEmail({
     to: params.to,

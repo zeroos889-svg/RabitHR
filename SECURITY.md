@@ -9,12 +9,12 @@ This document outlines our supported versions, vulnerability reporting process, 
 
 The following table lists which versions of **RabitHR** currently receive security updates and maintenance:
 
-| Version | Supported |
-|----------|------------|
-| 5.1.x | ✅ Supported |
-| 5.0.x | ❌ Unsupported |
-| 4.0.x | ✅ Supported |
-| < 4.0 | ❌ Unsupported |
+| Version | Supported      |
+| ------- | -------------- |
+| 5.1.x   | ✅ Supported   |
+| 5.0.x   | ❌ Unsupported |
+| 4.0.x   | ✅ Supported   |
+| < 4.0   | ❌ Unsupported |
 
 > Only versions **4.0.x** and **5.1.x** are actively maintained with security fixes and performance patches.
 
@@ -27,15 +27,15 @@ If you discover a security vulnerability or a potential threat within the **Rabi
 ### 📬 Reporting Steps
 
 1. **Do not disclose the issue publicly.**  
-   Avoid sharing details on social media or public repositories.  
+   Avoid sharing details on social media or public repositories.
 
 2. **Contact our security team directly** via email:  
    📧 **security@rabit-hr.com**
 
 3. Please include the following in your report:
-   - Detailed steps to reproduce the vulnerability  
-   - The environment or version affected  
-   - A clear description of the potential impact  
+   - Detailed steps to reproduce the vulnerability
+   - The environment or version affected
+   - A clear description of the potential impact
    - Suggested fix or mitigation (if applicable)
 
 4. You will receive an acknowledgment within **72 business hours**.  
@@ -48,8 +48,9 @@ If you discover a security vulnerability or a potential threat within the **Rabi
 ## 🔐 Disclosure Policy
 
 To protect our users and infrastructure, we kindly request that all researchers and partners:
-- Allow a minimum of **14 days** before any public disclosure.  
-- Refrain from posting proof-of-concept (PoC) details until a fix has been deployed.  
+
+- Allow a minimum of **14 days** before any public disclosure.
+- Refrain from posting proof-of-concept (PoC) details until a fix has been deployed.
 - Coordinate with our team for responsible and transparent communication.
 
 > We value the security community’s effort to help make RabitHR safer for everyone.  

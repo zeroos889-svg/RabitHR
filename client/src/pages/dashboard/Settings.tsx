@@ -1,5 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -74,7 +80,9 @@ export default function Settings() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="company-name-en">اسم الشركة (بالإنجليزية)</Label>
+                    <Label htmlFor="company-name-en">
+                      اسم الشركة (بالإنجليزية)
+                    </Label>
                     <Input
                       id="company-name-en"
                       placeholder="Advanced Technology Company"
@@ -165,9 +173,7 @@ export default function Settings() {
                   <User className="h-5 w-5 text-green-600" />
                   الملف الشخصي
                 </CardTitle>
-                <CardDescription>
-                  تحديث معلوماتك الشخصية
-                </CardDescription>
+                <CardDescription>تحديث معلوماتك الشخصية</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-4">
@@ -245,9 +251,7 @@ export default function Settings() {
             <Card>
               <CardHeader>
                 <CardTitle>تغيير كلمة المرور</CardTitle>
-                <CardDescription>
-                  تحديث كلمة المرور الخاصة بك
-                </CardDescription>
+                <CardDescription>تحديث كلمة المرور الخاصة بك</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
@@ -277,14 +281,14 @@ export default function Settings() {
                   <Bell className="h-5 w-5 text-yellow-600" />
                   تفضيلات الإشعارات
                 </CardTitle>
-                <CardDescription>
-                  اختر كيف تريد تلقي الإشعارات
-                </CardDescription>
+                <CardDescription>اختر كيف تريد تلقي الإشعارات</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
-                    <Label htmlFor="email-notifications">إشعارات البريد الإلكتروني</Label>
+                    <Label htmlFor="email-notifications">
+                      إشعارات البريد الإلكتروني
+                    </Label>
                     <p className="text-sm text-muted-foreground">
                       تلقي الإشعارات عبر البريد الإلكتروني
                     </p>
@@ -292,7 +296,7 @@ export default function Settings() {
                   <Switch
                     id="email-notifications"
                     checked={notifications.email}
-                    onCheckedChange={(checked) =>
+                    onCheckedChange={checked =>
                       setNotifications({ ...notifications, email: checked })
                     }
                   />
@@ -300,7 +304,9 @@ export default function Settings() {
 
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
-                    <Label htmlFor="sms-notifications">إشعارات الرسائل النصية</Label>
+                    <Label htmlFor="sms-notifications">
+                      إشعارات الرسائل النصية
+                    </Label>
                     <p className="text-sm text-muted-foreground">
                       تلقي الإشعارات عبر الرسائل النصية
                     </p>
@@ -308,7 +314,7 @@ export default function Settings() {
                   <Switch
                     id="sms-notifications"
                     checked={notifications.sms}
-                    onCheckedChange={(checked) =>
+                    onCheckedChange={checked =>
                       setNotifications({ ...notifications, sms: checked })
                     }
                   />
@@ -316,7 +322,9 @@ export default function Settings() {
 
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
-                    <Label htmlFor="push-notifications">الإشعارات الفورية</Label>
+                    <Label htmlFor="push-notifications">
+                      الإشعارات الفورية
+                    </Label>
                     <p className="text-sm text-muted-foreground">
                       تلقي الإشعارات الفورية في المتصفح
                     </p>
@@ -324,7 +332,7 @@ export default function Settings() {
                   <Switch
                     id="push-notifications"
                     checked={notifications.push}
-                    onCheckedChange={(checked) =>
+                    onCheckedChange={checked =>
                       setNotifications({ ...notifications, push: checked })
                     }
                   />
@@ -340,7 +348,7 @@ export default function Settings() {
                   <Switch
                     id="weekly-report"
                     checked={notifications.weekly}
-                    onCheckedChange={(checked) =>
+                    onCheckedChange={checked =>
                       setNotifications({ ...notifications, weekly: checked })
                     }
                   />
@@ -428,7 +436,9 @@ export default function Settings() {
                 </div>
 
                 <div className="pt-4 border-t">
-                  <h4 className="font-semibold mb-3 text-red-600">منطقة الخطر</h4>
+                  <h4 className="font-semibold mb-3 text-red-600">
+                    منطقة الخطر
+                  </h4>
                   <div className="space-y-3">
                     <div className="flex items-center justify-between p-3 bg-red-50 dark:bg-red-950 rounded-lg">
                       <div>
@@ -466,9 +476,7 @@ export default function Settings() {
                   <Palette className="h-5 w-5 text-purple-600" />
                   المظهر واللغة
                 </CardTitle>
-                <CardDescription>
-                  تخصيص مظهر النظام واللغة
-                </CardDescription>
+                <CardDescription>تخصيص مظهر النظام واللغة</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="space-y-2">

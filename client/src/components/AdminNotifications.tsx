@@ -1,15 +1,9 @@
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { trpc } from '@/lib/trpc';
-import { 
-  AlertTriangle, 
-  Clock, 
-  Shield,
-  ChevronRight,
-  Bell
-} from 'lucide-react';
-import { Link } from 'wouter';
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { trpc } from "@/lib/trpc";
+import { AlertTriangle, Clock, Shield, ChevronRight, Bell } from "lucide-react";
+import { Link } from "wouter";
 
 /**
  * مكون الإشعارات للأدمن - يعرض التنبيهات المهمة
@@ -20,52 +14,68 @@ export function AdminNotifications() {
   const { data: incidents } = trpc.adminPdpl.getIncidents.useQuery();
 
   // حساب الطلبات القريبة من 30 يوم
-  const urgentRequests = requests?.requests?.filter((r: any) => {
-    if (r.status === 'done' || r.status === 'rejected') return false;
-    
-    const created = new Date(r.createdAt);
-    const now = new Date();
-    const diffDays = Math.floor((now.getTime() - created.getTime()) / (1000 * 60 * 60 * 24));
-    const remaining = 30 - diffDays;
-    
-    return remaining <= 5; // آخر 5 أيام
-  }) || [];
+  const urgentRequests =
+    requests?.requests?.filter((r: any) => {
+      if (r.status === "done" || r.status === "rejected") return false;
+
+      const created = new Date(r.createdAt);
+      const now = new Date();
+      const diffDays = Math.floor(
+        (now.getTime() - created.getTime()) / (1000 * 60 * 60 * 24)
+      );
+      const remaining = 30 - diffDays;
+
+      return remaining <= 5; // آخر 5 أيام
+    }) || [];
 
   // حساب الطلبات المتأخرة
-  const lateRequests = requests?.requests?.filter((r: any) => {
-    if (r.status === 'done' || r.status === 'rejected') return false;
-    
-    const created = new Date(r.createdAt);
-    const now = new Date();
-    const diffDays = Math.floor((now.getTime() - created.getTime()) / (1000 * 60 * 60 * 24));
-    
-    return diffDays > 30;
-  }) || [];
+  const lateRequests =
+    requests?.requests?.filter((r: any) => {
+      if (r.status === "done" || r.status === "rejected") return false;
+
+      const created = new Date(r.createdAt);
+      const now = new Date();
+      const diffDays = Math.floor(
+        (now.getTime() - created.getTime()) / (1000 * 60 * 60 * 24)
+      );
+
+      return diffDays > 30;
+    }) || [];
 
   // حساب الحوادث القريبة من 72 ساعة
-  const urgentIncidents = incidents?.incidents?.filter((i: any) => {
-    if (i.reportedToSdaiaAt) return false;
-    
-    const detected = new Date(i.detectedAt);
-    const now = new Date();
-    const diffHours = Math.floor((now.getTime() - detected.getTime()) / (1000 * 60 * 60));
-    const remaining = 72 - diffHours;
-    
-    return remaining <= 12; // آخر 12 ساعة
-  }) || [];
+  const urgentIncidents =
+    incidents?.incidents?.filter((i: any) => {
+      if (i.reportedToSdaiaAt) return false;
+
+      const detected = new Date(i.detectedAt);
+      const now = new Date();
+      const diffHours = Math.floor(
+        (now.getTime() - detected.getTime()) / (1000 * 60 * 60)
+      );
+      const remaining = 72 - diffHours;
+
+      return remaining <= 12; // آخر 12 ساعة
+    }) || [];
 
   // حساب الحوادث المتأخرة
-  const lateIncidents = incidents?.incidents?.filter((i: any) => {
-    if (i.reportedToSdaiaAt) return false;
-    
-    const detected = new Date(i.detectedAt);
-    const now = new Date();
-    const diffHours = Math.floor((now.getTime() - detected.getTime()) / (1000 * 60 * 60));
-    
-    return diffHours > 72;
-  }) || [];
+  const lateIncidents =
+    incidents?.incidents?.filter((i: any) => {
+      if (i.reportedToSdaiaAt) return false;
 
-  const totalAlerts = lateRequests.length + lateIncidents.length + urgentRequests.length + urgentIncidents.length;
+      const detected = new Date(i.detectedAt);
+      const now = new Date();
+      const diffHours = Math.floor(
+        (now.getTime() - detected.getTime()) / (1000 * 60 * 60)
+      );
+
+      return diffHours > 72;
+    }) || [];
+
+  const totalAlerts =
+    lateRequests.length +
+    lateIncidents.length +
+    urgentRequests.length +
+    urgentIncidents.length;
 
   if (totalAlerts === 0) {
     return null; // لا تعرض شيئاً إذا لم تكن هناك تنبيهات
@@ -117,7 +127,11 @@ export function AdminNotifications() {
                     </span>
                   </div>
                   <Link href="/admin/data-requests">
-                    <Button size="sm" variant="outline" className="border-amber-300">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="border-amber-300"
+                    >
                       عرض
                       <ChevronRight className="h-3 w-3 mr-1" />
                     </Button>
@@ -153,7 +167,11 @@ export function AdminNotifications() {
                     </span>
                   </div>
                   <Link href="/admin/security-incidents">
-                    <Button size="sm" variant="outline" className="border-amber-300">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="border-amber-300"
+                    >
                       عرض
                       <ChevronRight className="h-3 w-3 mr-1" />
                     </Button>
@@ -163,7 +181,8 @@ export function AdminNotifications() {
             </div>
 
             <p className="text-xs text-amber-800">
-              <strong>تذكير:</strong> يجب الرد على طلبات الحقوق خلال 30 يوم، والإبلاغ عن الخروقات خلال 72 ساعة (متطلبات PDPL)
+              <strong>تذكير:</strong> يجب الرد على طلبات الحقوق خلال 30 يوم،
+              والإبلاغ عن الخروقات خلال 72 ساعة (متطلبات PDPL)
             </p>
           </div>
         </div>

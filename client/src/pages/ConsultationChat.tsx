@@ -7,11 +7,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { 
-  Send, 
-  Paperclip, 
-  Sparkles, 
-  CheckCircle2, 
+import {
+  Send,
+  Paperclip,
+  Sparkles,
+  CheckCircle2,
   Clock,
   Star,
   ArrowLeft,
@@ -24,30 +24,32 @@ export default function ConsultationChat() {
   const bookingId = parseInt(id || "0");
   const [, navigate] = useLocation();
   const { user, isAuthenticated } = useAuth();
-  
+
   const [message, setMessage] = useState("");
   const [isLoadingAi, setIsLoadingAi] = useState(false);
   const [showRating, setShowRating] = useState(false);
   const [rating, setRating] = useState(0);
   const [ratingComment, setRatingComment] = useState("");
-  
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const utils = trpc.useUtils();
 
   // Get booking details
-  const { data: bookingData, isLoading: bookingLoading } = trpc.consulting.getTicket.useQuery(
-    { ticketId: bookingId },
-    { enabled: !!bookingId && isAuthenticated }
-  );
+  const { data: bookingData, isLoading: bookingLoading } =
+    trpc.consulting.getTicket.useQuery(
+      { ticketId: bookingId },
+      { enabled: !!bookingId && isAuthenticated }
+    );
 
   // Get messages
-  const { data: messagesData, isLoading: messagesLoading } = trpc.consultant.getMessages.useQuery(
-    { bookingId },
-    { 
-      enabled: !!bookingId && isAuthenticated,
-      refetchInterval: 3000, // Refresh every 3 seconds
-    }
-  );
+  const { data: messagesData, isLoading: messagesLoading } =
+    trpc.consultant.getMessages.useQuery(
+      { bookingId },
+      {
+        enabled: !!bookingId && isAuthenticated,
+        refetchInterval: 3000, // Refresh every 3 seconds
+      }
+    );
 
   // Send message mutation
   const sendMessageMutation = trpc.consultant.sendMessage.useMutation({
@@ -56,46 +58,53 @@ export default function ConsultationChat() {
       utils.consultant.getMessages.invalidate({ bookingId });
       scrollToBottom();
     },
-    onError: (error) => {
+    onError: error => {
       toast.error("فشل إرسال الرسالة: " + error.message);
     },
   });
 
   // Get AI suggestion mutation
   const getAiSuggestionMutation = trpc.consultant.getAiSuggestion.useMutation({
-    onSuccess: (data) => {
-      setMessage(Array.isArray(data.suggestion) ? JSON.stringify(data.suggestion) : data.suggestion);
+    onSuccess: data => {
+      setMessage(
+        Array.isArray(data.suggestion)
+          ? JSON.stringify(data.suggestion)
+          : data.suggestion
+      );
       toast.success("تم إنشاء الاقتراح بنجاح!");
       setIsLoadingAi(false);
     },
-    onError: (error) => {
+    onError: error => {
       toast.error("فشل إنشاء الاقتراح: " + error.message);
       setIsLoadingAi(false);
     },
   });
 
   // Update status mutation
-  const updateStatusMutation = trpc.consultant.updateConsultationStatus.useMutation({
-    onSuccess: () => {
-      toast.success("تم تحديث الحالة بنجاح");
-      utils.consulting.getTicket.invalidate({ ticketId: bookingId });
-    },
-    onError: (error) => {
-      toast.error("فشل تحديث الحالة: " + error.message);
-    },
-  });
+  const updateStatusMutation =
+    trpc.consultant.updateConsultationStatus.useMutation({
+      onSuccess: () => {
+        toast.success("تم تحديث الحالة بنجاح");
+        utils.consulting.getTicket.invalidate({ ticketId: bookingId });
+      },
+      onError: error => {
+        toast.error("فشل تحديث الحالة: " + error.message);
+      },
+    });
 
   // Rate consultation mutation
-  const rateConsultationMutation = trpc.consultant.rateConsultation.useMutation({
-    onSuccess: () => {
-      toast.success("شكراً لتقييمك!");
-      setShowRating(false);
-      navigate("/my-consultations");
-    },
-    onError: (error) => {
-      toast.error("فشل إرسال التقييم: " + error.message);
-    },
-  });
+  const rateConsultationMutation = trpc.consultant.rateConsultation.useMutation(
+    {
+      onSuccess: () => {
+        toast.success("شكراً لتقييمك!");
+        setShowRating(false);
+        navigate("/my-consultations");
+      },
+      onError: error => {
+        toast.error("فشل إرسال التقييم: " + error.message);
+      },
+    }
+  );
 
   const booking = bookingData?.ticket;
   const messages = messagesData?.messages || [];
@@ -140,7 +149,7 @@ export default function ConsultationChat() {
 
     // Get last client message
     const lastClientMessage = messages
-      .filter((m) => m.senderType === "client")
+      .filter(m => m.senderType === "client")
       .slice(-1)[0];
 
     if (!lastClientMessage) {
@@ -150,7 +159,7 @@ export default function ConsultationChat() {
     }
 
     // Build conversation history
-    const conversationHistory = messages.slice(-10).map((m) => ({
+    const conversationHistory = messages.slice(-10).map(m => ({
       role: m.senderType as "client" | "consultant",
       message: m.message,
     }));
@@ -241,13 +250,21 @@ export default function ConsultationChat() {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => navigate(isConsultant ? "/consultant/dashboard" : "/my-consultations")}
+                onClick={() =>
+                  navigate(
+                    isConsultant ? "/consultant/dashboard" : "/my-consultations"
+                  )
+                }
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
               <div>
-                <h1 className="text-xl font-bold">استشارة #{booking.ticketNumber}</h1>
-                <p className="text-sm text-muted-foreground">{booking.subject}</p>
+                <h1 className="text-xl font-bold">
+                  استشارة #{booking.ticketNumber}
+                </h1>
+                <p className="text-sm text-muted-foreground">
+                  {booking.subject}
+                </p>
               </div>
             </div>
             <Badge className={statusColors[booking.status || "pending"]}>
@@ -274,15 +291,17 @@ export default function ConsultationChat() {
                 {messages.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full text-center">
                     <div className="text-6xl mb-4">💬</div>
-                    <h3 className="text-lg font-semibold mb-2">ابدأ المحادثة</h3>
+                    <h3 className="text-lg font-semibold mb-2">
+                      ابدأ المحادثة
+                    </h3>
                     <p className="text-muted-foreground">
-                      {isConsultant 
+                      {isConsultant
                         ? "قم بإرسال رسالة للعميل لبدء الاستشارة"
                         : "قم بإرسال رسالة للمستشار"}
                     </p>
                   </div>
                 ) : (
-                  messages.map((msg) => {
+                  messages.map(msg => {
                     const isMyMessage = msg.senderId === user?.id;
                     return (
                       <div
@@ -298,7 +317,9 @@ export default function ConsultationChat() {
                         >
                           <div className="flex items-center gap-2 mb-1">
                             <span className="text-xs font-semibold">
-                              {msg.senderType === "consultant" ? "المستشار" : "العميل"}
+                              {msg.senderType === "consultant"
+                                ? "المستشار"
+                                : "العميل"}
                             </span>
                             {msg.isAiAssisted && (
                               <Sparkles className="h-3 w-3 text-yellow-500" />
@@ -306,10 +327,13 @@ export default function ConsultationChat() {
                           </div>
                           <Streamdown>{msg.message}</Streamdown>
                           <div className="text-xs opacity-70 mt-1">
-                            {new Date(msg.createdAt).toLocaleTimeString("ar-SA", {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}
+                            {new Date(msg.createdAt).toLocaleTimeString(
+                              "ar-SA",
+                              {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              }
+                            )}
                           </div>
                         </div>
                       </div>
@@ -321,7 +345,9 @@ export default function ConsultationChat() {
 
               {/* Input Area */}
               <div className="border-t p-4">
-                {booking.status === "completed" && !isConsultant && !showRating ? (
+                {booking.status === "completed" &&
+                !isConsultant &&
+                !showRating ? (
                   <Button
                     className="w-full"
                     onClick={() => setShowRating(true)}
@@ -336,7 +362,7 @@ export default function ConsultationChat() {
                         التقييم
                       </label>
                       <div className="flex gap-2">
-                        {[1, 2, 3, 4, 5].map((star) => (
+                        {[1, 2, 3, 4, 5].map(star => (
                           <button
                             key={star}
                             onClick={() => setRating(star)}
@@ -356,7 +382,7 @@ export default function ConsultationChat() {
                     <Textarea
                       placeholder="تعليقك (اختياري)"
                       value={ratingComment}
-                      onChange={(e) => setRatingComment(e.target.value)}
+                      onChange={e => setRatingComment(e.target.value)}
                       rows={3}
                     />
                     <div className="flex gap-2">
@@ -402,8 +428,8 @@ export default function ConsultationChat() {
                       <Textarea
                         placeholder="اكتب رسالتك هنا..."
                         value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        onKeyDown={(e) => {
+                        onChange={e => setMessage(e.target.value)}
+                        onKeyDown={e => {
                           if (e.key === "Enter" && !e.shiftKey) {
                             e.preventDefault();
                             handleSendMessage();
@@ -416,7 +442,9 @@ export default function ConsultationChat() {
                         <Button
                           size="icon"
                           onClick={handleSendMessage}
-                          disabled={sendMessageMutation.isPending || !message.trim()}
+                          disabled={
+                            sendMessageMutation.isPending || !message.trim()
+                          }
                         >
                           {sendMessageMutation.isPending ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
@@ -466,35 +494,37 @@ export default function ConsultationChat() {
               </CardContent>
             </Card>
 
-            {isConsultant && booking.status !== "completed" && booking.status !== "cancelled" && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">إجراءات</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  {booking.status === "pending" && (
-                    <Button
-                      className="w-full"
-                      onClick={() => handleUpdateStatus("in-progress")}
-                      disabled={updateStatusMutation.isPending}
-                    >
-                      <Clock className="mr-2 h-4 w-4" />
-                      بدء الاستشارة
-                    </Button>
-                  )}
-                  {booking.status === "in-progress" && (
-                    <Button
-                      className="w-full"
-                      onClick={() => handleUpdateStatus("completed")}
-                      disabled={updateStatusMutation.isPending}
-                    >
-                      <CheckCircle2 className="mr-2 h-4 w-4" />
-                      إنهاء الاستشارة
-                    </Button>
-                  )}
-                </CardContent>
-              </Card>
-            )}
+            {isConsultant &&
+              booking.status !== "completed" &&
+              booking.status !== "cancelled" && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">إجراءات</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    {booking.status === "pending" && (
+                      <Button
+                        className="w-full"
+                        onClick={() => handleUpdateStatus("in-progress")}
+                        disabled={updateStatusMutation.isPending}
+                      >
+                        <Clock className="mr-2 h-4 w-4" />
+                        بدء الاستشارة
+                      </Button>
+                    )}
+                    {booking.status === "in-progress" && (
+                      <Button
+                        className="w-full"
+                        onClick={() => handleUpdateStatus("completed")}
+                        disabled={updateStatusMutation.isPending}
+                      >
+                        <CheckCircle2 className="mr-2 h-4 w-4" />
+                        إنهاء الاستشارة
+                      </Button>
+                    )}
+                  </CardContent>
+                </Card>
+              )}
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import * as db from '../db';
+import * as db from "../db";
 
 /**
  * SMS Service
@@ -23,15 +23,15 @@ export async function sendSMS(options: SMSOptions): Promise<boolean> {
       userId,
       toPhone: to,
       message,
-      status: 'pending',
+      status: "pending",
     });
 
     // TODO: Integrate with actual SMS service (Twilio, Unifonic, etc.)
-    console.log('[SMS Service] Sending SMS:', { to, message });
-    
+    console.log("[SMS Service] Sending SMS:", { to, message });
+
     // Simulate SMS sending
     // In production, replace with actual API call:
-    // 
+    //
     // For Twilio:
     // const twilio = require('twilio');
     // const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
@@ -60,19 +60,19 @@ export async function sendSMS(options: SMSOptions): Promise<boolean> {
       userId,
       toPhone: to,
       message,
-      status: 'sent',
+      status: "sent",
     });
 
     return true;
   } catch (error: any) {
-    console.error('[SMS Service] Error:', error);
-    
+    console.error("[SMS Service] Error:", error);
+
     // Log the error
     await db.logSMS({
       userId,
       toPhone: to,
       message,
-      status: 'failed',
+      status: "failed",
       errorMessage: error.message,
     });
 

@@ -1,4 +1,5 @@
 # 📚 دليل الأكواد الشامل ثنائي اللغة
+
 # Comprehensive Bilingual Code Guide
 
 ## منصة رابِط للموارد البشرية | Rabit HR Platform
@@ -18,17 +19,22 @@
 ---
 
 <a name="overview"></a>
+
 ## 🎯 نظرة عامة | Overview
 
 ### عربي:
+
 هذا الدليل يشرح جميع الأكواد والملفات في المشروع بالتفصيل. كل قسم يحتوي على:
+
 - شرح الغرض من الكود
 - كيفية عمله
 - أمثلة الاستخدام
 - نصائح للتطوير
 
 ### English:
+
 This guide explains all code and files in the project in detail. Each section contains:
+
 - Explanation of code purpose
 - How it works
 - Usage examples
@@ -37,6 +43,7 @@ This guide explains all code and files in the project in detail. Each section co
 ---
 
 <a name="docker"></a>
+
 ## 🐳 Docker & Containerization
 
 ### Dockerfile الشرح الكامل | Complete Dockerfile Explanation
@@ -49,16 +56,19 @@ ARG PNPM_VERSION=latest
 ```
 
 **عربي:**
+
 - `ARG` تسمح بتمرير متغيرات عند بناء الصورة
 - `NODE_VERSION=18` الإصدار الافتراضي لـ Node.js
 - يمكن تغييرها: `docker build --build-arg NODE_VERSION=20`
 
 **English:**
+
 - `ARG` allows passing variables during image build
 - `NODE_VERSION=18` is the default Node.js version
 - Can be changed: `docker build --build-arg NODE_VERSION=20`
 
 **الفائدة | Benefit:**
+
 - 🔧 مرونة في اختيار الإصدارات | Flexibility in version selection
 - 🧪 سهولة اختبار إصدارات مختلفة | Easy testing of different versions
 
@@ -73,18 +83,21 @@ RUN corepack enable && corepack prepare pnpm@${PNPM_VERSION} --activate
 ```
 
 **عربي:**
+
 - `FROM node:18-alpine` استخدام صورة Node.js خفيفة (Alpine Linux)
 - `AS builder` تسمية هذه المرحلة "builder"
 - `WORKDIR /app` تحديد مجلد العمل
 - `corepack` أداة مدمجة في Node.js لإدارة package managers
 
 **English:**
+
 - `FROM node:18-alpine` uses lightweight Node.js image (Alpine Linux)
 - `AS builder` names this stage "builder"
 - `WORKDIR /app` sets working directory
 - `corepack` is built-in Node.js tool for managing package managers
 
 **لماذا Alpine؟ | Why Alpine?**
+
 - ✅ حجم صغير (~5MB مقابل ~900MB) | Small size (~5MB vs ~900MB)
 - ✅ أسرع في التحميل | Faster to download
 - ✅ أكثر أماناً (أقل مكونات) | More secure (fewer components)
@@ -99,16 +112,19 @@ RUN pnpm install --frozen-lockfile
 ```
 
 **عربي:**
+
 - نسخ ملفات الـ dependencies أولاً (استفادة من Docker cache)
 - `--frozen-lockfile` يضمن استخدام نفس الإصدارات المحددة في lock file
 - إذا لم تتغير هذه الملفات، Docker يستخدم cache ولا يعيد التثبيت
 
 **English:**
+
 - Copy dependency files first (leverage Docker cache)
 - `--frozen-lockfile` ensures using exact versions from lock file
 - If these files don't change, Docker uses cache and doesn't reinstall
 
 **الفائدة | Benefit:**
+
 - ⚡ بناء أسرع (من دقائق إلى ثواني) | Faster builds (from minutes to seconds)
 - 🎯 نتائج متسقة | Consistent results
 
@@ -124,16 +140,19 @@ RUN find dist -name "*.map" -delete
 ```
 
 **عربي:**
+
 - مرحلة منفصلة لتنظيف الملفات غير الضرورية
 - `find dist -name "*.map" -delete` يحذف source maps
 - source maps مفيدة للتطوير لكن غير مطلوبة في الإنتاج
 
 **English:**
+
 - Separate stage to clean unnecessary files
 - `find dist -name "*.map" -delete` removes source maps
 - source maps are useful for development but not needed in production
 
 **التوفير | Savings:**
+
 - 📦 تقليل حجم الصورة 10-20% | Reduces image size by 10-20%
 - 🚀 تحميل أسرع | Faster deployment
 
@@ -150,16 +169,19 @@ RUN pnpm install --prod --frozen-lockfile
 ```
 
 **عربي:**
+
 - صورة جديدة نظيفة للإنتاج
 - `--prod` يثبت فقط dependencies الإنتاج (بدون devDependencies)
 - devDependencies تشمل أدوات التطوير والاختبار (لا نحتاجها في الإنتاج)
 
 **English:**
+
 - Fresh, clean image for production
 - `--prod` installs only production dependencies (no devDependencies)
 - devDependencies include development and testing tools (not needed in production)
 
 **الفائدة | Benefit:**
+
 - 💾 توفير مساحة (~50% أقل) | Saves space (~50% less)
 - 🔒 أمان أفضل (أقل كود = أقل نقاط ضعف) | Better security (less code = fewer vulnerabilities)
 
@@ -174,18 +196,21 @@ USER nodejs
 ```
 
 **عربي:**
+
 - إنشاء مستخدم `nodejs` بـ UID=1001, GID=1001
 - `--chown` يغير ملكية الملفات للمستخدم nodejs
 - `USER nodejs` التبديل إلى المستخدم nodejs
 - **لماذا؟** تشغيل التطبيق كـ root خطر أمني كبير
 
 **English:**
+
 - Create `nodejs` user with UID=1001, GID=1001
 - `--chown` changes file ownership to nodejs user
 - `USER nodejs` switches to nodejs user
 - **Why?** Running as root is a major security risk
 
 **السيناريو الخطر | Risk Scenario:**
+
 ```
 ❌ إذا اُخترق التطبيق وهو root → المهاجم يملك كامل السيرفر
 ✅ إذا اُخترق التطبيق وهو nodejs → المهاجم محدود الصلاحيات
@@ -204,6 +229,7 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
 ```
 
 **عربي:**
+
 - `--interval=30s` فحص كل 30 ثانية
 - `--timeout=3s` انتظار 3 ثواني للرد
 - `--start-period=40s` منح التطبيق 40 ثانية للبدء قبل الفحص
@@ -211,6 +237,7 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
 - يرسل GET request إلى `/health` ويفحص status code 200
 
 **English:**
+
 - `--interval=30s` check every 30 seconds
 - `--timeout=3s` wait 3 seconds for response
 - `--start-period=40s` give app 40 seconds to start before checking
@@ -218,6 +245,7 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
 - Sends GET request to `/health` and checks for status code 200
 
 **ماذا يحدث عند الفشل؟ | What happens on failure?**
+
 ```
 Docker/Kubernetes يعيد تشغيل الحاوية تلقائياً
 Docker/Kubernetes automatically restarts the container
@@ -242,16 +270,19 @@ app:
 ```
 
 **عربي:**
+
 - التطبيق ينتظر حتى تكون قاعدة البيانات و Redis "صحية"
 - `service_healthy` يعتمد على healthcheck المعرّف في الخدمة
 - بدون هذا، قد يبدأ التطبيق قبل جاهزية قاعدة البيانات → أخطاء
 
 **English:**
+
 - App waits until database and Redis are "healthy"
 - `service_healthy` depends on healthcheck defined in service
 - Without this, app might start before database is ready → errors
 
 **تدفق البدء | Startup Flow:**
+
 ```
 1️⃣ MySQL يبدأ → يستغرق ~30 ثانية | MySQL starts → takes ~30 seconds
 2️⃣ healthcheck يفحص → ينتظر حتى mysqladmin ping ينجح | healthcheck verifies → waits for successful mysqladmin ping
@@ -268,14 +299,15 @@ app:
 deploy:
   resources:
     limits:
-      cpus: '2'
+      cpus: "2"
       memory: 2G
     reservations:
-      cpus: '0.5'
+      cpus: "0.5"
       memory: 512M
 ```
 
 **عربي:**
+
 - **limits:** الحد الأقصى المسموح
   - لن يتجاوز 2 CPU cores و 2GB RAM أبداً
 - **reservations:** الحد الأدنى المضمون
@@ -283,6 +315,7 @@ deploy:
 - إذا حاول استخدام أكثر من الحد → Docker يمنعه
 
 **English:**
+
 - **limits:** Maximum allowed
   - Will never exceed 2 CPU cores and 2GB RAM
 - **reservations:** Minimum guaranteed
@@ -290,6 +323,7 @@ deploy:
 - If tries to use more than limit → Docker prevents it
 
 **لماذا هذا مهم؟ | Why is this important?**
+
 ```
 ✅ منع تطبيق واحد من استهلاك جميع موارد السيرفر
    Prevents one app from consuming all server resources
@@ -315,6 +349,7 @@ volumes:
 ```
 
 **عربي:**
+
 - **Named Volume:** تخزين يُدار بواسطة Docker
 - البيانات محفوظة حتى لو:
   - أعدت تشغيل الحاوية
@@ -323,6 +358,7 @@ volumes:
 - فقط `docker volume rm mysql_data` يحذف البيانات
 
 **English:**
+
 - **Named Volume:** Storage managed by Docker
 - Data persists even if you:
   - Restart container
@@ -331,12 +367,14 @@ volumes:
 - Only `docker volume rm mysql_data` deletes data
 
 **بدون volumes:**
+
 ```
 ❌ كل إعادة تشغيل = فقدان جميع البيانات
    Every restart = lose all data
 ```
 
 **مع volumes:**
+
 ```
 ✅ البيانات محفوظة للأبد
    Data saved forever
@@ -345,6 +383,7 @@ volumes:
 ---
 
 <a name="database"></a>
+
 ## 🗄️ Database | قاعدة البيانات
 
 ### database-optimization.sql شرح كامل | Complete Explanation
@@ -356,18 +395,21 @@ CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 ```
 
 **عربي:**
+
 - فهرس على عمود واحد (email)
 - يُستخدم في: `SELECT * FROM users WHERE email = 'user@example.com'`
 - **قبل:** يفحص كل الصفوف واحدة واحدة (Full Table Scan)
 - **بعد:** يقفز مباشرة للصف المطلوب (Index Seek)
 
 **English:**
+
 - Index on single column (email)
 - Used in: `SELECT * FROM users WHERE email = 'user@example.com'`
 - **Before:** Checks every row one by one (Full Table Scan)
 - **After:** Jumps directly to required row (Index Seek)
 
 **مثال توضيحي | Visual Example:**
+
 ```
 بدون فهرس (100,000 صف) | Without Index (100,000 rows):
 🐌 يفحص: 1, 2, 3, 4, ... 99,998, 99,999, 100,000
@@ -385,23 +427,26 @@ CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 #### 2. Composite Index | فهرس مركب
 
 ```sql
-CREATE INDEX IF NOT EXISTS idx_employees_dept_status 
+CREATE INDEX IF NOT EXISTS idx_employees_dept_status
 ON employees(department, status);
 ```
 
 **عربي:**
+
 - فهرس على عمودين معاً
 - يُستخدم في: `SELECT * FROM employees WHERE department = 'IT' AND status = 'active'`
 - **ترتيب الأعمدة مهم جداً!**
 - القاعدة: ضع العمود الأكثر تحديداً أولاً
 
 **English:**
+
 - Index on two columns together
 - Used in: `SELECT * FROM employees WHERE department = 'IT' AND status = 'active'`
 - **Column order matters a lot!**
 - Rule: Put most selective column first
 
 **مثال الترتيب | Order Example:**
+
 ```sql
 -- ✅ جيد | Good
 -- department has 10 values, status has 3 values
@@ -412,6 +457,7 @@ CREATE INDEX idx_employees_status_dept ON employees(status, department);
 ```
 
 **لماذا الترتيب مهم؟ | Why order matters?**
+
 ```
 department = 'IT' → يصفي من 100,000 إلى 5,000 (95% تصفية)
 department = 'IT' → filters from 100,000 to 5,000 (95% filtering)
@@ -431,6 +477,7 @@ Starting with department is better!
 الفهرس `idx_emp_dept_status` على `(department, status)` يُستخدم في:
 
 ✅ **يُستخدم:**
+
 ```sql
 WHERE department = 'IT'
 WHERE department = 'IT' AND status = 'active'
@@ -438,6 +485,7 @@ WHERE department IN ('IT', 'HR')
 ```
 
 ❌ **لا يُستخدم:**
+
 ```sql
 WHERE status = 'active'  -- يبدأ بالعمود الثاني
 WHERE department LIKE '%IT%'  -- يستخدم wildcard في البداية
@@ -448,6 +496,7 @@ WHERE YEAR(hire_date) = 2023  -- function على العمود
 Index `idx_emp_dept_status` on `(department, status)` is used for:
 
 ✅ **Used:**
+
 ```sql
 WHERE department = 'IT'
 WHERE department = 'IT' AND status = 'active'
@@ -455,6 +504,7 @@ WHERE department IN ('IT', 'HR')
 ```
 
 ❌ **Not used:**
+
 ```sql
 WHERE status = 'active'  -- starts with second column
 WHERE department LIKE '%IT%'  -- wildcard at start
@@ -470,6 +520,7 @@ ANALYZE TABLE employees;
 ```
 
 **عربي:**
+
 - يحدّث إحصائيات الجدول
 - MySQL يستخدم هذه الإحصائيات لاختيار أفضل فهرس
 - يُشغّل بعد:
@@ -478,6 +529,7 @@ ANALYZE TABLE employees;
   - انخفاض الأداء
 
 **English:**
+
 - Updates table statistics
 - MySQL uses these statistics to choose best index
 - Run after:
@@ -486,6 +538,7 @@ ANALYZE TABLE employees;
   - Performance degradation
 
 **متى تشغله؟ | When to run it?**
+
 ```
 🔄 أسبوعياً → إذا البيانات تتغير باستمرار
    Weekly → if data changes constantly
@@ -500,28 +553,31 @@ ANALYZE TABLE employees;
 ---
 
 <a name="backend"></a>
+
 ## ⚙️ API & Backend | الخادم
 
-### server/_core/errorHandler.ts شرح كامل | Complete Explanation
+### server/\_core/errorHandler.ts شرح كامل | Complete Explanation
 
 #### 1. Custom Error Classes | أصناف الأخطاء المخصصة
 
 ```typescript
 export class ValidationError extends AppError {
   constructor(message: string, details?: any) {
-    super(message, 400, true, 'VALIDATION_ERROR');
-    this.name = 'ValidationError';
+    super(message, 400, true, "VALIDATION_ERROR");
+    this.name = "ValidationError";
   }
 }
 ```
 
 **عربي:**
+
 - `extends AppError` ترث من الصنف الأساسي
 - `400` هو HTTP status code للـ Bad Request
 - `true` يعني operational error (خطأ متوقع وليس bug)
 - `VALIDATION_ERROR` كود مخصص للتطبيق
 
 **English:**
+
 - `extends AppError` inherits from base class
 - `400` is HTTP status code for Bad Request
 - `true` means operational error (expected, not a bug)
@@ -531,11 +587,11 @@ export class ValidationError extends AppError {
 
 ```typescript
 // ✅ Operational Error (متوقع | expected)
-throw new ValidationError('Email is required');
+throw new ValidationError("Email is required");
 // → نعرضه للمستخدم | Show to user
 
 // ❌ Programming Error (bug)
-const result = null.someMethod();  // TypeError
+const result = null.someMethod(); // TypeError
 // → لا نعرضه للمستخدم | Don't show to user
 // → نسجله ونعرض رسالة عامة | Log it and show generic message
 ```
@@ -552,10 +608,10 @@ export function errorHandler(
   next: NextFunction
 ) {
   err.statusCode = err.statusCode || 500;
-  
+
   logError(err, req);
-  
-  if (process.env.NODE_ENV === 'development') {
+
+  if (process.env.NODE_ENV === "development") {
     sendErrorDev(err, req, res);
   } else {
     sendErrorProd(err, req, res);
@@ -564,18 +620,21 @@ export function errorHandler(
 ```
 
 **عربي:**
+
 - يُضاف في آخر middleware stack في Express
 - يُستدعى تلقائياً عند حدوث أي خطأ
 - يسجل الخطأ أولاً
 - يرسل رد مناسب حسب البيئة
 
 **English:**
+
 - Added at end of middleware stack in Express
 - Called automatically when any error occurs
 - Logs error first
 - Sends appropriate response based on environment
 
 **التدفق | Flow:**
+
 ```
 1️⃣ يحدث خطأ في أي route | Error occurs in any route
 2️⃣ Express يقفز إلى errorHandler | Express jumps to errorHandler
@@ -591,11 +650,12 @@ export function errorHandler(
 // Development - شرح مفصل | detailed explanation
 function sendErrorDev(err: any, req: Request, res: Response) {
   res.status(err.statusCode).json({
-    status: 'error',
+    status: "error",
     error: err,
     message: err.message,
-    stack: err.stack,  // ⚠️ حساس | sensitive
-    request: {         // ⚠️ حساس | sensitive
+    stack: err.stack, // ⚠️ حساس | sensitive
+    request: {
+      // ⚠️ حساس | sensitive
       body: req.body,
       params: req.params,
     },
@@ -606,14 +666,14 @@ function sendErrorDev(err: any, req: Request, res: Response) {
 function sendErrorProd(err: any, req: Request, res: Response) {
   if (err.isOperational) {
     res.status(err.statusCode).json({
-      status: 'error',
+      status: "error",
       code: err.code,
-      message: err.message,  // ✅ آمن | safe
+      message: err.message, // ✅ آمن | safe
     });
   } else {
     res.status(500).json({
-      status: 'error',
-      message: 'Something went wrong',  // ✅ رسالة عامة | generic
+      status: "error",
+      message: "Something went wrong", // ✅ رسالة عامة | generic
     });
   }
 }
@@ -650,10 +710,12 @@ export function asyncHandler(fn: Function) {
 ```
 
 **عربي:**
+
 - يغلف async functions لالتقاط الأخطاء تلقائياً
 - بدونه، أخطاء async تُتجاهل ويُعلق الـ request
 
 **English:**
+
 - Wraps async functions to catch errors automatically
 - Without it, async errors are ignored and request hangs
 
@@ -661,21 +723,25 @@ export function asyncHandler(fn: Function) {
 
 ```typescript
 // ❌ بدون asyncHandler | Without asyncHandler
-app.get('/users', async (req, res) => {
-  const users = await db.getUsers();  // إذا فشل، يُتجاهل | if fails, ignored
+app.get("/users", async (req, res) => {
+  const users = await db.getUsers(); // إذا فشل، يُتجاهل | if fails, ignored
   res.json(users);
 });
 
 // ✅ مع asyncHandler | With asyncHandler
-app.get('/users', asyncHandler(async (req, res) => {
-  const users = await db.getUsers();  // إذا فشل، يُمرر لـ errorHandler | if fails, passed to errorHandler
-  res.json(users);
-}));
+app.get(
+  "/users",
+  asyncHandler(async (req, res) => {
+    const users = await db.getUsers(); // إذا فشل، يُمرر لـ errorHandler | if fails, passed to errorHandler
+    res.json(users);
+  })
+);
 ```
 
 ---
 
 <a name="security"></a>
+
 ## 🔒 Security | الأمان
 
 ### Security Best Practices | أفضل ممارسات الأمان
@@ -683,12 +749,14 @@ app.get('/users', asyncHandler(async (req, res) => {
 #### 1. Environment Variables | متغيرات البيئة
 
 **عربي:**
+
 - ❌ لا تضع أبداً secrets في الكود
 - ✅ استخدم environment variables
 - ✅ استخدم .env.example للتوثيق (بدون قيم حقيقية)
 - ✅ أضف .env إلى .gitignore
 
 **English:**
+
 - ❌ Never put secrets in code
 - ✅ Use environment variables
 - ✅ Use .env.example for documentation (without real values)
@@ -709,11 +777,13 @@ DATABASE_URL=******root:mySecretPassword123@localhost/mydb
 #### 2. Rate Limiting | تحديد المعدل
 
 **عربي:**
+
 - يمنع الهجمات بالقوة الغاشمة (brute force)
 - يمنع إساءة استخدام API
 - مستويات مختلفة حسب الحساسية
 
 **English:**
+
 - Prevents brute force attacks
 - Prevents API abuse
 - Different levels based on sensitivity
@@ -753,11 +823,13 @@ auth_limit: 5 requests/minute
 #### 3. SQL Injection Prevention | منع حقن SQL
 
 **عربي:**
+
 - ❌ لا تُركب SQL queries يدوياً
 - ✅ استخدم prepared statements دائماً
 - ✅ استخدم ORM (مثل Drizzle)
 
 **English:**
+
 - ❌ Never manually build SQL queries
 - ✅ Always use prepared statements
 - ✅ Use ORM (like Drizzle)
@@ -774,13 +846,14 @@ const query = `SELECT * FROM users WHERE email = '${email}'`;
 
 // ✅ آمن | Safe
 const email = req.body.email;
-const users = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+const users = await db.query("SELECT * FROM users WHERE email = ?", [email]);
 // ? يُستبدل بقيمة آمنة | ? is safely replaced
 ```
 
 ---
 
 <a name="performance"></a>
+
 ## ⚡ Performance | الأداء
 
 ### Caching Strategy | استراتيجية التخزين المؤقت
@@ -817,19 +890,20 @@ Multi-level caching system:
 // التحقق من Cache أولاً | Check cache first
 const cached = await redis.get(`user:${userId}`);
 if (cached) {
-  return JSON.parse(cached);  // ⚡ سريع جداً | Very fast
+  return JSON.parse(cached); // ⚡ سريع جداً | Very fast
 }
 
 // إذا لم يوجد، اجلب من DB | If not found, fetch from DB
-const user = await db.getUser(userId);  // 🐢 بطيء نسبياً | Relatively slow
+const user = await db.getUser(userId); // 🐢 بطيء نسبياً | Relatively slow
 
 // احفظ في Cache للمرة القادمة | Save in cache for next time
-await redis.setex(`user:${userId}`, 900, JSON.stringify(user));  // 900s = 15min
+await redis.setex(`user:${userId}`, 900, JSON.stringify(user)); // 900s = 15min
 
 return user;
 ```
 
 **التوفير المتوقع | Expected Savings:**
+
 ```
 بدون cache | Without cache:
 - كل request → database query
@@ -847,6 +921,7 @@ return user;
 ---
 
 <a name="monitoring"></a>
+
 ## 📊 Monitoring | المراقبة
 
 ### Health Check System | نظام فحص الصحة
@@ -854,11 +929,13 @@ return user;
 #### الأنواع | Types
 
 **عربي:**
+
 1. **Simple Health Check:** فحص سريع (load balancer)
 2. **Comprehensive Health Check:** فحص شامل (monitoring)
 3. **Component Health Check:** فحص مكون محدد
 
 **English:**
+
 1. **Simple Health Check:** Quick check (load balancer)
 2. **Comprehensive Health Check:** Full check (monitoring)
 3. **Component Health Check:** Check specific component
@@ -867,21 +944,22 @@ return user;
 
 ## 📚 مصطلحات مهمة | Important Terms
 
-| عربي | English | الشرح | Explanation |
-|------|---------|-------|-------------|
-| حاوية | Container | بيئة معزولة لتشغيل التطبيق | Isolated environment to run app |
-| صورة | Image | قالب لإنشاء حاويات | Template to create containers |
-| مجلد | Volume | تخزين دائم للبيانات | Persistent data storage |
-| شبكة | Network | اتصال بين الحاويات | Connection between containers |
-| فهرس | Index | بنية بيانات لتسريع الاستعلامات | Data structure to speed up queries |
-| تخزين مؤقت | Cache | حفظ البيانات للوصول السريع | Store data for fast access |
-| وسيط | Middleware | دالة تُنفذ بين الطلب والرد | Function executed between request and response |
+| عربي       | English    | الشرح                          | Explanation                                    |
+| ---------- | ---------- | ------------------------------ | ---------------------------------------------- |
+| حاوية      | Container  | بيئة معزولة لتشغيل التطبيق     | Isolated environment to run app                |
+| صورة       | Image      | قالب لإنشاء حاويات             | Template to create containers                  |
+| مجلد       | Volume     | تخزين دائم للبيانات            | Persistent data storage                        |
+| شبكة       | Network    | اتصال بين الحاويات             | Connection between containers                  |
+| فهرس       | Index      | بنية بيانات لتسريع الاستعلامات | Data structure to speed up queries             |
+| تخزين مؤقت | Cache      | حفظ البيانات للوصول السريع     | Store data for fast access                     |
+| وسيط       | Middleware | دالة تُنفذ بين الطلب والرد     | Function executed between request and response |
 
 ---
 
 ## 🎯 النصائح الذهبية | Golden Tips
 
 ### عربي:
+
 1. ✅ اقرأ التعليقات في الكود - توفر وقتاً
 2. ✅ استخدم health checks - تكتشف المشاكل مبكراً
 3. ✅ طبّق resource limits - تمنع الكوارث
@@ -891,6 +969,7 @@ return user;
 7. ✅ اختبر في بيئة مشابهة للإنتاج
 
 ### English:
+
 1. ✅ Read code comments - saves time
 2. ✅ Use health checks - detect issues early
 3. ✅ Apply resource limits - prevent disasters
@@ -904,6 +983,7 @@ return user;
 ## 📞 الدعم | Support
 
 **للأسئلة | For Questions:**
+
 - راجع التعليقات inline في الكود | Check inline comments in code
 - راجع `PROJECT_STATUS.md` | Check `PROJECT_STATUS.md`
 - راجع `DEVELOPMENT_ENHANCEMENTS.md` | Check `DEVELOPMENT_ENHANCEMENTS.md`

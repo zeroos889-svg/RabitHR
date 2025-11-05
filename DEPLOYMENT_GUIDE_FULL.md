@@ -8,7 +8,6 @@
    - ✅ Multi-stage build مع pruner
    - ✅ ARG للتخصيص (NODE_VERSION, PNPM_VERSION)
    - ✅ حذف source maps في الإنتاج
-   
 2. **Redis للتخزين المؤقت**
    - ✅ Redis 7 Alpine
    - ✅ Persistence مع AOF
@@ -46,21 +45,25 @@
 ## 🎯 أوامر التشغيل
 
 ### Production
+
 ```bash
 docker-compose up -d
 ```
 
 ### Development
+
 ```bash
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 ```
 
 ### Production + Monitoring
+
 ```bash
 docker-compose -f docker-compose.yml -f docker-compose.monitoring.yml up -d
 ```
 
 ### كل شيء
+
 ```bash
 docker-compose \
   -f docker-compose.yml \
@@ -73,18 +76,18 @@ docker-compose \
 
 ## 🌐 المنافذ والخدمات
 
-| الخدمة | المنفذ | الوصف |
-|--------|--------|-------|
-| Nginx | 80, 443 | Reverse Proxy |
-| App | 3000 | التطبيق الرئيسي |
-| MySQL | 3306 | قاعدة البيانات |
-| Redis | 6379 | Cache |
-| phpMyAdmin | 8080 | إدارة MySQL (dev) |
-| Redis Commander | 8081 | إدارة Redis (dev) |
-| Grafana | 3001 | Dashboard |
-| Prometheus | 9090 | Metrics |
-| Loki | 3100 | Logs |
-| cAdvisor | 8082 | Container Stats |
+| الخدمة          | المنفذ  | الوصف             |
+| --------------- | ------- | ----------------- |
+| Nginx           | 80, 443 | Reverse Proxy     |
+| App             | 3000    | التطبيق الرئيسي   |
+| MySQL           | 3306    | قاعدة البيانات    |
+| Redis           | 6379    | Cache             |
+| phpMyAdmin      | 8080    | إدارة MySQL (dev) |
+| Redis Commander | 8081    | إدارة Redis (dev) |
+| Grafana         | 3001    | Dashboard         |
+| Prometheus      | 9090    | Metrics           |
+| Loki            | 3100    | Logs              |
+| cAdvisor        | 8082    | Container Stats   |
 
 ---
 
@@ -98,6 +101,7 @@ docker-compose \
 ---
 
 **للتفاصيل الكاملة، راجع:**
+
 - `DOCKER.md` - دليل Docker
 - `RECOMMENDATIONS.md` - جميع التوصيات
 - `SECURITY_AUDIT_REPORT.md` - تقرير الأمان

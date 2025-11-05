@@ -40,14 +40,14 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 async function startServer() {
   // Check environment variables
   checkEnv();
-  
+
   // Run database migrations on startup
   try {
     if (process.env.DATABASE_URL) {
       const url = new URL(process.env.DATABASE_URL);
       const connection = await mysql.createConnection({
         host: url.hostname,
-        port: parseInt(url.port || '3306'),
+        port: parseInt(url.port || "3306"),
         user: url.username,
         password: url.password,
         database: url.pathname.slice(1),
@@ -61,52 +61,56 @@ async function startServer() {
   } catch (error) {
     console.error("[Server] Failed to run migrations:", error);
   }
-  
+
   const app = express();
   const server = createServer(app);
-  
+
   // Security Headers - Helmet
-  app.use(helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        styleSrc: ["'self'", "'unsafe-inline'"],
-        scriptSrc: ["'self'", "'unsafe-inline'"],
-        imgSrc: ["'self'", "data:", "https:"],
-        connectSrc: ["'self'"],
-        fontSrc: ["'self'"],
-        objectSrc: ["'none'"],
-        mediaSrc: ["'self'"],
-        frameSrc: ["'none'"],
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          styleSrc: ["'self'", "'unsafe-inline'"],
+          scriptSrc: ["'self'", "'unsafe-inline'"],
+          imgSrc: ["'self'", "data:", "https:"],
+          connectSrc: ["'self'"],
+          fontSrc: ["'self'"],
+          objectSrc: ["'none'"],
+          mediaSrc: ["'self'"],
+          frameSrc: ["'none'"],
+        },
       },
-    },
-    hsts: {
-      maxAge: 31536000,
-      includeSubDomains: true,
-      preload: true
-    },
-  }));
-  
+      hsts: {
+        maxAge: 31536000,
+        includeSubDomains: true,
+        preload: true,
+      },
+    })
+  );
+
   // Response Compression
-  app.use(compression({
-    level: 6, // Compression level (0-9)
-    threshold: 1024, // Only compress responses larger than 1KB
-  }));
-  
+  app.use(
+    compression({
+      level: 6, // Compression level (0-9)
+      threshold: 1024, // Only compress responses larger than 1KB
+    })
+  );
+
   // Rate Limiting - General API
-  app.use('/api/', apiLimiter);
-  
+  app.use("/api/", apiLimiter);
+
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   app.use(cookieParser());
-  
+
   // CSRF Protection for all routes
   app.use(doubleSubmitCsrfProtection);
-  
+
   // Authentication routes with strict rate limiting
   registerAuthRoutes(app, authLimiter);
-  
+
   // tRPC API
   app.use(
     "/api/trpc",
@@ -132,12 +136,12 @@ async function startServer() {
   server.listen(port, () => {
     console.log(`Server running on http://localhost:${port}/`);
   });
-  
+
   return app;
 }
 
 // Start server for local development or Docker
-if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+if (process.env.NODE_ENV !== "production" || !process.env.VERCEL) {
   startServer().catch(console.error);
 }
 

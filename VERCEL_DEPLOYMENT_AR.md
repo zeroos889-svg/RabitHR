@@ -120,6 +120,7 @@ cp .env.example .env
 ### الخيار 2: قواعد بيانات أخرى
 
 يمكنك استخدام:
+
 - **PlanetScale** - [planetscale.com](https://planetscale.com)
 - **TiDB Cloud** - [tidbcloud.com](https://tidbcloud.com)
 - **AWS RDS** - للمشاريع الكبيرة
@@ -164,12 +165,14 @@ Node.js Version:     18.x
 اذهب إلى **Settings → Environment Variables** وأضف:
 
 #### 1. NODE_ENV
+
 ```plaintext
 Key:   NODE_ENV
 Value: production
 ```
 
 #### 2. DATABASE_URL
+
 ```plaintext
 Key:   DATABASE_URL
 Value: [الصق رابط قاعدة البيانات من Railway]
@@ -177,12 +180,14 @@ Value: [الصق رابط قاعدة البيانات من Railway]
 ```
 
 #### 3. JWT_SECRET
+
 ```plaintext
 Key:   JWT_SECRET
 Value: [أنشئ مفتاح سري قوي]
 ```
 
 **لإنشاء مفتاح آمن:**
+
 ```bash
 # على macOS/Linux
 openssl rand -base64 32
@@ -192,39 +197,46 @@ openssl rand -base64 32
 ```
 
 #### 4. SESSION_SECRET
+
 ```plaintext
 Key:   SESSION_SECRET
 Value: [أنشئ مفتاح سري آخر بنفس الطريقة]
 ```
 
 #### 5. VITE_APP_TITLE
+
 ```plaintext
 Key:   VITE_APP_TITLE
 Value: رابِط - منصة إدارة الموارد البشرية
 ```
 
 #### 6. VITE_APP_LOGO
+
 ```plaintext
 Key:   VITE_APP_LOGO
 Value: /logo.png
 ```
 
 #### 7. VITE_APP_URL
+
 ```plaintext
 Key:   VITE_APP_URL
 Value: https://your-app-name.vercel.app
 ```
+
 ⚠️ سنحدّث هذا بعد النشر الأول بالرابط الفعلي
 
 ### متغيرات اختيارية (لميزات إضافية)
 
 #### Redis للتخزين المؤقت (يحسّن الأداء بشكل كبير)
+
 ```plaintext
 Key:   REDIS_URL
 Value: [الصق رابط Redis من Railway]
 ```
 
 #### خدمة البريد الإلكتروني (Resend)
+
 ```plaintext
 Key:   RESEND_API_KEY
 Value: re_xxxxxxxxxxxx
@@ -235,6 +247,7 @@ Value: noreply@yourdomain.com
 ```
 
 #### الذكاء الاصطناعي (OpenAI)
+
 ```plaintext
 Key:   OPENAI_API_KEY
 Value: sk-xxxxxxxxxxxx
@@ -242,6 +255,7 @@ Value: sk-xxxxxxxxxxxx
 ```
 
 #### تخزين الملفات (AWS S3)
+
 ```plaintext
 Key:   AWS_ACCESS_KEY_ID
 Value: [من AWS Console]
@@ -257,6 +271,7 @@ Value: rabithr-storage
 ```
 
 #### تتبع الأخطاء (Sentry)
+
 ```plaintext
 Key:   VITE_SENTRY_DSN
 Value: https://xxxxx@xxxxx.ingest.sentry.io/xxxxx
@@ -268,6 +283,7 @@ Value: [من Sentry Dashboard]
 ### ✅ التحقق من المتغيرات
 
 قبل النشر، تأكد من أنك أضفت على الأقل:
+
 - ✅ NODE_ENV
 - ✅ DATABASE_URL
 - ✅ JWT_SECRET
@@ -334,6 +350,7 @@ railway run pnpm db:push
 ### التحقق من نجاح الهجرات
 
 اذهب إلى Railway Dashboard:
+
 1. افتح قاعدة البيانات
 2. انقر على **Query**
 3. شغّل:
@@ -349,6 +366,7 @@ railway run pnpm db:push
 ### 1. افتح التطبيق
 
 افتح رابط التطبيق في المتصفح:
+
 ```
 https://your-app-name.vercel.app
 ```
@@ -555,7 +573,7 @@ https://your-app-name.vercel.app
 
 ## 🎉 تهانينا!
 
-لقد نجحت في نشر منصة **رابِط** على Vercel! 
+لقد نجحت في نشر منصة **رابِط** على Vercel!
 
 ### الخطوات التالية:
 

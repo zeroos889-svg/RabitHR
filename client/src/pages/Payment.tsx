@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 
 interface PaymentProps {
   planName: string;
@@ -11,15 +11,20 @@ interface PaymentProps {
   onSuccess?: () => void;
 }
 
-export default function Payment({ planName, price, currency = 'SAR', onSuccess }: PaymentProps) {
+export default function Payment({
+  planName,
+  price,
+  currency = "SAR",
+  onSuccess,
+}: PaymentProps) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [cardData, setCardData] = useState({
-    cardNumber: '',
-    cardName: '',
-    expiryDate: '',
-    cvv: '',
+    cardNumber: "",
+    cardName: "",
+    expiryDate: "",
+    cvv: "",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,7 +54,7 @@ export default function Payment({ planName, price, currency = 'SAR', onSuccess }
         }, 2000);
       }
     } catch (err) {
-      setError('حدث خطأ أثناء معالجة الدفع. يرجى المحاولة مرة أخرى.');
+      setError("حدث خطأ أثناء معالجة الدفع. يرجى المحاولة مرة أخرى.");
     } finally {
       setLoading(false);
     }
@@ -109,7 +114,9 @@ export default function Payment({ planName, price, currency = 'SAR', onSuccess }
           <form onSubmit={handlePayment} className="space-y-4">
             {/* اسم المالك */}
             <div>
-              <label className="block text-sm font-medium mb-2">اسم المالك</label>
+              <label className="block text-sm font-medium mb-2">
+                اسم المالك
+              </label>
               <Input
                 type="text"
                 name="cardName"
@@ -123,7 +130,9 @@ export default function Payment({ planName, price, currency = 'SAR', onSuccess }
 
             {/* رقم البطاقة */}
             <div>
-              <label className="block text-sm font-medium mb-2">رقم البطاقة</label>
+              <label className="block text-sm font-medium mb-2">
+                رقم البطاقة
+              </label>
               <Input
                 type="text"
                 name="cardNumber"
@@ -139,7 +148,9 @@ export default function Payment({ planName, price, currency = 'SAR', onSuccess }
             {/* تاريخ الانتهاء و CVV */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-2">انتهاء الصلاحية</label>
+                <label className="block text-sm font-medium mb-2">
+                  انتهاء الصلاحية
+                </label>
                 <Input
                   type="text"
                   name="expiryDate"

@@ -1,4 +1,5 @@
 # تكوين Vercel - دليل شامل
+
 # Vercel Configuration - Complete Guide
 
 **التاريخ**: 2025-11-05  
@@ -114,6 +115,7 @@
 ```
 
 **الشرح**:
+
 - `vercel-build`: يستخدم بواسطة Vercel للبناء (frontend فقط)
 - `build`: للبناء المحلي (frontend + backend)
 - `check`: للتحقق من TypeScript
@@ -123,8 +125,8 @@
 **الملف**: واجهة Vercel Serverless Functions
 
 ```typescript
-import type { VercelRequest, VercelResponse } from '@vercel/node';
-import startServer from '../server/_core/index';
+import type { VercelRequest, VercelResponse } from "@vercel/node";
+import startServer from "../server/_core/index";
 
 let app: any = null;
 
@@ -133,13 +135,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!app) {
     app = await startServer();
   }
-  
+
   // Handle the request with Express app
   return app(req, res);
 }
 ```
 
 **الميزات**:
+
 - يبدأ الخادم مرة واحدة ويعيد استخدامه
 - يدعم جميع مسارات الـ API
 - متوافق مع Express
@@ -172,13 +175,16 @@ git push origin main
 ### 3. إعداد Vercel Dashboard
 
 #### A. ربط المشروع
+
 1. افتح [vercel.com](https://vercel.com)
 2. انقر "Add New Project"
 3. استورد مستودع GitHub
 4. اختر مشروع RabitHR
 
 #### B. إعدادات البناء (تلقائية)
+
 Vercel سيكتشف الإعدادات من `vercel.json`:
+
 - ✅ Framework: Vite
 - ✅ Build Command: `pnpm vercel-build`
 - ✅ Install Command: `pnpm install`
@@ -211,6 +217,7 @@ SENTRY_AUTH_TOKEN=your_token
 ```
 
 **لكل متغير**:
+
 - Environment: اختر `Production`, `Preview`, `Development`
 - Save
 
@@ -233,6 +240,7 @@ vercel
 ### 1. فحص السجلات (Logs)
 
 في Vercel Dashboard:
+
 1. اذهب إلى Deployments
 2. انقر على آخر deployment
 3. اعرض السجلات:
@@ -271,11 +279,13 @@ curl -I https://your-project.vercel.app/
 ### مشكلة: "Build Failed"
 
 **الأسباب المحتملة**:
+
 1. خطأ في TypeScript
 2. تبعيات مفقودة
 3. متغيرات بيئة مفقودة
 
 **الحل**:
+
 ```bash
 # محلياً
 pnpm check
@@ -288,11 +298,13 @@ pnpm vercel-build
 ### مشكلة: "Function Invocation Failed"
 
 **الأسباب المحتملة**:
+
 1. خطأ في `api/index.ts`
 2. متغيرات بيئة مفقودة
 3. خطأ في `server/_core/index.ts`
 
 **الحل**:
+
 ```bash
 # تحقق من Function Logs في Vercel
 # تأكد من إضافة جميع متغيرات البيئة
@@ -301,11 +313,13 @@ pnpm vercel-build
 ### مشكلة: "Database Connection Failed"
 
 **الأسباب المحتملة**:
+
 1. `DATABASE_URL` غير صحيح
 2. قاعدة البيانات لا تقبل اتصالات من Vercel
 3. SSL مطلوب
 
 **الحل**:
+
 ```env
 # تأكد من SSL في DATABASE_URL
 DATABASE_URL=******host:port/db?ssl={"rejectUnauthorized":false}
@@ -320,6 +334,7 @@ DATABASE_URL=******host:port/db?ssl={"rejectUnauthorized":false}
 ### 1. Analytics في Vercel
 
 في Dashboard:
+
 1. اذهب إلى Analytics
 2. راقب:
    - Request Count
@@ -340,6 +355,7 @@ vercel logs your-deployment-url
 ### 3. Edge Network
 
 Vercel يستخدم Edge Network عالمياً:
+
 - أسرع استجابة للمستخدمين
 - توزيع تلقائي للمحتوى
 - CDN مُدمج
@@ -351,6 +367,7 @@ Vercel يستخدم Edge Network عالمياً:
 ### 1. Environment Variables
 
 ✅ **مُدارة بشكل آمن**:
+
 - مشفرة في الراحة (at rest)
 - مشفرة في النقل (in transit)
 - لا تظهر في السجلات
@@ -359,6 +376,7 @@ Vercel يستخدم Edge Network عالمياً:
 ### 2. HTTPS
 
 ✅ **تلقائي**:
+
 - شهادة SSL مجانية
 - تجديد تلقائي
 - HSTS مُفعّل
@@ -366,6 +384,7 @@ Vercel يستخدم Edge Network عالمياً:
 ### 3. DDoS Protection
 
 ✅ **مُدمج**:
+
 - حماية تلقائية من DDoS
 - Rate limiting على مستوى Edge
 - WAF اختياري (Pro plan)
@@ -375,12 +394,14 @@ Vercel يستخدم Edge Network عالمياً:
 ## 💰 التكلفة والخطط
 
 ### Free Plan
+
 - ✅ مناسب للتطوير والاختبار
 - 100GB Bandwidth
 - 100 GB-Hours Function Execution
 - Unlimited Deployments
 
 ### Pro Plan ($20/month)
+
 - ✅ موصى به للإنتاج
 - 1TB Bandwidth
 - 1000 GB-Hours Function Execution
@@ -388,6 +409,7 @@ Vercel يستخدم Edge Network عالمياً:
 - Faster Builds
 
 ### Enterprise
+
 - ✅ للشركات الكبيرة
 - Custom Limits
 - SLA
@@ -400,18 +422,21 @@ Vercel يستخدم Edge Network عالمياً:
 قبل النشر، تأكد من:
 
 ### الكود
+
 - [ ] `pnpm check` ينجح (0 أخطاء TypeScript)
 - [ ] `pnpm vercel-build` ينجح
 - [ ] `pnpm test` ينجح
 - [ ] جميع التبعيات محدثة
 
 ### التكوين
+
 - [ ] `vercel.json` صحيح
 - [ ] `package.json` يحتوي على `vercel-build`
 - [ ] `api/index.ts` موجود
 - [ ] `.vercelignore` محدث
 
 ### المتغيرات البيئية
+
 - [ ] `DATABASE_URL` مُضاف
 - [ ] `JWT_SECRET` مُضاف (32+ حرف)
 - [ ] `SESSION_SECRET` مُضاف (32+ حرف)
@@ -419,12 +444,14 @@ Vercel يستخدم Edge Network عالمياً:
 - [ ] جميع المتغيرات الاختيارية المطلوبة مُضافة
 
 ### الأمان
+
 - [ ] Security Headers مُفعّلة
 - [ ] CSRF Protection مُفعّل
 - [ ] Rate Limiting مُفعّل
 - [ ] لا توجد أسرار في الكود
 
 ### قاعدة البيانات
+
 - [ ] قاعدة البيانات متاحة
 - [ ] Vercel IPs مُضافة للـ Whitelist
 - [ ] Migrations تم تشغيلها
@@ -435,6 +462,7 @@ Vercel يستخدم Edge Network عالمياً:
 ## 🎯 الخلاصة
 
 التكوين الحالي:
+
 - ✅ متوافق 100% مع Vercel
 - ✅ جميع الميزات الأمنية مُفعّلة
 - ✅ الأداء محسّن
@@ -447,6 +475,7 @@ Vercel يستخدم Edge Network عالمياً:
 ## 📞 الدعم
 
 للمساعدة:
+
 - [Vercel Docs](https://vercel.com/docs)
 - [Vercel Support](https://vercel.com/support)
 - [GitHub Issues](https://github.com/zeroos889-svg/RabitHR/issues)

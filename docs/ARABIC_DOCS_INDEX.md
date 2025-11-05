@@ -12,19 +12,19 @@
 
 ### وثائق أساسية
 
-| الوثيقة | الوصف | المستوى |
-|---------|-------|---------|
-| [VERCEL_QUICKSTART_AR.md](../VERCEL_QUICKSTART_AR.md) | دليل البدء السريع (5 دقائق) | مبتدئ ⭐ |
-| [VERCEL_DEPLOYMENT_AR.md](../VERCEL_DEPLOYMENT_AR.md) | دليل النشر الشامل والمفصّل | متوسط ⭐⭐ |
-| [VERCEL_TROUBLESHOOTING_AR.md](../VERCEL_TROUBLESHOOTING_AR.md) | دليل استكشاف الأخطاء وحلها | متقدم ⭐⭐⭐ |
-| [VERCEL_VS_LOCAL_AR.md](./VERCEL_VS_LOCAL_AR.md) | الفرق بين التشغيل المحلي والنشر | مبتدئ ⭐ |
+| الوثيقة                                                         | الوصف                           | المستوى      |
+| --------------------------------------------------------------- | ------------------------------- | ------------ |
+| [VERCEL_QUICKSTART_AR.md](../VERCEL_QUICKSTART_AR.md)           | دليل البدء السريع (5 دقائق)     | مبتدئ ⭐     |
+| [VERCEL_DEPLOYMENT_AR.md](../VERCEL_DEPLOYMENT_AR.md)           | دليل النشر الشامل والمفصّل      | متوسط ⭐⭐   |
+| [VERCEL_TROUBLESHOOTING_AR.md](../VERCEL_TROUBLESHOOTING_AR.md) | دليل استكشاف الأخطاء وحلها      | متقدم ⭐⭐⭐ |
+| [VERCEL_VS_LOCAL_AR.md](./VERCEL_VS_LOCAL_AR.md)                | الفرق بين التشغيل المحلي والنشر | مبتدئ ⭐     |
 
 ### وثائق داعمة
 
-| الوثيقة | الوصف |
-|---------|-------|
-| [VERCEL_SETUP.md](../VERCEL_SETUP.md) | دليل الإعداد (إنجليزي/عربي) |
-| [VERCEL_ENV_READY.md](../VERCEL_ENV_READY.md) | متغيرات البيئة الجاهزة للنسخ |
+| الوثيقة                                       | الوصف                          |
+| --------------------------------------------- | ------------------------------ |
+| [VERCEL_SETUP.md](../VERCEL_SETUP.md)         | دليل الإعداد (إنجليزي/عربي)    |
+| [VERCEL_ENV_READY.md](../VERCEL_ENV_READY.md) | متغيرات البيئة الجاهزة للنسخ   |
 | [DATABASE_OPTIONS.md](../DATABASE_OPTIONS.md) | خيارات قواعد البيانات المختلفة |
 
 ---

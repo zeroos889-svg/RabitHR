@@ -1,5 +1,5 @@
 import { trpc } from "@/lib/trpc";
-import { UNAUTHED_ERR_MSG } from '@shared/const';
+import { UNAUTHED_ERR_MSG } from "@shared/const";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink, TRPCClientError } from "@trpc/client";
 import * as Sentry from "@sentry/react";
@@ -8,7 +8,7 @@ import superjson from "superjson";
 import App from "./App";
 import { getLoginUrl } from "./const";
 import "./index.css";
-import './lib/i18n';
+import "./lib/i18n";
 
 // Initialize Sentry for error tracking
 if (import.meta.env.VITE_SENTRY_DSN) {
@@ -23,14 +23,17 @@ if (import.meta.env.VITE_SENTRY_DSN) {
       }),
     ],
     // Performance Monitoring
-    tracesSampleRate: import.meta.env.MODE === 'production' ? 0.1 : 1.0,
+    tracesSampleRate: import.meta.env.MODE === "production" ? 0.1 : 1.0,
     // Session Replay
     replaysSessionSampleRate: 0.1,
     replaysOnErrorSampleRate: 1.0,
     // Additional options
     beforeSend(event) {
       // Don't send errors in development unless explicitly enabled
-      if (import.meta.env.MODE === 'development' && !import.meta.env.VITE_SENTRY_DEBUG) {
+      if (
+        import.meta.env.MODE === "development" &&
+        !import.meta.env.VITE_SENTRY_DEBUG
+      ) {
         return null;
       }
       return event;
@@ -39,8 +42,8 @@ if (import.meta.env.VITE_SENTRY_DSN) {
 }
 
 // تعيين الاتجاه الافتراضي
-const defaultLang = localStorage.getItem('i18nextLng') || 'ar';
-document.documentElement.dir = defaultLang === 'ar' ? 'rtl' : 'ltr';
+const defaultLang = localStorage.getItem("i18nextLng") || "ar";
+document.documentElement.dir = defaultLang === "ar" ? "rtl" : "ltr";
 document.documentElement.lang = defaultLang;
 
 const queryClient = new QueryClient();

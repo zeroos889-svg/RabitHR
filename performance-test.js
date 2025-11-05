@@ -1,7 +1,7 @@
 /**
  * Performance Testing Script for Rabit HR Platform
  * Uses Artillery.io for load testing
- * 
+ *
  * Install: npm install -g artillery
  * Run: artillery run performance-test.yml
  */
@@ -150,23 +150,23 @@ scenarios:
           url: "/assets/logo.png"
 `;
 
-console.log('Artillery Performance Test Configuration');
-console.log('==========================================');
-console.log('');
-console.log('To run this test:');
-console.log('1. Save the config above to: performance-test.yml');
-console.log('2. Install Artillery: npm install -g artillery');
-console.log('3. Run: artillery run performance-test.yml');
-console.log('');
-console.log('Expected Performance Metrics:');
-console.log('- Response Time (p95): < 500ms');
-console.log('- Response Time (p99): < 1000ms');
-console.log('- Error Rate: < 1%');
-console.log('- Throughput: > 100 req/s');
-console.log('');
-console.log('Test Phases:');
-console.log('1. Warm up: 5 users/sec for 60s');
-console.log('2. Ramp up: 5-50 users/sec for 120s');
-console.log('3. Sustained: 50 users/sec for 300s');
-console.log('4. Peak: 100 users/sec for 120s');
-console.log('5. Cool down: 10 users/sec for 60s');
+console.log("Artillery Performance Test Configuration");
+console.log("==========================================");
+console.log("");
+console.log("To run this test:");
+console.log("1. Save the config above to: performance-test.yml");
+console.log("2. Install Artillery: npm install -g artillery");
+console.log("3. Run: artillery run performance-test.yml");
+console.log("");
+console.log("Expected Performance Metrics:");
+console.log("- Response Time (p95): < 500ms");
+console.log("- Response Time (p99): < 1000ms");
+console.log("- Error Rate: < 1%");
+console.log("- Throughput: > 100 req/s");
+console.log("");
+console.log("Test Phases:");
+console.log("1. Warm up: 5 users/sec for 60s");
+console.log("2. Ramp up: 5-50 users/sec for 120s");
+console.log("3. Sustained: 50 users/sec for 300s");
+console.log("4. Peak: 100 users/sec for 120s");
+console.log("5. Cool down: 10 users/sec for 60s");

@@ -1,4 +1,4 @@
-import rateLimit from 'express-rate-limit';
+import rateLimit from "express-rate-limit";
 
 /**
  * Rate Limiting Middleware
@@ -10,13 +10,13 @@ export const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // Limit each IP to 100 requests per windowMs
   message: {
-    error: 'تم تجاوز الحد المسموح من الطلبات. يرجى المحاولة لاحقاً.',
-    retryAfter: '15 دقيقة'
+    error: "تم تجاوز الحد المسموح من الطلبات. يرجى المحاولة لاحقاً.",
+    retryAfter: "15 دقيقة",
   },
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
   // Skip rate limiting for admin users (optional)
-  skip: (req) => {
+  skip: req => {
     // You can implement admin check here
     // return req.user?.role === 'admin';
     return false;
@@ -28,8 +28,8 @@ export const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 5,
   message: {
-    error: 'تم تجاوز عدد محاولات تسجيل الدخول. يرجى المحاولة بعد 15 دقيقة.',
-    retryAfter: '15 دقيقة'
+    error: "تم تجاوز عدد محاولات تسجيل الدخول. يرجى المحاولة بعد 15 دقيقة.",
+    retryAfter: "15 دقيقة",
   },
   standardHeaders: true,
   legacyHeaders: false,
@@ -40,8 +40,8 @@ export const paymentLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
   max: 10,
   message: {
-    error: 'تم تجاوز عدد محاولات الدفع. يرجى المحاولة بعد ساعة.',
-    retryAfter: 'ساعة واحدة'
+    error: "تم تجاوز عدد محاولات الدفع. يرجى المحاولة بعد ساعة.",
+    retryAfter: "ساعة واحدة",
   },
   standardHeaders: true,
   legacyHeaders: false,
@@ -52,8 +52,8 @@ export const documentLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 20,
   message: {
-    error: 'تم تجاوز عدد محاولات توليد المستندات. يرجى المحاولة بعد ساعة.',
-    retryAfter: 'ساعة واحدة'
+    error: "تم تجاوز عدد محاولات توليد المستندات. يرجى المحاولة بعد ساعة.",
+    retryAfter: "ساعة واحدة",
   },
   standardHeaders: true,
   legacyHeaders: false,

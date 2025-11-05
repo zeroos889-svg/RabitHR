@@ -81,8 +81,7 @@ const expertsData: Record<string, any> = {
         name: "خالد السديري",
         company: "مجموعة الرياض التجارية",
         rating: 4,
-        comment:
-          "مستشار محترف وسريع الاستجابة. أنصح بالتعامل معه.",
+        comment: "مستشار محترف وسريع الاستجابة. أنصح بالتعامل معه.",
         date: "منذ شهرين",
       },
     ],
@@ -158,11 +157,18 @@ export default function ConsultingExpertProfile() {
 
               <div className="flex flex-wrap gap-4">
                 <Link href="/consulting/book">
-                  <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50">
+                  <Button
+                    size="lg"
+                    className="bg-white text-blue-600 hover:bg-blue-50"
+                  >
                     احجز استشارة ({expert.price} ﷼/ساعة)
                   </Button>
                 </Link>
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white text-white hover:bg-white/10"
+                >
                   <MessageSquare className="ml-2 h-5 w-5" />
                   تواصل مباشر
                 </Button>
@@ -224,14 +230,12 @@ export default function ConsultingExpertProfile() {
                     </CardHeader>
                     <CardContent>
                       <ul className="space-y-3">
-                        {expert.expertise.map(
-                          (item: string, index: number) => (
-                            <li key={index} className="flex items-start gap-3">
-                              <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                              <span>{item}</span>
-                            </li>
-                          )
-                        )}
+                        {expert.expertise.map((item: string, index: number) => (
+                          <li key={index} className="flex items-start gap-3">
+                            <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
                       </ul>
                     </CardContent>
                   </Card>
@@ -244,14 +248,12 @@ export default function ConsultingExpertProfile() {
                     </CardHeader>
                     <CardContent>
                       <ul className="space-y-3">
-                        {expert.education.map(
-                          (item: string, index: number) => (
-                            <li key={index} className="flex items-start gap-3">
-                              <BookOpen className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                              <span>{item}</span>
-                            </li>
-                          )
-                        )}
+                        {expert.education.map((item: string, index: number) => (
+                          <li key={index} className="flex items-start gap-3">
+                            <BookOpen className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
                       </ul>
                     </CardContent>
                   </Card>

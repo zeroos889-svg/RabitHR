@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -407,12 +413,17 @@ export default function Templates() {
     },
   ];
 
-  const allTemplates = [...emailTemplates, ...contractTemplates, ...formTemplates];
+  const allTemplates = [
+    ...emailTemplates,
+    ...contractTemplates,
+    ...formTemplates,
+  ];
 
   const filteredTemplates = (templates: any[]) => {
-    return templates.filter((template) =>
-      template.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      template.description.toLowerCase().includes(searchQuery.toLowerCase())
+    return templates.filter(
+      template =>
+        template.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        template.description.toLowerCase().includes(searchQuery.toLowerCase())
     );
   };
 
@@ -443,7 +454,9 @@ export default function Templates() {
     setIsEditorOpen(false);
   };
 
-  const mostUsedTemplates = [...allTemplates].sort((a, b) => b.usageCount - a.usageCount).slice(0, 3);
+  const mostUsedTemplates = [...allTemplates]
+    .sort((a, b) => b.usageCount - a.usageCount)
+    .slice(0, 3);
 
   return (
     <div className="p-6 space-y-6">
@@ -451,7 +464,9 @@ export default function Templates() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">مكتبة القوالب</h1>
-          <p className="text-muted-foreground">قوالب جاهزة للرسائل والعقود والنماذج</p>
+          <p className="text-muted-foreground">
+            قوالب جاهزة للرسائل والعقود والنماذج
+          </p>
         </div>
         <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90">
           <Plus className="h-4 w-4 ml-2" />
@@ -478,7 +493,7 @@ export default function Templates() {
               <div>
                 <p className="text-sm text-muted-foreground">القوالب المفضلة</p>
                 <p className="text-2xl font-bold">
-                  {allTemplates.filter((t) => t.isFavorite).length}
+                  {allTemplates.filter(t => t.isFavorite).length}
                 </p>
               </div>
               <Star className="h-8 w-8 text-yellow-600" />
@@ -521,13 +536,18 @@ export default function Templates() {
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-3 gap-4">
-            {mostUsedTemplates.map((template) => (
-              <Card key={template.id} className="hover:shadow-lg transition-shadow">
+            {mostUsedTemplates.map(template => (
+              <Card
+                key={template.id}
+                className="hover:shadow-lg transition-shadow"
+              >
                 <CardContent className="pt-6">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
                       <h3 className="font-semibold mb-1">{template.title}</h3>
-                      <p className="text-sm text-muted-foreground">{template.description}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {template.description}
+                      </p>
                     </div>
                     {template.isFavorite && (
                       <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
@@ -551,7 +571,7 @@ export default function Templates() {
         <Input
           placeholder="ابحث في القوالب..."
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={e => setSearchQuery(e.target.value)}
           className="pr-10"
         />
       </div>
@@ -576,8 +596,11 @@ export default function Templates() {
         {/* Email Templates */}
         <TabsContent value="emails" className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
-            {filteredTemplates(emailTemplates).map((template) => (
-              <Card key={template.id} className="hover:shadow-lg transition-shadow">
+            {filteredTemplates(emailTemplates).map(template => (
+              <Card
+                key={template.id}
+                className="hover:shadow-lg transition-shadow"
+              >
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -643,8 +666,11 @@ export default function Templates() {
         {/* Contract Templates */}
         <TabsContent value="contracts" className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
-            {filteredTemplates(contractTemplates).map((template) => (
-              <Card key={template.id} className="hover:shadow-lg transition-shadow">
+            {filteredTemplates(contractTemplates).map(template => (
+              <Card
+                key={template.id}
+                className="hover:shadow-lg transition-shadow"
+              >
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -710,8 +736,11 @@ export default function Templates() {
         {/* Form Templates */}
         <TabsContent value="forms" className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
-            {filteredTemplates(formTemplates).map((template) => (
-              <Card key={template.id} className="hover:shadow-lg transition-shadow">
+            {filteredTemplates(formTemplates).map(template => (
+              <Card
+                key={template.id}
+                className="hover:shadow-lg transition-shadow"
+              >
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -777,7 +806,10 @@ export default function Templates() {
 
       {/* Preview Dialog */}
       {selectedTemplate && !isEditorOpen && (
-        <Dialog open={!!selectedTemplate} onOpenChange={() => setSelectedTemplate(null)}>
+        <Dialog
+          open={!!selectedTemplate}
+          onOpenChange={() => setSelectedTemplate(null)}
+        >
           <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
@@ -786,7 +818,9 @@ export default function Templates() {
                   <Star className="h-5 w-5 text-yellow-500 fill-yellow-500" />
                 )}
               </DialogTitle>
-              <DialogDescription>{selectedTemplate.description}</DialogDescription>
+              <DialogDescription>
+                {selectedTemplate.description}
+              </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
               <div className="flex items-center gap-2">
@@ -805,11 +839,17 @@ export default function Templates() {
                   <Copy className="h-4 w-4 ml-2" />
                   نسخ
                 </Button>
-                <Button variant="outline" onClick={() => handleEdit(selectedTemplate)}>
+                <Button
+                  variant="outline"
+                  onClick={() => handleEdit(selectedTemplate)}
+                >
                   <Edit className="h-4 w-4 ml-2" />
                   تعديل
                 </Button>
-                <Button variant="outline" onClick={() => handleDownload(selectedTemplate)}>
+                <Button
+                  variant="outline"
+                  onClick={() => handleDownload(selectedTemplate)}
+                >
                   <Download className="h-4 w-4 ml-2" />
                   تحميل
                 </Button>
@@ -834,7 +874,7 @@ export default function Templates() {
                 <Label>عنوان القالب</Label>
                 <Input
                   value={editorTitle}
-                  onChange={(e) => setEditorTitle(e.target.value)}
+                  onChange={e => setEditorTitle(e.target.value)}
                   placeholder="عنوان القالب"
                 />
               </div>
@@ -842,7 +882,7 @@ export default function Templates() {
                 <Label>محتوى القالب</Label>
                 <Textarea
                   value={editorContent}
-                  onChange={(e) => setEditorContent(e.target.value)}
+                  onChange={e => setEditorContent(e.target.value)}
                   placeholder="محتوى القالب"
                   className="min-h-[400px] font-mono text-sm"
                 />
@@ -864,7 +904,10 @@ export default function Templates() {
                   <Save className="h-4 w-4 ml-2" />
                   حفظ كقالب مخصص
                 </Button>
-                <Button variant="outline" onClick={() => setIsEditorOpen(false)}>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsEditorOpen(false)}
+                >
                   <X className="h-4 w-4 ml-2" />
                   إلغاء
                 </Button>

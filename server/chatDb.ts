@@ -1,12 +1,12 @@
 import { eq, desc, and } from "drizzle-orm";
 import { getDb } from "./db";
-import { 
-  chatConversations, 
+import {
+  chatConversations,
   chatMessages,
   InsertChatConversation,
   InsertChatMessage,
   ChatConversation,
-  ChatMessage
+  ChatMessage,
 } from "../drizzle/schema";
 
 /**
@@ -77,7 +77,9 @@ export async function getAllConversations(): Promise<ChatConversation[]> {
 /**
  * جلب محادثة محددة
  */
-export async function getConversationById(id: number): Promise<ChatConversation | undefined> {
+export async function getConversationById(
+  id: number
+): Promise<ChatConversation | undefined> {
   const db = await getDb();
   if (!db) return undefined;
 
@@ -93,7 +95,9 @@ export async function getConversationById(id: number): Promise<ChatConversation 
 /**
  * جلب رسائل محادثة
  */
-export async function getConversationMessages(conversationId: number): Promise<ChatMessage[]> {
+export async function getConversationMessages(
+  conversationId: number
+): Promise<ChatMessage[]> {
   const db = await getDb();
   if (!db) return [];
 
@@ -125,7 +129,9 @@ export async function updateConversationStatus(
 /**
  * تحديث حالة قراءة الرسائل
  */
-export async function markMessagesAsRead(conversationId: number): Promise<void> {
+export async function markMessagesAsRead(
+  conversationId: number
+): Promise<void> {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
 
@@ -163,7 +169,9 @@ export async function getUnreadMessagesCount(): Promise<number> {
 /**
  * جلب محادثة مستخدم معين
  */
-export async function getUserConversation(userId: number): Promise<ChatConversation | undefined> {
+export async function getUserConversation(
+  userId: number
+): Promise<ChatConversation | undefined> {
   const db = await getDb();
   if (!db) return undefined;
 

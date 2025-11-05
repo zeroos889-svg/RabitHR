@@ -1,5 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -113,9 +119,9 @@ export default function Tasks() {
   // إحصائيات
   const stats = {
     total: tasksData.length,
-    notStarted: tasksData.filter((t) => t.status === "لم تبدأ").length,
-    inProgress: tasksData.filter((t) => t.status === "قيد التنفيذ").length,
-    completed: tasksData.filter((t) => t.status === "مكتملة").length,
+    notStarted: tasksData.filter(t => t.status === "لم تبدأ").length,
+    inProgress: tasksData.filter(t => t.status === "قيد التنفيذ").length,
+    completed: tasksData.filter(t => t.status === "مكتملة").length,
   };
 
   return (
@@ -134,7 +140,10 @@ export default function Tasks() {
             </p>
           </div>
 
-          <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+          <Dialog
+            open={isCreateDialogOpen}
+            onOpenChange={setIsCreateDialogOpen}
+          >
             <DialogTrigger asChild>
               <Button className="bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700">
                 <Plus className="h-4 w-4 ml-2" />
@@ -154,7 +163,10 @@ export default function Tasks() {
               <div className="grid gap-4 py-4">
                 <div className="space-y-2">
                   <Label htmlFor="task-title">عنوان المهمة *</Label>
-                  <Input id="task-title" placeholder="مثال: مراجعة طلبات الإجازات" />
+                  <Input
+                    id="task-title"
+                    placeholder="مثال: مراجعة طلبات الإجازات"
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="task-description">الوصف *</Label>
@@ -220,7 +232,10 @@ export default function Tasks() {
                 </div>
               </div>
               <DialogFooter>
-                <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsCreateDialogOpen(false)}
+                >
                   إلغاء
                 </Button>
                 <Button className="bg-gradient-to-r from-green-600 to-teal-600">
@@ -239,7 +254,9 @@ export default function Tasks() {
                 <ListTodo className="h-4 w-4" />
                 إجمالي المهام
               </CardDescription>
-              <CardTitle className="text-3xl text-green-600">{stats.total}</CardTitle>
+              <CardTitle className="text-3xl text-green-600">
+                {stats.total}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-xs text-muted-foreground">
@@ -254,7 +271,9 @@ export default function Tasks() {
                 <AlertCircle className="h-4 w-4" />
                 لم تبدأ
               </CardDescription>
-              <CardTitle className="text-3xl text-gray-600">{stats.notStarted}</CardTitle>
+              <CardTitle className="text-3xl text-gray-600">
+                {stats.notStarted}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-xs text-muted-foreground">
@@ -269,7 +288,9 @@ export default function Tasks() {
                 <Clock className="h-4 w-4" />
                 قيد التنفيذ
               </CardDescription>
-              <CardTitle className="text-3xl text-yellow-600">{stats.inProgress}</CardTitle>
+              <CardTitle className="text-3xl text-yellow-600">
+                {stats.inProgress}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-xs text-muted-foreground">
@@ -284,7 +305,9 @@ export default function Tasks() {
                 <CheckCircle2 className="h-4 w-4" />
                 مهام مكتملة
               </CardDescription>
-              <CardTitle className="text-3xl text-green-600">{stats.completed}</CardTitle>
+              <CardTitle className="text-3xl text-green-600">
+                {stats.completed}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-xs text-muted-foreground">
@@ -347,7 +370,7 @@ export default function Tasks() {
             <Input
               placeholder="بحث عن مهمة..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
               className="pr-10"
             />
           </div>
@@ -386,10 +409,14 @@ export default function Tasks() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {tasksData.map((task) => (
+                  {tasksData.map(task => (
                     <TableRow key={task.id}>
-                      <TableCell className="font-mono font-semibold">{task.id}</TableCell>
-                      <TableCell className="font-medium">{task.title}</TableCell>
+                      <TableCell className="font-mono font-semibold">
+                        {task.id}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {task.title}
+                      </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
                           <User className="h-4 w-4 text-muted-foreground" />
@@ -409,8 +436,8 @@ export default function Tasks() {
                             task.priority === "عاجل"
                               ? "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300"
                               : task.priority === "متوسط"
-                              ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300"
-                              : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"
+                                ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300"
+                                : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"
                           }
                         >
                           {task.priority}
@@ -423,8 +450,8 @@ export default function Tasks() {
                             task.status === "لم تبدأ"
                               ? "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"
                               : task.status === "قيد التنفيذ"
-                              ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300"
-                              : "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300"
+                                ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300"
+                                : "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300"
                           }
                         >
                           {task.status}
@@ -438,12 +465,18 @@ export default function Tasks() {
                               style={{ width: `${task.progress}%` }}
                             />
                           </div>
-                          <span className="text-xs text-muted-foreground">{task.progress}%</span>
+                          <span className="text-xs text-muted-foreground">
+                            {task.progress}%
+                          </span>
                         </div>
                       </TableCell>
                       <TableCell>
                         <div className="flex justify-center gap-2">
-                          <Button variant="ghost" size="icon" title="عرض التفاصيل">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            title="عرض التفاصيل"
+                          >
                             <Eye className="h-4 w-4" />
                           </Button>
                         </div>

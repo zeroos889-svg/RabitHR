@@ -1,10 +1,24 @@
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calculator, DollarSign, Shield, Award, Hash, Copy, Check } from "lucide-react";
+import {
+  Calculator,
+  DollarSign,
+  Shield,
+  Award,
+  Hash,
+  Copy,
+  Check,
+} from "lucide-react";
 import { toast } from "sonner";
 
 export default function Tools() {
@@ -35,7 +49,7 @@ export default function Tools() {
   const calculateNetSalary = () => {
     const gross = parseFloat(grossSalary);
     const deduct = parseFloat(deductions) || 0;
-    
+
     if (isNaN(gross) || gross <= 0) {
       toast.error("الرجاء إدخال راتب إجمالي صحيح");
       return;
@@ -48,16 +62,16 @@ export default function Tools() {
 
   const calculateInsurance = () => {
     const salary = parseFloat(insuranceSalary);
-    
+
     if (isNaN(salary) || salary <= 0) {
       toast.error("الرجاء إدخال راتب صحيح");
       return;
     }
 
     // نسب التأمينات الاجتماعية في السعودية
-    const employeeRate = 0.10; // 10% على الموظف
+    const employeeRate = 0.1; // 10% على الموظف
     const employerRate = 0.12; // 12% على صاحب العمل
-    
+
     const employeeContribution = salary * employeeRate;
     const employerContribution = salary * employerRate;
     const totalContribution = employeeContribution + employerContribution;
@@ -73,7 +87,7 @@ export default function Tools() {
   const calculateBonus = () => {
     const base = parseFloat(bonusBaseSalary);
     const percentage = parseFloat(bonusPercentage);
-    
+
     if (isNaN(base) || base <= 0 || isNaN(percentage) || percentage <= 0) {
       toast.error("الرجاء إدخال قيم صحيحة");
       return;
@@ -90,7 +104,7 @@ export default function Tools() {
       return;
     }
 
-    const paddedNumber = employeeNumber.padStart(5, '0');
+    const paddedNumber = employeeNumber.padStart(5, "0");
     const year = new Date().getFullYear();
     const id = `${employeePrefix}-${year}-${paddedNumber}`;
     setGeneratedId(id);
@@ -198,9 +212,7 @@ export default function Tools() {
                 <DollarSign className="h-5 w-5 text-blue-600" />
                 حاسبة الراتب الصافي
               </CardTitle>
-              <CardDescription>
-                احسب الراتب الصافي بعد الخصومات
-              </CardDescription>
+              <CardDescription>احسب الراتب الصافي بعد الخصومات</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -211,7 +223,7 @@ export default function Tools() {
                     type="number"
                     placeholder="مثال: 10000"
                     value={grossSalary}
-                    onChange={(e) => setGrossSalary(e.target.value)}
+                    onChange={e => setGrossSalary(e.target.value)}
                   />
                 </div>
                 <div className="space-y-2">
@@ -221,7 +233,7 @@ export default function Tools() {
                     type="number"
                     placeholder="مثال: 1000"
                     value={deductions}
-                    onChange={(e) => setDeductions(e.target.value)}
+                    onChange={e => setDeductions(e.target.value)}
                   />
                 </div>
               </div>
@@ -235,18 +247,31 @@ export default function Tools() {
                 <Card className="bg-blue-50 border-blue-200">
                   <CardContent className="pt-6">
                     <div className="text-center">
-                      <p className="text-sm text-muted-foreground mb-2">الراتب الصافي</p>
+                      <p className="text-sm text-muted-foreground mb-2">
+                        الراتب الصافي
+                      </p>
                       <p className="text-4xl font-bold text-blue-600">
-                        {netSalary.toLocaleString('ar-SA')} ريال
+                        {netSalary.toLocaleString("ar-SA")} ريال
                       </p>
                       <div className="mt-4 pt-4 border-t border-blue-200 grid grid-cols-2 gap-4 text-sm">
                         <div>
-                          <p className="text-muted-foreground">الراتب الإجمالي</p>
-                          <p className="font-semibold">{parseFloat(grossSalary).toLocaleString('ar-SA')} ريال</p>
+                          <p className="text-muted-foreground">
+                            الراتب الإجمالي
+                          </p>
+                          <p className="font-semibold">
+                            {parseFloat(grossSalary).toLocaleString("ar-SA")}{" "}
+                            ريال
+                          </p>
                         </div>
                         <div>
                           <p className="text-muted-foreground">الخصومات</p>
-                          <p className="font-semibold text-red-600">-{parseFloat(deductions || "0").toLocaleString('ar-SA')} ريال</p>
+                          <p className="font-semibold text-red-600">
+                            -
+                            {parseFloat(deductions || "0").toLocaleString(
+                              "ar-SA"
+                            )}{" "}
+                            ريال
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -277,11 +302,14 @@ export default function Tools() {
                   type="number"
                   placeholder="مثال: 10000"
                   value={insuranceSalary}
-                  onChange={(e) => setInsuranceSalary(e.target.value)}
+                  onChange={e => setInsuranceSalary(e.target.value)}
                 />
               </div>
 
-              <Button onClick={calculateInsurance} className="w-full gradient-employee text-white">
+              <Button
+                onClick={calculateInsurance}
+                className="w-full gradient-employee text-white"
+              >
                 <Calculator className="h-4 w-4 ml-2" />
                 احسب التأمينات
               </Button>
@@ -292,21 +320,29 @@ export default function Tools() {
                     <CardContent className="pt-6">
                       <div className="space-y-4">
                         <div className="flex justify-between items-center">
-                          <span className="text-sm text-muted-foreground">اشتراك الموظف (10%)</span>
+                          <span className="text-sm text-muted-foreground">
+                            اشتراك الموظف (10%)
+                          </span>
                           <span className="font-semibold text-green-600">
-                            {insuranceResult.employee.toLocaleString('ar-SA')} ريال
+                            {insuranceResult.employee.toLocaleString("ar-SA")}{" "}
+                            ريال
                           </span>
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-sm text-muted-foreground">اشتراك صاحب العمل (12%)</span>
+                          <span className="text-sm text-muted-foreground">
+                            اشتراك صاحب العمل (12%)
+                          </span>
                           <span className="font-semibold text-green-600">
-                            {insuranceResult.employer.toLocaleString('ar-SA')} ريال
+                            {insuranceResult.employer.toLocaleString("ar-SA")}{" "}
+                            ريال
                           </span>
                         </div>
                         <div className="pt-4 border-t border-green-200 flex justify-between items-center">
-                          <span className="font-semibold">إجمالي الاشتراكات</span>
+                          <span className="font-semibold">
+                            إجمالي الاشتراكات
+                          </span>
                           <span className="text-2xl font-bold text-green-600">
-                            {insuranceResult.total.toLocaleString('ar-SA')} ريال
+                            {insuranceResult.total.toLocaleString("ar-SA")} ريال
                           </span>
                         </div>
                       </div>
@@ -339,7 +375,7 @@ export default function Tools() {
                     type="number"
                     placeholder="مثال: 10000"
                     value={bonusBaseSalary}
-                    onChange={(e) => setBonusBaseSalary(e.target.value)}
+                    onChange={e => setBonusBaseSalary(e.target.value)}
                   />
                 </div>
                 <div className="space-y-2">
@@ -349,12 +385,15 @@ export default function Tools() {
                     type="number"
                     placeholder="مثال: 15"
                     value={bonusPercentage}
-                    onChange={(e) => setBonusPercentage(e.target.value)}
+                    onChange={e => setBonusPercentage(e.target.value)}
                   />
                 </div>
               </div>
 
-              <Button onClick={calculateBonus} className="w-full gradient-individual text-white">
+              <Button
+                onClick={calculateBonus}
+                className="w-full gradient-individual text-white"
+              >
                 <Calculator className="h-4 w-4 ml-2" />
                 احسب المكافأة
               </Button>
@@ -363,16 +402,24 @@ export default function Tools() {
                 <Card className="bg-purple-50 border-purple-200">
                   <CardContent className="pt-6">
                     <div className="text-center">
-                      <p className="text-sm text-muted-foreground mb-2">قيمة المكافأة</p>
+                      <p className="text-sm text-muted-foreground mb-2">
+                        قيمة المكافأة
+                      </p>
                       <p className="text-4xl font-bold text-purple-600">
-                        {bonusResult.toLocaleString('ar-SA')} ريال
+                        {bonusResult.toLocaleString("ar-SA")} ريال
                       </p>
                       <div className="mt-4 pt-4 border-t border-purple-200">
                         <p className="text-sm text-muted-foreground">
-                          {bonusPercentage}% من {parseFloat(bonusBaseSalary).toLocaleString('ar-SA')} ريال
+                          {bonusPercentage}% من{" "}
+                          {parseFloat(bonusBaseSalary).toLocaleString("ar-SA")}{" "}
+                          ريال
                         </p>
                         <p className="text-lg font-semibold text-purple-600 mt-2">
-                          الراتب الإجمالي: {(parseFloat(bonusBaseSalary) + bonusResult).toLocaleString('ar-SA')} ريال
+                          الراتب الإجمالي:{" "}
+                          {(
+                            parseFloat(bonusBaseSalary) + bonusResult
+                          ).toLocaleString("ar-SA")}{" "}
+                          ريال
                         </p>
                       </div>
                     </div>
@@ -403,7 +450,7 @@ export default function Tools() {
                     id="employeePrefix"
                     placeholder="مثال: EMP"
                     value={employeePrefix}
-                    onChange={(e) => setEmployeePrefix(e.target.value)}
+                    onChange={e => setEmployeePrefix(e.target.value)}
                   />
                 </div>
                 <div className="space-y-2">
@@ -413,12 +460,15 @@ export default function Tools() {
                     type="number"
                     placeholder="مثال: 1"
                     value={employeeNumber}
-                    onChange={(e) => setEmployeeNumber(e.target.value)}
+                    onChange={e => setEmployeeNumber(e.target.value)}
                   />
                 </div>
               </div>
 
-              <Button onClick={generateEmployeeId} className="w-full gradient-company text-white">
+              <Button
+                onClick={generateEmployeeId}
+                className="w-full gradient-company text-white"
+              >
                 <Hash className="h-4 w-4 ml-2" />
                 توليد رقم الموظف
               </Button>
@@ -427,7 +477,9 @@ export default function Tools() {
                 <Card className="bg-orange-50 border-orange-200">
                   <CardContent className="pt-6">
                     <div className="text-center space-y-4">
-                      <p className="text-sm text-muted-foreground">رقم الموظف المولد</p>
+                      <p className="text-sm text-muted-foreground">
+                        رقم الموظف المولد
+                      </p>
                       <div className="flex items-center justify-center gap-2">
                         <p className="text-3xl font-bold text-orange-600 font-mono">
                           {generatedId}
@@ -446,7 +498,8 @@ export default function Tools() {
                         </Button>
                       </div>
                       <p className="text-xs text-muted-foreground">
-                        الصيغة: {employeePrefix}-{new Date().getFullYear()}-XXXXX
+                        الصيغة: {employeePrefix}-{new Date().getFullYear()}
+                        -XXXXX
                       </p>
                     </div>
                   </CardContent>

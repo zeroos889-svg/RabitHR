@@ -1,4 +1,5 @@
 # ✅ تقرير إصلاح مشكلة النشر على Vercel و Docker
+
 # Vercel & Docker Deployment Fix Report
 
 **التاريخ | Date**: 2025-11-05  
@@ -10,17 +11,20 @@
 ## 📋 الملخص التنفيذي | Executive Summary
 
 ### المشكلة الرئيسية | Main Issue
+
 ```
-The deployment had an error: The `vercel.json` schema validation failed 
+The deployment had an error: The `vercel.json` schema validation failed
 with the following message: `env` should be object.
 ```
 
 ### السبب الجذري | Root Cause
+
 حقل `env` في ملف `vercel.json` يحتوي على مراجع غير صالحة مثل `"@node_env"` و `"@database_url"` بدلاً من قيم صحيحة.
 
 The `env` field in `vercel.json` contained invalid references like `"@node_env"` and `"@database_url"` instead of valid values.
 
 ### الحل | Solution
+
 تم إزالة جميع المراجع غير الصالحة (32 متغير) واستبدالها بقيمة واحدة صحيحة: `"NODE_ENV": "production"`.
 
 Removed all invalid references (32 variables) and replaced them with a single valid value: `"NODE_ENV": "production"`.
@@ -31,17 +35,18 @@ Removed all invalid references (32 variables) and replaced them with a single va
 
 ### ✅ نجاحات | Successes
 
-| المجال | Area | النتيجة | Result |
-|--------|------|---------|---------|
-| أخطاء TypeScript | TypeScript Errors | **0** | ✅ |
-| ثغرات أمنية | Security Vulnerabilities (CodeQL) | **0** | ✅ |
-| اختبارات ناجحة | Passing Tests | **21/30** | ✅ |
-| بناء المشروع | Project Build | نجح | Success ✅ |
-| صحة vercel.json | vercel.json Validity | صالح 100% | 100% Valid ✅ |
-| Dockerfile | Dockerfile | صحيح | Correct ✅ |
-| إصدار pnpm | pnpm Version | 10.4.1 موحد | 10.4.1 Unified ✅ |
+| المجال           | Area                              | النتيجة     | Result            |
+| ---------------- | --------------------------------- | ----------- | ----------------- |
+| أخطاء TypeScript | TypeScript Errors                 | **0**       | ✅                |
+| ثغرات أمنية      | Security Vulnerabilities (CodeQL) | **0**       | ✅                |
+| اختبارات ناجحة   | Passing Tests                     | **21/30**   | ✅                |
+| بناء المشروع     | Project Build                     | نجح         | Success ✅        |
+| صحة vercel.json  | vercel.json Validity              | صالح 100%   | 100% Valid ✅     |
+| Dockerfile       | Dockerfile                        | صحيح        | Correct ✅        |
+| إصدار pnpm       | pnpm Version                      | 10.4.1 موحد | 10.4.1 Unified ✅ |
 
 ### 📝 الاختبارات الفاشلة | Failed Tests
+
 9 اختبارات متعلقة بـ Redis فشلت لأن Redis غير متاح في بيئة الاختبار (هذا متوقع ولا يؤثر على النشر).
 
 9 Redis-related tests failed because Redis is not available in the test environment (expected and doesn't affect deployment).
@@ -51,9 +56,11 @@ Removed all invalid references (32 variables) and replaced them with a single va
 ## 📁 الملفات المعدلة | Modified Files
 
 ### 1. `vercel.json`
+
 **التغيير | Change**: إصلاح schema validation error
 
 **قبل | Before**:
+
 ```json
 "env": {
   "NODE_ENV": "@node_env",
@@ -64,6 +71,7 @@ Removed all invalid references (32 variables) and replaced them with a single va
 ```
 
 **بعد | After**:
+
 ```json
 "env": {
   "NODE_ENV": "production"
@@ -71,30 +79,36 @@ Removed all invalid references (32 variables) and replaced them with a single va
 ```
 
 **الإحصائيات | Stats**:
+
 - 🔴 حذف | Deleted: 33 سطر | 33 lines
 - 🟢 إضافة | Added: 1 سطر | 1 line
 - 📊 التغيير الصافي | Net Change: -32 سطر | -32 lines
 
 ### 2. `server/db.test.ts`
+
 **التغيير | Change**: إصلاح اختبار booking number format
 
 **قبل | Before**:
+
 ```typescript
-const bookingNumber = 'CB-abc123xyz'; // 12 chars after prefix
+const bookingNumber = "CB-abc123xyz"; // 12 chars after prefix
 ```
 
 **بعد | After**:
+
 ```typescript
-const bookingNumber = 'CB-abc1234567'; // 10 chars after prefix
+const bookingNumber = "CB-abc1234567"; // 10 chars after prefix
 ```
 
 **السبب | Reason**: الـ regex يتوقع 10 أحرف بالضبط بعد البادئة `CB-`.  
 The regex expects exactly 10 characters after the `CB-` prefix.
 
 ### 3. `README_DEPLOY_GUIDE_EN.md` (جديد | New)
+
 **الوصف | Description**: دليل نشر شامل بالإنجليزية
 
 **المحتوى | Content**:
+
 - دليل المتطلبات المسبقة | Prerequisites Guide
 - إعداد البيئة | Environment Setup
 - النشر على Vercel | Vercel Deployment
@@ -105,6 +119,7 @@ The regex expects exactly 10 characters after the `CB-` prefix.
 - الصيانة | Maintenance
 
 **الإحصائيات | Stats**:
+
 - 📄 عدد الأسطر | Lines: 578
 - 📖 عدد الأقسام | Sections: 9
 - 📝 عدد الكلمات | Words: ~5,000
@@ -114,28 +129,33 @@ The regex expects exactly 10 characters after the `CB-` prefix.
 ## 🔍 التحقق من الجودة | Quality Verification
 
 ### TypeScript Check
+
 ```bash
 $ pnpm check
 ✅ No errors found
 ```
 
 ### Build Test
+
 ```bash
 $ pnpm build
 ✅ Built successfully in 17.19s
 ```
 
 ### Code Review
+
 ```
 ✅ No review comments found
 ```
 
 ### Security Scan (CodeQL)
+
 ```
 ✅ Analysis Result: Found 0 alerts
 ```
 
 ### Tests
+
 ```bash
 $ pnpm test
 ✅ 21 tests passed
@@ -149,12 +169,15 @@ $ pnpm test
 ### للنشر على Vercel | For Vercel Deployment
 
 #### 1. إضافة المتغيرات البيئية | Add Environment Variables
+
 في لوحة تحكم Vercel | In Vercel Dashboard:
+
 ```
 Settings → Environment Variables
 ```
 
 #### 2. المتغيرات المطلوبة | Required Variables
+
 ```env
 NODE_ENV=production
 DATABASE_URL=mysql://user:password@host:port/database
@@ -164,6 +187,7 @@ VITE_APP_URL=https://your-domain.vercel.app
 ```
 
 #### 3. توليد الأسرار | Generate Secrets
+
 ```bash
 # For JWT_SECRET
 openssl rand -base64 32
@@ -173,12 +197,15 @@ openssl rand -base64 32
 ```
 
 #### 4. اختيار البيئات | Select Environments
+
 لكل متغير، اختر | For each variable, select:
+
 - ☑ Production
 - ☑ Preview
 - ☑ Development
 
 #### 5. إعادة النشر | Redeploy
+
 اضغط "Redeploy" في Vercel Dashboard  
 Click "Redeploy" in Vercel Dashboard
 
@@ -186,14 +213,14 @@ Click "Redeploy" in Vercel Dashboard
 
 ## 📚 الوثائق المتوفرة | Available Documentation
 
-| الملف | File | الوصف | Description |
-|-------|------|--------|-------------|
-| `README_DEPLOY_GUIDE_EN.md` | ✅ New | دليل النشر الكامل | Complete Deployment Guide |
-| `VERCEL_DEPLOYMENT_EN.md` | ✅ Existing | دليل Vercel بالإنجليزية | Vercel Guide (English) |
-| `VERCEL_DEPLOYMENT_AR.md` | ✅ Existing | دليل Vercel بالعربية | Vercel Guide (Arabic) |
-| `VERCEL_TROUBLESHOOTING_EN.md` | ✅ Existing | حل المشاكل | Troubleshooting |
-| `SECURITY_REVIEW.md` | ✅ Existing | مراجعة الأمان | Security Review |
-| `.env.example` | ✅ Updated | مثال المتغيرات | Variables Example |
+| الملف                          | File        | الوصف                   | Description               |
+| ------------------------------ | ----------- | ----------------------- | ------------------------- |
+| `README_DEPLOY_GUIDE_EN.md`    | ✅ New      | دليل النشر الكامل       | Complete Deployment Guide |
+| `VERCEL_DEPLOYMENT_EN.md`      | ✅ Existing | دليل Vercel بالإنجليزية | Vercel Guide (English)    |
+| `VERCEL_DEPLOYMENT_AR.md`      | ✅ Existing | دليل Vercel بالعربية    | Vercel Guide (Arabic)     |
+| `VERCEL_TROUBLESHOOTING_EN.md` | ✅ Existing | حل المشاكل              | Troubleshooting           |
+| `SECURITY_REVIEW.md`           | ✅ Existing | مراجعة الأمان           | Security Review           |
+| `.env.example`                 | ✅ Updated  | مثال المتغيرات          | Variables Example         |
 
 ---
 
@@ -236,6 +263,7 @@ Click "Redeploy" in Vercel Dashboard
 ## ✅ قائمة التحقق النهائية | Final Checklist
 
 ### قبل النشر | Pre-Deployment
+
 - [x] vercel.json صالح | vercel.json valid
 - [x] 0 أخطاء TypeScript | 0 TypeScript errors
 - [x] البناء ينجح | Build succeeds
@@ -245,6 +273,7 @@ Click "Redeploy" in Vercel Dashboard
 - [x] .env في .gitignore | .env in .gitignore
 
 ### النشر | Deployment
+
 - [ ] المتغيرات البيئية مضافة في Vercel | Environment variables added in Vercel
 - [ ] قاعدة البيانات جاهزة | Database ready
 - [ ] الأسرار مُولّدة | Secrets generated
@@ -252,6 +281,7 @@ Click "Redeploy" in Vercel Dashboard
 - [ ] النطاق مُعدّ (اختياري) | Domain configured (optional)
 
 ### ما بعد النشر | Post-Deployment
+
 - [ ] التطبيق يعمل | Application works
 - [ ] الاتصال بقاعدة البيانات يعمل | Database connection works
 - [ ] المصادقة تعمل | Authentication works
@@ -263,6 +293,7 @@ Click "Redeploy" in Vercel Dashboard
 ## 🎯 الخلاصة | Conclusion
 
 ### النتيجة النهائية | Final Result
+
 ✅ **المشروع جاهز للنشر بنسبة 100%**  
 ✅ **Project is 100% ready for deployment**
 
@@ -277,6 +308,7 @@ Click "Redeploy" in Vercel Dashboard
 7. ✅ التحقق من جودة الكود (0 أخطاء)
 
 ### الخطوة التالية | Next Step
+
 🚀 **النشر على Vercel**  
 🚀 **Deploy to Vercel**
 

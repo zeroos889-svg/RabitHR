@@ -7,6 +7,7 @@
 ## 📋 متطلبات النشر
 
 ### 1. حساب Railway
+
 - سجل في [railway.app](https://railway.app)
 - اربط حساب GitHub الخاص بك
 
@@ -88,6 +89,7 @@ SENTRY_DSN=your-sentry-dsn
 ## 🚀 النشر
 
 ### نشر تلقائي
+
 Railway يقوم بالنشر التلقائي عند كل push إلى GitHub:
 
 ```bash
@@ -96,13 +98,16 @@ git push origin main
 ```
 
 ### نشر يدوي
+
 من Railway Dashboard:
+
 1. اذهب إلى Deployments
 2. انقر على "Deploy"
 
 ## 📊 المراقبة
 
 ### الوصول إلى Logs
+
 ```bash
 # من Railway Dashboard
 1. اذهب إلى مشروعك
@@ -111,7 +116,9 @@ git push origin main
 ```
 
 ### المقاييس
+
 Railway يوفر مقاييس تلقائية:
+
 - CPU Usage
 - Memory Usage
 - Network Traffic
@@ -120,6 +127,7 @@ Railway يوفر مقاييس تلقائية:
 ## 🔧 الصيانة
 
 ### تحديث التطبيق
+
 ```bash
 # تحديث الكود
 git pull origin main
@@ -129,6 +137,7 @@ git push origin main
 ```
 
 ### تشغيل Migrations
+
 ```bash
 # Railway يقوم بتشغيل migrations تلقائياً عند البدء
 # إذا احتجت تشغيلها يدوياً:
@@ -136,7 +145,9 @@ railway run pnpm db:push
 ```
 
 ### إعادة التشغيل
+
 من Railway Dashboard:
+
 1. انقر على service
 2. انقر على "..." (More options)
 3. اختر "Restart"
@@ -144,6 +155,7 @@ railway run pnpm db:push
 ## 🌐 الربط مع Vercel Frontend
 
 ### 1. احصل على Railway URL
+
 ```bash
 # من Railway Dashboard
 1. انقر على service
@@ -153,6 +165,7 @@ railway run pnpm db:push
 ```
 
 ### 2. حدّث Vercel Configuration
+
 ```bash
 # في vercel.json
 {
@@ -166,6 +179,7 @@ railway run pnpm db:push
 ```
 
 ### 3. أضف متغيرات البيئة في Vercel
+
 ```env
 VITE_API_URL=https://rabithr-backend-production.up.railway.app
 ```
@@ -173,19 +187,25 @@ VITE_API_URL=https://rabithr-backend-production.up.railway.app
 ## ❗ استكشاف الأخطاء
 
 ### المشكلة: البناء يفشل
+
 **الحل**:
+
 1. تحقق من logs في Railway Dashboard
 2. تأكد من أن `pnpm-lock.yaml` موجود في المستودع
 3. تأكد من أن `railway.json` موجود
 
 ### المشكلة: قاعدة البيانات لا تتصل
+
 **الحل**:
+
 1. تحقق من `DATABASE_URL` في Variables
 2. تأكد من أن MySQL service يعمل
 3. تحقق من أن SSL معطل في الاتصال (Railway MySQL لا يحتاج SSL)
 
 ### المشكلة: خطأ في الذاكرة
+
 **الحل**:
+
 1. ترقية Railway plan للحصول على ذاكرة أكبر
 2. تحسين استعلامات قاعدة البيانات
 3. استخدام Redis caching
@@ -193,11 +213,13 @@ VITE_API_URL=https://rabithr-backend-production.up.railway.app
 ## 💰 التكلفة
 
 Railway يقدم:
+
 - **Developer Plan**: $5/month
 - **Team Plan**: $20/month
 - **استخدام مجاني**: $5 credit شهرياً
 
 ### تقدير التكلفة الشهرية
+
 - Backend Service: ~$3-5
 - MySQL Database: ~$2-3
 - Redis (اختياري): ~$1-2

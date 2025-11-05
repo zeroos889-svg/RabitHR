@@ -18,7 +18,7 @@ info:
     url: https://rabithr.com
   license:
     name: Proprietary
-    
+
 servers:
   - url: http://localhost:3000
     description: Development server
@@ -59,7 +59,7 @@ paths:
       tags:
         - System
       responses:
-        '200':
+        "200":
           description: API is healthy
           content:
             application/json:
@@ -100,7 +100,7 @@ paths:
                   format: password
                   example: Password123!
       responses:
-        '200':
+        "200":
           description: Login successful
           content:
             application/json:
@@ -110,10 +110,10 @@ paths:
                   token:
                     type: string
                   user:
-                    $ref: '#/components/schemas/User'
-        '401':
+                    $ref: "#/components/schemas/User"
+        "401":
           description: Invalid credentials
-          
+
   /api/auth/logout:
     post:
       summary: User logout
@@ -122,7 +122,7 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        '200':
+        "200":
           description: Logout successful
 
   /api/employees:
@@ -152,7 +152,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: List of employees
           content:
             application/json:
@@ -162,10 +162,10 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Employee'
+                      $ref: "#/components/schemas/Employee"
                   pagination:
-                    $ref: '#/components/schemas/Pagination'
-                    
+                    $ref: "#/components/schemas/Pagination"
+
     post:
       summary: Create new employee
       tags:
@@ -177,14 +177,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EmployeeInput'
+              $ref: "#/components/schemas/EmployeeInput"
       responses:
-        '201':
+        "201":
           description: Employee created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Employee'
+                $ref: "#/components/schemas/Employee"
 
 components:
   securitySchemes:
@@ -192,7 +192,7 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      
+
   schemas:
     User:
       type: object
@@ -212,7 +212,7 @@ components:
         avatar:
           type: string
           format: uri
-          
+
     Employee:
       type: object
       properties:
@@ -240,7 +240,7 @@ components:
         salary:
           type: number
           format: double
-          
+
     EmployeeInput:
       type: object
       required:
@@ -265,7 +265,7 @@ components:
           format: date
         salary:
           type: number
-          
+
     Pagination:
       type: object
       properties:
@@ -277,7 +277,7 @@ components:
           type: integer
         totalPages:
           type: integer
-          
+
     Error:
       type: object
       properties:
@@ -289,6 +289,6 @@ components:
           type: string
         details:
           type: object
-          
+
 security:
   - bearerAuth: []

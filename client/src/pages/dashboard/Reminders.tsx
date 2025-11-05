@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -110,9 +116,9 @@ export default function Reminders() {
 
   const stats = {
     total: reminders.length,
-    urgent: reminders.filter((r) => r.priority === "urgent").length,
-    thisWeek: reminders.filter((r) => r.daysLeft <= 7).length,
-    thisMonth: reminders.filter((r) => r.daysLeft <= 30).length,
+    urgent: reminders.filter(r => r.priority === "urgent").length,
+    thisWeek: reminders.filter(r => r.daysLeft <= 7).length,
+    thisMonth: reminders.filter(r => r.daysLeft <= 30).length,
   };
 
   const getReminderTypeLabel = (type: string) => {
@@ -161,9 +167,9 @@ export default function Reminders() {
       toast.error("الرجاء اختيار ملف");
       return;
     }
-    
+
     toast.success("جاري استخراج المواعيد بالذكاء الاصطناعي...");
-    
+
     // محاكاة استخراج البيانات
     setTimeout(() => {
       toast.success("تم استخراج 12 تذكير من الملف بنجاح!");
@@ -179,16 +185,17 @@ export default function Reminders() {
     }
 
     toast.success("جاري البحث...");
-    
+
     // محاكاة الإجابة
     setTimeout(() => {
       toast.success("تم العثور على الإجابة!");
     }, 1500);
   };
 
-  const filteredReminders = reminders.filter((reminder) =>
-    reminder.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    reminder.employee.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredReminders = reminders.filter(
+    reminder =>
+      reminder.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      reminder.employee.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -208,10 +215,7 @@ export default function Reminders() {
             <Bot className="h-4 w-4 ml-2" />
             مساعد AI
           </Button>
-          <Button
-            variant="outline"
-            onClick={() => setIsUploadDialogOpen(true)}
-          >
+          <Button variant="outline" onClick={() => setIsUploadDialogOpen(true)}>
             <Upload className="h-4 w-4 ml-2" />
             رفع ملف
           </Button>
@@ -231,7 +235,9 @@ export default function Reminders() {
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">إجمالي التذكيرات</p>
+                <p className="text-sm text-muted-foreground">
+                  إجمالي التذكيرات
+                </p>
                 <p className="text-2xl font-bold">{stats.total}</p>
               </div>
               <Bell className="h-8 w-8 text-blue-600" />
@@ -243,7 +249,9 @@ export default function Reminders() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">عاجل</p>
-                <p className="text-2xl font-bold text-red-600">{stats.urgent}</p>
+                <p className="text-2xl font-bold text-red-600">
+                  {stats.urgent}
+                </p>
               </div>
               <AlertCircle className="h-8 w-8 text-red-600" />
             </div>
@@ -254,7 +262,9 @@ export default function Reminders() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">هذا الأسبوع</p>
-                <p className="text-2xl font-bold text-orange-600">{stats.thisWeek}</p>
+                <p className="text-2xl font-bold text-orange-600">
+                  {stats.thisWeek}
+                </p>
               </div>
               <Clock className="h-8 w-8 text-orange-600" />
             </div>
@@ -265,7 +275,9 @@ export default function Reminders() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">هذا الشهر</p>
-                <p className="text-2xl font-bold text-green-600">{stats.thisMonth}</p>
+                <p className="text-2xl font-bold text-green-600">
+                  {stats.thisMonth}
+                </p>
               </div>
               <Calendar className="h-8 w-8 text-green-600" />
             </div>
@@ -280,7 +292,7 @@ export default function Reminders() {
           <Input
             placeholder="ابحث في التذكيرات..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={e => setSearchQuery(e.target.value)}
             className="pr-10"
           />
         </div>
@@ -300,8 +312,11 @@ export default function Reminders() {
         </TabsList>
 
         <TabsContent value="all" className="space-y-4">
-          {filteredReminders.map((reminder) => (
-            <Card key={reminder.id} className="hover:shadow-lg transition-shadow">
+          {filteredReminders.map(reminder => (
+            <Card
+              key={reminder.id}
+              className="hover:shadow-lg transition-shadow"
+            >
               <CardContent className="pt-6">
                 <div className="flex items-start justify-between">
                   <div className="flex gap-4 flex-1">
@@ -315,7 +330,9 @@ export default function Reminders() {
                     <div className="flex-1 space-y-2">
                       <div className="flex items-center gap-2">
                         <h3 className="font-semibold">{reminder.title}</h3>
-                        <Badge variant={getPriorityBadge(reminder.priority).variant}>
+                        <Badge
+                          variant={getPriorityBadge(reminder.priority).variant}
+                        >
                           {getPriorityBadge(reminder.priority).label}
                         </Badge>
                         <Badge variant="outline">
@@ -376,9 +393,7 @@ export default function Reminders() {
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>إضافة تذكير جديد</DialogTitle>
-            <DialogDescription>
-              أضف تذكير لموعد مهم
-            </DialogDescription>
+            <DialogDescription>أضف تذكير لموعد مهم</DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div className="grid md:grid-cols-2 gap-4">
@@ -560,7 +575,7 @@ export default function Reminders() {
               <Textarea
                 placeholder="مثال: متى ينتهي عقد أحمد؟ أو كم موظف عقده ينتهي هذا الشهر؟"
                 value={aiQuery}
-                onChange={(e) => setAiQuery(e.target.value)}
+                onChange={e => setAiQuery(e.target.value)}
                 rows={3}
               />
             </div>

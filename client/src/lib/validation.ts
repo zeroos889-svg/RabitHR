@@ -16,16 +16,16 @@ export function validatePassword(password: string): {
   const errors: string[] = [];
 
   if (password.length < 8) {
-    errors.push('كلمة المرور يجب أن تكون 8 أحرف على الأقل');
+    errors.push("كلمة المرور يجب أن تكون 8 أحرف على الأقل");
   }
   if (!/[A-Z]/.test(password)) {
-    errors.push('كلمة المرور يجب أن تحتوي على حرف كبير');
+    errors.push("كلمة المرور يجب أن تحتوي على حرف كبير");
   }
   if (!/[a-z]/.test(password)) {
-    errors.push('كلمة المرور يجب أن تحتوي على حرف صغير');
+    errors.push("كلمة المرور يجب أن تحتوي على حرف صغير");
   }
   if (!/[0-9]/.test(password)) {
-    errors.push('كلمة المرور يجب أن تحتوي على رقم');
+    errors.push("كلمة المرور يجب أن تحتوي على رقم");
   }
 
   return {
@@ -37,7 +37,7 @@ export function validatePassword(password: string): {
 // التحقق من رقم الهاتف السعودي
 export function validatePhoneNumber(phone: string): boolean {
   const phoneRegex = /^(05|966)[0-9]{8}$/;
-  const cleanPhone = phone.replace(/\D/g, '');
+  const cleanPhone = phone.replace(/\D/g, "");
   return phoneRegex.test(cleanPhone);
 }
 
@@ -48,7 +48,7 @@ export function validateName(name: string): boolean {
 
 // التحقق من عدم وجود XSS
 export function sanitizeInput(input: string): string {
-  const div = document.createElement('div');
+  const div = document.createElement("div");
   div.textContent = input;
   return div.innerHTML;
 }
@@ -67,26 +67,30 @@ export function validateSignupData(data: {
   const errors: Record<string, string> = {};
 
   if (data.name && !validateName(data.name)) {
-    errors.name = 'الاسم يجب أن يكون بين 2 و 100 حرف';
+    errors.name = "الاسم يجب أن يكون بين 2 و 100 حرف";
   }
 
   if (data.email && !validateEmail(data.email)) {
-    errors.email = 'البريد الإلكتروني غير صحيح';
+    errors.email = "البريد الإلكتروني غير صحيح";
   }
 
   if (data.phone && !validatePhoneNumber(data.phone)) {
-    errors.phone = 'رقم الهاتف غير صحيح';
+    errors.phone = "رقم الهاتف غير صحيح";
   }
 
   if (data.password) {
     const passwordValidation = validatePassword(data.password);
     if (!passwordValidation.isValid) {
-      errors.password = passwordValidation.errors.join(', ');
+      errors.password = passwordValidation.errors.join(", ");
     }
   }
 
-  if (data.password && data.confirmPassword && data.password !== data.confirmPassword) {
-    errors.confirmPassword = 'كلمات المرور غير متطابقة';
+  if (
+    data.password &&
+    data.confirmPassword &&
+    data.password !== data.confirmPassword
+  ) {
+    errors.confirmPassword = "كلمات المرور غير متطابقة";
   }
 
   return {

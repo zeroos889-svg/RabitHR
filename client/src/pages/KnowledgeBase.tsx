@@ -1,11 +1,17 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { 
-  BookOpen, 
+import {
+  BookOpen,
   Search,
   FileText,
   Scale,
@@ -18,7 +24,7 @@ import {
   ExternalLink,
   Clock,
   Eye,
-  ThumbsUp
+  ThumbsUp,
 } from "lucide-react";
 import { Footer } from "@/components/Footer";
 
@@ -33,7 +39,7 @@ export default function KnowledgeBase() {
     { id: "termination", name: "إنهاء الخدمة", icon: AlertCircle, count: 6 },
     { id: "recruitment", name: "التوظيف", icon: Users, count: 7 },
     { id: "performance", name: "الأداء", icon: TrendingUp, count: 5 },
-    { id: "procedures", name: "الإجراءات", icon: FileCheck, count: 7 }
+    { id: "procedures", name: "الإجراءات", icon: FileCheck, count: 7 },
   ];
 
   const articles = [
@@ -46,7 +52,7 @@ export default function KnowledgeBase() {
       views: 2450,
       likes: 189,
       lastUpdated: "منذ أسبوع",
-      featured: true
+      featured: true,
     },
     {
       id: "2",
@@ -57,7 +63,7 @@ export default function KnowledgeBase() {
       views: 1820,
       likes: 145,
       lastUpdated: "منذ 3 أيام",
-      featured: true
+      featured: true,
     },
     {
       id: "3",
@@ -68,7 +74,7 @@ export default function KnowledgeBase() {
       views: 3200,
       likes: 267,
       lastUpdated: "منذ يومين",
-      featured: true
+      featured: true,
     },
     {
       id: "4",
@@ -78,7 +84,7 @@ export default function KnowledgeBase() {
       readTime: "12 دقيقة",
       views: 1650,
       likes: 128,
-      lastUpdated: "منذ 5 أيام"
+      lastUpdated: "منذ 5 أيام",
     },
     {
       id: "5",
@@ -88,7 +94,7 @@ export default function KnowledgeBase() {
       readTime: "7 دقائق",
       views: 2100,
       likes: 176,
-      lastUpdated: "منذ أسبوعين"
+      lastUpdated: "منذ أسبوعين",
     },
     {
       id: "6",
@@ -98,8 +104,8 @@ export default function KnowledgeBase() {
       readTime: "11 دقيقة",
       views: 1890,
       likes: 142,
-      lastUpdated: "منذ 4 أيام"
-    }
+      lastUpdated: "منذ 4 أيام",
+    },
   ];
 
   const guides = [
@@ -109,7 +115,7 @@ export default function KnowledgeBase() {
       description: "دليل شامل يغطي جميع مواد نظام العمل ولوائحه التنفيذية",
       pages: 120,
       downloads: 3450,
-      icon: Scale
+      icon: Scale,
     },
     {
       id: "g2",
@@ -117,7 +123,7 @@ export default function KnowledgeBase() {
       description: "خطوات تطبيق الإجراءات التأديبية بشكل قانوني",
       pages: 45,
       downloads: 2180,
-      icon: FileCheck
+      icon: FileCheck,
     },
     {
       id: "g3",
@@ -125,7 +131,7 @@ export default function KnowledgeBase() {
       description: "طرق احتساب جميع المستحقات المالية للموظفين",
       pages: 38,
       downloads: 2890,
-      icon: FileText
+      icon: FileText,
     },
     {
       id: "g4",
@@ -133,8 +139,8 @@ export default function KnowledgeBase() {
       description: "أنواع العقود وشروطها وكيفية صياغتها",
       pages: 52,
       downloads: 1950,
-      icon: Briefcase
-    }
+      icon: Briefcase,
+    },
   ];
 
   const templates = [
@@ -143,43 +149,43 @@ export default function KnowledgeBase() {
       title: "عقد عمل محدد المدة",
       description: "قالب جاهز لعقد عمل محدد المدة",
       format: "DOCX",
-      downloads: 1250
+      downloads: 1250,
     },
     {
       id: "t2",
       title: "عقد عمل غير محدد المدة",
       description: "قالب جاهز لعقد عمل غير محدد المدة",
       format: "DOCX",
-      downloads: 980
+      downloads: 980,
     },
     {
       id: "t3",
       title: "نموذج تقييم الأداء",
       description: "نموذج شامل لتقييم أداء الموظفين",
       format: "XLSX",
-      downloads: 1540
+      downloads: 1540,
     },
     {
       id: "t4",
       title: "نموذج إنذار كتابي",
       description: "قالب قانوني للإنذارات الكتابية",
       format: "DOCX",
-      downloads: 890
+      downloads: 890,
     },
     {
       id: "t5",
       title: "خطاب إنهاء خدمات",
       description: "قالب لخطاب إنهاء الخدمات",
       format: "DOCX",
-      downloads: 1120
+      downloads: 1120,
     },
     {
       id: "t6",
       title: "نموذج طلب إجازة",
       description: "نموذج رسمي لطلبات الإجازات",
       format: "PDF",
-      downloads: 760
-    }
+      downloads: 760,
+    },
   ];
 
   const popularTopics = [
@@ -190,13 +196,15 @@ export default function KnowledgeBase() {
     "الإنذارات",
     "الفصل التعسفي",
     "التأمينات الاجتماعية",
-    "الأجور والرواتب"
+    "الأجور والرواتب",
   ];
 
   const filteredArticles = articles.filter(article => {
-    const matchesCategory = selectedCategory === "all" || article.category === selectedCategory;
-    const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         article.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory =
+      selectedCategory === "all" || article.category === selectedCategory;
+    const matchesSearch =
+      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -216,16 +224,16 @@ export default function KnowledgeBase() {
             <p className="text-xl text-muted-foreground mb-8">
               مقالات، أدلة، وقوالب جاهزة لمساعدتك في إدارة الموارد البشرية
             </p>
-            
+
             {/* Search */}
             <div className="relative max-w-xl mx-auto">
               <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <Input 
-                type="search" 
-                placeholder="ابحث في قاعدة المعرفة..." 
+              <Input
+                type="search"
+                placeholder="ابحث في قاعدة المعرفة..."
                 className="pr-10 h-12 text-lg"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
               />
             </div>
           </div>
@@ -236,9 +244,15 @@ export default function KnowledgeBase() {
       <section className="py-8 border-b bg-muted/30">
         <div className="container">
           <div className="flex items-center gap-2 flex-wrap justify-center">
-            <span className="text-sm text-muted-foreground">المواضيع الشائعة:</span>
+            <span className="text-sm text-muted-foreground">
+              المواضيع الشائعة:
+            </span>
             {popularTopics.map((topic, index) => (
-              <Badge key={index} variant="outline" className="cursor-pointer hover:bg-primary hover:text-primary-foreground">
+              <Badge
+                key={index}
+                variant="outline"
+                className="cursor-pointer hover:bg-primary hover:text-primary-foreground"
+              >
                 {topic}
               </Badge>
             ))}
@@ -250,16 +264,20 @@ export default function KnowledgeBase() {
       <section className="py-8 border-b bg-background sticky top-0 z-10 shadow-sm">
         <div className="container">
           <div className="flex items-center gap-4 overflow-x-auto pb-2">
-            {categories.map((category) => (
+            {categories.map(category => (
               <Button
                 key={category.id}
-                variant={selectedCategory === category.id ? "default" : "outline"}
+                variant={
+                  selectedCategory === category.id ? "default" : "outline"
+                }
                 className="flex-shrink-0"
                 onClick={() => setSelectedCategory(category.id)}
               >
                 <category.icon className="ml-2 h-4 w-4" />
                 {category.name}
-                <Badge variant="secondary" className="mr-2">{category.count}</Badge>
+                <Badge variant="secondary" className="mr-2">
+                  {category.count}
+                </Badge>
               </Button>
             ))}
           </div>
@@ -271,43 +289,56 @@ export default function KnowledgeBase() {
         <section className="py-16">
           <div className="container">
             <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl md:text-3xl font-bold">المقالات المميزة</h2>
+              <h2 className="text-2xl md:text-3xl font-bold">
+                المقالات المميزة
+              </h2>
             </div>
 
             <div className="grid md:grid-cols-3 gap-6">
-              {articles.filter(a => a.featured).map((article) => (
-                <Card key={article.id} className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <Badge className="w-fit mb-2">{categories.find(c => c.id === article.category)?.name}</Badge>
-                    <CardTitle className="text-xl line-clamp-2">{article.title}</CardTitle>
-                    <CardDescription className="line-clamp-2">{article.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
-                      <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-1">
-                          <Clock className="h-4 w-4" />
-                          <span>{article.readTime}</span>
+              {articles
+                .filter(a => a.featured)
+                .map(article => (
+                  <Card
+                    key={article.id}
+                    className="hover:shadow-lg transition-shadow"
+                  >
+                    <CardHeader>
+                      <Badge className="w-fit mb-2">
+                        {categories.find(c => c.id === article.category)?.name}
+                      </Badge>
+                      <CardTitle className="text-xl line-clamp-2">
+                        {article.title}
+                      </CardTitle>
+                      <CardDescription className="line-clamp-2">
+                        {article.description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-1">
+                            <Clock className="h-4 w-4" />
+                            <span>{article.readTime}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Eye className="h-4 w-4" />
+                            <span>{article.views}</span>
+                          </div>
                         </div>
                         <div className="flex items-center gap-1">
-                          <Eye className="h-4 w-4" />
-                          <span>{article.views}</span>
+                          <ThumbsUp className="h-4 w-4" />
+                          <span>{article.likes}</span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <ThumbsUp className="h-4 w-4" />
-                        <span>{article.likes}</span>
-                      </div>
-                    </div>
-                    <Button variant="outline" className="w-full" asChild>
-                      <Link href={`/knowledge-base/${article.id}`}>
-                        اقرأ المزيد
-                        <ExternalLink className="mr-2 h-4 w-4" />
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
+                      <Button variant="outline" className="w-full" asChild>
+                        <Link href={`/knowledge-base/${article.id}`}>
+                          اقرأ المزيد
+                          <ExternalLink className="mr-2 h-4 w-4" />
+                        </Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
             </div>
           </div>
         </section>
@@ -318,7 +349,9 @@ export default function KnowledgeBase() {
         <div className="container">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl md:text-3xl font-bold">
-              {selectedCategory === "all" ? "جميع المقالات" : categories.find(c => c.id === selectedCategory)?.name}
+              {selectedCategory === "all"
+                ? "جميع المقالات"
+                : categories.find(c => c.id === selectedCategory)?.name}
             </h2>
             <div className="text-sm text-muted-foreground">
               {filteredArticles.length} مقال
@@ -326,16 +359,26 @@ export default function KnowledgeBase() {
           </div>
 
           <div className="space-y-4">
-            {filteredArticles.map((article) => (
-              <Card key={article.id} className="hover:shadow-md transition-shadow">
+            {filteredArticles.map(article => (
+              <Card
+                key={article.id}
+                className="hover:shadow-md transition-shadow"
+              >
                 <CardHeader>
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <Badge variant="outline">{categories.find(c => c.id === article.category)?.name}</Badge>
+                        <Badge variant="outline">
+                          {
+                            categories.find(c => c.id === article.category)
+                              ?.name
+                          }
+                        </Badge>
                         {article.featured && <Badge>مميز</Badge>}
                       </div>
-                      <CardTitle className="text-xl mb-2">{article.title}</CardTitle>
+                      <CardTitle className="text-xl mb-2">
+                        {article.title}
+                      </CardTitle>
                       <CardDescription>{article.description}</CardDescription>
                       <div className="flex items-center gap-4 text-sm text-muted-foreground mt-3">
                         <div className="flex items-center gap-1">
@@ -378,8 +421,11 @@ export default function KnowledgeBase() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {guides.map((guide) => (
-              <Card key={guide.id} className="hover:shadow-lg transition-shadow">
+            {guides.map(guide => (
+              <Card
+                key={guide.id}
+                className="hover:shadow-lg transition-shadow"
+              >
                 <CardHeader>
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                     <guide.icon className="h-6 w-6 text-primary" />
@@ -419,12 +465,17 @@ export default function KnowledgeBase() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {templates.map((template) => (
-              <Card key={template.id} className="hover:shadow-md transition-shadow">
+            {templates.map(template => (
+              <Card
+                key={template.id}
+                className="hover:shadow-md transition-shadow"
+              >
                 <CardHeader>
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
-                      <CardTitle className="text-lg mb-2">{template.title}</CardTitle>
+                      <CardTitle className="text-lg mb-2">
+                        {template.title}
+                      </CardTitle>
                       <CardDescription>{template.description}</CardDescription>
                     </div>
                     <Badge variant="secondary">{template.format}</Badge>

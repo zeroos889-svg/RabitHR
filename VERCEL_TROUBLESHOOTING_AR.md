@@ -21,6 +21,7 @@
 ### ❌ خطأ: "pnpm: command not found"
 
 **الأعراض:**
+
 ```
 Error: pnpm: command not found
 Build failed with exit code 127
@@ -47,6 +48,7 @@ Vercel لم يتعرف على pnpm كمدير حزم.
 ### ❌ خطأ: "Module not found"
 
 **الأعراض:**
+
 ```
 Error: Cannot find module '@/components/ui/button'
 Module not found: Can't resolve '@/lib/utils'
@@ -58,6 +60,7 @@ Module not found: Can't resolve '@/lib/utils'
 **الحل:**
 
 1. تحقق من ملف `tsconfig.json`:
+
    ```json
    {
      "compilerOptions": {
@@ -86,6 +89,7 @@ Module not found: Can't resolve '@/lib/utils'
 ### ❌ خطأ: "TypeScript compilation errors"
 
 **الأعراض:**
+
 ```
 Error: Type 'string | undefined' is not assignable to type 'string'
 Found 15 errors in 8 files
@@ -97,6 +101,7 @@ Found 15 errors in 8 files
 **الحل:**
 
 1. شغّل فحص TypeScript محلياً:
+
    ```bash
    npm run check
    ```
@@ -118,6 +123,7 @@ Found 15 errors in 8 files
 ### ❌ خطأ: "Out of memory"
 
 **الأعراض:**
+
 ```
 FATAL ERROR: Reached heap limit Allocation failed
 JavaScript heap out of memory
@@ -129,6 +135,7 @@ JavaScript heap out of memory
 **الحل:**
 
 1. في ملف `package.json`، عدّل أمر البناء:
+
    ```json
    {
      "scripts": {
@@ -151,6 +158,7 @@ JavaScript heap out of memory
 ### ❌ خطأ: "Failed to connect to database"
 
 **الأعراض:**
+
 ```
 Error: connect ETIMEDOUT
 Error: ER_ACCESS_DENIED_ERROR
@@ -163,19 +171,21 @@ Cannot connect to MySQL server
 **الحل:**
 
 1. **تحقق من DATABASE_URL**:
+
    ```bash
    # يجب أن يكون بهذا الشكل:
    mysql://username:password@host:port/database
-   
+
    # مثال صحيح:
    mysql://root:mypassword123@containers-us-west-123.railway.app:3306/railway
    ```
 
 2. **اختبر الاتصال محلياً**:
+
    ```bash
    # ضع DATABASE_URL في ملف .env
    echo "DATABASE_URL=mysql://..." > .env
-   
+
    # جرّب الاتصال
    pnpm db:push
    ```
@@ -194,6 +204,7 @@ Cannot connect to MySQL server
 ### ❌ خطأ: "Table doesn't exist"
 
 **الأعراض:**
+
 ```
 Error: ER_NO_SUCH_TABLE: Table 'railway.users' doesn't exist
 ```
@@ -204,6 +215,7 @@ Error: ER_NO_SUCH_TABLE: Table 'railway.users' doesn't exist
 **الحل:**
 
 1. **شغّل الهجرات**:
+
    ```bash
    # من جهازك المحلي
    echo "DATABASE_URL=mysql://[من Railway]" > .env
@@ -211,10 +223,11 @@ Error: ER_NO_SUCH_TABLE: Table 'railway.users' doesn't exist
    ```
 
 2. **تحقق من إنشاء الجداول**:
+
    ```bash
    # في Railway Query Editor
    SHOW TABLES;
-   
+
    # يجب أن ترى:
    # - users
    # - companies
@@ -224,11 +237,12 @@ Error: ER_NO_SUCH_TABLE: Table 'railway.users' doesn't exist
    ```
 
 3. **إذا فشلت الهجرات**:
+
    ```bash
    # احذف جميع الجداول وأعد المحاولة
    DROP DATABASE railway;
    CREATE DATABASE railway;
-   
+
    # ثم
    pnpm db:push
    ```
@@ -238,6 +252,7 @@ Error: ER_NO_SUCH_TABLE: Table 'railway.users' doesn't exist
 ### ❌ خطأ: "Too many connections"
 
 **الأعراض:**
+
 ```
 Error: ER_TOO_MANY_USER_CONNECTIONS
 Error: ER_CON_COUNT_ERROR
@@ -249,15 +264,19 @@ Error: ER_CON_COUNT_ERROR
 **الحل:**
 
 1. **استخدم Connection Pooling**:
+
    ```typescript
    // في server/_core/db/index.ts
-   export const db = drizzle(mysql.createPool({
-     uri: process.env.DATABASE_URL,
-     connectionLimit: 10,
-   }));
+   export const db = drizzle(
+     mysql.createPool({
+       uri: process.env.DATABASE_URL,
+       connectionLimit: 10,
+     })
+   );
    ```
 
 2. **استخدم Redis للـ caching**:
+
    ```bash
    # في Vercel Environment Variables
    Key: REDIS_URL
@@ -275,6 +294,7 @@ Error: ER_CON_COUNT_ERROR
 ### ❌ خطأ: "JWT_SECRET is required"
 
 **الأعراض:**
+
 ```
 Error: Environment variable JWT_SECRET is required
 Application failed to start
@@ -286,11 +306,13 @@ Application failed to start
 **الحل:**
 
 1. **اذهب إلى Vercel Dashboard**:
+
    ```
    Settings → Environment Variables
    ```
 
 2. **أضف المتغير الناقص**:
+
    ```
    Key: JWT_SECRET
    Value: [أنشئ مفتاح قوي باستخدام: openssl rand -base64 32]
@@ -306,28 +328,32 @@ Application failed to start
 ### ❌ خطأ: "Environment variable not found in build"
 
 **الأعراض:**
+
 ```
 Warning: VITE_APP_TITLE is not defined
 Undefined variable in production
 ```
 
 **السبب:**
-المتغيرات التي تبدأ بـ VITE_ يجب أن تكون موجودة أثناء البناء.
+المتغيرات التي تبدأ بـ VITE\_ يجب أن تكون موجودة أثناء البناء.
 
 **الحل:**
 
 1. **تأكد من إضافة المتغير في Vercel**:
+
    ```
    Key: VITE_APP_TITLE
    Value: رابِط - منصة إدارة الموارد البشرية
    ```
 
 2. **اختر البيئة الصحيحة**:
+
    ```
    ✅ Production
    ✅ Preview
    ✅ Development
    ```
+
    (اختر الثلاثة)
 
 3. **أعد النشر** بعد إضافة المتغير
@@ -339,6 +365,7 @@ Undefined variable in production
 ### ❌ خطأ: "404 على جميع الصفحات غير الرئيسية"
 
 **الأعراض:**
+
 ```
 https://app.vercel.app/ ← يعمل ✅
 https://app.vercel.app/dashboard ← 404 ❌
@@ -351,11 +378,13 @@ https://app.vercel.app/employees ← 404 ❌
 **الحل:**
 
 1. **تحقق من وجود vercel.json**:
+
    ```bash
    ls -la vercel.json
    ```
 
 2. **تأكد من محتوى vercel.json**:
+
    ```json
    {
      "rewrites": [
@@ -378,6 +407,7 @@ https://app.vercel.app/employees ← 404 ❌
 ### ❌ خطأ: "API routes return 404"
 
 **الأعراض:**
+
 ```
 GET /api/trpc/users.list → 404
 POST /api/auth/login → 404
@@ -389,6 +419,7 @@ POST /api/auth/login → 404
 **الحل:**
 
 1. **تحقق من vercel.json**:
+
    ```json
    {
      "functions": {
@@ -424,6 +455,7 @@ POST /api/auth/login → 404
 ### ❌ خطأ: "Invalid token"
 
 **الأعراض:**
+
 ```
 Error: jwt malformed
 Error: invalid signature
@@ -436,18 +468,21 @@ Session expired immediately after login
 **الحل:**
 
 1. **تحقق من JWT_SECRET**:
+
    ```bash
    # يجب أن يكون نفس المفتاح في جميع البيئات
    Vercel → Settings → Environment Variables → JWT_SECRET
    ```
 
 2. **تأكد من قوة المفتاح**:
+
    ```bash
    # يجب أن يكون 32 حرف على الأقل
    openssl rand -base64 32
    ```
 
 3. **امسح Cookies وجرّب مرة أخرى**:
+
    ```
    F12 → Application → Cookies → Clear All
    ```
@@ -459,6 +494,7 @@ Session expired immediately after login
 ### ❌ خطأ: "CSRF token mismatch"
 
 **الأعراض:**
+
 ```
 Error: CSRF token invalid
 Form submission failed
@@ -470,6 +506,7 @@ Form submission failed
 **الحل:**
 
 1. **تحقق من VITE_APP_URL**:
+
    ```bash
    # يجب أن يطابق رابط الـ domain
    VITE_APP_URL=https://your-app.vercel.app
@@ -478,10 +515,12 @@ Form submission failed
 2. **تأكد من إعدادات CORS**:
    ```typescript
    // في server/_core/index.ts
-   app.use(cors({
-     origin: process.env.VITE_APP_URL,
-     credentials: true
-   }));
+   app.use(
+     cors({
+       origin: process.env.VITE_APP_URL,
+       credentials: true,
+     })
+   );
    ```
 
 ---
@@ -491,6 +530,7 @@ Form submission failed
 ### ❌ خطأ: "Function execution timeout"
 
 **الأعراض:**
+
 ```
 Error: Function execution timed out after 10s
 504 Gateway Timeout
@@ -502,6 +542,7 @@ Error: Function execution timed out after 10s
 **الحل:**
 
 1. **زد مدة التنفيذ**:
+
    ```json
    // في vercel.json
    {
@@ -514,20 +555,20 @@ Error: Function execution timed out after 10s
    ```
 
 2. **استخدم Redis للـ caching**:
+
    ```bash
    Key: REDIS_URL
    Value: [من Railway]
    ```
 
 3. **حسّن الاستعلامات**:
+
    ```typescript
    // بدلاً من:
    const users = await db.select().from(users);
-   
+
    // استخدم:
-   const users = await db.select()
-     .from(users)
-     .limit(100);
+   const users = await db.select().from(users).limit(100);
    ```
 
 ---
@@ -535,6 +576,7 @@ Error: Function execution timed out after 10s
 ### ❌ خطأ: "Slow page load"
 
 **الأعراض:**
+
 ```
 صفحة بطيئة جداً
 Time to First Byte (TTFB) > 3s
@@ -546,19 +588,22 @@ Time to First Byte (TTFB) > 3s
 **الحل:**
 
 1. **فعّل Redis**:
+
    ```bash
    REDIS_URL=redis://...
    ```
 
 2. **استخدم CDN للملفات الكبيرة**:
+
    ```bash
    AWS_S3_BUCKET=...
    ```
 
 3. **فعّل Compression**:
+
    ```typescript
    // في server/_core/index.ts
-   import compression from 'compression';
+   import compression from "compression";
    app.use(compression());
    ```
 
@@ -574,6 +619,7 @@ Time to First Byte (TTFB) > 3s
 ### ❌ خطأ: "Failed to send email"
 
 **الأعراض:**
+
 ```
 Error: Failed to send email via Resend
 Email not delivered
@@ -585,18 +631,21 @@ Email not delivered
 **الحل:**
 
 1. **تحقق من API Key**:
+
    ```bash
    Vercel → Environment Variables → RESEND_API_KEY
    # يجب أن يبدأ بـ: re_
    ```
 
 2. **تحقق من البريد المرسل**:
+
    ```bash
    RESEND_FROM_EMAIL=noreply@yourdomain.com
    # يجب أن يكون domain مفعّل في Resend
    ```
 
 3. **فعّل Domain في Resend**:
+
    ```
    Resend Dashboard → Domains → Add Domain
    أضف DNS Records حسب التعليمات
@@ -618,6 +667,7 @@ Email not delivered
 ### ❌ خطأ: "Failed to upload file to S3"
 
 **الأعراض:**
+
 ```
 Error: Access Denied
 Error: SignatureDoesNotMatch
@@ -630,6 +680,7 @@ Cannot upload files
 **الحل:**
 
 1. **تحقق من Credentials**:
+
    ```bash
    AWS_ACCESS_KEY_ID=AKIA...
    AWS_SECRET_ACCESS_KEY=...
@@ -638,17 +689,14 @@ Cannot upload files
    ```
 
 2. **تحقق من IAM Permissions**:
+
    ```json
    {
      "Version": "2012-10-17",
      "Statement": [
        {
          "Effect": "Allow",
-         "Action": [
-           "s3:PutObject",
-           "s3:GetObject",
-           "s3:DeleteObject"
-         ],
+         "Action": ["s3:PutObject", "s3:GetObject", "s3:DeleteObject"],
          "Resource": "arn:aws:s3:::your-bucket-name/*"
        }
      ]
