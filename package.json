@@ -136,7 +136,12 @@
     },
     "overrides": {
       "tailwindcss>nanoid": "3.3.7",
-      "cookie": "^0.7.2"
+      "cookie": "^0.7.2",
+      "path-to-regexp": "^6.3.0",
+      "undici": "^5.28.5",
+      "vite": "^7.1.11",
+      "tar": "^7.5.2",
+      "esbuild": "^0.25.0"
     }
   }
 }
