@@ -97,7 +97,7 @@ async function handleGet(req: VercelRequest, res: VercelResponse) {
     }
 
     // Parse and return the result
-    const parsedResult = JSON.parse(result.toString());
+    const parsedResult = JSON.parse(result);
 
     return res.status(200).json({ 
       success: true,
