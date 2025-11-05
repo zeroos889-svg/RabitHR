@@ -4,6 +4,14 @@
 
 يتم نشر الـ Backend بالكامل على Railway، بما في ذلك Express server وقاعدة البيانات.
 
+### 🎯 ميزات Backend المحدثة
+
+- ✅ **Health Check Endpoint**: `/health` للمراقبة والـ load balancers
+- ✅ **Request Logging**: استخدام morgan للـ logging الشامل
+- ✅ **Centralized Error Handling**: معالجة الأخطاء المركزية
+- ✅ **Graceful Shutdown**: إيقاف آمن عند تلقي SIGTERM/SIGINT
+- ✅ **Production-Ready**: PORT configuration محسّن لـ Railway
+
 ## 📋 متطلبات النشر
 
 ### 1. حساب Railway
@@ -106,6 +114,27 @@ git push origin main
 
 ## 📊 المراقبة
 
+### Health Check
+
+الـ Backend يوفر health check endpoint:
+
+```bash
+# التحقق من صحة الخادم
+curl https://your-railway-app.railway.app/health
+
+# Response عند النجاح:
+{
+  "status": "ok",
+  "timestamp": "2025-11-05T12:45:00.000Z"
+}
+
+# Response عند الفشل:
+{
+  "status": "error",
+  "message": "Database connection failed"
+}
+```
+
 ### الوصول إلى Logs
 
 ```bash
@@ -113,6 +142,12 @@ git push origin main
 1. اذهب إلى مشروعك
 2. انقر على service
 3. اذهب إلى "Logs" tab
+
+# الآن ستجد logs مفصّلة بفضل morgan:
+# - Request method and URL
+# - Status codes
+# - Response times
+# - User agents
 ```
 
 ### المقاييس
@@ -123,6 +158,15 @@ Railway يوفر مقاييس تلقائية:
 - Memory Usage
 - Network Traffic
 - Response Times
+
+### Error Monitoring
+
+الـ Backend الآن يتعامل مع الأخطاء بشكل أفضل:
+
+- ✅ Centralized error logging
+- ✅ Stack traces في development mode فقط
+- ✅ Structured error responses
+- ✅ Graceful handling of unhandled rejections
 
 ## 🔧 الصيانة
 
@@ -225,9 +269,94 @@ Railway يقدم:
 - Redis (اختياري): ~$1-2
 - **المجموع**: ~$6-10/month
 
+## 🎯 أفضل الممارسات (Best Practices)
+
+### Backend Structure
+
+الـ Backend تم إعداده بأفضل الممارسات:
+
+#### 1. Health Check Endpoint
+
+```bash
+GET /health
+```
+
+- يستخدم من قبل Railway للتحقق من صحة الخادم
+- يتحقق من اتصال قاعدة البيانات
+- يعيد `200 OK` أو `503 Service Unavailable`
+
+#### 2. Request Logging
+
+- استخدام `morgan` middleware
+- `combined` format في production (Apache style)
+- `dev` format في development (colorful)
+
+#### 3. Error Handling
+
+- Centralized error handler middleware
+- Structured error responses
+- Stack traces في development فقط
+- Graceful shutdown عند SIGTERM/SIGINT
+
+#### 4. PORT Configuration
+
+- يستخدم `process.env.PORT` (Railway يضعه تلقائياً)
+- Default: 3000 في development
+- Validation للـ PORT value
+- الاستماع على `0.0.0.0` للـ containers
+
+#### 5. Security
+
+- Helmet middleware لـ security headers
+- CSRF protection
+- Rate limiting على API routes
+- Authentication rate limiting
+
+### Environment Variables
+
+**مطلوب (Required)**:
+
+- `DATABASE_URL` - من Railway MySQL service
+- `JWT_SECRET` - للـ authentication tokens
+- `SESSION_SECRET` - للـ sessions
+- `NODE_ENV` - `production`
+
+**موصى به (Recommended)**:
+
+- `REDIS_URL` - للـ caching والأداء
+- `RESEND_API_KEY` - للـ emails
+- `SENTRY_DSN` - للـ error tracking
+
+**اختياري (Optional)**:
+
+- AWS S3 credentials
+- SMS service keys
+- Payment gateway keys
+
+### Testing Before Deploy
+
+قبل النشر، تأكد من:
+
+```bash
+# Type checking
+pnpm tsc --noEmit
+
+# Linting
+pnpm lint
+
+# Tests
+pnpm test
+
+# Build
+pnpm build
+```
+
+كلها يجب أن تنجح قبل النشر.
+
 ## 📚 مصادر إضافية
 
 - [Railway Documentation](https://docs.railway.app)
 - [Railway Discord](https://discord.gg/railway)
 - ملف `.env.example` - جميع المتغيرات المطلوبة
 - `DEPLOYMENT_ARCHITECTURE.md` - نظرة عامة على المعمارية
+- `VERCEL_README.md` - نشر Frontend على Vercel
