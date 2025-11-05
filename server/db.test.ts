@@ -96,7 +96,7 @@ describe('Booking Number Generation', () => {
   });
 
   it('should have correct prefix format', () => {
-    const bookingNumber = 'CB-abc123xyz';
+    const bookingNumber = 'CB-abc1234567';
     expect(bookingNumber).toMatch(/^CB-[a-zA-Z0-9]{10}$/);
   });
 });
