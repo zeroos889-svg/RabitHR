@@ -18,6 +18,7 @@ import { runEmbeddedMigrations } from "./embeddedMigrations";
 import { simpleHealthCheck } from "./healthCheck";
 import { errorHandler, initializeErrorHandling } from "./errorHandler";
 import mysql from "mysql2/promise";
+import { connectRedis, testRedisConnection } from "./redisClient.js";
 
 /**
  * Get port from environment or use default
@@ -37,6 +38,19 @@ function getPort(): number {
 async function startServer() {
   // Check environment variables
   checkEnv();
+
+  // Initialize Redis connection
+  try {
+    if (process.env.REDIS_URL) {
+      await connectRedis();
+      await testRedisConnection();
+    } else {
+      console.warn("⚠️  REDIS_URL not configured, skipping Redis initialization");
+    }
+  } catch (error) {
+    console.error("[Server] Failed to connect to Redis:", error);
+    console.warn("⚠️  Server will continue without Redis caching");
+  }
 
   // Run database migrations on startup
   try {
@@ -128,6 +142,32 @@ async function startServer() {
       }
     } catch (error) {
       res.status(503).json({ status: "error", message: "Health check failed" });
+    }
+  });
+
+  // Redis Health Check Endpoint
+  app.get("/health/redis", async (req, res) => {
+    try {
+      const isRedisHealthy = await testRedisConnection();
+      if (isRedisHealthy) {
+        res
+          .status(200)
+          .json({ 
+            status: "ok", 
+            message: "Redis is healthy",
+            timestamp: new Date().toISOString() 
+          });
+      } else {
+        res
+          .status(503)
+          .json({ status: "error", message: "Redis connection failed" });
+      }
+    } catch (error) {
+      res.status(503).json({ 
+        status: "error", 
+        message: "Redis health check failed",
+        error: error instanceof Error ? error.message : "Unknown error"
+      });
     }
   });
 
