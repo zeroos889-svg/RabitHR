@@ -1357,7 +1357,7 @@ ${companyName ? `اسم الشركة: ${companyName}\n` : ""}
           const { invokeLLM } = await import("./_core/llm");
 
           // Build conversation context
-          let contextMessages: any[] = [
+          const contextMessages: any[] = [
             {
               role: "system",
               content: `أنت مساعد ذكي للمستشارين في مجال الموارد البشرية.
