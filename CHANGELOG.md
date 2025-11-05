@@ -4,6 +4,49 @@
 
 ---
 
+## [1.1.0] - 2025-11-05
+
+### 🔒 تحسينات الأمان
+- ✅ ترقية CodeQL من v2 إلى v3 في GitHub Actions
+- ✅ إصلاح ثغرة cookie < 0.7.0 عبر pnpm overrides
+- ✅ تحسين رؤوس الأمان في vercel.json (CSP, HSTS)
+- ✅ إضافة SECURITY_CHECKLIST.md لتوثيق إجراءات الأمان
+
+### 🚀 تحسينات النشر
+- ✅ توضيح معمارية النشر المنفصلة (Frontend على Vercel / Backend على Railway)
+- ✅ تحديث vercel.json لـ proxy requests إلى Railway backend
+- ✅ إضافة railway.json للتكوين التلقائي
+- ✅ تعطيل Docker push في CI (Backend على Railway)
+
+### ⚡ تحسينات الأداء
+- ✅ إضافة code splitting في vite.config.ts
+- ✅ تقسيم الحزم: react-vendor, ui-vendor, chart-vendor, query-vendor
+- ✅ إعدادات تخزين مؤقت محسّنة للـ assets
+- ✅ تحسين حجم الحزم (من 883KB إلى 394KB للحزمة الرئيسية)
+
+### 📚 التوثيق
+- ✅ إضافة DEPLOYMENT_ARCHITECTURE.md - شرح شامل للمعمارية
+- ✅ إضافة RAILWAY_DEPLOYMENT.md - دليل نشر Railway
+- ✅ إضافة VERCEL_README.md - دليل نشر Vercel
+- ✅ تحديث .env.example بمتغيرات جديدة (VITE_API_URL, Twilio, Unifonic)
+
+### 🔧 التحسينات التقنية
+- ✅ إضافة lint script (prettier check)
+- ✅ تحديث GitHub Actions workflow مع تعليقات توضيحية
+- ✅ إصلاح outputDirectory في vercel.json (dist/public)
+
+### 📦 التبعيات
+- ✅ cookie: 0.4.0 → 0.7.2 (security fix)
+- ✅ esbuild: 0.25.0 (already safe)
+
+### ⚠️ ملاحظات مهمة
+- Frontend يتم نشره على Vercel كتطبيق ثابت
+- Backend يتم نشره على Railway كـ Express server
+- API requests تُعاد توجيهها من Vercel إلى Railway
+- يجب تحديث Railway URL في vercel.json بعد النشر
+
+---
+
 ## [1.0.0] - 2024-11-02
 
 ### ✨ المميزات الجديدة

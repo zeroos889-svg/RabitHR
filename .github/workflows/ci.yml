@@ -1,4 +1,7 @@
 name: CI/CD Pipeline
+# This workflow builds and tests the application
+# Frontend is deployed to Vercel (automatic)
+# Backend is deployed to Railway (automatic)
 
 on:
   push:
@@ -99,7 +102,7 @@ jobs:
         severity: 'CRITICAL,HIGH'
 
     - name: Upload Trivy results to GitHub Security
-      uses: github/codeql-action/upload-sarif@v2
+      uses: github/codeql-action/upload-sarif@v3
       if: always()
       with:
         sarif_file: 'trivy-results.sarif'
@@ -109,44 +112,49 @@ jobs:
         npm audit --audit-level=moderate || echo "Security issues found"
       continue-on-error: true
 
-  docker:
-    runs-on: ubuntu-latest
-    needs: [build, test, security-scan]
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-
-    - name: Log in to GitHub Container Registry
-      if: github.event_name != 'pull_request'
-      uses: docker/login-action@v2
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Extract metadata for Docker
-      id: meta
-      uses: docker/metadata-action@v4
-      with:
-        images: ghcr.io/${{ github.repository }}
-        tags: |
-          type=ref,event=branch
-          type=ref,event=pr
-          type=semver,pattern={{version}}
-          type=semver,pattern={{major}}.{{minor}}
-          type=raw,value=latest,enable={{is_default_branch}}
-
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v4
-      with:
-        context: .
-        push: ${{ github.event_name != 'pull_request' }}
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
+  # Docker build disabled - Backend is deployed to Railway, not GHCR
+  # If you need Docker images, uncomment this job and configure proper permissions
+  # docker:
+  #   runs-on: ubuntu-latest
+  #   needs: [build, test, security-scan]
+  #   if: github.ref == 'refs/heads/main'
+  #   permissions:
+  #     contents: read
+  #     packages: write
+  #
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v3
+  #
+  #   - name: Set up Docker Buildx
+  #     uses: docker/setup-buildx-action@v2
+  #
+  #   - name: Log in to GitHub Container Registry
+  #     if: github.event_name != 'pull_request'
+  #     uses: docker/login-action@v2
+  #     with:
+  #       registry: ghcr.io
+  #       username: ${{ github.actor }}
+  #       password: ${{ secrets.GITHUB_TOKEN }}
+  #
+  #   - name: Extract metadata for Docker
+  #     id: meta
+  #     uses: docker/metadata-action@v4
+  #     with:
+  #       images: ghcr.io/${{ github.repository }}
+  #       tags: |
+  #         type=ref,event=branch
+  #         type=ref,event=pr
+  #         type=semver,pattern={{version}}
+  #         type=semver,pattern={{major}}.{{minor}}
+  #         type=raw,value=latest,enable={{is_default_branch}}
+  #
+  #   - name: Build and push Docker image
+  #     uses: docker/build-push-action@v4
+  #     with:
+  #       context: .
+  #       push: ${{ github.event_name != 'pull_request' }}
+  #       tags: ${{ steps.meta.outputs.tags }}
+  #       labels: ${{ steps.meta.outputs.labels }}
+  #       cache-from: type=gha
+  #       cache-to: type=gha,mode=max
