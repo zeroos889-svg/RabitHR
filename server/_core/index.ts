@@ -1,4 +1,8 @@
-import "dotenv/config";
+// Load environment variables early with explicit dev support
+import dotenv from "dotenv";
+const envFile =
+  process.env.NODE_ENV === "development" ? ".env.development" : ".env";
+dotenv.config({ path: envFile });
 import express from "express";
 import { createServer } from "http";
 import net from "net";
