@@ -24,6 +24,7 @@ import {
 } from "../drizzle/schema";
 import bcrypt from "bcryptjs";
 import { ENV } from "./_core/env";
+import { logger } from "./_core/logger";
 
 /**
  * Database Configuration Constants
@@ -61,26 +62,37 @@ export async function getDb() {
     try {
       _db = drizzle(process.env.DATABASE_URL);
       _connectionAttempts = 0;
-      console.log("[Database] Connected successfully to Railway database");
+      logger.info("Connected successfully to Railway database", {
+        context: "Database",
+      });
     } catch (error) {
       _connectionAttempts++;
-      console.warn(
-        `[Database] Connection attempt ${_connectionAttempts}/${MAX_CONNECTION_ATTEMPTS} failed:`,
-        error
+      logger.warn(
+        `Connection attempt ${_connectionAttempts}/${MAX_CONNECTION_ATTEMPTS} failed`,
+        {
+          context: "Database",
+          error: error instanceof Error ? {
+            name: error.name,
+            message: error.message,
+          } : undefined,
+        }
       );
 
       if (_connectionAttempts < MAX_CONNECTION_ATTEMPTS) {
         // Exponential backoff: wait 1s, 2s, 3s between attempts
-        await new Promise(resolve =>
-          setTimeout(resolve, CONNECTION_RETRY_DELAY_MS * _connectionAttempts)
-        );
+        const delay = CONNECTION_RETRY_DELAY_MS * _connectionAttempts;
+        logger.info(`Retrying database connection in ${delay}ms...`, {
+          context: "Database",
+        });
+        
+        await new Promise(resolve => setTimeout(resolve, delay));
         return getDb();
       }
 
       _db = null;
-      console.error(
-        "[Database] Max connection attempts reached. Database unavailable."
-      );
+      logger.error("Max connection attempts reached. Database unavailable", {
+        context: "Database",
+      });
     }
   }
   return _db;
@@ -93,7 +105,9 @@ export async function upsertUser(user: InsertUser): Promise<void> {
 
   const db = await getDb();
   if (!db) {
-    console.warn("[Database] Cannot upsert user: database not available");
+    logger.warn("Cannot upsert user: database not available", {
+      context: "Database",
+    });
     return;
   }
 
