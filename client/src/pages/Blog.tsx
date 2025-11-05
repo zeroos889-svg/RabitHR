@@ -1,9 +1,15 @@
-import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Footer } from '@/components/Footer';
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Footer } from "@/components/Footer";
 import {
   BookOpen,
   Search,
@@ -17,142 +23,191 @@ import {
   Users,
   Briefcase,
   Scale,
-  Lightbulb
-} from 'lucide-react';
-import { Link } from 'wouter';
+  Lightbulb,
+} from "lucide-react";
+import { Link } from "wouter";
 
 // Blog Categories
 const categories = [
-  { id: 'all', name: 'الكل', icon: BookOpen, color: 'from-blue-500 to-indigo-600' },
-  { id: 'hr-tips', name: 'نصائح HR', icon: Lightbulb, color: 'from-yellow-500 to-orange-600' },
-  { id: 'labor-law', name: 'نظام العمل', icon: Scale, color: 'from-purple-500 to-pink-600' },
-  { id: 'recruitment', name: 'التوظيف', icon: Users, color: 'from-green-500 to-emerald-600' },
-  { id: 'management', name: 'الإدارة', icon: Briefcase, color: 'from-red-500 to-rose-600' },
-  { id: 'news', name: 'أخبار', icon: TrendingUp, color: 'from-teal-500 to-cyan-600' },
+  {
+    id: "all",
+    name: "الكل",
+    icon: BookOpen,
+    color: "from-blue-500 to-indigo-600",
+  },
+  {
+    id: "hr-tips",
+    name: "نصائح HR",
+    icon: Lightbulb,
+    color: "from-yellow-500 to-orange-600",
+  },
+  {
+    id: "labor-law",
+    name: "نظام العمل",
+    icon: Scale,
+    color: "from-purple-500 to-pink-600",
+  },
+  {
+    id: "recruitment",
+    name: "التوظيف",
+    icon: Users,
+    color: "from-green-500 to-emerald-600",
+  },
+  {
+    id: "management",
+    name: "الإدارة",
+    icon: Briefcase,
+    color: "from-red-500 to-rose-600",
+  },
+  {
+    id: "news",
+    name: "أخبار",
+    icon: TrendingUp,
+    color: "from-teal-500 to-cyan-600",
+  },
 ];
 
 // Mock Blog Posts
 const blogPosts = [
   {
     id: 1,
-    title: 'دليلك الشامل لحساب نهاية الخدمة وفق نظام العمل السعودي 2024',
-    excerpt: 'تعرف على كيفية حساب مكافأة نهاية الخدمة بشكل صحيح وفق المادة 84 من نظام العمل السعودي، مع أمثلة عملية وحالات خاصة.',
-    category: 'labor-law',
-    categoryName: 'نظام العمل',
-    author: 'فريق رابِط',
-    date: '2024-01-15',
-    readTime: '8 دقائق',
-    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=400&fit=crop',
-    featured: true
+    title: "دليلك الشامل لحساب نهاية الخدمة وفق نظام العمل السعودي 2024",
+    excerpt:
+      "تعرف على كيفية حساب مكافأة نهاية الخدمة بشكل صحيح وفق المادة 84 من نظام العمل السعودي، مع أمثلة عملية وحالات خاصة.",
+    category: "labor-law",
+    categoryName: "نظام العمل",
+    author: "فريق رابِط",
+    date: "2024-01-15",
+    readTime: "8 دقائق",
+    image:
+      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=400&fit=crop",
+    featured: true,
   },
   {
     id: 2,
-    title: '10 أخطاء شائعة في إدارة الموارد البشرية وكيفية تجنبها',
-    excerpt: 'اكتشف الأخطاء الأكثر شيوعاً التي تقع فيها أقسام الموارد البشرية وتعلم كيفية تجنبها لتحسين كفاءة فريقك.',
-    category: 'hr-tips',
-    categoryName: 'نصائح HR',
-    author: 'سارة أحمد',
-    date: '2024-01-12',
-    readTime: '6 دقائق',
-    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=400&fit=crop',
-    featured: true
+    title: "10 أخطاء شائعة في إدارة الموارد البشرية وكيفية تجنبها",
+    excerpt:
+      "اكتشف الأخطاء الأكثر شيوعاً التي تقع فيها أقسام الموارد البشرية وتعلم كيفية تجنبها لتحسين كفاءة فريقك.",
+    category: "hr-tips",
+    categoryName: "نصائح HR",
+    author: "سارة أحمد",
+    date: "2024-01-12",
+    readTime: "6 دقائق",
+    image:
+      "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=400&fit=crop",
+    featured: true,
   },
   {
     id: 3,
-    title: 'كيف تبني نظام توظيف فعال باستخدام ATS',
-    excerpt: 'خطوات عملية لبناء نظام تتبع المتقدمين (ATS) يوفر وقتك ويساعدك في اختيار أفضل المرشحين لشركتك.',
-    category: 'recruitment',
-    categoryName: 'التوظيف',
-    author: 'محمد الغامدي',
-    date: '2024-01-10',
-    readTime: '10 دقائق',
-    image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&h=400&fit=crop',
-    featured: true
+    title: "كيف تبني نظام توظيف فعال باستخدام ATS",
+    excerpt:
+      "خطوات عملية لبناء نظام تتبع المتقدمين (ATS) يوفر وقتك ويساعدك في اختيار أفضل المرشحين لشركتك.",
+    category: "recruitment",
+    categoryName: "التوظيف",
+    author: "محمد الغامدي",
+    date: "2024-01-10",
+    readTime: "10 دقائق",
+    image:
+      "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&h=400&fit=crop",
+    featured: true,
   },
   {
     id: 4,
-    title: 'التحديثات الجديدة في نظام العمل السعودي لعام 2024',
-    excerpt: 'ملخص شامل لأهم التعديلات والتحديثات على نظام العمل السعودي وتأثيرها على الشركات والموظفين.',
-    category: 'news',
-    categoryName: 'أخبار',
-    author: 'فريق رابِط',
-    date: '2024-01-08',
-    readTime: '7 دقائق',
-    image: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&h=400&fit=crop',
-    featured: false
+    title: "التحديثات الجديدة في نظام العمل السعودي لعام 2024",
+    excerpt:
+      "ملخص شامل لأهم التعديلات والتحديثات على نظام العمل السعودي وتأثيرها على الشركات والموظفين.",
+    category: "news",
+    categoryName: "أخبار",
+    author: "فريق رابِط",
+    date: "2024-01-08",
+    readTime: "7 دقائق",
+    image:
+      "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&h=400&fit=crop",
+    featured: false,
   },
   {
     id: 5,
-    title: 'أنواع الإجازات في نظام العمل السعودي وكيفية حسابها',
-    excerpt: 'دليل مفصل لجميع أنواع الإجازات المتاحة للموظفين في السعودية وطريقة احتسابها وفق النظام.',
-    category: 'labor-law',
-    categoryName: 'نظام العمل',
-    author: 'نورة العتيبي',
-    date: '2024-01-05',
-    readTime: '9 دقائق',
-    image: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=800&h=400&fit=crop',
-    featured: false
+    title: "أنواع الإجازات في نظام العمل السعودي وكيفية حسابها",
+    excerpt:
+      "دليل مفصل لجميع أنواع الإجازات المتاحة للموظفين في السعودية وطريقة احتسابها وفق النظام.",
+    category: "labor-law",
+    categoryName: "نظام العمل",
+    author: "نورة العتيبي",
+    date: "2024-01-05",
+    readTime: "9 دقائق",
+    image:
+      "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=800&h=400&fit=crop",
+    featured: false,
   },
   {
     id: 6,
-    title: 'كيف تكتب خطاب توظيف احترافي يجذب أفضل المواهب',
-    excerpt: 'نصائح عملية وأمثلة لكتابة خطابات توظيف فعالة تعكس احترافية شركتك وتجذب المرشحين المميزين.',
-    category: 'recruitment',
-    categoryName: 'التوظيف',
-    author: 'خالد السعيد',
-    date: '2024-01-03',
-    readTime: '5 دقائق',
-    image: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=800&h=400&fit=crop',
-    featured: false
+    title: "كيف تكتب خطاب توظيف احترافي يجذب أفضل المواهب",
+    excerpt:
+      "نصائح عملية وأمثلة لكتابة خطابات توظيف فعالة تعكس احترافية شركتك وتجذب المرشحين المميزين.",
+    category: "recruitment",
+    categoryName: "التوظيف",
+    author: "خالد السعيد",
+    date: "2024-01-03",
+    readTime: "5 دقائق",
+    image:
+      "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=800&h=400&fit=crop",
+    featured: false,
   },
   {
     id: 7,
-    title: 'استراتيجيات فعالة لتحسين رضا الموظفين والاحتفاظ بهم',
-    excerpt: 'تعرف على أفضل الممارسات والاستراتيجيات التي تساعدك في بناء بيئة عمل إيجابية وتقليل معدل دوران الموظفين.',
-    category: 'management',
-    categoryName: 'الإدارة',
-    author: 'ريم المطيري',
-    date: '2024-01-01',
-    readTime: '8 دقائق',
-    image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=400&fit=crop',
-    featured: false
+    title: "استراتيجيات فعالة لتحسين رضا الموظفين والاحتفاظ بهم",
+    excerpt:
+      "تعرف على أفضل الممارسات والاستراتيجيات التي تساعدك في بناء بيئة عمل إيجابية وتقليل معدل دوران الموظفين.",
+    category: "management",
+    categoryName: "الإدارة",
+    author: "ريم المطيري",
+    date: "2024-01-01",
+    readTime: "8 دقائق",
+    image:
+      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=400&fit=crop",
+    featured: false,
   },
   {
     id: 8,
-    title: 'الذكاء الاصطناعي في الموارد البشرية: الحاضر والمستقبل',
-    excerpt: 'كيف يغير الذكاء الاصطناعي مجال الموارد البشرية وما هي الأدوات التي يمكنك استخدامها اليوم.',
-    category: 'hr-tips',
-    categoryName: 'نصائح HR',
-    author: 'فريق رابِط',
-    date: '2023-12-28',
-    readTime: '11 دقيقة',
-    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=400&fit=crop',
-    featured: false
+    title: "الذكاء الاصطناعي في الموارد البشرية: الحاضر والمستقبل",
+    excerpt:
+      "كيف يغير الذكاء الاصطناعي مجال الموارد البشرية وما هي الأدوات التي يمكنك استخدامها اليوم.",
+    category: "hr-tips",
+    categoryName: "نصائح HR",
+    author: "فريق رابِط",
+    date: "2023-12-28",
+    readTime: "11 دقيقة",
+    image:
+      "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=400&fit=crop",
+    featured: false,
   },
   {
     id: 9,
-    title: 'حقوق الموظف عند إنهاء العقد: ما يجب أن تعرفه',
-    excerpt: 'دليل شامل لحقوق الموظف القانونية عند إنهاء عقد العمل، سواء كان الإنهاء من الموظف أو صاحب العمل.',
-    category: 'labor-law',
-    categoryName: 'نظام العمل',
-    author: 'عبدالله الشمري',
-    date: '2023-12-25',
-    readTime: '7 دقائق',
-    image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=400&fit=crop',
-    featured: false
-  }
+    title: "حقوق الموظف عند إنهاء العقد: ما يجب أن تعرفه",
+    excerpt:
+      "دليل شامل لحقوق الموظف القانونية عند إنهاء عقد العمل، سواء كان الإنهاء من الموظف أو صاحب العمل.",
+    category: "labor-law",
+    categoryName: "نظام العمل",
+    author: "عبدالله الشمري",
+    date: "2023-12-25",
+    readTime: "7 دقائق",
+    image:
+      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=400&fit=crop",
+    featured: false,
+  },
 ];
 
 export default function Blog() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
 
   // Filter posts
-  const filteredPosts = blogPosts.filter(post =>
-    (selectedCategory === 'all' || post.category === selectedCategory) &&
-    (searchQuery === '' ||
-      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()))
+  const filteredPosts = blogPosts.filter(
+    post =>
+      (selectedCategory === "all" || post.category === selectedCategory) &&
+      (searchQuery === "" ||
+        post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   const featuredPosts = filteredPosts.filter(post => post.featured);
@@ -189,7 +244,7 @@ export default function Blog() {
               <Input
                 placeholder="ابحث في المقالات..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="pr-10 text-right"
               />
             </div>
@@ -198,12 +253,14 @@ export default function Blog() {
 
         {/* Category Filters */}
         <div className="flex gap-3 mb-12 overflow-x-auto pb-2">
-          {categories.map((category) => (
+          {categories.map(category => (
             <Button
               key={category.id}
-              variant={selectedCategory === category.id ? 'default' : 'outline'}
+              variant={selectedCategory === category.id ? "default" : "outline"}
               className={`flex-shrink-0 gap-2 ${
-                selectedCategory === category.id ? `bg-gradient-to-r ${category.color}` : ''
+                selectedCategory === category.id
+                  ? `bg-gradient-to-r ${category.color}`
+                  : ""
               }`}
               onClick={() => setSelectedCategory(category.id)}
             >
@@ -221,7 +278,7 @@ export default function Blog() {
               مقالات مميزة
             </h2>
             <div className="grid md:grid-cols-3 gap-6">
-              {featuredPosts.map((post) => (
+              {featuredPosts.map(post => (
                 <Link key={post.id} href={`/blog/${post.id}`}>
                   <Card className="h-full hover:shadow-2xl transition-all duration-300 cursor-pointer group overflow-hidden">
                     <div className="relative h-48 overflow-hidden">
@@ -250,14 +307,19 @@ export default function Blog() {
                         </div>
                         <div className="flex items-center gap-1">
                           <Calendar className="h-4 w-4" />
-                          <span>{new Date(post.date).toLocaleDateString('ar-SA')}</span>
+                          <span>
+                            {new Date(post.date).toLocaleDateString("ar-SA")}
+                          </span>
                         </div>
                         <div className="flex items-center gap-1">
                           <Clock className="h-4 w-4" />
                           <span>{post.readTime}</span>
                         </div>
                       </div>
-                      <Button variant="ghost" className="mt-4 w-full group-hover:bg-blue-50">
+                      <Button
+                        variant="ghost"
+                        className="mt-4 w-full group-hover:bg-blue-50"
+                      >
                         اقرأ المزيد
                         <ArrowLeft className="mr-2 h-4 w-4" />
                       </Button>
@@ -277,7 +339,7 @@ export default function Blog() {
               جميع المقالات
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {regularPosts.map((post) => (
+              {regularPosts.map(post => (
                 <Link key={post.id} href={`/blog/${post.id}`}>
                   <Card className="h-full hover:shadow-xl transition-all duration-300 cursor-pointer group overflow-hidden">
                     <div className="relative h-40 overflow-hidden">
@@ -333,7 +395,9 @@ export default function Blog() {
         {/* Newsletter CTA */}
         <Card className="mt-12 bg-gradient-to-r from-blue-500 to-purple-600 text-white border-0">
           <CardContent className="py-12 text-center">
-            <h2 className="text-3xl font-bold mb-4">اشترك في النشرة البريدية</h2>
+            <h2 className="text-3xl font-bold mb-4">
+              اشترك في النشرة البريدية
+            </h2>
             <p className="text-lg mb-8 text-white/90 max-w-2xl mx-auto">
               احصل على أحدث المقالات والنصائح مباشرة في بريدك الإلكتروني
             </p>
@@ -342,7 +406,11 @@ export default function Blog() {
                 placeholder="بريدك الإلكتروني"
                 className="bg-white text-gray-900 text-right"
               />
-              <Button size="lg" variant="secondary" className="bg-white text-blue-600 hover:bg-gray-100 flex-shrink-0">
+              <Button
+                size="lg"
+                variant="secondary"
+                className="bg-white text-blue-600 hover:bg-gray-100 flex-shrink-0"
+              >
                 اشترك الآن
               </Button>
             </div>

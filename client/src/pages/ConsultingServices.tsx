@@ -1,6 +1,12 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useLocation } from 'wouter';
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useLocation } from "wouter";
 import {
   CheckCircle2,
   Users,
@@ -11,7 +17,7 @@ import {
   DollarSign,
   ArrowRight,
   Star,
-} from 'lucide-react';
+} from "lucide-react";
 
 interface ConsultingService {
   id: string;
@@ -32,148 +38,148 @@ interface ConsultingService {
 
 const services: ConsultingService[] = [
   {
-    id: 'hr-strategy',
-    title: 'استشارة إستراتيجية الموارد البشرية',
-    description: 'تطوير استراتيجية HR شاملة متوافقة مع أهداف الشركة',
+    id: "hr-strategy",
+    title: "استشارة إستراتيجية الموارد البشرية",
+    description: "تطوير استراتيجية HR شاملة متوافقة مع أهداف الشركة",
     price: 2500,
-    duration: '3 ساعات',
+    duration: "3 ساعات",
     icon: <TrendingUp className="w-8 h-8" />,
     features: [
-      'تحليل الوضع الحالي للموارد البشرية',
-      'تطوير خطة استراتيجية مخصصة',
-      'تحديد المؤشرات الرئيسية (KPIs)',
-      'خطة التنفيذ والمراقبة',
-      'دعم ما بعد الاستشارة لمدة شهر',
+      "تحليل الوضع الحالي للموارد البشرية",
+      "تطوير خطة استراتيجية مخصصة",
+      "تحديد المؤشرات الرئيسية (KPIs)",
+      "خطة التنفيذ والمراقبة",
+      "دعم ما بعد الاستشارة لمدة شهر",
     ],
     testimonials: [
       {
-        name: 'محمد السعيد',
-        role: 'مدير الموارد البشرية',
-        text: 'استشارة قيمة جداً ساعدتنا على تنظيم عملياتنا بشكل احترافي',
+        name: "محمد السعيد",
+        role: "مدير الموارد البشرية",
+        text: "استشارة قيمة جداً ساعدتنا على تنظيم عملياتنا بشكل احترافي",
         rating: 5,
       },
     ],
-    bookingUrl: '/consulting/book',
+    bookingUrl: "/consulting/book",
   },
   {
-    id: 'recruitment',
-    title: 'استشارة نظام التوظيف والاختيار',
-    description: 'بناء نظام توظيف فعال واختيار المواهب المناسبة',
+    id: "recruitment",
+    title: "استشارة نظام التوظيف والاختيار",
+    description: "بناء نظام توظيف فعال واختيار المواهب المناسبة",
     price: 2000,
-    duration: '2.5 ساعة',
+    duration: "2.5 ساعة",
     icon: <Users className="w-8 h-8" />,
     features: [
-      'تصميم عملية التوظيف',
-      'إعداد معايير الاختيار',
-      'تدريب فريق المقابلات',
-      'نماذج وأدوات التقييم',
-      'استراتيجية البحث عن المواهب',
+      "تصميم عملية التوظيف",
+      "إعداد معايير الاختيار",
+      "تدريب فريق المقابلات",
+      "نماذج وأدوات التقييم",
+      "استراتيجية البحث عن المواهب",
     ],
     testimonials: [
       {
-        name: 'فاطمة الأحمد',
-        role: 'مديرة التطوير',
-        text: 'ساعدتنا على تحسين جودة التوظيف بشكل ملحوظ',
+        name: "فاطمة الأحمد",
+        role: "مديرة التطوير",
+        text: "ساعدتنا على تحسين جودة التوظيف بشكل ملحوظ",
         rating: 5,
       },
     ],
-    bookingUrl: '/consulting/book',
+    bookingUrl: "/consulting/book",
   },
   {
-    id: 'employee-relations',
-    title: 'استشارة علاقات الموظفين والأداء',
-    description: 'تحسين بيئة العمل وإدارة الأداء والمشاكل السلوكية',
+    id: "employee-relations",
+    title: "استشارة علاقات الموظفين والأداء",
+    description: "تحسين بيئة العمل وإدارة الأداء والمشاكل السلوكية",
     price: 1800,
-    duration: '2 ساعة',
+    duration: "2 ساعة",
     icon: <Briefcase className="w-8 h-8" />,
     features: [
-      'تقييم ثقافة الشركة',
-      'نظام إدارة الأداء',
-      'معالجة النزاعات والشكاوى',
-      'برامج تحفيز الموظفين',
-      'سياسات الانضباط والعقوبات',
+      "تقييم ثقافة الشركة",
+      "نظام إدارة الأداء",
+      "معالجة النزاعات والشكاوى",
+      "برامج تحفيز الموظفين",
+      "سياسات الانضباط والعقوبات",
     ],
     testimonials: [
       {
-        name: 'علي الدعيع',
-        role: 'مدير عام',
-        text: 'تحسنت معنويات الموظفين بشكل كبير بعد تطبيق التوصيات',
+        name: "علي الدعيع",
+        role: "مدير عام",
+        text: "تحسنت معنويات الموظفين بشكل كبير بعد تطبيق التوصيات",
         rating: 5,
       },
     ],
-    bookingUrl: '/consulting/book',
+    bookingUrl: "/consulting/book",
   },
   {
-    id: 'training-development',
-    title: 'استشارة التدريب والتطوير الوظيفي',
-    description: 'بناء برامج تدريب فعالة وخطط تطوير الموظفين',
+    id: "training-development",
+    title: "استشارة التدريب والتطوير الوظيفي",
+    description: "بناء برامج تدريب فعالة وخطط تطوير الموظفين",
     price: 1600,
-    duration: '2 ساعة',
+    duration: "2 ساعة",
     icon: <Award className="w-8 h-8" />,
     features: [
-      'تحديد احتياجات التدريب',
-      'تصميم برامج تدريبية',
-      'خطط التطور الوظيفي',
-      'قياس فعالية التدريب',
-      'بناء قيادات داخلية',
+      "تحديد احتياجات التدريب",
+      "تصميم برامج تدريبية",
+      "خطط التطور الوظيفي",
+      "قياس فعالية التدريب",
+      "بناء قيادات داخلية",
     ],
     testimonials: [
       {
-        name: 'نور الحسن',
-        role: 'مدير الموارد البشرية',
-        text: 'برامج التدريب أصبحت أكثر فعالية وملاءمة لاحتياجات الشركة',
+        name: "نور الحسن",
+        role: "مدير الموارد البشرية",
+        text: "برامج التدريب أصبحت أكثر فعالية وملاءمة لاحتياجات الشركة",
         rating: 5,
       },
     ],
-    bookingUrl: '/consulting/book',
+    bookingUrl: "/consulting/book",
   },
   {
-    id: 'compliance-legal',
-    title: 'استشارة الامتثال القانوني والعمالي',
-    description: 'ضمان الامتثال للقوانين والأنظمة السعودية',
+    id: "compliance-legal",
+    title: "استشارة الامتثال القانوني والعمالي",
+    description: "ضمان الامتثال للقوانين والأنظمة السعودية",
     price: 2200,
-    duration: '2.5 ساعة',
+    duration: "2.5 ساعة",
     icon: <CheckCircle2 className="w-8 h-8" />,
     features: [
-      'مراجعة السياسات والإجراءات',
-      'الامتثال لنظام العمل السعودي',
-      'معالجة المشاكل القانونية',
-      'توثيق العقود والاتفاقيات',
-      'تدريب على الالتزامات القانونية',
+      "مراجعة السياسات والإجراءات",
+      "الامتثال لنظام العمل السعودي",
+      "معالجة المشاكل القانونية",
+      "توثيق العقود والاتفاقيات",
+      "تدريب على الالتزامات القانونية",
     ],
     testimonials: [
       {
-        name: 'خالد الراشد',
-        role: 'مدير العمليات',
-        text: 'أصبحنا متأكدين من الامتثال الكامل للقوانين',
+        name: "خالد الراشد",
+        role: "مدير العمليات",
+        text: "أصبحنا متأكدين من الامتثال الكامل للقوانين",
         rating: 5,
       },
     ],
-    bookingUrl: '/consulting/book',
+    bookingUrl: "/consulting/book",
   },
   {
-    id: 'transformation',
-    title: 'استشارة تحول الموارد البشرية الرقمي',
-    description: 'تحديث أنظمة الموارد البشرية والتحول الرقمي',
+    id: "transformation",
+    title: "استشارة تحول الموارد البشرية الرقمي",
+    description: "تحديث أنظمة الموارد البشرية والتحول الرقمي",
     price: 3000,
-    duration: '4 ساعات',
+    duration: "4 ساعات",
     icon: <TrendingUp className="w-8 h-8" />,
     features: [
-      'تقييم الأنظمة الحالية',
-      'اختيار الحلول الرقمية المناسبة',
-      'خطة التنفيذ والهجرة',
-      'تدريب الفريق',
-      'دعم ما بعد التنفيذ',
+      "تقييم الأنظمة الحالية",
+      "اختيار الحلول الرقمية المناسبة",
+      "خطة التنفيذ والهجرة",
+      "تدريب الفريق",
+      "دعم ما بعد التنفيذ",
     ],
     testimonials: [
       {
-        name: 'سارة الشمري',
-        role: 'مديرة المشاريع',
-        text: 'تحول رقمي ناجح وسلس مع دعم احترافي طوال الطريق',
+        name: "سارة الشمري",
+        role: "مديرة المشاريع",
+        text: "تحول رقمي ناجح وسلس مع دعم احترافي طوال الطريق",
         rating: 5,
       },
     ],
-    bookingUrl: '/consulting/book',
+    bookingUrl: "/consulting/book",
   },
 ];
 
@@ -195,8 +201,11 @@ export default function ConsultingServices() {
       {/* Services Grid */}
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {services.map((service) => (
-            <Card key={service.id} className="hover:shadow-lg transition-shadow">
+          {services.map(service => (
+            <Card
+              key={service.id}
+              className="hover:shadow-lg transition-shadow"
+            >
               <CardHeader>
                 <div className="flex items-start justify-between mb-4">
                   <div className="p-3 bg-primary/10 rounded-lg text-primary">
@@ -205,7 +214,10 @@ export default function ConsultingServices() {
                   <div className="text-right">
                     <div className="text-2xl font-bold text-primary">
                       {service.price}
-                      <span className="text-sm text-muted-foreground"> ريال</span>
+                      <span className="text-sm text-muted-foreground">
+                        {" "}
+                        ريال
+                      </span>
                     </div>
                     <div className="text-sm text-muted-foreground flex items-center justify-end gap-1">
                       <Clock className="w-4 h-4" />
@@ -214,12 +226,16 @@ export default function ConsultingServices() {
                   </div>
                 </div>
                 <CardTitle className="text-right">{service.title}</CardTitle>
-                <CardDescription className="text-right">{service.description}</CardDescription>
+                <CardDescription className="text-right">
+                  {service.description}
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {/* Features */}
                 <div className="space-y-2">
-                  <h4 className="font-semibold text-right text-sm">المميزات:</h4>
+                  <h4 className="font-semibold text-right text-sm">
+                    المميزات:
+                  </h4>
                   <ul className="space-y-1 text-sm text-muted-foreground">
                     {service.features.map((feature, idx) => (
                       <li key={idx} className="flex items-start gap-2">
@@ -234,9 +250,14 @@ export default function ConsultingServices() {
                 {service.testimonials.length > 0 && (
                   <div className="bg-secondary/50 p-3 rounded-lg">
                     <div className="flex gap-1 mb-2">
-                      {[...Array(service.testimonials[0].rating)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                      ))}
+                      {[...Array(service.testimonials[0].rating)].map(
+                        (_, i) => (
+                          <Star
+                            key={i}
+                            className="w-4 h-4 fill-yellow-400 text-yellow-400"
+                          />
+                        )
+                      )}
                     </div>
                     <p className="text-sm text-muted-foreground text-right italic mb-2">
                       "{service.testimonials[0].text}"
@@ -265,7 +286,9 @@ export default function ConsultingServices() {
 
         {/* Comparison Section */}
         <div className="bg-card rounded-lg border p-8 mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8">مقارنة الخدمات</h2>
+          <h2 className="text-3xl font-bold text-center mb-8">
+            مقارنة الخدمات
+          </h2>
           <div className="overflow-x-auto">
             <table className="w-full text-right">
               <thead>
@@ -277,8 +300,11 @@ export default function ConsultingServices() {
                 </tr>
               </thead>
               <tbody>
-                {services.map((service) => (
-                  <tr key={service.id} className="border-b hover:bg-secondary/50">
+                {services.map(service => (
+                  <tr
+                    key={service.id}
+                    className="border-b hover:bg-secondary/50"
+                  >
                     <td className="py-4">{service.title}</td>
                     <td className="py-4">{service.price} ريال</td>
                     <td className="py-4">{service.duration}</td>
@@ -296,7 +322,9 @@ export default function ConsultingServices() {
 
         {/* Why Choose Us */}
         <div className="bg-gradient-to-r from-primary/10 to-purple-500/10 rounded-lg p-8 mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8">لماذا تختار خدماتنا؟</h2>
+          <h2 className="text-3xl font-bold text-center mb-8">
+            لماذا تختار خدماتنا؟
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="text-center">
               <Award className="w-12 h-12 text-primary mx-auto mb-4" />
@@ -337,7 +365,7 @@ export default function ConsultingServices() {
           </p>
           <Button
             size="lg"
-            onClick={() => navigate('/consulting/book')}
+            onClick={() => navigate("/consulting/book")}
             className="gap-2"
           >
             احجز استشارة الآن

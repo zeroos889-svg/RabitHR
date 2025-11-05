@@ -3,28 +3,31 @@
 ## 📋 نظرة عامة
 
 هذا الدليل يشرح **بالضبط** أين تضع كل متغير بيئي في المنصات المختلفة:
+
 - **🚂 Railway** - الواجهة الخلفية (Backend API)
-- **▲ Vercel** - الواجهة الأمامية (Frontend)  
+- **▲ Vercel** - الواجهة الأمامية (Frontend)
 - **🐙 GitHub** - CI/CD والأسرار
 
 ---
 
 ## 🎯 ملخص سريع
 
-| المنصة | ما تستضيفه | المتغيرات المطلوبة | الدليل الكامل |
-|--------|------------|-------------------|---------------|
+| المنصة      | ما تستضيفه  | المتغيرات المطلوبة                             | الدليل الكامل                         |
+| ----------- | ----------- | ---------------------------------------------- | ------------------------------------- |
 | **Railway** | Backend API | `DATABASE_URL`, `JWT_SECRET`, `SESSION_SECRET` | [📖 ENV_RAILWAY.md](./ENV_RAILWAY.md) |
-| **Vercel** | Frontend | `VITE_APP_URL`, `VITE_API_URL` | [📖 ENV_VERCEL.md](./ENV_VERCEL.md) |
-| **GitHub** | CI/CD | `DATABASE_URL` (test), Deployment Tokens | [📖 ENV_GITHUB.md](./ENV_GITHUB.md) |
+| **Vercel**  | Frontend    | `VITE_APP_URL`, `VITE_API_URL`                 | [📖 ENV_VERCEL.md](./ENV_VERCEL.md)   |
+| **GitHub**  | CI/CD       | `DATABASE_URL` (test), Deployment Tokens       | [📖 ENV_GITHUB.md](./ENV_GITHUB.md)   |
 
 ---
 
 ## 📚 الأدلة التفصيلية
 
 ### 🚂 [Railway - Backend](./ENV_RAILWAY.md)
+
 **ما يجب وضعه:** جميع المتغيرات المتعلقة بالخادم، قاعدة البيانات، والخدمات الخلفية
 
 **المتغيرات الأساسية:**
+
 - قاعدة البيانات والأمان
 - خدمات البريد والرسائل النصية
 - بوابات الدفع
@@ -36,9 +39,11 @@
 ---
 
 ### ▲ [Vercel - Frontend](./ENV_VERCEL.md)
+
 **ما يجب وضعه:** فقط المتغيرات التي تبدأ بـ `VITE_*` للواجهة الأمامية
 
 **المتغيرات الأساسية:**
+
 - عناوين التطبيق (URLs)
 - إعدادات واجهة المستخدم
 - التحليلات وتتبع الأخطاء
@@ -49,9 +54,11 @@
 ---
 
 ### 🐙 [GitHub - Secrets](./ENV_GITHUB.md)
+
 **ما يجب وضعه:** أسرار CI/CD والنشر التلقائي
 
 **الأسرار الأساسية:**
+
 - متغيرات للاختبارات
 - Tokens للنشر (Vercel, Railway)
 - أسرار المراقبة (Sentry, CodeCov)
@@ -64,47 +71,48 @@
 
 ### المتغيرات المطلوبة
 
-| المتغير | Railway | Vercel | GitHub | الوصف |
-|---------|:-------:|:------:|:------:|-------|
-| `NODE_ENV` | ✅ | ✅ | ✅ | بيئة التشغيل |
-| `DATABASE_URL` | ✅ | ❌ | ✅ test | رابط قاعدة البيانات |
-| `JWT_SECRET` | ✅ | ❌ | ✅ test | مفتاح JWT |
-| `SESSION_SECRET` | ✅ | ❌ | ✅ test | مفتاح الجلسات |
-| `ADMIN_EMAIL` | ✅ | ❌ | ❌ | بريد المدير |
-| `ADMIN_PASSWORD` | ✅ | ❌ | ❌ | كلمة مرور المدير |
-| `VITE_APP_URL` | ⚠️ | ✅ | ❌ | رابط Frontend |
-| `VITE_API_URL` | ❌ | ✅ | ❌ | رابط Backend |
+| المتغير          | Railway | Vercel | GitHub  | الوصف               |
+| ---------------- | :-----: | :----: | :-----: | ------------------- |
+| `NODE_ENV`       |   ✅    |   ✅   |   ✅    | بيئة التشغيل        |
+| `DATABASE_URL`   |   ✅    |   ❌   | ✅ test | رابط قاعدة البيانات |
+| `JWT_SECRET`     |   ✅    |   ❌   | ✅ test | مفتاح JWT           |
+| `SESSION_SECRET` |   ✅    |   ❌   | ✅ test | مفتاح الجلسات       |
+| `ADMIN_EMAIL`    |   ✅    |   ❌   |   ❌    | بريد المدير         |
+| `ADMIN_PASSWORD` |   ✅    |   ❌   |   ❌    | كلمة مرور المدير    |
+| `VITE_APP_URL`   |   ⚠️    |   ✅   |   ❌    | رابط Frontend       |
+| `VITE_API_URL`   |   ❌    |   ✅   |   ❌    | رابط Backend        |
 
 ### متغيرات النشر والـ CI/CD
 
-| المتغير | Railway | Vercel | GitHub | الوصف |
-|---------|:-------:|:------:|:------:|-------|
-| `VERCEL_TOKEN` | ❌ | ❌ | ✅ | نشر Vercel |
-| `VERCEL_ORG_ID` | ❌ | ❌ | ✅ | معرف المنظمة |
-| `VERCEL_PROJECT_ID` | ❌ | ❌ | ✅ | معرف المشروع |
-| `RAILWAY_TOKEN` | ❌ | ❌ | ✅ | نشر Railway |
+| المتغير             | Railway | Vercel | GitHub | الوصف        |
+| ------------------- | :-----: | :----: | :----: | ------------ |
+| `VERCEL_TOKEN`      |   ❌    |   ❌   |   ✅   | نشر Vercel   |
+| `VERCEL_ORG_ID`     |   ❌    |   ❌   |   ✅   | معرف المنظمة |
+| `VERCEL_PROJECT_ID` |   ❌    |   ❌   |   ✅   | معرف المشروع |
+| `RAILWAY_TOKEN`     |   ❌    |   ❌   |   ✅   | نشر Railway  |
 
 ### الخدمات الخارجية (اختيارية)
 
-| الخدمة | المتغيرات | أين؟ |
-|--------|-----------|------|
-| **Redis** | `REDIS_URL` | Railway |
-| **البريد (Resend)** | `RESEND_API_KEY`, `RESEND_FROM_EMAIL` | Railway |
-| **البريد (SMTP)** | `SMTP_*` | Railway |
-| **SMS** | `SMS_API_KEY`, `TWILIO_*`, `UNIFONIC_*` | Railway |
-| **AWS S3** | `AWS_*` | Railway |
-| **الدفع (Moyasar)** | `MOYASAR_*` | Railway |
-| **الدفع (Tap)** | `TAP_*` | Railway |
-| **OpenAI** | `OPENAI_API_KEY` | Railway |
-| **Google Maps** | `GOOGLE_MAPS_API_KEY` | Railway |
-| **Forge Backend** | `BUILT_IN_FORGE_API_*` | Railway |
-| **Forge Frontend** | `VITE_FRONTEND_FORGE_API_*` | Vercel |
-| **Sentry Frontend** | `VITE_SENTRY_DSN`, `VITE_SENTRY_DEBUG` | Vercel |
-| **Sentry Backend** | `SENTRY_AUTH_TOKEN` | Railway + GitHub |
-| **Analytics** | `VITE_ANALYTICS_*` | Vercel |
-| **OAuth** | `VITE_OAUTH_*`, `VITE_APP_ID` | Vercel |
+| الخدمة              | المتغيرات                               | أين؟             |
+| ------------------- | --------------------------------------- | ---------------- |
+| **Redis**           | `REDIS_URL`                             | Railway          |
+| **البريد (Resend)** | `RESEND_API_KEY`, `RESEND_FROM_EMAIL`   | Railway          |
+| **البريد (SMTP)**   | `SMTP_*`                                | Railway          |
+| **SMS**             | `SMS_API_KEY`, `TWILIO_*`, `UNIFONIC_*` | Railway          |
+| **AWS S3**          | `AWS_*`                                 | Railway          |
+| **الدفع (Moyasar)** | `MOYASAR_*`                             | Railway          |
+| **الدفع (Tap)**     | `TAP_*`                                 | Railway          |
+| **OpenAI**          | `OPENAI_API_KEY`                        | Railway          |
+| **Google Maps**     | `GOOGLE_MAPS_API_KEY`                   | Railway          |
+| **Forge Backend**   | `BUILT_IN_FORGE_API_*`                  | Railway          |
+| **Forge Frontend**  | `VITE_FRONTEND_FORGE_API_*`             | Vercel           |
+| **Sentry Frontend** | `VITE_SENTRY_DSN`, `VITE_SENTRY_DEBUG`  | Vercel           |
+| **Sentry Backend**  | `SENTRY_AUTH_TOKEN`                     | Railway + GitHub |
+| **Analytics**       | `VITE_ANALYTICS_*`                      | Vercel           |
+| **OAuth**           | `VITE_OAUTH_*`, `VITE_APP_ID`           | Vercel           |
 
 **الرموز:**
+
 - ✅ = يجب وضعه هنا
 - ⚠️ = اختياري لكن موصى به
 - ❌ = لا تضعه هنا
@@ -172,6 +180,7 @@ RAILWAY_TOKEN=your_railway_token
 ## 🎓 أمثلة كاملة
 
 ### مثال: Railway Environment
+
 ```env
 # الأساسيات
 NODE_ENV=production
@@ -197,6 +206,7 @@ OPENAI_API_KEY=sk-proj-...
 ```
 
 ### مثال: Vercel Environment
+
 ```env
 # الأساسيات
 NODE_ENV=production
@@ -260,6 +270,7 @@ VITE_FRONTEND_FORGE_API_KEY=your_forge_key
 ## 🔍 التحقق من الإعداد
 
 ### Railway
+
 ```bash
 # من CLI
 railway variables
@@ -269,6 +280,7 @@ Railway → Your Project → Variables
 ```
 
 ### Vercel
+
 ```bash
 # من CLI
 vercel env ls
@@ -278,6 +290,7 @@ Vercel → Settings → Environment Variables
 ```
 
 ### GitHub
+
 ```bash
 # من CLI
 gh secret list
@@ -290,28 +303,31 @@ GitHub → Settings → Secrets → Actions
 
 ## 🆘 مشاكل شائعة وحلولها
 
-| المشكلة | السبب المحتمل | الحل |
-|---------|---------------|------|
-| "Database connection failed" | `DATABASE_URL` خطأ | تحقق من الرابط في Railway |
-| "JWT Secret not configured" | `JWT_SECRET` غير موجود | أضفه في Railway (32+ حرف) |
-| "Cannot connect to API" | `VITE_API_URL` خطأ | صحح الرابط في Vercel |
-| "Environment variable undefined" | نسيت `VITE_` | أضف `VITE_` في بداية المتغير |
-| "Session expired quickly" | `SESSION_MAX_AGE` قصير | زد المدة (default: 604800000) |
+| المشكلة                          | السبب المحتمل          | الحل                          |
+| -------------------------------- | ---------------------- | ----------------------------- |
+| "Database connection failed"     | `DATABASE_URL` خطأ     | تحقق من الرابط في Railway     |
+| "JWT Secret not configured"      | `JWT_SECRET` غير موجود | أضفه في Railway (32+ حرف)     |
+| "Cannot connect to API"          | `VITE_API_URL` خطأ     | صحح الرابط في Vercel          |
+| "Environment variable undefined" | نسيت `VITE_`           | أضف `VITE_` في بداية المتغير  |
+| "Session expired quickly"        | `SESSION_MAX_AGE` قصير | زد المدة (default: 604800000) |
 
 ---
 
 ## 📚 موارد إضافية
 
 ### الأدلة الكاملة (مفصّلة)
+
 - 🚂 **[ENV_RAILWAY.md](./ENV_RAILWAY.md)** - دليل Railway الكامل
-- ▲ **[ENV_VERCEL.md](./ENV_VERCEL.md)** - دليل Vercel الكامل  
+- ▲ **[ENV_VERCEL.md](./ENV_VERCEL.md)** - دليل Vercel الكامل
 - 🐙 **[ENV_GITHUB.md](./ENV_GITHUB.md)** - دليل GitHub الكامل
 
 ### التوثيق الشامل
+
 - 📖 **[ENV_VARIABLES_AR.md](./ENV_VARIABLES_AR.md)** - دليل شامل بالعربية
 - 📖 **[ENV_VARIABLES_EN.md](./ENV_VARIABLES_EN.md)** - دليل شامل بالإنجليزية
 
 ### ملفات المساعدة
+
 - 📄 **[.env.example](./.env.example)** - ملف مثال محدّث
 - 📝 **[INSTALLATION.md](./INSTALLATION.md)** - دليل التثبيت
 - 🚀 **[DEPLOYMENT_GUIDE_FULL.md](./DEPLOYMENT_GUIDE_FULL.md)** - دليل النشر
@@ -321,6 +337,7 @@ GitHub → Settings → Secrets → Actions
 ## ✅ قائمة التحقق النهائية
 
 ### قبل النشر:
+
 - [ ] أضفت جميع المتغيرات المطلوبة في Railway
 - [ ] أضفت `VITE_APP_URL` و `VITE_API_URL` في Vercel
 - [ ] أنشأت مفاتيح آمنة باستخدام `openssl rand -base64 32`
@@ -330,6 +347,7 @@ GitHub → Settings → Secrets → Actions
 - [ ] حفظت نسخة احتياطية آمنة من جميع المتغيرات
 
 ### بعد النشر:
+
 - [ ] اختبرت تسجيل الدخول بحساب المدير
 - [ ] تحققت من اتصال Frontend بـ Backend
 - [ ] غيّرت كلمة مرور المدير من حساب المدير

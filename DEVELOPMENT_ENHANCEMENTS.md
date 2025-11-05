@@ -13,6 +13,7 @@
 **الملف:** `openapi.yaml`
 
 **المحتوى:**
+
 - OpenAPI 3.0 Specification
 - 12+ Endpoints موثقة
 - Request/Response Schemas
@@ -20,6 +21,7 @@
 - Error Responses
 
 **الاستخدام:**
+
 ```bash
 # عرض التوثيق باستخدام Swagger UI
 npm install -g swagger-ui
@@ -40,6 +42,7 @@ docker run -p 8080:8080 -e SWAGGER_JSON=/openapi.yaml \
 **الملف:** `database-optimization.sql`
 
 **المحتوى:**
+
 - 40+ Indexes محسّنة
 - Composite Indexes
 - Full-text Search
@@ -47,6 +50,7 @@ docker run -p 8080:8080 -e SWAGGER_JSON=/openapi.yaml \
 - Data Cleanup Scripts
 
 **التطبيق:**
+
 ```bash
 # من داخل MySQL container
 docker exec -i rabithr-db mysql -u root -p rabithr < database-optimization.sql
@@ -56,6 +60,7 @@ make db-optimize
 ```
 
 **النتائج المتوقعة:**
+
 - 50-70% تحسين في سرعة الاستعلامات
 - أداء أفضل للـ JOINs
 - بحث أسرع
@@ -67,12 +72,14 @@ make db-optimize
 **الملف:** `performance-test.js`
 
 **المحتوى:**
+
 - Artillery.io Configuration
 - 5 Test Phases
 - Performance Thresholds
 - Load Testing Scenarios
 
 **التشغيل:**
+
 ```bash
 # تثبيت Artillery
 npm install -g artillery
@@ -88,6 +95,7 @@ artillery quick --duration 60 --rate 10 http://localhost:3000
 ```
 
 **المقاييس:**
+
 - Response Time p95: < 500ms
 - Response Time p99: < 1000ms
 - Error Rate: < 1%
@@ -100,6 +108,7 @@ artillery quick --duration 60 --rate 10 http://localhost:3000
 **الملف:** `server/_core/healthCheck.ts`
 
 **المحتوى:**
+
 - Database Health
 - Redis Health
 - Disk Space
@@ -107,19 +116,21 @@ artillery quick --duration 60 --rate 10 http://localhost:3000
 - CPU Load
 
 **الاستخدام:**
+
 ```typescript
-import { performHealthCheck } from './server/_core/healthCheck';
+import { performHealthCheck } from "./server/_core/healthCheck";
 
 // في Express route
-app.get('/health', async (req, res) => {
+app.get("/health", async (req, res) => {
   const health = await performHealthCheck();
-  res.status(health.status === 'healthy' ? 200 : 503).json(health);
+  res.status(health.status === "healthy" ? 200 : 503).json(health);
 });
 ```
 
 **الوصول:** http://localhost:3000/health
 
 **نموذج Response:**
+
 ```json
 {
   "status": "healthy",
@@ -154,41 +165,47 @@ app.get('/health', async (req, res) => {
 **الملف:** `server/_core/errorHandler.ts`
 
 **المحتوى:**
+
 - Custom Error Classes
 - Global Error Handler
 - Async Error Wrapper
 - Graceful Shutdown
 
 **الاستخدام:**
+
 ```typescript
-import { 
-  AppError, 
-  ValidationError, 
+import {
+  AppError,
+  ValidationError,
   AuthenticationError,
   asyncHandler,
-  errorHandler 
-} from './server/_core/errorHandler';
+  errorHandler,
+} from "./server/_core/errorHandler";
 
 // في Express route
-app.get('/api/users/:id', asyncHandler(async (req, res) => {
-  const user = await findUser(req.params.id);
-  
-  if (!user) {
-    throw new NotFoundError('User');
-  }
-  
-  if (!req.user.canView(user)) {
-    throw new AuthorizationError();
-  }
-  
-  res.json(user);
-}));
+app.get(
+  "/api/users/:id",
+  asyncHandler(async (req, res) => {
+    const user = await findUser(req.params.id);
+
+    if (!user) {
+      throw new NotFoundError("User");
+    }
+
+    if (!req.user.canView(user)) {
+      throw new AuthorizationError();
+    }
+
+    res.json(user);
+  })
+);
 
 // Global error handler (في آخر middleware)
 app.use(errorHandler);
 ```
 
 **Error Classes:**
+
 - `AppError` - Base error
 - `ValidationError` - 400
 - `AuthenticationError` - 401
@@ -201,19 +218,20 @@ app.use(errorHandler);
 
 ## 📈 تحسينات الأداء المتوقعة
 
-| المقياس | قبل | بعد | التحسين |
-|---------|-----|-----|---------|
-| **Database Queries** | 200-500ms | 50-150ms | 70% ⬇️ |
-| **API Response Time** | 200-300ms | 80-120ms | 60% ⬇️ |
-| **Error Rate** | 2-3% | <1% | 70% ⬇️ |
-| **System Stability** | 95% | 99.9% | ⬆️⬆️ |
-| **Documentation** | 20% | 95% | ⬆️⬆️ |
+| المقياس               | قبل       | بعد      | التحسين |
+| --------------------- | --------- | -------- | ------- |
+| **Database Queries**  | 200-500ms | 50-150ms | 70% ⬇️  |
+| **API Response Time** | 200-300ms | 80-120ms | 60% ⬇️  |
+| **Error Rate**        | 2-3%      | <1%      | 70% ⬇️  |
+| **System Stability**  | 95%       | 99.9%    | ⬆️⬆️    |
+| **Documentation**     | 20%       | 95%      | ⬆️⬆️    |
 
 ---
 
 ## 🎯 الاستخدام الموصى به
 
 ### للتطوير:
+
 ```bash
 # 1. قم بتشغيل المشروع
 make up
@@ -229,6 +247,7 @@ curl http://localhost:3000/health | jq
 ```
 
 ### للإنتاج:
+
 ```bash
 # 1. تأكد من تطبيق جميع Indexes
 mysql -u root -p < database-optimization.sql
@@ -249,16 +268,17 @@ export SENTRY_DSN=your_dsn_here
 ## 🔍 مراقبة الأداء
 
 ### 1. Database Performance
+
 ```sql
 -- Check slow queries
-SELECT * FROM mysql.slow_log 
+SELECT * FROM mysql.slow_log
 ORDER BY query_time DESC LIMIT 10;
 
 -- Check index usage
 SELECT * FROM sys.schema_unused_indexes;
 
 -- Check table sizes
-SELECT 
+SELECT
   table_name,
   ROUND(((data_length + index_length) / 1024 / 1024), 2) AS "Size (MB)"
 FROM information_schema.TABLES
@@ -267,6 +287,7 @@ ORDER BY (data_length + index_length) DESC;
 ```
 
 ### 2. Application Performance
+
 ```bash
 # استخدم Artillery للمراقبة المستمرة
 artillery run --output report.json performance-test.yml
@@ -279,6 +300,7 @@ done | awk '{sum+=$1; count++} END {print "Average:", sum/count, "seconds"}'
 ```
 
 ### 3. Health Monitoring
+
 ```bash
 # إنشاء Grafana dashboard من Health endpoint
 curl -s http://localhost:3000/health | \
@@ -293,6 +315,7 @@ curl -s http://localhost:3000/health | \
 ### مقترحات للتحسين المستمر:
 
 #### Phase 2 (قريباً):
+
 - [ ] Caching Layer محسّن
 - [ ] WebSocket للـ Real-time
 - [ ] Message Queue (RabbitMQ/Redis Queue)
@@ -300,6 +323,7 @@ curl -s http://localhost:3000/health | \
 - [ ] CDN Integration
 
 #### Phase 3 (المستقبل):
+
 - [ ] GraphQL API
 - [ ] Mobile App API
 - [ ] Microservices Architecture
@@ -311,6 +335,7 @@ curl -s http://localhost:3000/health | \
 ## 🐛 استكشاف الأخطاء
 
 ### مشكلة: Database Indexes لا تُستخدم
+
 ```sql
 -- فحص Execution Plan
 EXPLAIN SELECT * FROM employees WHERE department = 'IT';
@@ -324,6 +349,7 @@ ANALYZE TABLE employees;
 ```
 
 ### مشكلة: Performance Test يفشل
+
 ```bash
 # تأكد من أن الخادم يعمل
 curl http://localhost:3000/health
@@ -336,6 +362,7 @@ artillery quick --duration 30 --rate 5 http://localhost:3000
 ```
 
 ### مشكلة: Health Check يظهر degraded
+
 ```bash
 # فحص الموارد
 docker stats rabithr-app
@@ -352,6 +379,7 @@ docker-compose restart app
 ## 📞 الدعم
 
 للمزيد من المعلومات:
+
 - راجع `FINAL_AUDIT_REPORT.md`
 - راجع `SERVICES_ACTIVATION_GUIDE.md`
 - راجع API docs على http://localhost:8080

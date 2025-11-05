@@ -2,7 +2,13 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -30,14 +36,17 @@ export default function MyConsultations() {
   const tickets = data?.tickets || [];
 
   // Filter tickets based on search and tab
-  const filteredTickets = tickets.filter((ticket) => {
+  const filteredTickets = tickets.filter(ticket => {
     const matchesSearch =
-      (ticket.subject || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (ticket.subject || "")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
       ticket.ticketNumber.toLowerCase().includes(searchQuery.toLowerCase());
 
     const matchesTab =
       activeTab === "all" ||
-      (activeTab === "active" && ["pending", "assigned", "in-progress"].includes(ticket.status || '')) ||
+      (activeTab === "active" &&
+        ["pending", "assigned", "in-progress"].includes(ticket.status || "")) ||
       (activeTab === "completed" && ticket.status === "completed") ||
       (activeTab === "cancelled" && ticket.status === "cancelled");
 
@@ -47,18 +56,43 @@ export default function MyConsultations() {
   // Calculate statistics
   const stats = {
     total: tickets.length,
-    active: tickets.filter((t) => ["pending", "assigned", "in-progress"].includes(t.status || '')).length,
-    completed: tickets.filter((t) => t.status === "completed").length,
-    cancelled: tickets.filter((t) => t.status === "cancelled").length,
+    active: tickets.filter(t =>
+      ["pending", "assigned", "in-progress"].includes(t.status || "")
+    ).length,
+    completed: tickets.filter(t => t.status === "completed").length,
+    cancelled: tickets.filter(t => t.status === "cancelled").length,
   };
 
   // Status configurations
-  const statusConfig: Record<string, { label: string; color: string; icon: any }> = {
-    pending: { label: "معلقة", color: "bg-yellow-100 text-yellow-800", icon: Clock },
-    assigned: { label: "معينة", color: "bg-blue-100 text-blue-800", icon: User },
-    "in-progress": { label: "قيد المعالجة", color: "bg-purple-100 text-purple-800", icon: MessageSquare },
-    completed: { label: "مكتملة", color: "bg-green-100 text-green-800", icon: CheckCircle2 },
-    cancelled: { label: "ملغاة", color: "bg-red-100 text-red-800", icon: XCircle },
+  const statusConfig: Record<
+    string,
+    { label: string; color: string; icon: any }
+  > = {
+    pending: {
+      label: "معلقة",
+      color: "bg-yellow-100 text-yellow-800",
+      icon: Clock,
+    },
+    assigned: {
+      label: "معينة",
+      color: "bg-blue-100 text-blue-800",
+      icon: User,
+    },
+    "in-progress": {
+      label: "قيد المعالجة",
+      color: "bg-purple-100 text-purple-800",
+      icon: MessageSquare,
+    },
+    completed: {
+      label: "مكتملة",
+      color: "bg-green-100 text-green-800",
+      icon: CheckCircle2,
+    },
+    cancelled: {
+      label: "ملغاة",
+      color: "bg-red-100 text-red-800",
+      icon: XCircle,
+    },
   };
 
   // Priority configurations
@@ -90,7 +124,9 @@ export default function MyConsultations() {
             <CardContent className="pt-6">
               <div className="text-center text-red-600">
                 <XCircle className="h-12 w-12 mx-auto mb-4" />
-                <p className="text-lg font-semibold">حدث خطأ أثناء تحميل الاستشارات</p>
+                <p className="text-lg font-semibold">
+                  حدث خطأ أثناء تحميل الاستشارات
+                </p>
                 <p className="text-sm mt-2">{error.message}</p>
               </div>
             </CardContent>
@@ -106,18 +142,24 @@ export default function MyConsultations() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">استشاراتي</h1>
-          <p className="text-gray-600">إدارة ومتابعة جميع استشاراتك في مكان واحد</p>
+          <p className="text-gray-600">
+            إدارة ومتابعة جميع استشاراتك في مكان واحد
+          </p>
         </div>
 
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card className="border-purple-200 bg-gradient-to-br from-purple-50 to-purple-100">
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-purple-700">إجمالي الاستشارات</CardTitle>
+              <CardTitle className="text-sm font-medium text-purple-700">
+                إجمالي الاستشارات
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
-                <div className="text-3xl font-bold text-purple-900">{stats.total}</div>
+                <div className="text-3xl font-bold text-purple-900">
+                  {stats.total}
+                </div>
                 <FileText className="h-8 w-8 text-purple-600 opacity-50" />
               </div>
             </CardContent>
@@ -125,11 +167,15 @@ export default function MyConsultations() {
 
           <Card className="border-blue-200 bg-gradient-to-br from-blue-50 to-blue-100">
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-blue-700">استشارات نشطة</CardTitle>
+              <CardTitle className="text-sm font-medium text-blue-700">
+                استشارات نشطة
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
-                <div className="text-3xl font-bold text-blue-900">{stats.active}</div>
+                <div className="text-3xl font-bold text-blue-900">
+                  {stats.active}
+                </div>
                 <MessageSquare className="h-8 w-8 text-blue-600 opacity-50" />
               </div>
             </CardContent>
@@ -137,11 +183,15 @@ export default function MyConsultations() {
 
           <Card className="border-green-200 bg-gradient-to-br from-green-50 to-green-100">
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-green-700">استشارات مكتملة</CardTitle>
+              <CardTitle className="text-sm font-medium text-green-700">
+                استشارات مكتملة
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
-                <div className="text-3xl font-bold text-green-900">{stats.completed}</div>
+                <div className="text-3xl font-bold text-green-900">
+                  {stats.completed}
+                </div>
                 <CheckCircle2 className="h-8 w-8 text-green-600 opacity-50" />
               </div>
             </CardContent>
@@ -149,11 +199,15 @@ export default function MyConsultations() {
 
           <Card className="border-red-200 bg-gradient-to-br from-red-50 to-red-100">
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-red-700">استشارات ملغاة</CardTitle>
+              <CardTitle className="text-sm font-medium text-red-700">
+                استشارات ملغاة
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
-                <div className="text-3xl font-bold text-red-900">{stats.cancelled}</div>
+                <div className="text-3xl font-bold text-red-900">
+                  {stats.cancelled}
+                </div>
                 <XCircle className="h-8 w-8 text-red-600 opacity-50" />
               </div>
             </CardContent>
@@ -168,7 +222,7 @@ export default function MyConsultations() {
               type="text"
               placeholder="ابحث في استشاراتك (الموضوع، رقم التذكرة...)"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
               className="pr-10"
             />
           </div>
@@ -185,8 +239,12 @@ export default function MyConsultations() {
           <TabsList className="grid w-full grid-cols-4 lg:w-auto">
             <TabsTrigger value="all">الكل ({stats.total})</TabsTrigger>
             <TabsTrigger value="active">نشطة ({stats.active})</TabsTrigger>
-            <TabsTrigger value="completed">مكتملة ({stats.completed})</TabsTrigger>
-            <TabsTrigger value="cancelled">ملغاة ({stats.cancelled})</TabsTrigger>
+            <TabsTrigger value="completed">
+              مكتملة ({stats.completed})
+            </TabsTrigger>
+            <TabsTrigger value="cancelled">
+              ملغاة ({stats.cancelled})
+            </TabsTrigger>
           </TabsList>
         </Tabs>
 
@@ -215,13 +273,19 @@ export default function MyConsultations() {
           </Card>
         ) : (
           <div className="grid grid-cols-1 gap-6">
-            {filteredTickets.map((ticket) => {
-              const StatusIcon = statusConfig[ticket.status || 'pending']?.icon || Clock;
-              const statusInfo = statusConfig[ticket.status || 'pending'] || statusConfig.pending;
+            {filteredTickets.map(ticket => {
+              const StatusIcon =
+                statusConfig[ticket.status || "pending"]?.icon || Clock;
+              const statusInfo =
+                statusConfig[ticket.status || "pending"] ||
+                statusConfig.pending;
               const priorityInfo = priorityConfig[ticket.priority || "medium"];
 
               return (
-                <Card key={ticket.id} className="hover:shadow-lg transition-shadow">
+                <Card
+                  key={ticket.id}
+                  className="hover:shadow-lg transition-shadow"
+                >
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
@@ -229,14 +293,20 @@ export default function MyConsultations() {
                           <Badge variant="outline" className="text-xs">
                             {ticket.ticketNumber}
                           </Badge>
-                          <Badge className={priorityInfo.color}>{priorityInfo.label}</Badge>
+                          <Badge className={priorityInfo.color}>
+                            {priorityInfo.label}
+                          </Badge>
                           <Badge className={statusInfo.color}>
                             <StatusIcon className="h-3 w-3 ml-1" />
                             {statusInfo.label}
                           </Badge>
                         </div>
-                        <CardTitle className="text-xl mb-1">{ticket.subject}</CardTitle>
-                        <CardDescription className="line-clamp-2">{ticket.description}</CardDescription>
+                        <CardTitle className="text-xl mb-1">
+                          {ticket.subject}
+                        </CardTitle>
+                        <CardDescription className="line-clamp-2">
+                          {ticket.description}
+                        </CardDescription>
                       </div>
                     </div>
                   </CardHeader>
@@ -244,7 +314,11 @@ export default function MyConsultations() {
                     <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-4">
                       <div className="flex items-center gap-1">
                         <Calendar className="h-4 w-4" />
-                        <span>{new Date(ticket.createdAt).toLocaleDateString("ar-SA")}</span>
+                        <span>
+                          {new Date(ticket.createdAt).toLocaleDateString(
+                            "ar-SA"
+                          )}
+                        </span>
                       </div>
                       {(ticket as any).assignedConsultantId && (
                         <div className="flex items-center gap-1">

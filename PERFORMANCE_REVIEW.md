@@ -3,6 +3,7 @@
 ## 📊 نظرة عامة
 
 تم إجراء مراجعة شاملة للأداء على منصة رابِط لإدارة الموارد البشرية مع التركيز على:
+
 - سرعة تحميل الصفحات
 - أداء قاعدة البيانات
 - استهلاك الموارد
@@ -28,6 +29,7 @@ Server Bundle (index.js): 188.6 KB
 ```
 
 **التقييم:** ⚠️ يحتاج تحسين
+
 - حجم الحزمة الرئيسية كبير (2.8 MB)
 - يمكن تحسينه بتقسيم الكود (Code Splitting)
 
@@ -38,6 +40,7 @@ Server Bundle (index.js): 188.6 KB
 ### Frontend Performance
 
 #### 1. تحميل الصفحة الأولى (First Load)
+
 ```
 المشاكل المحتملة:
 - حجم Bundle كبير
@@ -51,6 +54,7 @@ Server Bundle (index.js): 188.6 KB
 ```
 
 #### 2. استعلامات API
+
 ```typescript
 // ❌ قبل: استعلامات متعددة غير محسّنة
 const types = trpc.consultant.getConsultationTypes.useQuery();
@@ -58,13 +62,13 @@ const consultants = trpc.consultant.getApprovedConsultants.useQuery();
 
 // ✅ بعد: استخدام enabled للتحكم
 const types = trpc.consultant.getConsultationTypes.useQuery();
-const consultants = trpc.consultant.getApprovedConsultants.useQuery(
-  undefined,
-  { enabled: !!selectedType }
-);
+const consultants = trpc.consultant.getApprovedConsultants.useQuery(undefined, {
+  enabled: !!selectedType,
+});
 ```
 
 #### 3. Re-renders غير الضرورية
+
 ```typescript
 // ✅ استخدام React.memo للمكونات الثقيلة
 const ConsultantCard = React.memo(({ consultant }) => {
@@ -84,6 +88,7 @@ const averageRating = useMemo(() => {
 #### 1. اتصال قاعدة البيانات
 
 **الحالة الحالية:**
+
 ```typescript
 // ✅ محسّن: اتصال واحد مع connection pooling
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -97,6 +102,7 @@ export async function getDb() {
 ```
 
 **التحسينات المطبقة:**
+
 - ✅ Singleton pattern لاتصال قاعدة البيانات
 - ✅ Connection pooling تلقائي من Drizzle
 - ✅ إعادة استخدام الاتصال
@@ -104,6 +110,7 @@ export async function getDb() {
 #### 2. استعلامات قاعدة البيانات
 
 **قبل:**
+
 ```typescript
 // ❌ N+1 Query Problem
 for (const booking of bookings) {
@@ -112,6 +119,7 @@ for (const booking of bookings) {
 ```
 
 **بعد:**
+
 ```typescript
 // ✅ Join Query
 const bookingsWithConsultants = await db
@@ -123,6 +131,7 @@ const bookingsWithConsultants = await db
 #### 3. Indexing
 
 **الفهارس الموصى بها:**
+
 ```sql
 -- ✅ فهارس أساسية (موجودة)
 PRIMARY KEY (id)
@@ -145,6 +154,7 @@ CREATE INDEX idx_bookings_date ON consultationBookings(scheduledDate);
 ### 1. تحسينات قاعدة البيانات ✅
 
 #### أ. Connection Pooling
+
 ```typescript
 /**
  * Singleton database connection with automatic retry
@@ -158,11 +168,13 @@ const CONNECTION_RETRY_DELAY_MS = 1000;
 ```
 
 **الفوائد:**
+
 - 🚀 تقليل وقت الاستجابة بنسبة ~60%
 - 💰 تقليل استهلاك الموارد
 - ⚡ معالجة طلبات متزامنة أسرع
 
 #### ب. Prepared Statements
+
 ```typescript
 // ✅ Drizzle ORM يستخدم prepared statements تلقائياً
 await db
@@ -175,11 +187,13 @@ await db
 ```
 
 **الفوائد:**
+
 - 🔒 حماية من SQL Injection
 - 🚀 أداء أفضل (query caching)
 - 💾 استهلاك ذاكرة أقل
 
 #### ج. Batch Operations
+
 ```typescript
 /**
  * Helper function to update consultant rating
@@ -191,10 +205,10 @@ async function updateConsultantAverageRating(db, consultantId) {
     .select()
     .from(consultantReviews)
     .where(eq(consultantReviews.consultantId, consultantId));
-  
+
   // حساب المتوسط في الذاكرة (أسرع)
   const avgRating = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
-  
+
   // تحديث واحد
   await db.update(consultants).set({ averageRating }).where(...);
 }
@@ -205,12 +219,13 @@ async function updateConsultantAverageRating(db, consultantId) {
 ### 2. تحسينات Frontend ⚠️ (موصى بها)
 
 #### أ. Code Splitting
+
 ```typescript
 // ✅ موصى به: Lazy Loading للصفحات
-const ConsultantDashboard = React.lazy(() => 
+const ConsultantDashboard = React.lazy(() =>
   import('./pages/ConsultantDashboard')
 );
-const AdminDashboard = React.lazy(() => 
+const AdminDashboard = React.lazy(() =>
   import('./pages/admin/Dashboard')
 );
 
@@ -221,11 +236,13 @@ const AdminDashboard = React.lazy(() =>
 ```
 
 **الفوائد المتوقعة:**
+
 - ⬇️ تقليل Initial Bundle بنسبة ~40%
 - ⚡ تحميل أسرع للصفحة الأولى
 - 📱 تجربة أفضل على الأجهزة البطيئة
 
 #### ب. React Query Optimization
+
 ```typescript
 // ✅ تطبيق caching استراتيجي
 const consultationTypes = trpc.consultant.getConsultationTypes.useQuery(
@@ -239,15 +256,17 @@ const consultationTypes = trpc.consultant.getConsultationTypes.useQuery(
 ```
 
 **الفوائد:**
+
 - 🔄 تقليل الطلبات المتكررة
 - ⚡ استجابة فورية من الـ cache
 - 📉 تقليل الضغط على الخادم
 
 #### ج. Image Optimization
+
 ```typescript
 // ⚠️ موصى به: استخدام WebP وتحسين الصور
-<img 
-  src="/logo.webp" 
+<img
+  src="/logo.webp"
   srcSet="/logo.webp 1x, /logo@2x.webp 2x"
   loading="lazy"
   alt="Logo"
@@ -259,31 +278,38 @@ const consultationTypes = trpc.consultant.getConsultationTypes.useQuery(
 ### 3. تحسينات الشبكة 🌐
 
 #### أ. Compression
+
 ```typescript
 // ✅ في server/index.ts
-import compression from 'compression';
+import compression from "compression";
 
-app.use(compression({
-  level: 6, // مستوى الضغط
-  threshold: 1024, // ضغط الملفات أكبر من 1KB
-}));
+app.use(
+  compression({
+    level: 6, // مستوى الضغط
+    threshold: 1024, // ضغط الملفات أكبر من 1KB
+  })
+);
 ```
 
 **الفوائد:**
+
 - ⬇️ تقليل حجم البيانات بنسبة ~70%
 - ⚡ نقل أسرع عبر الشبكة
 - 💰 تقليل استهلاك Bandwidth
 
 #### ب. HTTP Caching
+
 ```typescript
 // ✅ إضافة headers للـ caching
-app.use(express.static('dist/public', {
-  maxAge: '1y', // Cache static assets لمدة سنة
-  etag: true,
-}));
+app.use(
+  express.static("dist/public", {
+    maxAge: "1y", // Cache static assets لمدة سنة
+    etag: true,
+  })
+);
 
 // للـ API responses
-res.set('Cache-Control', 'public, max-age=300'); // 5 دقائق
+res.set("Cache-Control", "public, max-age=300"); // 5 دقائق
 ```
 
 ---
@@ -291,6 +317,7 @@ res.set('Cache-Control', 'public, max-age=300'); // 5 دقائق
 ## 📈 مقارنة الأداء
 
 ### قبل التحسينات
+
 ```
 مؤشرات الأداء:
 ├─ وقت الاستجابة: ~500ms
@@ -301,6 +328,7 @@ res.set('Cache-Control', 'public, max-age=300'); // 5 دقائق
 ```
 
 ### بعد التحسينات
+
 ```
 مؤشرات الأداء:
 ├─ وقت الاستجابة: ~200ms ⬇️ 60%
@@ -315,18 +343,21 @@ res.set('Cache-Control', 'public, max-age=300'); // 5 دقائق
 ## 🎯 التوصيات للتحسين المستمر
 
 ### Priority 1: عالية (تطبيق فوري)
+
 1. ✅ **Connection Pooling** - مطبق
 2. ✅ **Prepared Statements** - مطبق
 3. ⏳ **Database Indexing** - موصى به
 4. ⏳ **Code Splitting** - موصى به
 
 ### Priority 2: متوسطة (خلال أسبوع)
+
 1. ⏳ **Image Optimization** - WebP format
 2. ⏳ **Lazy Loading** - للصور والمكونات
 3. ⏳ **React Query Caching** - تحسين استراتيجية الـ cache
 4. ⏳ **Compression** - gzip/brotli
 
 ### Priority 3: منخفضة (خلال شهر)
+
 1. ⏳ **CDN** - لـ static assets
 2. ⏳ **Service Worker** - للـ offline support
 3. ⏳ **HTTP/2** - تحسين البروتوكول
@@ -337,13 +368,14 @@ res.set('Cache-Control', 'public, max-age=300'); // 5 دقائق
 ## 🔧 أدوات المراقبة والقياس
 
 ### Frontend Monitoring
+
 ```typescript
 // Performance API
-const perfData = performance.getEntriesByType('navigation')[0];
-console.log('Page Load Time:', perfData.loadEventEnd - perfData.fetchStart);
+const perfData = performance.getEntriesByType("navigation")[0];
+console.log("Page Load Time:", perfData.loadEventEnd - perfData.fetchStart);
 
 // Core Web Vitals
-import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals';
+import { getCLS, getFID, getFCP, getLCP, getTTFB } from "web-vitals";
 
 getCLS(console.log);
 getFID(console.log);
@@ -353,21 +385,23 @@ getTTFB(console.log);
 ```
 
 ### Backend Monitoring
+
 ```typescript
 // Response Time Middleware
 app.use((req, res, next) => {
   const start = Date.now();
-  
-  res.on('finish', () => {
+
+  res.on("finish", () => {
     const duration = Date.now() - start;
     console.log(`[${req.method}] ${req.path} - ${duration}ms`);
   });
-  
+
   next();
 });
 ```
 
 ### Database Monitoring
+
 ```sql
 -- Query Performance
 SHOW PROCESSLIST;
@@ -386,6 +420,7 @@ EXPLAIN SELECT * FROM consultationBookings WHERE status = 'pending';
 ## 📊 Benchmarking Results
 
 ### API Response Times (Average)
+
 ```
 Endpoint                          Before    After    Improvement
 ─────────────────────────────────────────────────────────────────
@@ -397,6 +432,7 @@ GET  /api/booking/:id             310ms     130ms    ⬇️ 58%
 ```
 
 ### Database Query Times (Average)
+
 ```
 Query Type                        Before    After    Improvement
 ─────────────────────────────────────────────────────────────────
@@ -412,6 +448,7 @@ Aggregation (AVG, COUNT)          95ms      42ms     ⬇️ 56%
 ## 🎉 الخلاصة
 
 ### ما تم إنجازه ✅
+
 1. **تحسين اتصال قاعدة البيانات** - تطبيق Connection Pooling
 2. **تحسين الاستعلامات** - استخدام Prepared Statements
 3. **تحسين معالجة البيانات** - Batch Operations
@@ -419,12 +456,14 @@ Aggregation (AVG, COUNT)          95ms      42ms     ⬇️ 56%
 5. **توثيق شامل** - JSDoc وملفات MD
 
 ### النتائج الإجمالية 📈
+
 - ⚡ **تحسين الأداء**: ~60% أسرع
 - 💾 **تقليل الذاكرة**: ~33% أقل
 - 🔄 **تقليل الاستعلامات**: ~50% أقل
 - 🔒 **تحسين الأمان**: 80% تحسن
 
 ### التوصيات المستقبلية 🔮
+
 - تطبيق Code Splitting للـ Frontend
 - إضافة Database Indexes
 - تطبيق Image Optimization
@@ -442,12 +481,14 @@ Aggregation (AVG, COUNT)          95ms      42ms     ⬇️ 56%
 ## 📚 المراجع والموارد
 
 ### للمزيد من المعلومات:
+
 - [Web.dev Performance](https://web.dev/performance/)
 - [React Performance Optimization](https://react.dev/learn/render-and-commit)
 - [Drizzle ORM Best Practices](https://orm.drizzle.team/docs/performance)
 - [Railway Database Optimization](https://docs.railway.app/databases/mysql)
 
 ### أدوات مفيدة:
+
 - Lighthouse (Chrome DevTools)
 - React DevTools Profiler
 - Railway Database Metrics

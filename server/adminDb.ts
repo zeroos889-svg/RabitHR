@@ -1,13 +1,13 @@
 import { eq, and, or, like, desc, sql } from "drizzle-orm";
 import { getDb } from "./db";
-import { 
-  users, 
-  subscriptions, 
-  consultingTickets, 
+import {
+  users,
+  subscriptions,
+  consultingTickets,
   consultingPackages,
   auditLogs,
   InsertUser,
-  payments
+  payments,
 } from "../drizzle/schema";
 
 // Admin Statistics
@@ -16,10 +16,21 @@ export async function getAdminStats() {
   if (!db) return null;
 
   try {
-    const [totalUsers] = await db.select({ count: sql<number>`COUNT(*)` }).from(users);
-    const [activeSubscriptions] = await db.select({ count: sql<number>`COUNT(*)` }).from(subscriptions).where(eq(subscriptions.status, 'active'));
-    const [pendingBookings] = await db.select({ count: sql<number>`COUNT(*)` }).from(consultingTickets).where(eq(consultingTickets.status, 'pending'));
-    const [totalRevenue] = await db.select({ sum: sql<number>`COALESCE(SUM(finalAmount), 0)` }).from(payments).where(eq(payments.status, 'paid'));
+    const [totalUsers] = await db
+      .select({ count: sql<number>`COUNT(*)` })
+      .from(users);
+    const [activeSubscriptions] = await db
+      .select({ count: sql<number>`COUNT(*)` })
+      .from(subscriptions)
+      .where(eq(subscriptions.status, "active"));
+    const [pendingBookings] = await db
+      .select({ count: sql<number>`COUNT(*)` })
+      .from(consultingTickets)
+      .where(eq(consultingTickets.status, "pending"));
+    const [totalRevenue] = await db
+      .select({ sum: sql<number>`COALESCE(SUM(finalAmount), 0)` })
+      .from(payments)
+      .where(eq(payments.status, "paid"));
 
     return {
       totalUsers: Number(totalUsers?.count) || 0,
@@ -50,10 +61,9 @@ export async function getAllUsersAdmin(params: {
 
     const conditions = [];
     if (search) {
-      conditions.push(or(
-        like(users.name, `%${search}%`),
-        like(users.email, `%${search}%`)
-      ));
+      conditions.push(
+        or(like(users.name, `%${search}%`), like(users.email, `%${search}%`))
+      );
     }
     if (role) {
       conditions.push(eq(users.role, role));
@@ -65,12 +75,17 @@ export async function getAllUsersAdmin(params: {
     const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
 
     const [result, [countResult]] = await Promise.all([
-      db.select().from(users)
+      db
+        .select()
+        .from(users)
         .where(whereClause)
         .limit(limit)
         .offset(offset)
         .orderBy(desc(users.createdAt)),
-      db.select({ count: sql<number>`COUNT(*)` }).from(users).where(whereClause),
+      db
+        .select({ count: sql<number>`COUNT(*)` })
+        .from(users)
+        .where(whereClause),
     ]);
 
     const total = Number(countResult?.count) || 0;
@@ -94,7 +109,11 @@ export async function getUserById(id: number) {
   if (!db) return null;
 
   try {
-    const [user] = await db.select().from(users).where(eq(users.id, id)).limit(1);
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, id))
+      .limit(1);
     return user || null;
   } catch (error) {
     console.error("[Database] Failed to get user by ID:", error);
@@ -135,7 +154,8 @@ export async function getAllSubscriptions(params: {
   status?: "active" | "inactive" | "trial" | "cancelled";
 }) {
   const db = await getDb();
-  if (!db) return { subscriptions: [], total: 0, page: 1, limit: 20, totalPages: 0 };
+  if (!db)
+    return { subscriptions: [], total: 0, page: 1, limit: 20, totalPages: 0 };
 
   try {
     const { page, limit, status } = params;
@@ -144,20 +164,25 @@ export async function getAllSubscriptions(params: {
     const whereClause = status ? eq(subscriptions.status, status) : undefined;
 
     const [result, [countResult]] = await Promise.all([
-      db.select({
-        subscription: subscriptions,
-        user: {
-          id: users.id,
-          name: users.name,
-          email: users.email,
-        },
-      }).from(subscriptions)
+      db
+        .select({
+          subscription: subscriptions,
+          user: {
+            id: users.id,
+            name: users.name,
+            email: users.email,
+          },
+        })
+        .from(subscriptions)
         .leftJoin(users, eq(subscriptions.userId, users.id))
         .where(whereClause)
         .limit(limit)
         .offset(offset)
         .orderBy(desc(subscriptions.createdAt)),
-      db.select({ count: sql<number>`COUNT(*)` }).from(subscriptions).where(whereClause),
+      db
+        .select({ count: sql<number>`COUNT(*)` })
+        .from(subscriptions)
+        .where(whereClause),
     ]);
 
     const total = Number(countResult?.count) || 0;
@@ -176,12 +201,21 @@ export async function getAllSubscriptions(params: {
 }
 
 // Update subscription
-export async function updateSubscription(id: number, data: { status?: "active" | "inactive" | "trial" | "cancelled"; endDate?: string }) {
+export async function updateSubscription(
+  id: number,
+  data: {
+    status?: "active" | "inactive" | "trial" | "cancelled";
+    endDate?: string;
+  }
+) {
   const db = await getDb();
   if (!db) return;
 
   try {
-    await db.update(subscriptions).set(data as any).where(eq(subscriptions.id, id));
+    await db
+      .update(subscriptions)
+      .set(data as any)
+      .where(eq(subscriptions.id, id));
   } catch (error) {
     console.error("[Database] Failed to update subscription:", error);
     throw error;
@@ -201,25 +235,35 @@ export async function getAllBookings(params: {
     const { page, limit, status } = params;
     const offset = (page - 1) * limit;
 
-    const whereClause = status ? eq(consultingTickets.status, status) : undefined;
+    const whereClause = status
+      ? eq(consultingTickets.status, status)
+      : undefined;
 
     const [result, [countResult]] = await Promise.all([
-      db.select({
-        booking: consultingTickets,
-        user: {
-          id: users.id,
-          name: users.name,
-          email: users.email,
-        },
-        package: consultingPackages,
-      }).from(consultingTickets)
+      db
+        .select({
+          booking: consultingTickets,
+          user: {
+            id: users.id,
+            name: users.name,
+            email: users.email,
+          },
+          package: consultingPackages,
+        })
+        .from(consultingTickets)
         .leftJoin(users, eq(consultingTickets.userId, users.id))
-        .leftJoin(consultingPackages, eq(consultingTickets.packageId, consultingPackages.id))
+        .leftJoin(
+          consultingPackages,
+          eq(consultingTickets.packageId, consultingPackages.id)
+        )
         .where(whereClause)
         .limit(limit)
         .offset(offset)
         .orderBy(desc(consultingTickets.createdAt)),
-      db.select({ count: sql<number>`COUNT(*)` }).from(consultingTickets).where(whereClause),
+      db
+        .select({ count: sql<number>`COUNT(*)` })
+        .from(consultingTickets)
+        .where(whereClause),
     ]);
 
     const total = Number(countResult?.count) || 0;
@@ -238,12 +282,21 @@ export async function getAllBookings(params: {
 }
 
 // Update booking
-export async function updateBooking(id: number, data: { status?: "pending" | "assigned" | "in-progress" | "completed" | "cancelled"; consultantId?: number }) {
+export async function updateBooking(
+  id: number,
+  data: {
+    status?: "pending" | "assigned" | "in-progress" | "completed" | "cancelled";
+    consultantId?: number;
+  }
+) {
   const db = await getDb();
   if (!db) return;
 
   try {
-    await db.update(consultingTickets).set(data as any).where(eq(consultingTickets.id, id));
+    await db
+      .update(consultingTickets)
+      .set(data as any)
+      .where(eq(consultingTickets.id, id));
   } catch (error) {
     console.error("[Database] Failed to update booking:", error);
     throw error;
@@ -295,20 +348,25 @@ export async function getAuditLogs(params: {
     const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
 
     const [result, [countResult]] = await Promise.all([
-      db.select({
-        log: auditLogs,
-        user: {
-          id: users.id,
-          name: users.name,
-          email: users.email,
-        },
-      }).from(auditLogs)
+      db
+        .select({
+          log: auditLogs,
+          user: {
+            id: users.id,
+            name: users.name,
+            email: users.email,
+          },
+        })
+        .from(auditLogs)
         .leftJoin(users, eq(auditLogs.userId, users.id))
         .where(whereClause)
         .limit(limit)
         .offset(offset)
         .orderBy(desc(auditLogs.createdAt)),
-      db.select({ count: sql<number>`COUNT(*)` }).from(auditLogs).where(whereClause),
+      db
+        .select({ count: sql<number>`COUNT(*)` })
+        .from(auditLogs)
+        .where(whereClause),
     ]);
 
     const total = Number(countResult?.count) || 0;

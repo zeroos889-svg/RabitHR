@@ -43,7 +43,9 @@ npm run dev
 ## 👥 أنواع المستخدمين المتاحة | Available User Types
 
 ### 1. شركة (Company) 🏢
+
 **الصلاحيات:**
+
 - إدارة الموظفين
 - نظام ATS (إدارة الوظائف)
 - التذاكر والدعم
@@ -51,6 +53,7 @@ npm run dev
 - إعدادات الشركة
 
 **الوصول إلى:**
+
 - `/dashboard`
 - `/dashboard/employees`
 - `/dashboard/ats`
@@ -58,19 +61,24 @@ npm run dev
 - `/dashboard/reports`
 
 ### 2. مستشار (Consultant) 👨‍💼
+
 **الصلاحيات:**
+
 - عرض الاستشارات المعينة
 - الرد على الاستشارات
 - تتبع الإحصائيات
 - إدارة الملف الشخصي
 
 **الوصول إلى:**
+
 - `/consultant-dashboard`
 - `/my-consultations`
 - `/consultation-chat/:id`
 
 ### 3. موظف (Employee) 👤
+
 **الصلاحيات:**
+
 - عرض البيانات الشخصية
 - طلب الإجازات
 - تسجيل الحضور
@@ -78,13 +86,16 @@ npm run dev
 - استخدام الأدوات
 
 **الوصول إلى:**
+
 - `/employee/dashboard`
 - `/employee/profile`
 - `/employee/leaves`
 - `/documents`
 
 ### 4. مسؤول النظام (Admin) 👨‍💻
+
 **الصلاحيات:**
+
 - إدارة جميع المستخدمين
 - إدارة الاشتراكات
 - مراجعة سجلات النظام
@@ -92,6 +103,7 @@ npm run dev
 - إعدادات النظام
 
 **الوصول إلى:**
+
 - `/admin`
 - `/admin/users`
 - `/admin/subscriptions`
@@ -99,12 +111,15 @@ npm run dev
 - `/admin/settings`
 
 ### 5. ضيف (Guest) 🌐
+
 **الصلاحيات:**
+
 - تصفح الخدمات
 - عرض المعلومات العامة
 - حجز استشارة
 
 **الوصول إلى:**
+
 - `/`
 - `/consulting`
 - `/about`
@@ -165,25 +180,27 @@ npm run dev
 
 export function setupDevMode(app: Express) {
   // Only enable in development
-  if (process.env.NODE_ENV !== 'development' || 
-      process.env.DEV_MODE_ENABLED !== 'true') {
+  if (
+    process.env.NODE_ENV !== "development" ||
+    process.env.DEV_MODE_ENABLED !== "true"
+  ) {
     return;
   }
 
   // Dev login endpoint
-  app.post('/api/dev-login', async (req, res) => {
+  app.post("/api/dev-login", async (req, res) => {
     const { userType } = req.body;
-    
+
     // Create mock user based on type
     const mockUser = createMockUser(userType);
-    
+
     // Generate token
     const token = jwt.sign(
       { id: mockUser.id, role: mockUser.role },
       process.env.JWT_SECRET!,
-      { expiresIn: '7d' }
+      { expiresIn: "7d" }
     );
-    
+
     res.json({ user: mockUser, token });
   });
 }
@@ -191,40 +208,40 @@ export function setupDevMode(app: Express) {
 function createMockUser(userType: string) {
   const users = {
     company: {
-      id: 'dev-company-1',
-      email: 'dev-company@test.com',
-      name: 'شركة تجريبية',
-      role: 'company',
-      companyId: 'dev-company-1'
+      id: "dev-company-1",
+      email: "dev-company@test.com",
+      name: "شركة تجريبية",
+      role: "company",
+      companyId: "dev-company-1",
     },
     consultant: {
-      id: 'dev-consultant-1',
-      email: 'dev-consultant@test.com',
-      name: 'مستشار تجريبي',
-      role: 'consultant',
-      specialization: 'قانوني'
+      id: "dev-consultant-1",
+      email: "dev-consultant@test.com",
+      name: "مستشار تجريبي",
+      role: "consultant",
+      specialization: "قانوني",
     },
     employee: {
-      id: 'dev-employee-1',
-      email: 'dev-employee@test.com',
-      name: 'موظف تجريبي',
-      role: 'employee',
-      companyId: 'dev-company-1'
+      id: "dev-employee-1",
+      email: "dev-employee@test.com",
+      name: "موظف تجريبي",
+      role: "employee",
+      companyId: "dev-company-1",
     },
     admin: {
-      id: 'dev-admin-1',
-      email: 'dev-admin@test.com',
-      name: 'مسؤول النظام',
-      role: 'admin'
+      id: "dev-admin-1",
+      email: "dev-admin@test.com",
+      name: "مسؤول النظام",
+      role: "admin",
     },
     guest: {
-      id: 'dev-guest-1',
-      email: 'dev-guest@test.com',
-      name: 'ضيف',
-      role: 'guest'
-    }
+      id: "dev-guest-1",
+      email: "dev-guest@test.com",
+      name: "ضيف",
+      role: "guest",
+    },
   };
-  
+
   return users[userType] || users.guest;
 }
 ```
@@ -234,46 +251,46 @@ function createMockUser(userType: string) {
 ```tsx
 // client/src/pages/DevMode.tsx
 
-import { useState } from 'react';
-import { useNavigate } from 'wouter';
-import { useAuth } from '@/hooks/useAuth';
+import { useState } from "react";
+import { useNavigate } from "wouter";
+import { useAuth } from "@/hooks/useAuth";
 
 const userTypes = [
   {
-    type: 'company',
-    icon: '🏢',
-    title: 'شركة (Company)',
-    description: 'صاحب عمل، HR Manager',
-    color: 'bg-blue-500'
+    type: "company",
+    icon: "🏢",
+    title: "شركة (Company)",
+    description: "صاحب عمل، HR Manager",
+    color: "bg-blue-500",
   },
   {
-    type: 'consultant',
-    icon: '👨‍💼',
-    title: 'مستشار (Consultant)',
-    description: 'مستشار قانوني، محاسب',
-    color: 'bg-green-500'
+    type: "consultant",
+    icon: "👨‍💼",
+    title: "مستشار (Consultant)",
+    description: "مستشار قانوني، محاسب",
+    color: "bg-green-500",
   },
   {
-    type: 'employee',
-    icon: '👤',
-    title: 'موظف (Employee)',
-    description: 'موظف عادي في شركة',
-    color: 'bg-purple-500'
+    type: "employee",
+    icon: "👤",
+    title: "موظف (Employee)",
+    description: "موظف عادي في شركة",
+    color: "bg-purple-500",
   },
   {
-    type: 'admin',
-    icon: '👨‍💻',
-    title: 'مسؤول (Admin)',
-    description: 'مسؤول النظام',
-    color: 'bg-red-500'
+    type: "admin",
+    icon: "👨‍💻",
+    title: "مسؤول (Admin)",
+    description: "مسؤول النظام",
+    color: "bg-red-500",
   },
   {
-    type: 'guest',
-    icon: '🌐',
-    title: 'ضيف (Guest)',
-    description: 'زائر بدون حساب',
-    color: 'bg-gray-500'
-  }
+    type: "guest",
+    icon: "🌐",
+    title: "ضيف (Guest)",
+    description: "زائر بدون حساب",
+    color: "bg-gray-500",
+  },
 ];
 
 export function DevModePage() {
@@ -283,22 +300,22 @@ export function DevModePage() {
 
   const handleLogin = async (userType: string) => {
     setLoading(userType);
-    
+
     try {
       await devLogin(userType);
-      
+
       // Navigate based on user type
       const routes = {
-        company: '/dashboard',
-        consultant: '/consultant-dashboard',
-        employee: '/employee/dashboard',
-        admin: '/admin',
-        guest: '/'
+        company: "/dashboard",
+        consultant: "/consultant-dashboard",
+        employee: "/employee/dashboard",
+        admin: "/admin",
+        guest: "/",
       };
-      
-      navigate(routes[userType] || '/');
+
+      navigate(routes[userType] || "/");
     } catch (error) {
-      console.error('Dev login failed:', error);
+      console.error("Dev login failed:", error);
     } finally {
       setLoading(null);
     }
@@ -309,9 +326,7 @@ export function DevModePage() {
       <div className="max-w-4xl mx-auto py-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2">
-            🔧 وضع المطور
-          </h1>
+          <h1 className="text-4xl font-bold mb-2">🔧 وضع المطور</h1>
           <p className="text-gray-600 dark:text-gray-400">
             اختر نوع المستخدم للاختبار
           </p>
@@ -322,7 +337,7 @@ export function DevModePage() {
 
         {/* User Type Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {userTypes.map((user) => (
+          {userTypes.map(user => (
             <button
               key={user.type}
               onClick={() => handleLogin(user.type)}
@@ -340,7 +355,7 @@ export function DevModePage() {
               <div className="text-6xl mb-4">{user.icon}</div>
               <h3 className="text-2xl font-bold mb-2">{user.title}</h3>
               <p className="text-white/90">{user.description}</p>
-              
+
               {loading === user.type && (
                 <div className="mt-4">
                   <div className="animate-spin h-6 w-6 border-4 border-white border-t-transparent rounded-full mx-auto" />
@@ -353,7 +368,7 @@ export function DevModePage() {
         {/* Back Button */}
         <div className="mt-8 text-center">
           <button
-            onClick={() => navigate('/login')}
+            onClick={() => navigate("/login")}
             className="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
           >
             ← رجوع إلى تسجيل الدخول
@@ -377,23 +392,23 @@ export function useAuth() {
 
   const devLogin = async (userType: string) => {
     try {
-      const response = await fetch('/api/dev-login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userType })
+      const response = await fetch("/api/dev-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userType }),
       });
 
       const data = await response.json();
-      
+
       // Store token
-      localStorage.setItem('token', data.token);
-      
+      localStorage.setItem("token", data.token);
+
       // Set user
       setUser(data.user);
-      
+
       return data.user;
     } catch (error) {
-      console.error('Dev login error:', error);
+      console.error("Dev login error:", error);
       throw error;
     }
   };
@@ -415,9 +430,10 @@ export function useAuth() {
 ### الحماية المطبقة
 
 1. **Environment Check:**
+
    ```typescript
-   if (process.env.NODE_ENV !== 'development') {
-     return res.status(403).json({ error: 'Dev mode disabled' });
+   if (process.env.NODE_ENV !== "development") {
+     return res.status(403).json({ error: "Dev mode disabled" });
    }
    ```
 
@@ -444,6 +460,7 @@ export function useAuth() {
 ## 📊 حالات الاستخدام | Use Cases
 
 ### 1. اختبار الصلاحيات
+
 ```bash
 # اختبر كشركة
 Dev Login → Company → Navigate to /dashboard/employees
@@ -455,6 +472,7 @@ Dev Login → Employee → Navigate to /dashboard/employees
 ```
 
 ### 2. اختبار UI لكل دور
+
 ```bash
 Dev Login → Company → Check dashboard layout
 Dev Login → Consultant → Check consultant dashboard
@@ -462,6 +480,7 @@ Dev Login → Admin → Check admin panel
 ```
 
 ### 3. اختبار التدفقات
+
 ```bash
 Dev Login → Company → Create Job → Add Employee → Assign
 Dev Login → Consultant → View Consultations → Reply
@@ -474,6 +493,7 @@ Dev Login → Consultant → View Consultations → Reply
 ### المشكلة: زر "المطور" لا يظهر
 
 **الحل:**
+
 1. تأكد من `NODE_ENV=development`
 2. تأكد من `DEV_MODE_ENABLED=true`
 3. أعد تشغيل الخادم
@@ -482,6 +502,7 @@ Dev Login → Consultant → View Consultations → Reply
 ### المشكلة: خطأ 403 Forbidden
 
 **الحل:**
+
 1. تأكد من environment variables
 2. راجع server logs
 3. تأكد من dev endpoint enabled
@@ -489,6 +510,7 @@ Dev Login → Consultant → View Consultations → Reply
 ### المشكلة: لا يتم التوجيه بعد Login
 
 **الحل:**
+
 1. راجع console للأخطاء
 2. تأكد من token storage
 3. تأكد من routing configuration

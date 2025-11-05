@@ -1,136 +1,159 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { 
-  Search, 
-  BookOpen, 
-  FileText, 
-  Scale, 
-  Users, 
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+  Search,
+  BookOpen,
+  FileText,
+  Scale,
+  Users,
   Calculator,
   TrendingUp,
   Shield,
   Clock,
-  ArrowRight
-} from 'lucide-react';
-import { Link } from 'wouter';
-import { Footer } from '@/components/Footer';
-import { useState } from 'react';
+  ArrowRight,
+} from "lucide-react";
+import { Link } from "wouter";
+import { Footer } from "@/components/Footer";
+import { useState } from "react";
 
 const categories = [
   {
-    id: 'labor-law',
-    name: 'نظام العمل السعودي',
+    id: "labor-law",
+    name: "نظام العمل السعودي",
     icon: Scale,
-    color: 'text-blue-600 bg-blue-100',
+    color: "text-blue-600 bg-blue-100",
     count: 45,
-    description: 'كل ما تحتاج معرفته عن نظام العمل واللوائح التنفيذية'
+    description: "كل ما تحتاج معرفته عن نظام العمل واللوائح التنفيذية",
   },
   {
-    id: 'hr-management',
-    name: 'إدارة الموارد البشرية',
+    id: "hr-management",
+    name: "إدارة الموارد البشرية",
     icon: Users,
-    color: 'text-purple-600 bg-purple-100',
+    color: "text-purple-600 bg-purple-100",
     count: 38,
-    description: 'أفضل الممارسات في إدارة الموارد البشرية'
+    description: "أفضل الممارسات في إدارة الموارد البشرية",
   },
   {
-    id: 'calculations',
-    name: 'الحسابات والمستحقات',
+    id: "calculations",
+    name: "الحسابات والمستحقات",
     icon: Calculator,
-    color: 'text-green-600 bg-green-100',
+    color: "text-green-600 bg-green-100",
     count: 28,
-    description: 'طرق حساب الرواتب والمستحقات والإجازات'
+    description: "طرق حساب الرواتب والمستحقات والإجازات",
   },
   {
-    id: 'performance',
-    name: 'تقييم الأداء',
+    id: "performance",
+    name: "تقييم الأداء",
     icon: TrendingUp,
-    color: 'text-orange-600 bg-orange-100',
+    color: "text-orange-600 bg-orange-100",
     count: 22,
-    description: 'أنظمة وأساليب تقييم أداء الموظفين'
+    description: "أنظمة وأساليب تقييم أداء الموظفين",
   },
   {
-    id: 'compliance',
-    name: 'الامتثال والتوطين',
+    id: "compliance",
+    name: "الامتثال والتوطين",
     icon: Shield,
-    color: 'text-red-600 bg-red-100',
+    color: "text-red-600 bg-red-100",
     count: 31,
-    description: 'متطلبات التوطين والامتثال للأنظمة'
+    description: "متطلبات التوطين والامتثال للأنظمة",
   },
   {
-    id: 'time-management',
-    name: 'إدارة الوقت والحضور',
+    id: "time-management",
+    name: "إدارة الوقت والحضور",
     icon: Clock,
-    color: 'text-teal-600 bg-teal-100',
+    color: "text-teal-600 bg-teal-100",
     count: 19,
-    description: 'أنظمة الحضور والانصراف وإدارة الوقت'
+    description: "أنظمة الحضور والانصراف وإدارة الوقت",
   },
 ];
 
 const popularArticles = [
   {
     id: 1,
-    title: 'كيفية حساب مكافأة نهاية الخدمة في السعودية',
-    category: 'الحسابات والمستحقات',
+    title: "كيفية حساب مكافأة نهاية الخدمة في السعودية",
+    category: "الحسابات والمستحقات",
     views: 15420,
-    readTime: '8 دقائق'
+    readTime: "8 دقائق",
   },
   {
     id: 2,
-    title: 'دليل شامل لنظام العمل السعودي الجديد 2024',
-    category: 'نظام العمل السعودي',
+    title: "دليل شامل لنظام العمل السعودي الجديد 2024",
+    category: "نظام العمل السعودي",
     views: 12850,
-    readTime: '15 دقيقة'
+    readTime: "15 دقيقة",
   },
   {
     id: 3,
-    title: 'حقوق الموظف عند الاستقالة أو الفصل',
-    category: 'نظام العمل السعودي',
+    title: "حقوق الموظف عند الاستقالة أو الفصل",
+    category: "نظام العمل السعودي",
     views: 11230,
-    readTime: '10 دقائق'
+    readTime: "10 دقائق",
   },
   {
     id: 4,
-    title: 'أفضل ممارسات التوظيف والاختيار',
-    category: 'إدارة الموارد البشرية',
+    title: "أفضل ممارسات التوظيف والاختيار",
+    category: "إدارة الموارد البشرية",
     views: 9840,
-    readTime: '12 دقيقة'
+    readTime: "12 دقيقة",
   },
   {
     id: 5,
-    title: 'كيفية حساب الإجازات السنوية والمرضية',
-    category: 'الحسابات والمستحقات',
+    title: "كيفية حساب الإجازات السنوية والمرضية",
+    category: "الحسابات والمستحقات",
     views: 8920,
-    readTime: '7 دقائق'
+    readTime: "7 دقائق",
   },
 ];
 
 export default function Knowledge() {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <Link
+            href="/"
+            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+          >
             <img src="/rabit-logo.svg" alt="Rabit" className="h-8 w-8" />
-            <span className="text-xl font-bold text-gradient-primary">رابِط</span>
+            <span className="text-xl font-bold text-gradient-primary">
+              رابِط
+            </span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-6">
-            <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">
+            <Link
+              href="/"
+              className="text-sm font-medium hover:text-primary transition-colors"
+            >
               الرئيسية
             </Link>
-            <Link href="/knowledge-base" className="text-sm font-medium text-primary">
+            <Link
+              href="/knowledge-base"
+              className="text-sm font-medium text-primary"
+            >
               قاعدة المعرفة
             </Link>
-            <Link href="/consulting" className="text-sm font-medium hover:text-primary transition-colors">
+            <Link
+              href="/consulting"
+              className="text-sm font-medium hover:text-primary transition-colors"
+            >
               الاستشارات
             </Link>
-            <Link href="/courses" className="text-sm font-medium hover:text-primary transition-colors">
+            <Link
+              href="/courses"
+              className="text-sm font-medium hover:text-primary transition-colors"
+            >
               الدورات
             </Link>
           </nav>
@@ -140,7 +163,9 @@ export default function Knowledge() {
               <Button variant="ghost">تسجيل الدخول</Button>
             </Link>
             <Link href="/signup">
-              <Button className="gradient-primary text-white">ابدأ مجاناً</Button>
+              <Button className="gradient-primary text-white">
+                ابدأ مجاناً
+              </Button>
             </Link>
           </div>
         </div>
@@ -154,14 +179,15 @@ export default function Knowledge() {
               <BookOpen className="h-5 w-5 text-primary" />
               <span className="text-sm font-medium">قاعدة المعرفة</span>
             </div>
-            
+
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
               مكتبة شاملة لكل ما يخص
               <span className="text-gradient-primary"> الموارد البشرية</span>
             </h1>
-            
+
             <p className="text-xl text-muted-foreground mb-8">
-              مقالات وأدلة ونصائح من خبراء HR لمساعدتك في إدارة شؤون الموارد البشرية بكفاءة
+              مقالات وأدلة ونصائح من خبراء HR لمساعدتك في إدارة شؤون الموارد
+              البشرية بكفاءة
             </p>
 
             {/* Search Bar */}
@@ -172,12 +198,13 @@ export default function Knowledge() {
                 placeholder="ابحث عن مقالات، أدلة، أو مواضيع..."
                 className="pr-12 h-14 text-lg"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
               />
             </div>
 
             <p className="text-sm text-muted-foreground mt-4">
-              أكثر من <span className="font-bold text-primary">200+ مقال</span> في مختلف مجالات الموارد البشرية
+              أكثر من <span className="font-bold text-primary">200+ مقال</span>{" "}
+              في مختلف مجالات الموارد البشرية
             </p>
           </div>
         </div>
@@ -188,15 +215,22 @@ export default function Knowledge() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">تصفح حسب الفئة</h2>
-            <p className="text-muted-foreground">اختر الفئة التي تهمك للوصول السريع للمحتوى</p>
+            <p className="text-muted-foreground">
+              اختر الفئة التي تهمك للوصول السريع للمحتوى
+            </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {categories.map((category) => (
-              <Link key={category.id} href={`/knowledge-base?category=${category.id}`}>
+            {categories.map(category => (
+              <Link
+                key={category.id}
+                href={`/knowledge-base?category=${category.id}`}
+              >
                 <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer h-full">
                   <CardHeader>
-                    <div className={`w-12 h-12 rounded-lg ${category.color} flex items-center justify-center mb-4`}>
+                    <div
+                      className={`w-12 h-12 rounded-lg ${category.color} flex items-center justify-center mb-4`}
+                    >
                       <category.icon className="h-6 w-6" />
                     </div>
                     <CardTitle className="text-xl">{category.name}</CardTitle>
@@ -220,7 +254,9 @@ export default function Knowledge() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">المقالات الأكثر قراءة</h2>
-            <p className="text-muted-foreground">المواضيع التي يبحث عنها الجميع</p>
+            <p className="text-muted-foreground">
+              المواضيع التي يبحث عنها الجميع
+            </p>
           </div>
 
           <div className="max-w-4xl mx-auto space-y-4">

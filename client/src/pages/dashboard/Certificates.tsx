@@ -1,5 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -100,8 +106,8 @@ export default function Certificates() {
   const stats = {
     total: issuedCertificates.length,
     thisMonth: 12,
-    salary: issuedCertificates.filter((c) => c.type === "شهادة راتب").length,
-    experience: issuedCertificates.filter((c) => c.type === "شهادة خبرة").length,
+    salary: issuedCertificates.filter(c => c.type === "شهادة راتب").length,
+    experience: issuedCertificates.filter(c => c.type === "شهادة خبرة").length,
   };
 
   return (
@@ -120,7 +126,10 @@ export default function Certificates() {
             </p>
           </div>
 
-          <Dialog open={isGenerateDialogOpen} onOpenChange={setIsGenerateDialogOpen}>
+          <Dialog
+            open={isGenerateDialogOpen}
+            onOpenChange={setIsGenerateDialogOpen}
+          >
             <DialogTrigger asChild>
               <Button className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700">
                 <FileText className="h-4 w-4 ml-2" />
@@ -140,12 +149,15 @@ export default function Certificates() {
               <div className="grid gap-4 py-4">
                 <div className="space-y-2">
                   <Label htmlFor="employee">الموظف *</Label>
-                  <Select value={selectedEmployee} onValueChange={setSelectedEmployee}>
+                  <Select
+                    value={selectedEmployee}
+                    onValueChange={setSelectedEmployee}
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="اختر الموظف" />
                     </SelectTrigger>
                     <SelectContent>
-                      {employeesData.map((emp) => (
+                      {employeesData.map(emp => (
                         <SelectItem key={emp.id} value={emp.id}>
                           {emp.name} - {emp.position}
                         </SelectItem>
@@ -156,7 +168,10 @@ export default function Certificates() {
 
                 <div className="space-y-2">
                   <Label htmlFor="cert-type">نوع الشهادة *</Label>
-                  <Select value={certificateType} onValueChange={setCertificateType}>
+                  <Select
+                    value={certificateType}
+                    onValueChange={setCertificateType}
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="اختر نوع الشهادة" />
                     </SelectTrigger>
@@ -210,7 +225,13 @@ export default function Certificates() {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="copies">عدد النسخ</Label>
-                    <Input id="copies" type="number" defaultValue="1" min="1" max="10" />
+                    <Input
+                      id="copies"
+                      type="number"
+                      defaultValue="1"
+                      min="1"
+                      max="10"
+                    />
                   </div>
                 </div>
 
@@ -252,7 +273,9 @@ export default function Certificates() {
                 <FileText className="h-4 w-4" />
                 إجمالي الشهادات
               </CardDescription>
-              <CardTitle className="text-3xl text-emerald-600">{stats.total}</CardTitle>
+              <CardTitle className="text-3xl text-emerald-600">
+                {stats.total}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-xs text-muted-foreground">
@@ -267,7 +290,9 @@ export default function Certificates() {
                 <Calendar className="h-4 w-4" />
                 هذا الشهر
               </CardDescription>
-              <CardTitle className="text-3xl text-blue-600">{stats.thisMonth}</CardTitle>
+              <CardTitle className="text-3xl text-blue-600">
+                {stats.thisMonth}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-xs text-muted-foreground">
@@ -282,7 +307,9 @@ export default function Certificates() {
                 <DollarSign className="h-4 w-4" />
                 شهادات راتب
               </CardDescription>
-              <CardTitle className="text-3xl text-green-600">{stats.salary}</CardTitle>
+              <CardTitle className="text-3xl text-green-600">
+                {stats.salary}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-xs text-muted-foreground">الأكثر طلباً</p>
@@ -494,7 +521,7 @@ export default function Certificates() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {issuedCertificates.map((cert) => (
+                  {issuedCertificates.map(cert => (
                     <div
                       key={cert.id}
                       className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"

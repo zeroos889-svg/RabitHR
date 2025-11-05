@@ -1,4 +1,5 @@
 # 📊 التقرير النهائي الشامل للمتغيرات البيئية
+
 ## منصة رابِط للموارد البشرية
 
 <div align="center">
@@ -31,6 +32,7 @@
 ### ملخص تنفيذي
 
 تم استخراج وتوثيق **44 متغير بيئي** من منصة رابِط للموارد البشرية، موزعة على ثلاث منصات رئيسية:
+
 - **Railway** (Backend) - 30 متغير
 - **Vercel** (Frontend) - 12 متغير
 - **GitHub** (CI/CD) - 7 متغيرات
@@ -40,6 +42,7 @@
 ### الهدف من التقرير
 
 هذا التقرير يوفر:
+
 - 📊 تحليل شامل لجميع المتغيرات البيئية
 - 🎯 إرشادات واضحة للإعداد حسب كل منصة
 - 🔒 توجيهات أمنية وأفضل الممارسات
@@ -63,22 +66,22 @@
 
 ### التوزيع حسب الأهمية
 
-| الأهمية | العدد | النسبة |
-|---------|-------|--------|
-| **مطلوبة (Required)** | 7 | 16% |
-| **موصى بها (Recommended)** | 6 | 14% |
-| **اختيارية (Optional)** | 31 | 70% |
+| الأهمية                    | العدد | النسبة |
+| -------------------------- | ----- | ------ |
+| **مطلوبة (Required)**      | 7     | 16%    |
+| **موصى بها (Recommended)** | 6     | 14%    |
+| **اختيارية (Optional)**    | 31    | 70%    |
 
 ### التوزيع حسب المنصة
 
-| المنصة | العدد | النسبة | الاستخدام |
-|--------|-------|--------|-----------|
-| **Railway** | 30 | 68% | Backend API |
-| **Vercel** | 12 | 27% | Frontend |
-| **GitHub** | 7 | 16% | CI/CD |
-| **Docker** | 1 | 2% | Local Dev |
+| المنصة      | العدد | النسبة | الاستخدام   |
+| ----------- | ----- | ------ | ----------- |
+| **Railway** | 30    | 68%    | Backend API |
+| **Vercel**  | 12    | 27%    | Frontend    |
+| **GitHub**  | 7     | 16%    | CI/CD       |
+| **Docker**  | 1     | 2%     | Local Dev   |
 
-*ملاحظة: بعض المتغيرات تستخدم في أكثر من منصة*
+_ملاحظة: بعض المتغيرات تستخدم في أكثر من منصة_
 
 ### التوزيع حسب الفئة
 
@@ -99,6 +102,7 @@
 **الغرض:** استضافة الواجهة الخلفية (Backend API) والخدمات
 
 #### المطلوبة (5 متغيرات)
+
 ```env
 DATABASE_URL          # رابط قاعدة بيانات MySQL
 JWT_SECRET           # مفتاح تشفير JWT (32+ حرف)
@@ -108,6 +112,7 @@ ADMIN_PASSWORD       # كلمة مرور المدير
 ```
 
 #### الموصى بها (3 متغيرات)
+
 ```env
 NODE_ENV=production  # بيئة الإنتاج
 REDIS_URL            # للتخزين المؤقت والأداء
@@ -115,6 +120,7 @@ RESEND_API_KEY       # لخدمة البريد الإلكتروني
 ```
 
 #### الاختيارية (22 متغير)
+
 - **AWS S3** (4): التخزين السحابي
 - **Payment Gateways** (5): Moyasar و Tap
 - **SMS Services** (5): Twilio و Unifonic
@@ -129,12 +135,14 @@ RESEND_API_KEY       # لخدمة البريد الإلكتروني
 **الغرض:** استضافة الواجهة الأمامية (Frontend)
 
 #### المطلوبة (2 متغيرات)
+
 ```env
 VITE_APP_URL         # رابط الواجهة الأمامية
 VITE_API_URL         # رابط الواجهة الخلفية
 ```
 
 #### الموصى بها (3 متغيرات)
+
 ```env
 NODE_ENV=production  # بيئة الإنتاج
 VITE_APP_TITLE      # عنوان التطبيق
@@ -142,6 +150,7 @@ VITE_APP_LOGO       # شعار التطبيق
 ```
 
 #### الاختيارية (7 متغيرات)
+
 - **Sentry** (2): تتبع الأخطاء
 - **Analytics** (2): التحليلات
 - **Forge Maps** (2): الخرائط
@@ -154,6 +163,7 @@ VITE_APP_LOGO       # شعار التطبيق
 **الغرض:** الاختبار التلقائي والنشر المستمر
 
 #### للاختبارات (3 متغيرات)
+
 ```env
 DATABASE_URL         # قاعدة بيانات اختبار
 JWT_SECRET          # للاختبارات
@@ -161,6 +171,7 @@ SESSION_SECRET      # للاختبارات
 ```
 
 #### للنشر (4 متغيرات)
+
 ```env
 VERCEL_TOKEN        # نشر Vercel
 VERCEL_ORG_ID       # معرف المنظمة
@@ -186,15 +197,15 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 
 هذه المتغيرات **ضرورية** لتشغيل التطبيق الأساسي:
 
-| المتغير | المنصة | الوصف |
-|---------|--------|-------|
-| `DATABASE_URL` | Railway | رابط قاعدة البيانات |
-| `JWT_SECRET` | Railway | مفتاح JWT (32+ حرف) |
-| `SESSION_SECRET` | Railway | مفتاح الجلسات |
-| `ADMIN_EMAIL` | Railway | بريد المدير |
-| `ADMIN_PASSWORD` | Railway | كلمة مرور المدير |
-| `VITE_APP_URL` | Vercel | رابط Frontend |
-| `VITE_API_URL` | Vercel | رابط Backend |
+| المتغير          | المنصة  | الوصف               |
+| ---------------- | ------- | ------------------- |
+| `DATABASE_URL`   | Railway | رابط قاعدة البيانات |
+| `JWT_SECRET`     | Railway | مفتاح JWT (32+ حرف) |
+| `SESSION_SECRET` | Railway | مفتاح الجلسات       |
+| `ADMIN_EMAIL`    | Railway | بريد المدير         |
+| `ADMIN_PASSWORD` | Railway | كلمة مرور المدير    |
+| `VITE_APP_URL`   | Vercel  | رابط Frontend       |
+| `VITE_API_URL`   | Vercel  | رابط Backend        |
 
 **التأثير:** بدون هذه المتغيرات، التطبيق **لن يعمل**.
 
@@ -204,14 +215,14 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 
 هذه المتغيرات **تحسن الأداء** والتجربة:
 
-| المتغير | المنصة | الفائدة |
-|---------|--------|---------|
-| `NODE_ENV=production` | Railway + Vercel | تحسين الأداء |
-| `REDIS_URL` | Railway | تخزين مؤقت أسرع |
-| `RESEND_API_KEY` | Railway | بريد موثوق |
-| `VITE_APP_TITLE` | Vercel | عنوان مخصص |
-| `VITE_APP_LOGO` | Vercel | شعار مخصص |
-| `VITE_SENTRY_DSN` | Vercel | تتبع الأخطاء |
+| المتغير               | المنصة           | الفائدة         |
+| --------------------- | ---------------- | --------------- |
+| `NODE_ENV=production` | Railway + Vercel | تحسين الأداء    |
+| `REDIS_URL`           | Railway          | تخزين مؤقت أسرع |
+| `RESEND_API_KEY`      | Railway          | بريد موثوق      |
+| `VITE_APP_TITLE`      | Vercel           | عنوان مخصص      |
+| `VITE_APP_LOGO`       | Vercel           | شعار مخصص       |
+| `VITE_SENTRY_DSN`     | Vercel           | تتبع الأخطاء    |
 
 **التأثير:** التطبيق يعمل بدونها، لكن التجربة **ستكون أفضل** معها.
 
@@ -222,28 +233,34 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 تفعّل ميزات إضافية حسب الحاجة:
 
 #### خدمات الدفع (5 متغيرات)
+
 - `MOYASAR_API_KEY`, `MOYASAR_SECRET_KEY`, `MOYASAR_WEBHOOK_SECRET`
 - `TAP_API_KEY`, `TAP_SECRET_KEY`
 
 #### الرسائل النصية (5 متغيرات)
+
 - `SMS_API_KEY`, `SMS_SENDER_ID`
 - `TWILIO_PHONE_NUMBER`, `TWILIO_AUTH_TOKEN`
 - `UNIFONIC_APP_SID`
 
 #### التخزين السحابي (4 متغيرات)
+
 - `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
 - `AWS_REGION`, `AWS_S3_BUCKET`
 
 #### البريد SMTP (5 متغيرات)
+
 - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`
 - `SMTP_PASSWORD`, `SMTP_FROM`
 
 #### الذكاء الاصطناعي والخرائط (4 متغيرات)
+
 - `OPENAI_API_KEY`
 - `GOOGLE_MAPS_API_KEY`
 - `BUILT_IN_FORGE_API_URL`, `BUILT_IN_FORGE_API_KEY`
 
 #### واجهات إضافية (8 متغيرات)
+
 - Analytics, Sentry, Forge Frontend, OAuth
 
 **التأثير:** التطبيق يعمل بدونها، تُفعّل **حسب احتياجات العميل**.
@@ -254,16 +271,16 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 
 ### 1️⃣ قاعدة البيانات والأمان (8 متغيرات)
 
-| المتغير | النوع | الوصف |
-|---------|-------|-------|
-| `DATABASE_URL` | مطلوب | ******host:port/db |
-| `JWT_SECRET` | مطلوب | مفتاح JWT (32+ حرف) |
-| `SESSION_SECRET` | مطلوب | مفتاح الجلسات |
-| `SESSION_MAX_AGE` | اختياري | مدة الجلسة (default: 604800000) |
-| `ADMIN_EMAIL` | مطلوب | بريد المدير |
-| `ADMIN_PASSWORD` | مطلوب | كلمة المرور |
-| `REDIS_URL` | موصى به | التخزين المؤقت |
-| `MYSQL_ROOT_PASSWORD` | Docker | للتطوير المحلي |
+| المتغير               | النوع   | الوصف                           |
+| --------------------- | ------- | ------------------------------- |
+| `DATABASE_URL`        | مطلوب   | **\*\***host:port/db            |
+| `JWT_SECRET`          | مطلوب   | مفتاح JWT (32+ حرف)             |
+| `SESSION_SECRET`      | مطلوب   | مفتاح الجلسات                   |
+| `SESSION_MAX_AGE`     | اختياري | مدة الجلسة (default: 604800000) |
+| `ADMIN_EMAIL`         | مطلوب   | بريد المدير                     |
+| `ADMIN_PASSWORD`      | مطلوب   | كلمة المرور                     |
+| `REDIS_URL`           | موصى به | التخزين المؤقت                  |
+| `MYSQL_ROOT_PASSWORD` | Docker  | للتطوير المحلي                  |
 
 **الأهمية:** 🔴 حرجة - أساس أمان وعمل التطبيق
 
@@ -271,16 +288,16 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 
 ### 2️⃣ واجهة المستخدم (8 متغيرات)
 
-| المتغير | النوع | الوصف |
-|---------|-------|-------|
-| `VITE_APP_URL` | مطلوب | رابط Frontend |
-| `VITE_API_URL` | مطلوب | رابط Backend |
-| `VITE_APP_TITLE` | موصى به | عنوان التطبيق |
-| `VITE_APP_LOGO` | موصى به | شعار التطبيق |
-| `VITE_OAUTH_PORTAL_URL` | اختياري | OAuth URL |
-| `VITE_APP_ID` | اختياري | OAuth App ID |
-| `NODE_ENV` | موصى به | بيئة التشغيل |
-| `PORT` | اختياري | منفذ الخادم (3000) |
+| المتغير                 | النوع   | الوصف              |
+| ----------------------- | ------- | ------------------ |
+| `VITE_APP_URL`          | مطلوب   | رابط Frontend      |
+| `VITE_API_URL`          | مطلوب   | رابط Backend       |
+| `VITE_APP_TITLE`        | موصى به | عنوان التطبيق      |
+| `VITE_APP_LOGO`         | موصى به | شعار التطبيق       |
+| `VITE_OAUTH_PORTAL_URL` | اختياري | OAuth URL          |
+| `VITE_APP_ID`           | اختياري | OAuth App ID       |
+| `NODE_ENV`              | موصى به | بيئة التشغيل       |
+| `PORT`                  | اختياري | منفذ الخادم (3000) |
 
 **الأهمية:** 🟡 مهمة - تؤثر على تجربة المستخدم
 
@@ -289,6 +306,7 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 ### 3️⃣ الخدمات الخارجية (17 متغير)
 
 #### البريد الإلكتروني (7 متغيرات)
+
 ```
 ✅ Resend (موصى به):
    - RESEND_API_KEY
@@ -301,6 +319,7 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 ```
 
 #### الرسائل النصية (5 متغيرات)
+
 ```
 📱 Twilio:
    - TWILIO_PHONE_NUMBER
@@ -315,6 +334,7 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 ```
 
 #### الدفع (5 متغيرات)
+
 ```
 💳 Moyasar:
    - MOYASAR_API_KEY
@@ -333,6 +353,7 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 ### 4️⃣ البنية التحتية (7 متغيرات)
 
 #### التخزين (4 متغيرات)
+
 ```
 ☁️ AWS S3:
    - AWS_ACCESS_KEY_ID
@@ -342,6 +363,7 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 ```
 
 #### الذكاء والخرائط (3 متغيرات)
+
 ```
 🤖 AI:
    - OPENAI_API_KEY
@@ -398,6 +420,7 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 ### قاعدة البيانات
 
 #### DATABASE_URL
+
 ```yaml
 الاسم: DATABASE_URL
 النوع: مطلوب
@@ -405,7 +428,7 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 الصيغة: mysql://user:password@host:port/database
 المثال: mysql://root:password@containers-us-west.railway.app:3306/railway
 الوصف: رابط الاتصال بقاعدة بيانات MySQL
-الحصول عليه: 
+الحصول عليه:
   - Railway MySQL: من Dashboard
   - TiDB Cloud: من Dashboard
   - Local: mysql://root:password@localhost:3306/rabithr_dev
@@ -417,6 +440,7 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 ### الأمان والمصادقة
 
 #### JWT_SECRET
+
 ```yaml
 الاسم: JWT_SECRET
 النوع: مطلوب
@@ -433,6 +457,7 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 ```
 
 #### SESSION_SECRET
+
 ```yaml
 الاسم: SESSION_SECRET
 النوع: مطلوب
@@ -445,6 +470,7 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 ```
 
 #### ADMIN_EMAIL & ADMIN_PASSWORD
+
 ```yaml
 الاسم: ADMIN_EMAIL, ADMIN_PASSWORD
 النوع: مطلوب
@@ -464,6 +490,7 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 ### البيئة التشغيلية
 
 #### NODE_ENV
+
 ```yaml
 الاسم: NODE_ENV
 النوع: موصى به
@@ -477,6 +504,7 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 ```
 
 #### PORT
+
 ```yaml
 الاسم: PORT
 النوع: اختياري
@@ -491,6 +519,7 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 ### واجهة المستخدم
 
 #### VITE_APP_URL
+
 ```yaml
 الاسم: VITE_APP_URL
 النوع: مطلوب
@@ -502,6 +531,7 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 ```
 
 #### VITE_API_URL
+
 ```yaml
 الاسم: VITE_API_URL
 النوع: مطلوب
@@ -517,6 +547,7 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 ### التخزين المؤقت
 
 #### REDIS_URL
+
 ```yaml
 الاسم: REDIS_URL
 النوع: موصى به
@@ -536,6 +567,7 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 ### البريد الإلكتروني
 
 #### RESEND_API_KEY (موصى به)
+
 ```yaml
 الاسم: RESEND_API_KEY
 النوع: موصى به
@@ -550,7 +582,8 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 الاستخدام: إرسال الإيميلات التلقائية
 ```
 
-#### SMTP_* (بديل)
+#### SMTP\_\* (بديل)
+
 ```yaml
 الاسم: SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, SMTP_FROM
 النوع: اختياري
@@ -569,6 +602,7 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 ### الرسائل النصية
 
 #### SMS_API_KEY & SMS_SENDER_ID
+
 ```yaml
 الاسم: SMS_API_KEY, SMS_SENDER_ID
 النوع: اختياري
@@ -577,7 +611,8 @@ MYSQL_ROOT_PASSWORD=rootpassword  # كلمة مرور MySQL
 SENDER_ID المثال: Rabit
 ```
 
-#### TWILIO_*
+#### TWILIO\_\*
+
 ```yaml
 الاسم: TWILIO_PHONE_NUMBER, TWILIO_AUTH_TOKEN
 النوع: اختياري
@@ -588,6 +623,7 @@ SENDER_ID المثال: Rabit
 ```
 
 #### UNIFONIC_APP_SID
+
 ```yaml
 الاسم: UNIFONIC_APP_SID
 النوع: اختياري
@@ -601,7 +637,8 @@ SENDER_ID المثال: Rabit
 
 ### بوابات الدفع
 
-#### MOYASAR_*
+#### MOYASAR\_\*
+
 ```yaml
 الاسم: MOYASAR_API_KEY, MOYASAR_SECRET_KEY, MOYASAR_WEBHOOK_SECRET
 النوع: اختياري
@@ -613,7 +650,8 @@ SENDER_ID المثال: Rabit
   - متوافق مع السوق السعودي
 ```
 
-#### TAP_*
+#### TAP\_\*
+
 ```yaml
 الاسم: TAP_API_KEY, TAP_SECRET_KEY
 النوع: اختياري
@@ -626,7 +664,8 @@ SENDER_ID المثال: Rabit
 
 ### التخزين السحابي
 
-#### AWS_*
+#### AWS\_\*
+
 ```yaml
 الاسم: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_S3_BUCKET
 النوع: اختياري
@@ -644,6 +683,7 @@ SENDER_ID المثال: Rabit
 ### الذكاء الاصطناعي والخرائط
 
 #### OPENAI_API_KEY
+
 ```yaml
 الاسم: OPENAI_API_KEY
 النوع: اختياري
@@ -655,6 +695,7 @@ SENDER_ID المثال: Rabit
 ```
 
 #### GOOGLE_MAPS_API_KEY
+
 ```yaml
 الاسم: GOOGLE_MAPS_API_KEY
 النوع: اختياري
@@ -669,6 +710,7 @@ SENDER_ID المثال: Rabit
 ### المراقبة والتحليلات
 
 #### VITE_SENTRY_DSN
+
 ```yaml
 الاسم: VITE_SENTRY_DSN
 النوع: موصى به
@@ -680,6 +722,7 @@ SENDER_ID المثال: Rabit
 ```
 
 #### SENTRY_AUTH_TOKEN
+
 ```yaml
 الاسم: SENTRY_AUTH_TOKEN
 النوع: اختياري
@@ -692,7 +735,8 @@ SENDER_ID المثال: Rabit
 
 ### النشر والـ CI/CD
 
-#### VERCEL_*
+#### VERCEL\_\*
+
 ```yaml
 الاسم: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID
 النوع: اختياري (للنشر التلقائي)
@@ -705,6 +749,7 @@ SENDER_ID المثال: Rabit
 ```
 
 #### RAILWAY_TOKEN
+
 ```yaml
 الاسم: RAILWAY_TOKEN
 النوع: اختياري (للنشر التلقائي)
@@ -766,6 +811,7 @@ VITE_SENTRY_DEBUG=true
 ### بيئة الإنتاج (Production)
 
 #### Railway (Backend)
+
 ```env
 # ========================================
 # Production - Railway Backend
@@ -828,6 +874,7 @@ SENTRY_AUTH_TOKEN=sentry_auth_token_for_backend
 ```
 
 #### Vercel (Frontend)
+
 ```env
 # ========================================
 # Production - Vercel Frontend
@@ -862,6 +909,7 @@ VITE_APP_ID=rabit_hr_production_app_id
 ```
 
 #### GitHub Secrets (CI/CD)
+
 ```env
 # ========================================
 # GitHub Secrets - CI/CD
@@ -937,6 +985,7 @@ python -c "import secrets; print(secrets.token_urlsafe(32))"
 ```
 
 **القواعد:**
+
 - ✅ استخدم 32 حرف على الأقل
 - ✅ استخدم أحرف وأرقام ورموز عشوائية
 - ✅ لا تستخدم كلمات أو تواريخ
@@ -1253,24 +1302,24 @@ Settings → Actions → General
 ```
 □ اختبار تسجيل الدخول
   → admin@rabit.sa + كلمة المرور
-  
+
 □ اختبار الاتصال بقاعدة البيانات
   → إنشاء موظف جديد
   → عرض البيانات
-  
+
 □ اختبار Backend API
   → /api/health
   → /api/trpc/employee.list
-  
+
 □ اختبار Frontend
   → تحميل الصفحة الرئيسية
   → التنقل بين الصفحات
-  
+
 □ اختبار الخدمات الخارجية
   → البريد الإلكتروني (إذا مفعل)
   → الدفع (إذا مفعل)
   → SMS (إذا مفعل)
-  
+
 □ اختبار الأمان
   → HTTPS مفعل
   → CORS صحيح
@@ -1330,60 +1379,70 @@ Settings → Actions → General
 
 ### 📁 ملفات التوثيق
 
-| الملف | الحجم | الوصف | الاستخدام |
-|-------|-------|-------|-----------|
-| **ENV_README.md** | 4.0 KB | نقطة البداية | ابدأ من هنا |
-| **ENVIRONMENT_VARIABLES_SUMMARY.md** | 6.3 KB | مرجع سريع | نسخ ولصق |
-| **ENV_SETUP_GUIDE.md** | 12 KB | دليل الإعداد | إعداد شامل |
-| **ENV_RAILWAY.md** | 5.4 KB | دليل Railway | Backend |
-| **ENV_VERCEL.md** | 7.0 KB | دليل Vercel | Frontend |
-| **ENV_GITHUB.md** | 11 KB | دليل GitHub | CI/CD |
-| **ENV_VARIABLES_AR.md** | 11 KB | توثيق عربي | مرجع شامل |
-| **ENV_VARIABLES_EN.md** | 8.7 KB | English docs | Full reference |
-| **.env.example** | 4.6 KB | ملف مثال | نسخ محلي |
-| **ENVIRONMENT_VARIABLES_FINAL_REPORT.md** | هذا الملف | التقرير النهائي | مرجع كامل |
+| الملف                                     | الحجم     | الوصف           | الاستخدام      |
+| ----------------------------------------- | --------- | --------------- | -------------- |
+| **ENV_README.md**                         | 4.0 KB    | نقطة البداية    | ابدأ من هنا    |
+| **ENVIRONMENT_VARIABLES_SUMMARY.md**      | 6.3 KB    | مرجع سريع       | نسخ ولصق       |
+| **ENV_SETUP_GUIDE.md**                    | 12 KB     | دليل الإعداد    | إعداد شامل     |
+| **ENV_RAILWAY.md**                        | 5.4 KB    | دليل Railway    | Backend        |
+| **ENV_VERCEL.md**                         | 7.0 KB    | دليل Vercel     | Frontend       |
+| **ENV_GITHUB.md**                         | 11 KB     | دليل GitHub     | CI/CD          |
+| **ENV_VARIABLES_AR.md**                   | 11 KB     | توثيق عربي      | مرجع شامل      |
+| **ENV_VARIABLES_EN.md**                   | 8.7 KB    | English docs    | Full reference |
+| **.env.example**                          | 4.6 KB    | ملف مثال        | نسخ محلي       |
+| **ENVIRONMENT_VARIABLES_FINAL_REPORT.md** | هذا الملف | التقرير النهائي | مرجع كامل      |
 
 ---
 
 ### 🔗 روابط الخدمات الخارجية
 
 #### قواعد البيانات
+
 - **Railway MySQL**: https://railway.app/
 - **TiDB Cloud**: https://tidbcloud.com/
 - **PlanetScale**: https://planetscale.com/
 
 #### التخزين المؤقت
+
 - **Railway Redis**: https://railway.app/
 - **Upstash Redis**: https://upstash.com/
 
 #### البريد الإلكتروني
+
 - **Resend** (موصى به): https://resend.com/
 - **SendGrid**: https://sendgrid.com/
 - **Mailgun**: https://www.mailgun.com/
 
 #### الرسائل النصية
+
 - **Twilio**: https://www.twilio.com/
 - **Unifonic** (السعودية): https://www.unifonic.com/
 
 #### بوابات الدفع
+
 - **Moyasar**: https://moyasar.com/
 - **Tap**: https://www.tap.company/
 
 #### التخزين السحابي
+
 - **AWS S3**: https://aws.amazon.com/s3/
 - **Cloudflare R2**: https://www.cloudflare.com/products/r2/
 
 #### الذكاء الاصطناعي
+
 - **OpenAI**: https://platform.openai.com/
 
 #### الخرائط
+
 - **Google Maps API**: https://console.cloud.google.com/
 
 #### المراقبة
+
 - **Sentry**: https://sentry.io/
 - **LogRocket**: https://logrocket.com/
 
 #### النشر
+
 - **Vercel**: https://vercel.com/
 - **Railway**: https://railway.app/
 - **GitHub Actions**: https://github.com/features/actions
@@ -1393,11 +1452,13 @@ Settings → Actions → General
 ### 📖 مصادر إضافية
 
 #### مقالات وأدلة
+
 - [The Twelve-Factor App](https://12factor.net/) - مبادئ بناء التطبيقات
 - [OWASP API Security](https://owasp.org/www-project-api-security/) - أمان APIs
 - [Node.js Best Practices](https://github.com/goldbergyoni/nodebestpractices) - أفضل الممارسات
 
 #### أدوات مفيدة
+
 - **dotenv**: مكتبة لإدارة `.env`
 - **1Password**: لإدارة الأسرار
 - **Git-secrets**: لمنع commit الأسرار
@@ -1410,6 +1471,7 @@ Settings → Actions → General
 #### المشاكل الشائعة
 
 **المشكلة: "Database connection failed"**
+
 ```
 الحل:
 1. تحقق من DATABASE_URL صحيح
@@ -1419,6 +1481,7 @@ Settings → Actions → General
 ```
 
 **المشكلة: "JWT Secret not configured"**
+
 ```
 الحل:
 1. تحقق من وجود JWT_SECRET في Railway
@@ -1427,6 +1490,7 @@ Settings → Actions → General
 ```
 
 **المشكلة: "Cannot connect to API"**
+
 ```
 الحل:
 1. تحقق من VITE_API_URL في Vercel
@@ -1436,6 +1500,7 @@ Settings → Actions → General
 ```
 
 **المشكلة: "Environment variable undefined"**
+
 ```
 الحل:
 1. تأكد أن المتغير يبدأ بـ VITE_ (للـ Frontend)
@@ -1496,6 +1561,7 @@ Settings → Actions → General
 ## 📞 معلومات الاتصال
 
 للأسئلة أو الدعم:
+
 - 📧 البريد: info@rbithr.com
 - 🌐 الموقع: https://rabit.sa
 - 📚 التوثيق: راجع الملفات المذكورة أعلاه

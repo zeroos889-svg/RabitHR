@@ -124,7 +124,7 @@ export default function ConsultingExperts() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSpecialty, setSelectedSpecialty] = useState("الكل");
 
-  const filteredExperts = experts.filter((expert) => {
+  const filteredExperts = experts.filter(expert => {
     const matchesSearch =
       expert.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       expert.title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -154,7 +154,7 @@ export default function ConsultingExperts() {
                 type="text"
                 placeholder="ابحث عن مستشار..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={e => setSearchTerm(e.target.value)}
                 className="pr-12 h-14 text-lg"
               />
             </div>
@@ -166,7 +166,7 @@ export default function ConsultingExperts() {
       <section className="py-8 border-b">
         <div className="container">
           <div className="flex flex-wrap gap-2 justify-center">
-            {specialties.map((specialty) => (
+            {specialties.map(specialty => (
               <Button
                 key={specialty}
                 variant={
@@ -185,7 +185,7 @@ export default function ConsultingExperts() {
       <section className="py-16 flex-1">
         <div className="container">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredExperts.map((expert) => (
+            {filteredExperts.map(expert => (
               <Card
                 key={expert.id}
                 className="hover:shadow-lg transition-shadow"
@@ -221,7 +221,7 @@ export default function ConsultingExperts() {
                   {/* Specialties */}
                   <div>
                     <div className="flex flex-wrap gap-2">
-                      {expert.specialties.map((specialty) => (
+                      {expert.specialties.map(specialty => (
                         <Badge key={specialty} variant="secondary">
                           {specialty}
                         </Badge>

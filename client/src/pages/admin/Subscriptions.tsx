@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -23,7 +29,9 @@ import { toast } from "sonner";
 
 export default function AdminSubscriptions() {
   const [page, setPage] = useState(1);
-  const [statusFilter, setStatusFilter] = useState<"active" | "inactive" | "trial" | "cancelled" | undefined>();
+  const [statusFilter, setStatusFilter] = useState<
+    "active" | "inactive" | "trial" | "cancelled" | undefined
+  >();
 
   const { data, isLoading, refetch } = trpc.admin.getAllSubscriptions.useQuery({
     page,
@@ -36,15 +44,15 @@ export default function AdminSubscriptions() {
       toast.success("تم تحديث الاشتراك بنجاح");
       refetch();
     },
-    onError: (error) => {
+    onError: error => {
       toast.error("فشل تحديث الاشتراك: " + error.message);
     },
   });
 
   const handleStatusChange = (id: number, status: string) => {
-    updateSubscriptionMutation.mutate({ 
-      id, 
-      status: status as "active" | "inactive" | "trial" | "cancelled" 
+    updateSubscriptionMutation.mutate({
+      id,
+      status: status as "active" | "inactive" | "trial" | "cancelled",
     });
   };
 
@@ -75,20 +83,23 @@ export default function AdminSubscriptions() {
     <div className="p-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold">إدارة الاشتراكات</h1>
-        <p className="text-muted-foreground mt-2">عرض وإدارة جميع اشتراكات المستخدمين</p>
+        <p className="text-muted-foreground mt-2">
+          عرض وإدارة جميع اشتراكات المستخدمين
+        </p>
       </div>
 
       <Card>
         <CardHeader>
           <CardTitle>الاشتراكات</CardTitle>
-          <CardDescription>
-            {data?.total || 0} اشتراك في المنصة
-          </CardDescription>
+          <CardDescription>{data?.total || 0} اشتراك في المنصة</CardDescription>
         </CardHeader>
         <CardContent>
           {/* Filters */}
           <div className="flex gap-4 mb-6">
-            <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as any)}>
+            <Select
+              value={statusFilter}
+              onValueChange={value => setStatusFilter(value as any)}
+            >
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="جميع الحالات" />
               </SelectTrigger>
@@ -126,39 +137,60 @@ export default function AdminSubscriptions() {
                   </TableRow>
                 ) : data?.subscriptions.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+                    <TableCell
+                      colSpan={8}
+                      className="text-center py-8 text-muted-foreground"
+                    >
                       لا توجد اشتراكات
                     </TableCell>
                   </TableRow>
                 ) : (
-                  data?.subscriptions.map((item) => (
+                  data?.subscriptions.map(item => (
                     <TableRow key={item.subscription.id}>
-                      <TableCell className="font-medium">{item.subscription.id}</TableCell>
+                      <TableCell className="font-medium">
+                        {item.subscription.id}
+                      </TableCell>
                       <TableCell>
                         <div>
-                          <div className="font-medium">{item.user?.name || "-"}</div>
-                          <div className="text-sm text-muted-foreground">{item.user?.email || "-"}</div>
+                          <div className="font-medium">
+                            {item.user?.name || "-"}
+                          </div>
+                          <div className="text-sm text-muted-foreground">
+                            {item.user?.email || "-"}
+                          </div>
                         </div>
                       </TableCell>
-                      <TableCell>{getPlanLabel(item.subscription.planType || "")}</TableCell>
-                      <TableCell>{getStatusBadge(item.subscription.status || "")}</TableCell>
+                      <TableCell>
+                        {getPlanLabel(item.subscription.planType || "")}
+                      </TableCell>
+                      <TableCell>
+                        {getStatusBadge(item.subscription.status || "")}
+                      </TableCell>
                       <TableCell>
                         {item.subscription.startDate
-                          ? new Date(item.subscription.startDate).toLocaleDateString("ar-SA")
+                          ? new Date(
+                              item.subscription.startDate
+                            ).toLocaleDateString("ar-SA")
                           : "-"}
                       </TableCell>
                       <TableCell>
                         {item.subscription.endDate
-                          ? new Date(item.subscription.endDate).toLocaleDateString("ar-SA")
+                          ? new Date(
+                              item.subscription.endDate
+                            ).toLocaleDateString("ar-SA")
                           : "-"}
                       </TableCell>
                       <TableCell>
-                        {item.subscription.price ? `${item.subscription.price} ﷼` : "-"}
+                        {item.subscription.price
+                          ? `${item.subscription.price} ﷼`
+                          : "-"}
                       </TableCell>
                       <TableCell className="text-left">
                         <Select
                           value={item.subscription.status || ""}
-                          onValueChange={(value) => handleStatusChange(item.subscription.id, value)}
+                          onValueChange={value =>
+                            handleStatusChange(item.subscription.id, value)
+                          }
                         >
                           <SelectTrigger className="w-[120px]">
                             <SelectValue />

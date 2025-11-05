@@ -1,5 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -165,7 +171,10 @@ export default function ATS() {
             </p>
           </div>
 
-          <Dialog open={isAddJobDialogOpen} onOpenChange={setIsAddJobDialogOpen}>
+          <Dialog
+            open={isAddJobDialogOpen}
+            onOpenChange={setIsAddJobDialogOpen}
+          >
             <DialogTrigger asChild>
               <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
                 <Plus className="h-4 w-4 ml-2" />
@@ -280,7 +289,10 @@ export default function ATS() {
                 </div>
               </div>
               <DialogFooter>
-                <Button variant="outline" onClick={() => setIsAddJobDialogOpen(false)}>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsAddJobDialogOpen(false)}
+                >
                   إلغاء
                 </Button>
                 <Button className="bg-gradient-to-r from-blue-600 to-purple-600">
@@ -333,8 +345,7 @@ export default function ATS() {
             </CardHeader>
             <CardContent>
               <p className="text-xs text-muted-foreground">
-                <Calendar className="h-3 w-3 inline ml-1" />
-                3 هذا الأسبوع
+                <Calendar className="h-3 w-3 inline ml-1" />3 هذا الأسبوع
               </p>
             </CardContent>
           </Card>
@@ -360,7 +371,11 @@ export default function ATS() {
           <Button
             variant={activeTab === "jobs" ? "default" : "ghost"}
             onClick={() => setActiveTab("jobs")}
-            className={activeTab === "jobs" ? "bg-gradient-to-r from-blue-600 to-purple-600" : ""}
+            className={
+              activeTab === "jobs"
+                ? "bg-gradient-to-r from-blue-600 to-purple-600"
+                : ""
+            }
           >
             <Briefcase className="h-4 w-4 ml-2" />
             الوظائف ({jobsData.length})
@@ -368,7 +383,11 @@ export default function ATS() {
           <Button
             variant={activeTab === "applicants" ? "default" : "ghost"}
             onClick={() => setActiveTab("applicants")}
-            className={activeTab === "applicants" ? "bg-gradient-to-r from-blue-600 to-purple-600" : ""}
+            className={
+              activeTab === "applicants"
+                ? "bg-gradient-to-r from-blue-600 to-purple-600"
+                : ""
+            }
           >
             <Users className="h-4 w-4 ml-2" />
             المتقدمين ({applicantsData.length})
@@ -379,9 +398,11 @@ export default function ATS() {
         <div className="relative">
           <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
           <Input
-            placeholder={activeTab === "jobs" ? "بحث عن وظيفة..." : "بحث عن متقدم..."}
+            placeholder={
+              activeTab === "jobs" ? "بحث عن وظيفة..." : "بحث عن متقدم..."
+            }
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
             className="pr-10"
           />
         </div>
@@ -398,7 +419,9 @@ export default function ATS() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="text-right">المسمى الوظيفي</TableHead>
+                      <TableHead className="text-right">
+                        المسمى الوظيفي
+                      </TableHead>
                       <TableHead className="text-right">القسم</TableHead>
                       <TableHead className="text-right">الموقع</TableHead>
                       <TableHead className="text-right">النوع</TableHead>
@@ -409,17 +432,24 @@ export default function ATS() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {jobsData.map((job) => (
+                    {jobsData.map(job => (
                       <TableRow key={job.id}>
-                        <TableCell className="font-medium">{job.title}</TableCell>
+                        <TableCell className="font-medium">
+                          {job.title}
+                        </TableCell>
                         <TableCell>{job.department}</TableCell>
                         <TableCell>{job.location}</TableCell>
                         <TableCell>{job.type}</TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
-                            <span className="font-semibold">{job.applicants}</span>
+                            <span className="font-semibold">
+                              {job.applicants}
+                            </span>
                             {job.newApplicants > 0 && (
-                              <Badge variant="secondary" className="bg-blue-100 text-blue-700">
+                              <Badge
+                                variant="secondary"
+                                className="bg-blue-100 text-blue-700"
+                              >
                                 +{job.newApplicants} جديد
                               </Badge>
                             )}
@@ -428,7 +458,9 @@ export default function ATS() {
                         <TableCell>{job.postedDate}</TableCell>
                         <TableCell>
                           <Badge
-                            variant={job.status === "نشط" ? "default" : "secondary"}
+                            variant={
+                              job.status === "نشط" ? "default" : "secondary"
+                            }
                             className={
                               job.status === "نشط"
                                 ? "bg-green-500 hover:bg-green-600"
@@ -440,7 +472,11 @@ export default function ATS() {
                         </TableCell>
                         <TableCell>
                           <div className="flex justify-center gap-2">
-                            <Button variant="ghost" size="icon" title="عرض المتقدمين">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              title="عرض المتقدمين"
+                            >
                               <Eye className="h-4 w-4" />
                             </Button>
                           </div>
@@ -483,9 +519,15 @@ export default function ATS() {
                   <TableHeader>
                     <TableRow>
                       <TableHead className="text-right">الاسم</TableHead>
-                      <TableHead className="text-right">الوظيفة المتقدم لها</TableHead>
-                      <TableHead className="text-right">البريد الإلكتروني</TableHead>
-                      <TableHead className="text-right">تاريخ التقديم</TableHead>
+                      <TableHead className="text-right">
+                        الوظيفة المتقدم لها
+                      </TableHead>
+                      <TableHead className="text-right">
+                        البريد الإلكتروني
+                      </TableHead>
+                      <TableHead className="text-right">
+                        تاريخ التقديم
+                      </TableHead>
                       <TableHead className="text-right">المرحلة</TableHead>
                       <TableHead className="text-right">التقييم</TableHead>
                       <TableHead className="text-right">الحالة</TableHead>
@@ -493,9 +535,11 @@ export default function ATS() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {applicantsData.map((applicant) => (
+                    {applicantsData.map(applicant => (
                       <TableRow key={applicant.id}>
-                        <TableCell className="font-medium">{applicant.name}</TableCell>
+                        <TableCell className="font-medium">
+                          {applicant.name}
+                        </TableCell>
                         <TableCell>{applicant.position}</TableCell>
                         <TableCell className="text-muted-foreground">
                           {applicant.email}
@@ -517,7 +561,9 @@ export default function ATS() {
                               ))}
                             </div>
                           ) : (
-                            <span className="text-muted-foreground text-sm">لم يتم التقييم</span>
+                            <span className="text-muted-foreground text-sm">
+                              لم يتم التقييم
+                            </span>
                           )}
                         </TableCell>
                         <TableCell>
@@ -527,10 +573,10 @@ export default function ATS() {
                               applicant.status === "جديد"
                                 ? "bg-blue-100 text-blue-700"
                                 : applicant.status === "قيد المراجعة"
-                                ? "bg-yellow-100 text-yellow-700"
-                                : applicant.status === "مقبول"
-                                ? "bg-green-100 text-green-700"
-                                : "bg-red-100 text-red-700"
+                                  ? "bg-yellow-100 text-yellow-700"
+                                  : applicant.status === "مقبول"
+                                    ? "bg-green-100 text-green-700"
+                                    : "bg-red-100 text-red-700"
                             }
                           >
                             {applicant.status === "مقبول" && (
@@ -544,7 +590,11 @@ export default function ATS() {
                         </TableCell>
                         <TableCell>
                           <div className="flex justify-center gap-2">
-                            <Button variant="ghost" size="icon" title="عرض التفاصيل">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              title="عرض التفاصيل"
+                            >
                               <Eye className="h-4 w-4" />
                             </Button>
                           </div>

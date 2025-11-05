@@ -277,7 +277,7 @@ html {
   .hide-mobile-table {
     display: none;
   }
-  
+
   .show-mobile-cards {
     display: block;
   }
@@ -287,7 +287,7 @@ html {
   .hide-mobile-table {
     display: table;
   }
-  
+
   .show-mobile-cards {
     display: none;
   }
@@ -516,13 +516,13 @@ html {
     min-width: 44px;
     padding: 0.75rem;
   }
-  
+
   /* Prevent text selection on touch */
   .no-select-mobile {
     -webkit-user-select: none;
     user-select: none;
   }
-  
+
   /* Smooth scrolling on mobile */
   .smooth-scroll-mobile {
     -webkit-overflow-scrolling: touch;
@@ -538,15 +538,15 @@ html {
   .no-print {
     display: none !important;
   }
-  
+
   .print-break-before {
     page-break-before: always;
   }
-  
+
   .print-break-after {
     page-break-after: always;
   }
-  
+
   .print-avoid-break {
     page-break-inside: avoid;
   }

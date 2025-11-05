@@ -38,7 +38,8 @@ const coursesData: Record<string, any> = {
       image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sara",
       bio: "خبيرة في الموارد البشرية مع أكثر من 15 عاماً من الخبرة",
     },
-    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=400&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=400&fit=crop",
     whatYouLearn: [
       "فهم شامل لوظائف الموارد البشرية",
       "كيفية إدارة دورة حياة الموظف",
@@ -51,37 +52,117 @@ const coursesData: Record<string, any> = {
       {
         title: "المقدمة والأساسيات",
         lessons: [
-          { title: "مرحباً بك في الدورة", duration: "5 دقائق", type: "video", free: true },
-          { title: "ما هي الموارد البشرية؟", duration: "15 دقيقة", type: "video", free: true },
-          { title: "وظائف الموارد البشرية", duration: "20 دقيقة", type: "video", free: false },
-          { title: "اختبار الوحدة الأولى", duration: "10 دقائق", type: "quiz", free: false },
+          {
+            title: "مرحباً بك في الدورة",
+            duration: "5 دقائق",
+            type: "video",
+            free: true,
+          },
+          {
+            title: "ما هي الموارد البشرية؟",
+            duration: "15 دقيقة",
+            type: "video",
+            free: true,
+          },
+          {
+            title: "وظائف الموارد البشرية",
+            duration: "20 دقيقة",
+            type: "video",
+            free: false,
+          },
+          {
+            title: "اختبار الوحدة الأولى",
+            duration: "10 دقائق",
+            type: "quiz",
+            free: false,
+          },
         ],
       },
       {
         title: "التوظيف والاختيار",
         lessons: [
-          { title: "عملية التوظيف", duration: "25 دقيقة", type: "video", free: false },
-          { title: "كتابة الإعلانات الوظيفية", duration: "20 دقيقة", type: "video", free: false },
-          { title: "إجراء المقابلات", duration: "30 دقيقة", type: "video", free: false },
-          { title: "اختبار الوحدة الثانية", duration: "15 دقيقة", type: "quiz", free: false },
+          {
+            title: "عملية التوظيف",
+            duration: "25 دقيقة",
+            type: "video",
+            free: false,
+          },
+          {
+            title: "كتابة الإعلانات الوظيفية",
+            duration: "20 دقيقة",
+            type: "video",
+            free: false,
+          },
+          {
+            title: "إجراء المقابلات",
+            duration: "30 دقيقة",
+            type: "video",
+            free: false,
+          },
+          {
+            title: "اختبار الوحدة الثانية",
+            duration: "15 دقيقة",
+            type: "quiz",
+            free: false,
+          },
         ],
       },
       {
         title: "إدارة الأداء",
         lessons: [
-          { title: "أنظمة تقييم الأداء", duration: "25 دقيقة", type: "video", free: false },
-          { title: "تحديد الأهداف", duration: "20 دقيقة", type: "video", free: false },
-          { title: "التغذية الراجعة", duration: "20 دقيقة", type: "video", free: false },
-          { title: "اختبار الوحدة الثالثة", duration: "10 دقائق", type: "quiz", free: false },
+          {
+            title: "أنظمة تقييم الأداء",
+            duration: "25 دقيقة",
+            type: "video",
+            free: false,
+          },
+          {
+            title: "تحديد الأهداف",
+            duration: "20 دقيقة",
+            type: "video",
+            free: false,
+          },
+          {
+            title: "التغذية الراجعة",
+            duration: "20 دقيقة",
+            type: "video",
+            free: false,
+          },
+          {
+            title: "اختبار الوحدة الثالثة",
+            duration: "10 دقائق",
+            type: "quiz",
+            free: false,
+          },
         ],
       },
       {
         title: "قوانين العمل",
         lessons: [
-          { title: "نظام العمل السعودي", duration: "30 دقيقة", type: "video", free: false },
-          { title: "حقوق الموظفين", duration: "25 دقيقة", type: "video", free: false },
-          { title: "إنهاء الخدمة", duration: "20 دقيقة", type: "video", free: false },
-          { title: "الاختبار النهائي", duration: "20 دقائق", type: "quiz", free: false },
+          {
+            title: "نظام العمل السعودي",
+            duration: "30 دقيقة",
+            type: "video",
+            free: false,
+          },
+          {
+            title: "حقوق الموظفين",
+            duration: "25 دقيقة",
+            type: "video",
+            free: false,
+          },
+          {
+            title: "إنهاء الخدمة",
+            duration: "20 دقيقة",
+            type: "video",
+            free: false,
+          },
+          {
+            title: "الاختبار النهائي",
+            duration: "20 دقائق",
+            type: "quiz",
+            free: false,
+          },
         ],
       },
     ],
@@ -158,7 +239,9 @@ export default function CourseDetail() {
                 />
                 <div>
                   <p className="font-medium">{course.instructor.name}</p>
-                  <p className="text-sm text-blue-50">{course.instructor.title}</p>
+                  <p className="text-sm text-blue-50">
+                    {course.instructor.title}
+                  </p>
                 </div>
               </div>
             </div>
@@ -281,27 +364,29 @@ export default function CourseDetail() {
                       </CardHeader>
                       <CardContent>
                         <div className="space-y-2">
-                          {section.lessons.map((lesson: any, lessonIndex: number) => (
-                            <div
-                              key={lessonIndex}
-                              className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg"
-                            >
-                              <div className="flex items-center gap-3">
-                                {lesson.type === "video" ? (
-                                  <Video className="h-5 w-5 text-blue-600" />
-                                ) : (
-                                  <FileText className="h-5 w-5 text-green-600" />
-                                )}
-                                <span>{lesson.title}</span>
-                                {lesson.free && (
-                                  <Badge variant="secondary">مجاني</Badge>
-                                )}
+                          {section.lessons.map(
+                            (lesson: any, lessonIndex: number) => (
+                              <div
+                                key={lessonIndex}
+                                className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg"
+                              >
+                                <div className="flex items-center gap-3">
+                                  {lesson.type === "video" ? (
+                                    <Video className="h-5 w-5 text-blue-600" />
+                                  ) : (
+                                    <FileText className="h-5 w-5 text-green-600" />
+                                  )}
+                                  <span>{lesson.title}</span>
+                                  {lesson.free && (
+                                    <Badge variant="secondary">مجاني</Badge>
+                                  )}
+                                </div>
+                                <span className="text-sm text-gray-500">
+                                  {lesson.duration}
+                                </span>
                               </div>
-                              <span className="text-sm text-gray-500">
-                                {lesson.duration}
-                              </span>
-                            </div>
-                          ))}
+                            )
+                          )}
                         </div>
                       </CardContent>
                     </Card>
@@ -324,7 +409,9 @@ export default function CourseDetail() {
                           <p className="text-gray-600 mb-4">
                             {course.instructor.title}
                           </p>
-                          <p className="text-gray-700">{course.instructor.bio}</p>
+                          <p className="text-gray-700">
+                            {course.instructor.bio}
+                          </p>
                         </div>
                       </div>
                     </CardContent>

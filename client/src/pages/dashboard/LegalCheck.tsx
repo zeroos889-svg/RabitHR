@@ -1,5 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -96,9 +102,9 @@ export default function LegalCheck() {
   // إحصائيات
   const stats = {
     total: reviewedDecisions.length,
-    safe: reviewedDecisions.filter((d) => d.status === "safe").length,
-    warning: reviewedDecisions.filter((d) => d.status === "warning").length,
-    danger: reviewedDecisions.filter((d) => d.status === "danger").length,
+    safe: reviewedDecisions.filter(d => d.status === "safe").length,
+    warning: reviewedDecisions.filter(d => d.status === "warning").length,
+    danger: reviewedDecisions.filter(d => d.status === "danger").length,
   };
 
   return (
@@ -193,12 +199,15 @@ export default function LegalCheck() {
 
                 <div className="space-y-2">
                   <Label htmlFor="employee">الموظف *</Label>
-                  <Select value={selectedEmployee} onValueChange={setSelectedEmployee}>
+                  <Select
+                    value={selectedEmployee}
+                    onValueChange={setSelectedEmployee}
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="اختر الموظف" />
                     </SelectTrigger>
                     <SelectContent>
-                      {employeesData.map((emp) => (
+                      {employeesData.map(emp => (
                         <SelectItem key={emp.id} value={emp.id}>
                           {emp.name} - {emp.position}
                         </SelectItem>
@@ -299,7 +308,9 @@ export default function LegalCheck() {
                 <Scale className="h-4 w-4" />
                 إجمالي القرارات
               </CardDescription>
-              <CardTitle className="text-3xl text-blue-600">{stats.total}</CardTitle>
+              <CardTitle className="text-3xl text-blue-600">
+                {stats.total}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-xs text-muted-foreground">
@@ -314,7 +325,9 @@ export default function LegalCheck() {
                 <CheckCircle2 className="h-4 w-4" />
                 قرارات آمنة
               </CardDescription>
-              <CardTitle className="text-3xl text-green-600">{stats.safe}</CardTitle>
+              <CardTitle className="text-3xl text-green-600">
+                {stats.safe}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-xs text-muted-foreground">
@@ -346,7 +359,9 @@ export default function LegalCheck() {
                 <XCircle className="h-4 w-4" />
                 مخاطر عالية
               </CardDescription>
-              <CardTitle className="text-3xl text-red-600">{stats.danger}</CardTitle>
+              <CardTitle className="text-3xl text-red-600">
+                {stats.danger}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-xs text-muted-foreground">
@@ -366,7 +381,10 @@ export default function LegalCheck() {
                   <AlertTriangle className="h-6 w-6 text-yellow-600" />
                   نتيجة التحليل: تحذير
                 </CardTitle>
-                <Badge variant="secondary" className="bg-yellow-100 text-yellow-700">
+                <Badge
+                  variant="secondary"
+                  className="bg-yellow-100 text-yellow-700"
+                >
                   مخاطر متوسطة
                 </Badge>
               </div>
@@ -396,15 +414,18 @@ export default function LegalCheck() {
                   <div className="flex items-start gap-2">
                     <AlertTriangle className="h-4 w-4 text-yellow-600 mt-0.5 shrink-0" />
                     <p className="text-muted-foreground">
-                      <span className="font-semibold text-foreground">تحذير:</span> الموظف
-                      لديه إنذارين فقط. حسب المادة 80 من نظام العمل، يجب إصدار 3
-                      إنذارات قبل الفصل.
+                      <span className="font-semibold text-foreground">
+                        تحذير:
+                      </span>{" "}
+                      الموظف لديه إنذارين فقط. حسب المادة 80 من نظام العمل، يجب
+                      إصدار 3 إنذارات قبل الفصل.
                     </p>
                   </div>
                   <div className="flex items-start gap-2">
                     <Info className="h-4 w-4 text-blue-600 mt-0.5 shrink-0" />
                     <p className="text-muted-foreground">
-                      يجب الانتظار 30 يوماً بعد الإنذار الثالث قبل اتخاذ قرار الفصل.
+                      يجب الانتظار 30 يوماً بعد الإنذار الثالث قبل اتخاذ قرار
+                      الفصل.
                     </p>
                   </div>
                 </div>
@@ -454,12 +475,16 @@ export default function LegalCheck() {
                 </h3>
                 <div className="space-y-2 text-sm text-muted-foreground">
                   <p>
-                    <span className="font-semibold text-foreground">المادة 80:</span>{" "}
-                    يجوز للعامل أن يترك العمل دون إشعار مع احتفاظه بحقوقه النظامية
-                    كلها...
+                    <span className="font-semibold text-foreground">
+                      المادة 80:
+                    </span>{" "}
+                    يجوز للعامل أن يترك العمل دون إشعار مع احتفاظه بحقوقه
+                    النظامية كلها...
                   </p>
                   <p>
-                    <span className="font-semibold text-foreground">المادة 77:</span>{" "}
+                    <span className="font-semibold text-foreground">
+                      المادة 77:
+                    </span>{" "}
                     إذا أنهى أحد الطرفين العقد لسبب غير مشروع...
                   </p>
                 </div>
@@ -510,7 +535,7 @@ export default function LegalCheck() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {reviewedDecisions.map((decision) => (
+                  {reviewedDecisions.map(decision => (
                     <div
                       key={decision.id}
                       className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
@@ -521,8 +546,8 @@ export default function LegalCheck() {
                             decision.status === "safe"
                               ? "bg-green-100 dark:bg-green-950"
                               : decision.status === "warning"
-                              ? "bg-yellow-100 dark:bg-yellow-950"
-                              : "bg-red-100 dark:bg-red-950"
+                                ? "bg-yellow-100 dark:bg-yellow-950"
+                                : "bg-red-100 dark:bg-red-950"
                           }`}
                         >
                           {decision.status === "safe" ? (
@@ -547,8 +572,8 @@ export default function LegalCheck() {
                             decision.status === "safe"
                               ? "bg-green-100 text-green-700"
                               : decision.status === "warning"
-                              ? "bg-yellow-100 text-yellow-700"
-                              : "bg-red-100 text-red-700"
+                                ? "bg-yellow-100 text-yellow-700"
+                                : "bg-red-100 text-red-700"
                           }
                         >
                           {decision.risk}
@@ -580,7 +605,9 @@ export default function LegalCheck() {
                 <div className="space-y-3">
                   <div className="flex items-start gap-3">
                     <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-950 flex items-center justify-center shrink-0">
-                      <span className="text-sm font-semibold text-blue-600">1</span>
+                      <span className="text-sm font-semibold text-blue-600">
+                        1
+                      </span>
                     </div>
                     <div>
                       <h4 className="font-semibold">اختر نوع القرار</h4>
@@ -591,7 +618,9 @@ export default function LegalCheck() {
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-950 flex items-center justify-center shrink-0">
-                      <span className="text-sm font-semibold text-blue-600">2</span>
+                      <span className="text-sm font-semibold text-blue-600">
+                        2
+                      </span>
                     </div>
                     <div>
                       <h4 className="font-semibold">أدخل التفاصيل</h4>
@@ -602,7 +631,9 @@ export default function LegalCheck() {
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-950 flex items-center justify-center shrink-0">
-                      <span className="text-sm font-semibold text-blue-600">3</span>
+                      <span className="text-sm font-semibold text-blue-600">
+                        3
+                      </span>
                     </div>
                     <div>
                       <h4 className="font-semibold">ارفع المستندات</h4>
@@ -613,7 +644,9 @@ export default function LegalCheck() {
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-950 flex items-center justify-center shrink-0">
-                      <span className="text-sm font-semibold text-blue-600">4</span>
+                      <span className="text-sm font-semibold text-blue-600">
+                        4
+                      </span>
                     </div>
                     <div>
                       <h4 className="font-semibold">احصل على التحليل</h4>

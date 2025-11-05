@@ -1,1 +1,79 @@
-{\n  "version": 2,\n  "buildCommand": "pnpm vercel-build",\n  "installCommand": "pnpm install",\n  "devCommand": "pnpm dev",\n  "framework": "vite",\n  "outputDirectory": "dist/public",\n  "regions": ["iad1"],\n  "env": {\n    "NODE_ENV": "production"\n  },\n  "rewrites": [\n    {\n      "source": "/api/:path*",\n      "destination": "https://your-railway-backend.railway.app/api/:path*"\n    },\n    {\n      "source": "/trpc/:path*",\n      "destination": "https://your-railway-backend.railway.app/api/trpc/:path*"\n    },\n    {\n      "source": "/(.*)",\n      "destination": "/index.html"\n    }\n  ],\n  "headers": [\n    {\n      "source": "/(.*)",\n      "headers": [\n        {\n          "key": "X-Content-Type-Options",\n          "value": "nosniff"\n        },\n        {\n          "key": "X-Frame-Options",\n          "value": "DENY"\n        },\n        {\n          "key": "X-XSS-Protection",\n          "value": "1; mode=block"\n        },\n        {\n          "key": "Referrer-Policy",\n          "value": "strict-origin-when-cross-origin"\n        },\n        {\n          "key": "Permissions-Policy",\n          "value": "camera=(), microphone=(), geolocation=()"\n        },\n        {\n          "key": "Strict-Transport-Security",\n          "value": "max-age=31536000; includeSubDomains; preload"\n        },\n        {\n          "key": "Content-Security-Policy",\n          "value": "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self'; font-src 'self'; object-src 'none'; me[...]"\n        }\n      ]\n    },\n    {\n      "source": "/assets/(.*)",\n      "headers": [\n        {\n          "key": "Cache-Control",\n          "value": "public, max-age=31536000, immutable"\n        }\n      ]\n    },\n    {\n      "source": "/api/(.*)",\n      "headers": [\n        {\n          "key": "Cache-Control",\n          "value": "no-store, no-cache, must-revalidate"\n        }\n      ]\n    }\n  ]\n}
+{
+  "version": 2,
+  "buildCommand": "pnpm vercel-build",
+  "installCommand": "pnpm install",
+  "devCommand": "pnpm dev",
+  "framework": "vite",
+  "outputDirectory": "dist/public",
+  "regions": ["iad1"],
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://your-railway-backend.railway.app/api/:path*"
+    },
+    {
+      "source": "/trpc/:path*",
+      "destination": "https://your-railway-backend.railway.app/api/trpc/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains; preload"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self'; font-src 'self'; object-src 'none'; me[...]"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, no-cache, must-revalidate"
+        }
+      ]
+    }
+  ]
+}

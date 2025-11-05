@@ -3,8 +3,8 @@
  * يوفر طبقة caching متقدمة باستخدام Redis لتحسين الأداء
  */
 
-import Redis from 'ioredis';
-import { ENV } from './env';
+import Redis from "ioredis";
+import { ENV } from "./env";
 
 // Redis client instance (singleton pattern)
 let redisClient: Redis | null = null;
@@ -16,8 +16,8 @@ let redisClient: Redis | null = null;
 export function getRedisClient(): Redis {
   if (!redisClient) {
     // استخدام environment variable أو fallback للتطوير المحلي
-    const redisUrl = ENV.redisUrl || 'redis://localhost:6379';
-    
+    const redisUrl = ENV.redisUrl || "redis://localhost:6379";
+
     redisClient = new Redis(redisUrl, {
       maxRetriesPerRequest: 3,
       retryStrategy(times) {
@@ -30,16 +30,16 @@ export function getRedisClient(): Redis {
     });
 
     // تسجيل الأحداث المهمة
-    redisClient.on('connect', () => {
-      console.log('✅ Redis connected successfully');
+    redisClient.on("connect", () => {
+      console.log("✅ Redis connected successfully");
     });
 
-    redisClient.on('error', (err) => {
-      console.error('❌ Redis error:', err.message);
+    redisClient.on("error", err => {
+      console.error("❌ Redis error:", err.message);
     });
 
-    redisClient.on('close', () => {
-      console.log('⚠️  Redis connection closed');
+    redisClient.on("close", () => {
+      console.log("⚠️  Redis connection closed");
     });
   }
 
@@ -67,7 +67,7 @@ export class CacheManager {
   async set(key: string, value: any, ttl?: number): Promise<void> {
     const serialized = JSON.stringify(value);
     const expiry = ttl || this.defaultTTL;
-    
+
     await this.redis.setex(key, expiry, serialized);
   }
 
@@ -78,9 +78,9 @@ export class CacheManager {
    */
   async get<T>(key: string): Promise<T | null> {
     const cached = await this.redis.get(key);
-    
+
     if (!cached) return null;
-    
+
     try {
       return JSON.parse(cached) as T;
     } catch {
@@ -120,7 +120,7 @@ export class CacheManager {
    * دالة مساعدة: حفظ أو استرجاع مع callback
    * إذا كانت القيمة موجودة، يتم إرجاعها من الـ cache
    * إذا لم توجد، يتم استدعاء الـ callback وحفظ النتيجة
-   * 
+   *
    * @param key - Cache key
    * @param callback - دالة لاسترجاع البيانات إذا لم توجد في الـ cache
    * @param ttl - Time to live بالثواني
@@ -138,10 +138,10 @@ export class CacheManager {
 
     // إذا لم توجد، استدعاء الـ callback
     const value = await callback();
-    
+
     // حفظ النتيجة في الـ cache
     await this.set(key, value, ttl);
-    
+
     return value;
   }
 
@@ -160,7 +160,7 @@ export class CacheManager {
     if (consultantId) {
       await this.deletePattern(`consultations:consultant:${consultantId}:*`);
     } else {
-      await this.deletePattern('consultations:*');
+      await this.deletePattern("consultations:*");
     }
   }
 
@@ -180,11 +180,15 @@ export class CacheManager {
 export const CACHE_KEYS = {
   USER_PROFILE: (userId: number) => `user:${userId}:profile`,
   USER_PERMISSIONS: (userId: number) => `user:${userId}:permissions`,
-  CONSULTANT_PROFILE: (consultantId: number) => `consultant:${consultantId}:profile`,
-  CONSULTANT_REVIEWS: (consultantId: number) => `consultant:${consultantId}:reviews`,
-  CONSULTATIONS_BY_CLIENT: (clientId: number) => `consultations:client:${clientId}`,
-  CONSULTATIONS_BY_CONSULTANT: (consultantId: number) => `consultations:consultant:${consultantId}`,
-  CONSULTATION_TYPES: 'consultation:types',
+  CONSULTANT_PROFILE: (consultantId: number) =>
+    `consultant:${consultantId}:profile`,
+  CONSULTANT_REVIEWS: (consultantId: number) =>
+    `consultant:${consultantId}:reviews`,
+  CONSULTATIONS_BY_CLIENT: (clientId: number) =>
+    `consultations:client:${clientId}`,
+  CONSULTATIONS_BY_CONSULTANT: (consultantId: number) =>
+    `consultations:consultant:${consultantId}`,
+  CONSULTATION_TYPES: "consultation:types",
   COMPANY_INFO: (companyId: number) => `company:${companyId}:info`,
 };
 

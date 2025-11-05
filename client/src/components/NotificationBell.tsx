@@ -1,28 +1,28 @@
-import { useState, useEffect } from 'react';
-import { trpc } from '@/lib/trpc';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { useState, useEffect } from "react";
+import { trpc } from "@/lib/trpc";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { 
-  Bell, 
-  Check, 
-  CheckCheck, 
-  Trash2, 
-  AlertCircle, 
-  Info, 
-  CheckCircle, 
+} from "@/components/ui/dropdown-menu";
+import {
+  Bell,
+  Check,
+  CheckCheck,
+  Trash2,
+  AlertCircle,
+  Info,
+  CheckCircle,
   AlertTriangle,
-  X
-} from 'lucide-react';
-import { toast } from 'sonner';
-import { formatDistanceToNow } from 'date-fns';
-import { ar } from 'date-fns/locale';
+  X,
+} from "lucide-react";
+import { toast } from "sonner";
+import { formatDistanceToNow } from "date-fns";
+import { ar } from "date-fns/locale";
 
 export function NotificationBell() {
   const [open, setOpen] = useState(false);
@@ -46,7 +46,7 @@ export function NotificationBell() {
   // Mark all as read mutation
   const markAllAsReadMutation = trpc.notifications.markAllAsRead.useMutation({
     onSuccess: () => {
-      toast.success('تم تحديد جميع الإشعارات كمقروءة');
+      toast.success("تم تحديد جميع الإشعارات كمقروءة");
       refetch();
     },
   });
@@ -79,11 +79,11 @@ export function NotificationBell() {
 
   const getIcon = (type: string) => {
     switch (type) {
-      case 'success':
+      case "success":
         return <CheckCircle className="h-5 w-5 text-green-500" />;
-      case 'warning':
+      case "warning":
         return <AlertTriangle className="h-5 w-5 text-yellow-500" />;
-      case 'error':
+      case "error":
         return <AlertCircle className="h-5 w-5 text-red-500" />;
       default:
         return <Info className="h-5 w-5 text-blue-500" />;
@@ -96,16 +96,19 @@ export function NotificationBell() {
         <Button variant="ghost" size="icon" className="relative">
           <Bell className="h-5 w-5" />
           {unreadCount > 0 && (
-            <Badge 
-              variant="destructive" 
+            <Badge
+              variant="destructive"
               className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
             >
-              {unreadCount > 9 ? '9+' : unreadCount}
+              {unreadCount > 9 ? "9+" : unreadCount}
             </Badge>
           )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-80 max-h-[500px] overflow-y-auto">
+      <DropdownMenuContent
+        align="end"
+        className="w-80 max-h-[500px] overflow-y-auto"
+      >
         <div className="flex items-center justify-between p-3 border-b">
           <h3 className="font-semibold">الإشعارات</h3>
           {unreadCount > 0 && (
@@ -132,7 +135,7 @@ export function NotificationBell() {
               <DropdownMenuItem
                 key={notification.id}
                 className={`p-4 cursor-pointer ${
-                  !notification.isRead ? 'bg-blue-50 hover:bg-blue-100' : ''
+                  !notification.isRead ? "bg-blue-50 hover:bg-blue-100" : ""
                 }`}
                 onClick={() => handleNotificationClick(notification)}
               >
@@ -142,7 +145,9 @@ export function NotificationBell() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
-                      <p className="font-semibold text-sm">{notification.title}</p>
+                      <p className="font-semibold text-sm">
+                        {notification.title}
+                      </p>
                       {!notification.isRead && (
                         <div className="h-2 w-2 rounded-full bg-blue-500 flex-shrink-0 mt-1" />
                       )}
@@ -161,7 +166,7 @@ export function NotificationBell() {
                         variant="ghost"
                         size="sm"
                         className="h-6 w-6 p-0 hover:bg-red-100"
-                        onClick={(e) => handleDelete(e, notification.id)}
+                        onClick={e => handleDelete(e, notification.id)}
                       >
                         <X className="h-3 w-3 text-red-600" />
                       </Button>

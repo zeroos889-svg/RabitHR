@@ -3,6 +3,7 @@
 ## ⚠️ تحذير هام
 
 **لا تشارك أبداً كلمات المرور أو المفاتيح السرية في:**
+
 - ❌ ملفات التوثيق (README, guides, etc.)
 - ❌ الكود المصدري
 - ❌ Git commits
@@ -25,6 +26,7 @@
 7. أضفه في Vercel Environment Variables
 
 **رابط الاتصال**:
+
 ```bash
 # احصل على الرابط الكامل من Railway Dashboard
 # النموذج: mysql://root:<PASSWORD>@host:port/database
@@ -42,6 +44,7 @@ DATABASE_URL=mysql://root:<GET_FROM_RAILWAY>@containers-us-west-xxx.railway.app:
 7. أضفها في Vercel Environment Variables
 
 **رابط الاتصال**:
+
 ```bash
 # احصل على كلمة المرور من TiDB Dashboard
 # النموذج: mysql://user:<PASSWORD>@host:port/database
@@ -55,6 +58,7 @@ DATABASE_URL=mysql://<USERNAME>.root:<GET_FROM_TIDB>@gateway01.eu-central-1.prod
 ### 1. استخدم Environment Variables
 
 ✅ **صحيح**:
+
 ```bash
 # في ملف .env (مُستثنى من Git)
 DATABASE_URL=mysql://root:your_secure_password@host:port/db
@@ -62,6 +66,7 @@ JWT_SECRET=your_jwt_secret_min_32_chars
 ```
 
 ❌ **خطأ**:
+
 ```javascript
 // في الكود المصدري
 const dbPassword = "hardcoded_password_123"; // لا تفعل هذا أبداً!
@@ -70,6 +75,7 @@ const dbPassword = "hardcoded_password_123"; // لا تفعل هذا أبداً!
 ### 2. استخدم .gitignore
 
 تأكد من أن ملف `.gitignore` يتضمن:
+
 ```
 .env
 .env.local
@@ -82,12 +88,14 @@ secrets/
 ### 3. استخدم Placeholders في التوثيق
 
 ✅ **صحيح**:
+
 ```bash
 DATABASE_URL=mysql://root:<PASSWORD>@host:port/db
 JWT_SECRET=<YOUR_SECRET_HERE>
 ```
 
 ❌ **خطأ**:
+
 ```bash
 DATABASE_URL=mysql://root:hardcoded_pass_123@host:port/db
 JWT_SECRET=hardcoded-jwt-key-example
@@ -110,6 +118,7 @@ JWT_SECRET=hardcoded-jwt-key-example
 - **pre-commit hooks**: فحص قبل الـ commit
 
 تثبيت git-secrets:
+
 ```bash
 # تثبيت
 brew install git-secrets  # macOS
@@ -127,6 +136,7 @@ git secrets --register-aws
 ## 📋 قائمة تحقق الأمان
 
 قبل أي commit:
+
 - [ ] تأكدت من عدم وجود كلمات مرور في الكود
 - [ ] تأكدت من عدم وجود API keys مكشوفة
 - [ ] تأكدت من أن `.env` في `.gitignore`
@@ -134,6 +144,7 @@ git secrets --register-aws
 - [ ] راجعت `git diff` قبل الـ commit
 
 قبل أي pull request:
+
 - [ ] راجعت جميع الملفات المعدلة
 - [ ] تأكدت من عدم وجود بيانات حساسة
 - [ ] استخدمت أمثلة وهمية فقط
@@ -151,6 +162,7 @@ git secrets --register-aws
    - حدّث جميع المتغيرات
 
 2. **نظف Git History** (اختياري - متقدم):
+
    ```bash
    # تحذير: هذا يعيد كتابة التاريخ!
    git filter-branch --force --index-filter \

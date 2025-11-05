@@ -3,10 +3,10 @@
  * اختبارات شاملة لـ Redis Cache Manager
  */
 
-import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
-import { CacheManager, CACHE_KEYS, CACHE_TTL } from '../cache';
+import { describe, it, expect, beforeAll, afterAll, beforeEach } from "vitest";
+import { CacheManager, CACHE_KEYS, CACHE_TTL } from "../cache";
 
-describe('CacheManager', () => {
+describe("CacheManager", () => {
   let cache: CacheManager;
 
   beforeAll(() => {
@@ -21,13 +21,13 @@ describe('CacheManager', () => {
 
   beforeEach(async () => {
     // تنظيف الـ cache قبل كل اختبار
-    await cache.deletePattern('test:*');
+    await cache.deletePattern("test:*");
   });
 
-  describe('set و get', () => {
-    it('يجب أن يحفظ ويسترجع القيم بشكل صحيح', async () => {
-      const key = 'test:simple';
-      const value = { name: 'محمد', age: 25 };
+  describe("set و get", () => {
+    it("يجب أن يحفظ ويسترجع القيم بشكل صحيح", async () => {
+      const key = "test:simple";
+      const value = { name: "محمد", age: 25 };
 
       await cache.set(key, value);
       const retrieved = await cache.get(key);
@@ -35,14 +35,14 @@ describe('CacheManager', () => {
       expect(retrieved).toEqual(value);
     });
 
-    it('يجب أن يُرجع null للقيم غير الموجودة', async () => {
-      const result = await cache.get('test:nonexistent');
+    it("يجب أن يُرجع null للقيم غير الموجودة", async () => {
+      const result = await cache.get("test:nonexistent");
       expect(result).toBeNull();
     });
 
-    it('يجب أن يحترم TTL المحدد', async () => {
-      const key = 'test:ttl';
-      const value = { data: 'test' };
+    it("يجب أن يحترم TTL المحدد", async () => {
+      const key = "test:ttl";
+      const value = { data: "test" };
 
       // حفظ مع TTL قصير جداً (1 ثانية)
       await cache.set(key, value, 1);
@@ -60,9 +60,9 @@ describe('CacheManager', () => {
     }, 10000); // زيادة timeout للاختبار
   });
 
-  describe('delete', () => {
-    it('يجب أن يحذف القيم بشكل صحيح', async () => {
-      const key = 'test:delete';
+  describe("delete", () => {
+    it("يجب أن يحذف القيم بشكل صحيح", async () => {
+      const key = "test:delete";
       const value = { test: true };
 
       await cache.set(key, value);
@@ -73,9 +73,9 @@ describe('CacheManager', () => {
     });
   });
 
-  describe('exists', () => {
-    it('يجب أن يتحقق من وجود القيم', async () => {
-      const key = 'test:exists';
+  describe("exists", () => {
+    it("يجب أن يتحقق من وجود القيم", async () => {
+      const key = "test:exists";
 
       const beforeSet = await cache.exists(key);
       expect(beforeSet).toBe(false);
@@ -87,11 +87,11 @@ describe('CacheManager', () => {
     });
   });
 
-  describe('getOrSet', () => {
-    it('يجب أن يُرجع من الـ cache إذا وجد', async () => {
-      const key = 'test:getOrSet';
+  describe("getOrSet", () => {
+    it("يجب أن يُرجع من الـ cache إذا وجد", async () => {
+      const key = "test:getOrSet";
       const cachedValue = { cached: true };
-      
+
       let callbackExecuted = false;
       const callback = async () => {
         callbackExecuted = true;
@@ -110,10 +110,10 @@ describe('CacheManager', () => {
       expect(callbackExecuted).toBe(false);
     });
 
-    it('يجب أن ينفذ callback إذا لم يجد في الـ cache', async () => {
-      const key = 'test:getOrSet:new';
+    it("يجب أن ينفذ callback إذا لم يجد في الـ cache", async () => {
+      const key = "test:getOrSet:new";
       const freshValue = { fresh: true };
-      
+
       let callbackExecuted = false;
       const callback = async () => {
         callbackExecuted = true;
@@ -134,22 +134,24 @@ describe('CacheManager', () => {
     });
   });
 
-  describe('CACHE_KEYS', () => {
-    it('يجب أن يُولّد keys صحيحة', () => {
-      expect(CACHE_KEYS.USER_PROFILE(123)).toBe('user:123:profile');
-      expect(CACHE_KEYS.CONSULTANT_PROFILE(456)).toBe('consultant:456:profile');
-      expect(CACHE_KEYS.CONSULTATIONS_BY_CLIENT(789)).toBe('consultations:client:789');
+  describe("CACHE_KEYS", () => {
+    it("يجب أن يُولّد keys صحيحة", () => {
+      expect(CACHE_KEYS.USER_PROFILE(123)).toBe("user:123:profile");
+      expect(CACHE_KEYS.CONSULTANT_PROFILE(456)).toBe("consultant:456:profile");
+      expect(CACHE_KEYS.CONSULTATIONS_BY_CLIENT(789)).toBe(
+        "consultations:client:789"
+      );
     });
   });
 
-  describe('invalidateUserCache', () => {
-    it('يجب أن يحذف جميع cache المتعلق بالمستخدم', async () => {
+  describe("invalidateUserCache", () => {
+    it("يجب أن يحذف جميع cache المتعلق بالمستخدم", async () => {
       const userId = 123;
-      
+
       // حفظ عدة قيم للمستخدم
-      await cache.set(`user:${userId}:profile`, { name: 'علي' });
-      await cache.set(`user:${userId}:permissions`, ['read', 'write']);
-      await cache.set(`user:${userId}:settings`, { theme: 'dark' });
+      await cache.set(`user:${userId}:profile`, { name: "علي" });
+      await cache.set(`user:${userId}:permissions`, ["read", "write"]);
+      await cache.set(`user:${userId}:settings`, { theme: "dark" });
 
       // التحقق من وجود القيم
       expect(await cache.exists(`user:${userId}:profile`)).toBe(true);

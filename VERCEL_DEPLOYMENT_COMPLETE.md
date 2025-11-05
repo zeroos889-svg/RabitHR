@@ -38,6 +38,7 @@
 ### الخطوة 1: تأكد من وجود الملفات المطلوبة ✅
 
 جميع الملفات التالية موجودة وجاهزة:
+
 - ✅ `vercel.json` - إعدادات Vercel
 - ✅ `package.json` - تبعيات المشروع
 - ✅ `.env.example` - نموذج متغيرات البيئة
@@ -50,17 +51,21 @@
 لديك خياران جاهزان:
 
 #### 🟦 الخيار 1: Railway MySQL (موصى به للبداية)
+
 ```bash
 DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:3306/railway
 ```
+
 - ✅ جاهز للاستخدام مباشرة
 - ✅ لا يحتاج إعداد إضافي
 - ✅ كلمة المرور موجودة
 
 #### 🟩 الخيار 2: TiDB Cloud (للمشاريع الكبيرة)
+
 ```bash
 DATABASE_URL=mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
 ```
+
 - ⚠️ احتاج كلمة المرور من TiDB Dashboard
 - ✅ أداء عالي جداً
 - ✅ توسع غير محدود
@@ -72,15 +77,18 @@ DATABASE_URL=mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.
 ### الخطوة 3: الربط مع Vercel (5 دقائق)
 
 #### أ. افتح Vercel:
+
 👉 [vercel.com/new](https://vercel.com/new)
 
 #### ب. استيراد المشروع:
+
 1. سجّل دخول أو أنشئ حساب
 2. انقر **Import Git Repository**
 3. اختر مستودع **RabitHR** من GitHub
 4. انقر **Import**
 
 #### ج. الإعدادات:
+
 - **Framework Preset**: `Vite` (سيتم اختياره تلقائياً)
 - **Root Directory**: `./` (الافتراضي)
 - **Build Command**: `pnpm build` (من vercel.json)
@@ -188,9 +196,11 @@ pnpm db:push
 ## ✅ التحقق من النشر
 
 ### 1. اختبر الصفحة الرئيسية:
+
 افتح رابط Vercel في المتصفح
 
 ### 2. جرّب تسجيل الدخول:
+
 ```
 موظف: employee@test.com / password123
 شركة: company@test.com / password123
@@ -199,6 +209,7 @@ pnpm db:push
 ```
 
 ### 3. تحقق من API:
+
 ```bash
 curl https://your-app.vercel.app/api/trpc/health
 ```
@@ -210,6 +221,7 @@ curl https://your-app.vercel.app/api/trpc/health
 ### 1. ربط نطاق مخصص
 
 في Vercel Dashboard:
+
 1. **Settings → Domains**
 2. **Add Domain**
 3. أدخل نطاقك: `rabit.sa` أو `www.rabit.sa`
@@ -228,6 +240,7 @@ Value: cname.vercel-dns.com
 ### 2. تفعيل Redis (تحسين الأداء)
 
 في Railway:
+
 1. أضف خدمة Redis جديدة
 2. انسخ `REDIS_URL`
 3. أضفه في Vercel Environment Variables
@@ -236,6 +249,7 @@ Value: cname.vercel-dns.com
 ### 3. تفعيل الذكاء الاصطناعي
 
 احصل على مفتاح OpenAI:
+
 1. سجّل على [platform.openai.com](https://platform.openai.com)
 2. أنشئ API Key
 3. أضف `OPENAI_API_KEY` في Vercel
@@ -246,17 +260,21 @@ Value: cname.vercel-dns.com
 ## 📚 المراجع والأدلة
 
 ### للبدء السريع:
+
 - 📄 [VERCEL_QUICKSTART_AR.md](./VERCEL_QUICKSTART_AR.md) - 5 دقائق فقط
 
 ### للدليل الكامل:
+
 - 📘 [VERCEL_SETUP.md](./VERCEL_SETUP.md) - كل التفاصيل
 - 📗 [VERCEL_SETUP_WITH_DATABASE.md](./VERCEL_SETUP_WITH_DATABASE.md) - خطوة بخطوة
 
 ### للإعدادات:
+
 - ⚙️ [VERCEL_ENV_READY.md](./VERCEL_ENV_READY.md) - نسخ ولصق
 - 🗄️ [DATABASE_OPTIONS.md](./DATABASE_OPTIONS.md) - اختيار القاعدة
 
 ### للفهم:
+
 - 🔄 [docs/VERCEL_VS_LOCAL_AR.md](./docs/VERCEL_VS_LOCAL_AR.md) - المحلي vs السحابي
 
 ---
@@ -264,6 +282,7 @@ Value: cname.vercel-dns.com
 ## 🐛 حل المشاكل الشائعة
 
 ### المشكلة 1: Build Failed
+
 ```bash
 # الحل:
 - تحقق من أن vercel.json موجود
@@ -272,6 +291,7 @@ Value: cname.vercel-dns.com
 ```
 
 ### المشكلة 2: Database Connection Error
+
 ```bash
 # الحل:
 - تحقق من DATABASE_URL (بدون مسافات)
@@ -280,6 +300,7 @@ Value: cname.vercel-dns.com
 ```
 
 ### المشكلة 3: الصفحات تعطي 404
+
 ```bash
 # الحل:
 - تأكد من وجود rewrites في vercel.json ✓
@@ -294,6 +315,7 @@ Value: cname.vercel-dns.com
 قبل الإطلاق الرسمي:
 
 ### الإعداد الأساسي:
+
 - [ ] المشروع مربوط مع Vercel
 - [ ] قاعدة البيانات متصلة (Railway أو TiDB)
 - [ ] جميع المتغيرات الأساسية مضافة
@@ -301,6 +323,7 @@ Value: cname.vercel-dns.com
 - [ ] VITE_APP_URL محدّث
 
 ### اختبار الوظائف:
+
 - [ ] الصفحة الرئيسية تفتح
 - [ ] تسجيل الدخول يعمل
 - [ ] البيانات تُحفظ وتُسترجع
@@ -308,17 +331,20 @@ Value: cname.vercel-dns.com
 - [ ] API endpoints تستجيب
 
 ### الهجرات:
+
 - [ ] تم تشغيل `pnpm db:push`
 - [ ] جميع الجداول موجودة
 - [ ] بيانات الاختبار تعمل
 
 ### الأمان:
+
 - [ ] JWT_SECRET قوي (32+ حرف)
 - [ ] SESSION_SECRET قوي
 - [ ] كلمات المرور الافتراضية تم تغييرها
 - [ ] SSL نشط (تلقائي من Vercel)
 
 ### الأداء (اختياري):
+
 - [ ] Redis مفعّل
 - [ ] CDN للملفات الكبيرة
 - [ ] Monitoring مفعّل
@@ -343,15 +369,18 @@ Value: cname.vercel-dns.com
 إذا واجهت أي مشكلة:
 
 ### 1. راجع الأدلة:
+
 - جميع الأدلة متوفرة في مجلد المشروع
 - كل مشكلة لها حل في الأدلة
 
 ### 2. تحقق من Logs:
+
 - **Vercel**: Deployments → انقر على Build → Function Logs
 - **Railway**: Dashboard → Service → Logs
 - **TiDB**: Dashboard → Monitoring
 
 ### 3. تواصل معنا:
+
 - 📧 **البريد**: info@rbithr.com
 - 📱 **الهاتف**: 0570700355
 - 🌐 **الموقع**: https://rabit.sa
@@ -379,6 +408,7 @@ Value: cname.vercel-dns.com
 ---
 
 ### شارك المشروع:
+
 [![Vercel](https://img.shields.io/badge/Deploy-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com)
 [![Railway](https://img.shields.io/badge/Database-Railway-purple?style=for-the-badge&logo=railway)](https://railway.app)
 [![TiDB](https://img.shields.io/badge/Database-TiDB-red?style=for-the-badge&logo=pingcap)](https://tidbcloud.com)

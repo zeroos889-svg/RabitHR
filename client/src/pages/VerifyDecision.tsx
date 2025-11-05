@@ -1,5 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -37,7 +43,9 @@ export default function VerifyDecision() {
   const [, setLocation] = useLocation();
   const [selectedDecisionType, setSelectedDecisionType] = useState("");
   const [showResult, setShowResult] = useState(false);
-  const [analysisResult, setAnalysisResult] = useState<"legal" | "doubtful" | "illegal">("illegal");
+  const [analysisResult, setAnalysisResult] = useState<
+    "legal" | "doubtful" | "illegal"
+  >("illegal");
 
   const handleAnalyze = () => {
     // محاكاة التحليل
@@ -54,8 +62,15 @@ export default function VerifyDecision() {
       {/* Header */}
       <header className="border-b bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setLocation("/")}>
-            <img src={APP_LOGO} alt={APP_TITLE} className="h-10 w-10 rounded-lg" />
+          <div
+            className="flex items-center gap-3 cursor-pointer"
+            onClick={() => setLocation("/")}
+          >
+            <img
+              src={APP_LOGO}
+              alt={APP_TITLE}
+              className="h-10 w-10 rounded-lg"
+            />
             <span className="font-bold text-xl">{APP_TITLE}</span>
           </div>
           <Button variant="outline" onClick={() => setLocation("/")}>
@@ -75,8 +90,8 @@ export default function VerifyDecision() {
             تحقق من قانونية قرار الموارد البشرية
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            صدر عليك قرار من HR؟ تحقق من قانونيته حسب نظام العمل السعودي واحصل على
-            تقرير مفصل بحقوقك وخطوات الاعتراض
+            صدر عليك قرار من HR؟ تحقق من قانونيته حسب نظام العمل السعودي واحصل
+            على تقرير مفصل بحقوقك وخطوات الاعتراض
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
@@ -135,7 +150,10 @@ export default function VerifyDecision() {
               { icon: FileText, label: "إنهاء تجريبي", color: "gray" },
               { icon: FileText, label: "تعديل عقد", color: "green" },
             ].map((type, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer">
+              <Card
+                key={index}
+                className="hover:shadow-lg transition-shadow cursor-pointer"
+              >
                 <CardContent className="pt-6 text-center">
                   <div
                     className={`h-12 w-12 rounded-lg mx-auto mb-3 flex items-center justify-center bg-${type.color}-100 dark:bg-${type.color}-950`}
@@ -166,7 +184,10 @@ export default function VerifyDecision() {
             <CardContent className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="decision-type">نوع القرار *</Label>
-                <Select value={selectedDecisionType} onValueChange={setSelectedDecisionType}>
+                <Select
+                  value={selectedDecisionType}
+                  onValueChange={setSelectedDecisionType}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="اختر نوع القرار الصادر عليك" />
                   </SelectTrigger>
@@ -177,8 +198,12 @@ export default function VerifyDecision() {
                     <SelectItem value="transfer">نقل موظف</SelectItem>
                     <SelectItem value="suspension">إيقاف عن العمل</SelectItem>
                     <SelectItem value="salary-reduction">تخفيض راتب</SelectItem>
-                    <SelectItem value="probation-end">إنهاء فترة تجريبية</SelectItem>
-                    <SelectItem value="contract-modification">تعديل عقد العمل</SelectItem>
+                    <SelectItem value="probation-end">
+                      إنهاء فترة تجريبية
+                    </SelectItem>
+                    <SelectItem value="contract-modification">
+                      تعديل عقد العمل
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -195,11 +220,19 @@ export default function VerifyDecision() {
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="work-duration">مدة عملك (بالأشهر)</Label>
-                  <Input id="work-duration" type="number" placeholder="مثال: 24" />
+                  <Input
+                    id="work-duration"
+                    type="number"
+                    placeholder="مثال: 24"
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="previous-warnings">الإنذارات السابقة</Label>
-                  <Input id="previous-warnings" type="number" placeholder="مثال: 2" />
+                  <Input
+                    id="previous-warnings"
+                    type="number"
+                    placeholder="مثال: 2"
+                  />
                 </div>
               </div>
 
@@ -212,7 +245,9 @@ export default function VerifyDecision() {
                 <Label>رفع المستندات (اختياري)</Label>
                 <div className="border-2 border-dashed rounded-lg p-8 text-center hover:border-blue-500 transition-colors cursor-pointer">
                   <Upload className="h-10 w-10 mx-auto mb-3 text-muted-foreground" />
-                  <p className="text-sm font-semibold mb-1">اسحب الملفات هنا أو انقر للرفع</p>
+                  <p className="text-sm font-semibold mb-1">
+                    اسحب الملفات هنا أو انقر للرفع
+                  </p>
                   <p className="text-xs text-muted-foreground">
                     صورة القرار، العقد، الإنذارات السابقة، أي مستندات أخرى
                   </p>
@@ -261,8 +296,8 @@ export default function VerifyDecision() {
                 analysisResult === "legal"
                   ? "border-green-500 bg-green-50 dark:bg-green-950"
                   : analysisResult === "doubtful"
-                  ? "border-yellow-500 bg-yellow-50 dark:bg-yellow-950"
-                  : "border-red-500 bg-red-50 dark:bg-red-950"
+                    ? "border-yellow-500 bg-yellow-50 dark:bg-yellow-950"
+                    : "border-red-500 bg-red-50 dark:bg-red-950"
               }`}
             >
               <CardHeader>
@@ -278,8 +313,8 @@ export default function VerifyDecision() {
                     {analysisResult === "legal"
                       ? "القرار قانوني"
                       : analysisResult === "doubtful"
-                      ? "القرار مشكوك فيه"
-                      : "القرار غير قانوني"}
+                        ? "القرار مشكوك فيه"
+                        : "القرار غير قانوني"}
                   </CardTitle>
                   <Badge
                     variant="secondary"
@@ -287,15 +322,15 @@ export default function VerifyDecision() {
                       analysisResult === "legal"
                         ? "bg-green-100 text-green-700"
                         : analysisResult === "doubtful"
-                        ? "bg-yellow-100 text-yellow-700"
-                        : "bg-red-100 text-red-700"
+                          ? "bg-yellow-100 text-yellow-700"
+                          : "bg-red-100 text-red-700"
                     }
                   >
                     {analysisResult === "legal"
                       ? "متوافق مع النظام"
                       : analysisResult === "doubtful"
-                      ? "يحتاج مراجعة"
-                      : "يمكنك الاعتراض"}
+                        ? "يحتاج مراجعة"
+                        : "يمكنك الاعتراض"}
                   </Badge>
                 </div>
                 <CardDescription>
@@ -334,8 +369,9 @@ export default function VerifyDecision() {
                           القرار غير قانوني
                         </p>
                         <p className="text-sm text-red-600 dark:text-red-400">
-                          لم يتم إصدار 3 إنذارات قبل الفصل كما تنص المادة 80 من نظام
-                          العمل. يجب إنذار الموظف 3 مرات قبل اتخاذ قرار الفصل.
+                          لم يتم إصدار 3 إنذارات قبل الفصل كما تنص المادة 80 من
+                          نظام العمل. يجب إنذار الموظف 3 مرات قبل اتخاذ قرار
+                          الفصل.
                         </p>
                       </div>
                     </div>
@@ -346,8 +382,8 @@ export default function VerifyDecision() {
                           الإجراءات المطلوبة
                         </p>
                         <p className="text-sm text-blue-600 dark:text-blue-400">
-                          يجب على الشركة إصدار 3 إنذارات كتابية والانتظار 30 يوماً بعد
-                          الإنذار الثالث قبل اتخاذ قرار الفصل.
+                          يجب على الشركة إصدار 3 إنذارات كتابية والانتظار 30
+                          يوماً بعد الإنذار الثالث قبل اتخاذ قرار الفصل.
                         </p>
                       </div>
                     </div>
@@ -415,7 +451,9 @@ export default function VerifyDecision() {
                               {index + 1}
                             </span>
                           </div>
-                          <span className="text-sm text-muted-foreground">{step}</span>
+                          <span className="text-sm text-muted-foreground">
+                            {step}
+                          </span>
                         </li>
                       ))}
                     </ol>
@@ -432,19 +470,24 @@ export default function VerifyDecision() {
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <div className="p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
-                      <p className="font-semibold mb-1">المادة 80 - نظام العمل السعودي</p>
+                      <p className="font-semibold mb-1">
+                        المادة 80 - نظام العمل السعودي
+                      </p>
                       <p className="text-sm text-muted-foreground">
-                        "لا يجوز فصل العامل إلا إذا ارتكب خطأً جسيماً، أو لم يقم بتنفيذ
-                        التزاماته الجوهرية المترتبة على عقد العمل، أو لم يطع الأوامر
-                        المشروعة، أو لم يراع الأنظمة الخاصة بسلامة العمل والعمال رغم
-                        إنذاره كتابة..."
+                        "لا يجوز فصل العامل إلا إذا ارتكب خطأً جسيماً، أو لم يقم
+                        بتنفيذ التزاماته الجوهرية المترتبة على عقد العمل، أو لم
+                        يطع الأوامر المشروعة، أو لم يراع الأنظمة الخاصة بسلامة
+                        العمل والعمال رغم إنذاره كتابة..."
                       </p>
                     </div>
                     <div className="p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
-                      <p className="font-semibold mb-1">المادة 77 - نظام العمل السعودي</p>
+                      <p className="font-semibold mb-1">
+                        المادة 77 - نظام العمل السعودي
+                      </p>
                       <p className="text-sm text-muted-foreground">
-                        "إذا أنهى أحد الطرفين العقد لسبب غير مشروع كان للطرف الآخر
-                        الحق في تعويض تقدره هيئة تسوية الخلافات العمالية..."
+                        "إذا أنهى أحد الطرفين العقد لسبب غير مشروع كان للطرف
+                        الآخر الحق في تعويض تقدره هيئة تسوية الخلافات
+                        العمالية..."
                       </p>
                     </div>
                   </CardContent>
@@ -496,7 +539,10 @@ export default function VerifyDecision() {
                     <Download className="h-4 w-4 ml-2" />
                     تحميل التقرير الكامل PDF
                   </Button>
-                  <Button variant="outline" onClick={() => setShowResult(false)}>
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowResult(false)}
+                  >
                     تحليل قرار آخر
                   </Button>
                 </div>
@@ -561,7 +607,8 @@ export default function VerifyDecision() {
             هل أنت موظف موارد بشرية؟
           </h2>
           <p className="text-xl text-blue-100">
-            استخدم نظامنا الكامل لإدارة الموارد البشرية مع أدوات ذكية وتحليلات متقدمة
+            استخدم نظامنا الكامل لإدارة الموارد البشرية مع أدوات ذكية وتحليلات
+            متقدمة
           </p>
           <Button
             size="lg"
@@ -581,7 +628,11 @@ export default function VerifyDecision() {
           <div className="grid md:grid-cols-3 gap-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <img src={APP_LOGO} alt={APP_TITLE} className="h-8 w-8 rounded-lg" />
+                <img
+                  src={APP_LOGO}
+                  alt={APP_TITLE}
+                  className="h-8 w-8 rounded-lg"
+                />
                 <span className="font-bold">{APP_TITLE}</span>
               </div>
               <p className="text-sm text-muted-foreground">
@@ -604,7 +655,10 @@ export default function VerifyDecision() {
             <div>
               <h3 className="font-semibold mb-4">روابط مهمة</h3>
               <div className="space-y-2 text-sm text-muted-foreground">
-                <p className="cursor-pointer hover:text-foreground" onClick={() => setLocation("/")}>
+                <p
+                  className="cursor-pointer hover:text-foreground"
+                  onClick={() => setLocation("/")}
+                >
                   الرئيسية
                 </p>
                 <p className="cursor-pointer hover:text-foreground">

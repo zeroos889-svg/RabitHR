@@ -1,5 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { APP_LOGO, APP_TITLE } from "@/const";
 import {
@@ -57,13 +63,15 @@ export default function Services() {
             "تقليل الأخطاء البشرية",
             "مظهر احترافي موحد",
           ],
-          example: "موظف HR كان يستغرق 15 دقيقة لكتابة شهادة راتب واحدة، الآن يصدرها في 30 ثانية!",
+          example:
+            "موظف HR كان يستغرق 15 دقيقة لكتابة شهادة راتب واحدة، الآن يصدرها في 30 ثانية!",
           path: "/dashboard/certificates",
         },
         {
           icon: Scale,
           title: "نظام التحقق القانوني",
-          description: "تحقق من قانونية أي قرار HR قبل إصداره لتجنب المشاكل القانونية",
+          description:
+            "تحقق من قانونية أي قرار HR قبل إصداره لتجنب المشاكل القانونية",
           features: [
             "تحليل ذكي بالـ AI",
             "7 أنواع قرارات",
@@ -77,7 +85,8 @@ export default function Services() {
             "تجنب التعويضات",
             "راحة بال كاملة",
           ],
-          example: "شركة كانت ستفصل موظف بدون 3 إنذارات، النظام حذرها وأنقذها من قضية قانونية!",
+          example:
+            "شركة كانت ستفصل موظف بدون 3 إنذارات، النظام حذرها وأنقذها من قضية قانونية!",
           path: "/dashboard/legal-check",
         },
         {
@@ -96,7 +105,8 @@ export default function Services() {
             "صياغة احترافية",
             "توحيد المراسلات",
           ],
-          example: "بدلاً من كتابة عرض عمل من الصفر، اختر قالب جاهز وعدّل عليه في دقيقتين!",
+          example:
+            "بدلاً من كتابة عرض عمل من الصفر، اختر قالب جاهز وعدّل عليه في دقيقتين!",
           path: "/dashboard/templates",
           comingSoon: true,
         },
@@ -111,12 +121,9 @@ export default function Services() {
             "تحويل للتذاكر عند الحاجة",
             "تحليل الأسئلة الشائعة",
           ],
-          benefits: [
-            "تقليل عبء الاستفسارات",
-            "توفير وقت HR",
-            "رضا الموظفين",
-          ],
-          example: "بدلاً من الرد على 50 سؤال يومياً عن رصيد الإجازات، المساعد يجيب تلقائياً!",
+          benefits: ["تقليل عبء الاستفسارات", "توفير وقت HR", "رضا الموظفين"],
+          example:
+            "بدلاً من الرد على 50 سؤال يومياً عن رصيد الإجازات، المساعد يجيب تلقائياً!",
           path: "/dashboard/ai-assistant",
           comingSoon: true,
         },
@@ -139,12 +146,9 @@ export default function Services() {
             "سجل التاريخ الوظيفي",
             "بحث وفلترة متقدمة",
           ],
-          benefits: [
-            "مركزية البيانات",
-            "سهولة الوصول",
-            "تنظيم احترافي",
-          ],
-          example: "جميع بيانات 500 موظف في مكان واحد، ابحث عن أي موظف في ثوانٍ!",
+          benefits: ["مركزية البيانات", "سهولة الوصول", "تنظيم احترافي"],
+          example:
+            "جميع بيانات 500 موظف في مكان واحد، ابحث عن أي موظف في ثوانٍ!",
           path: "/dashboard/employees",
         },
         {
@@ -163,7 +167,8 @@ export default function Services() {
             "تسريع التعيين",
             "تحسين جودة التوظيف",
           ],
-          example: "تتبع 100 متقدم لـ 5 وظائف، مع مراحل واضحة من التقديم حتى التعيين!",
+          example:
+            "تتبع 100 متقدم لـ 5 وظائف، مع مراحل واضحة من التقديم حتى التعيين!",
           path: "/dashboard/ats",
         },
         {
@@ -177,11 +182,7 @@ export default function Services() {
             "حالات المهام",
             "إشعارات تلقائية",
           ],
-          benefits: [
-            "عدم نسيان أي مهمة",
-            "تنظيم العمل",
-            "زيادة الإنتاجية",
-          ],
+          benefits: ["عدم نسيان أي مهمة", "تنظيم العمل", "زيادة الإنتاجية"],
           example: "تذكير تلقائي بتجديد عقد موظف قبل انتهائه بشهر!",
           path: "/dashboard/tasks",
         },
@@ -204,12 +205,9 @@ export default function Services() {
             "نظام التعليقات",
             "تعيين للموظفين",
           ],
-          benefits: [
-            "مركزية الطلبات",
-            "سرعة الاستجابة",
-            "تتبع الأداء",
-          ],
-          example: "جميع طلبات الموظفين من كل القنوات في مكان واحد، لا يضيع أي طلب!",
+          benefits: ["مركزية الطلبات", "سرعة الاستجابة", "تتبع الأداء"],
+          example:
+            "جميع طلبات الموظفين من كل القنوات في مكان واحد، لا يضيع أي طلب!",
           path: "/dashboard/tickets",
         },
         {
@@ -223,11 +221,7 @@ export default function Services() {
             "تذكيرات أعياد الميلاد",
             "تقويم HR شامل",
           ],
-          benefits: [
-            "عدم تفويت أي موعد",
-            "تخطيط مسبق",
-            "احترافية عالية",
-          ],
+          benefits: ["عدم تفويت أي موعد", "تخطيط مسبق", "احترافية عالية"],
           example: "تنبيه تلقائي قبل 30 يوم من انتهاء تأشيرة موظف!",
           path: "/dashboard/reminders",
           comingSoon: true,
@@ -256,7 +250,8 @@ export default function Services() {
             "اتخاذ قرارات مبنية على بيانات",
             "تقديم تقارير للإدارة",
           ],
-          example: "تقرير شامل عن الموظفين والرواتب والإجازات جاهز في دقيقة واحدة!",
+          example:
+            "تقرير شامل عن الموظفين والرواتب والإجازات جاهز في دقيقة واحدة!",
           path: "/dashboard/reports",
         },
         {
@@ -275,7 +270,8 @@ export default function Services() {
             "اكتشاف المشاكل مبكراً",
             "متابعة الأداء",
           ],
-          example: "اعرف عدد الموظفين، التذاكر المفتوحة، المهام المتأخرة في لمحة واحدة!",
+          example:
+            "اعرف عدد الموظفين، التذاكر المفتوحة، المهام المتأخرة في لمحة واحدة!",
           path: "/dashboard",
         },
       ],
@@ -310,8 +306,15 @@ export default function Services() {
       {/* Header */}
       <header className="border-b bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setLocation("/")}>
-            <img src={APP_LOGO} alt={APP_TITLE} className="h-10 w-10 rounded-lg" />
+          <div
+            className="flex items-center gap-3 cursor-pointer"
+            onClick={() => setLocation("/")}
+          >
+            <img
+              src={APP_LOGO}
+              alt={APP_TITLE}
+              className="h-10 w-10 rounded-lg"
+            />
             <span className="font-bold text-xl">{APP_TITLE}</span>
           </div>
           <div className="flex items-center gap-3">
@@ -339,8 +342,8 @@ export default function Services() {
             خدمات رابِط الذكية
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            مجموعة شاملة من الأدوات والخدمات الذكية التي تساعد موظفي الموارد البشرية على
-            إنجاز مهامهم اليومية بسرعة وكفاءة عالية
+            مجموعة شاملة من الأدوات والخدمات الذكية التي تساعد موظفي الموارد
+            البشرية على إنجاز مهامهم اليومية بسرعة وكفاءة عالية
           </p>
           <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
             <div className="flex items-center gap-2">
@@ -364,7 +367,9 @@ export default function Services() {
         <section
           key={categoryIndex}
           className={`py-16 px-4 ${
-            categoryIndex % 2 === 1 ? "bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm" : ""
+            categoryIndex % 2 === 1
+              ? "bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm"
+              : ""
           }`}
         >
           <div className="container mx-auto max-w-7xl">
@@ -401,7 +406,9 @@ export default function Services() {
                         <service.icon className="h-7 w-7 text-white" />
                       </div>
                       <div className="flex-1">
-                        <CardTitle className="text-xl mb-2">{service.title}</CardTitle>
+                        <CardTitle className="text-xl mb-2">
+                          {service.title}
+                        </CardTitle>
                         <CardDescription className="text-base">
                           {service.description}
                         </CardDescription>
@@ -417,9 +424,14 @@ export default function Services() {
                       </h4>
                       <ul className="space-y-2">
                         {service.features.map((feature, index) => (
-                          <li key={index} className="flex items-start gap-2 text-sm">
+                          <li
+                            key={index}
+                            className="flex items-start gap-2 text-sm"
+                          >
                             <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5 shrink-0" />
-                            <span className="text-muted-foreground">{feature}</span>
+                            <span className="text-muted-foreground">
+                              {feature}
+                            </span>
                           </li>
                         ))}
                       </ul>
@@ -433,7 +445,11 @@ export default function Services() {
                       </h4>
                       <div className="flex flex-wrap gap-2">
                         {service.benefits.map((benefit, index) => (
-                          <Badge key={index} variant="secondary" className="text-xs">
+                          <Badge
+                            key={index}
+                            variant="secondary"
+                            className="text-xs"
+                          >
                             {benefit}
                           </Badge>
                         ))}
@@ -454,7 +470,9 @@ export default function Services() {
                     {/* CTA */}
                     <Button
                       className={`w-full bg-gradient-to-r ${category.gradient} hover:opacity-90`}
-                      onClick={() => !service.comingSoon && setLocation(service.path)}
+                      onClick={() =>
+                        !service.comingSoon && setLocation(service.path)
+                      }
                       disabled={service.comingSoon}
                     >
                       {service.comingSoon ? (
@@ -481,21 +499,30 @@ export default function Services() {
       <section className="py-16 px-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">أدوات إضافية مساعدة</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              أدوات إضافية مساعدة
+            </h2>
             <p className="text-xl text-purple-100">
               حاسبات وأدوات سريعة لإنجاز المهام اليومية
             </p>
           </div>
           <div className="grid md:grid-cols-4 gap-6">
             {additionalTools.map((tool, index) => (
-              <Card key={index} className="bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 transition-colors">
+              <Card
+                key={index}
+                className="bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 transition-colors"
+              >
                 <CardContent className="pt-6 text-center">
                   <div className="h-12 w-12 rounded-lg mx-auto mb-3 flex items-center justify-center bg-white/20">
                     <tool.icon className="h-6 w-6 text-white" />
                   </div>
-                  <h3 className="font-semibold mb-2 text-white">{tool.title}</h3>
+                  <h3 className="font-semibold mb-2 text-white">
+                    {tool.title}
+                  </h3>
                   <p className="text-sm text-purple-100">{tool.description}</p>
-                  <Badge className="mt-3 bg-yellow-500 text-white">قريباً</Badge>
+                  <Badge className="mt-3 bg-yellow-500 text-white">
+                    قريباً
+                  </Badge>
                 </CardContent>
               </Card>
             ))}
@@ -516,7 +543,9 @@ export default function Services() {
               <p className="text-muted-foreground">خدمة ذكية</p>
             </div>
             <div>
-              <div className="text-4xl font-bold text-purple-600 mb-2">100%</div>
+              <div className="text-4xl font-bold text-purple-600 mb-2">
+                100%
+              </div>
               <p className="text-muted-foreground">متوافق مع النظام</p>
             </div>
             <div>
@@ -530,9 +559,7 @@ export default function Services() {
       {/* CTA Section */}
       <section className="py-20 px-4 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 text-white">
         <div className="container mx-auto max-w-4xl text-center space-y-6">
-          <h2 className="text-4xl md:text-5xl font-bold">
-            جاهز لتجربة رابِط؟
-          </h2>
+          <h2 className="text-4xl md:text-5xl font-bold">جاهز لتجربة رابِط؟</h2>
           <p className="text-xl text-blue-100">
             ابدأ الآن واكتشف كيف يمكن لرابِط أن يوفر 70% من وقتك اليومي
           </p>
@@ -565,7 +592,11 @@ export default function Services() {
           <div className="grid md:grid-cols-3 gap-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <img src={APP_LOGO} alt={APP_TITLE} className="h-8 w-8 rounded-lg" />
+                <img
+                  src={APP_LOGO}
+                  alt={APP_TITLE}
+                  className="h-8 w-8 rounded-lg"
+                />
                 <span className="font-bold">{APP_TITLE}</span>
               </div>
               <p className="text-sm text-muted-foreground">
@@ -588,13 +619,22 @@ export default function Services() {
             <div>
               <h3 className="font-semibold mb-4">روابط سريعة</h3>
               <div className="space-y-2 text-sm text-muted-foreground">
-                <p className="cursor-pointer hover:text-foreground" onClick={() => setLocation("/")}>
+                <p
+                  className="cursor-pointer hover:text-foreground"
+                  onClick={() => setLocation("/")}
+                >
                   الرئيسية
                 </p>
-                <p className="cursor-pointer hover:text-foreground" onClick={() => setLocation("/services")}>
+                <p
+                  className="cursor-pointer hover:text-foreground"
+                  onClick={() => setLocation("/services")}
+                >
                   الخدمات
                 </p>
-                <p className="cursor-pointer hover:text-foreground" onClick={() => setLocation("/pricing")}>
+                <p
+                  className="cursor-pointer hover:text-foreground"
+                  onClick={() => setLocation("/pricing")}
+                >
                   الباقات
                 </p>
               </div>

@@ -33,6 +33,7 @@ https://api.rabit.sa/api/trpc
 ### أنواع الإجراءات (Procedures)
 
 #### Public Procedure
+
 إجراءات متاحة للجميع بدون مصادقة:
 
 ```typescript
@@ -43,6 +44,7 @@ publicProcedure.query(async ({ ctx }) => {
 ```
 
 #### Protected Procedure
+
 إجراءات تتطلب مصادقة المستخدم:
 
 ```typescript
@@ -54,6 +56,7 @@ protectedProcedure.query(async ({ ctx }) => {
 ```
 
 #### Admin Procedure
+
 إجراءات محصورة على المدراء:
 
 ```typescript
@@ -122,18 +125,18 @@ const { data: employees } = trpc.employees.list.useQuery({
   department: "IT", // اختياري
   status: "active", // اختياري
   page: 1,
-  limit: 20
+  limit: 20,
 });
 ```
 
 **المعاملات:**
 
-| المعامل | النوع | مطلوب | الوصف |
-|---------|-------|-------|-------|
-| department | string | لا | تصفية حسب القسم |
-| status | enum | لا | active, inactive, suspended |
-| page | number | نعم | رقم الصفحة (يبدأ من 1) |
-| limit | number | نعم | عدد النتائج في الصفحة |
+| المعامل    | النوع  | مطلوب | الوصف                       |
+| ---------- | ------ | ----- | --------------------------- |
+| department | string | لا    | تصفية حسب القسم             |
+| status     | enum   | لا    | active, inactive, suspended |
+| page       | number | نعم   | رقم الصفحة (يبدأ من 1)      |
+| limit      | number | نعم   | عدد النتائج في الصفحة       |
 
 **الاستجابة:**
 
@@ -172,7 +175,7 @@ await addEmployee.mutateAsync({
   position: "أخصائي موارد بشرية",
   salary: 12000,
   hireDate: "2025-01-01",
-  contractType: "permanent"
+  contractType: "permanent",
 });
 ```
 
@@ -203,7 +206,7 @@ const updateEmployee = trpc.employees.update.useMutation();
 await updateEmployee.mutateAsync({
   id: 1,
   salary: 16000,
-  position: "مطور أول"
+  position: "مطور أول",
 });
 ```
 
@@ -230,7 +233,7 @@ await deleteEmployee.mutateAsync({ id: 1 });
 ```typescript
 const { data: jobs } = trpc.ats.jobs.list.useQuery({
   status: "open",
-  department: "IT"
+  department: "IT",
 });
 ```
 
@@ -272,7 +275,7 @@ await createJob.mutateAsync({
   description: "وصف الوظيفة...",
   requirements: ["React", "TypeScript", "3+ سنوات خبرة"],
   salaryMin: 12000,
-  salaryMax: 18000
+  salaryMax: 18000,
 });
 ```
 
@@ -284,7 +287,7 @@ await createJob.mutateAsync({
 ```typescript
 const { data: applicants } = trpc.ats.applicants.list.useQuery({
   jobId: 1,
-  stage: "interview"
+  stage: "interview",
 });
 ```
 
@@ -319,11 +322,12 @@ const updateStage = trpc.ats.applicants.updateStage.useMutation();
 await updateStage.mutateAsync({
   applicantId: 1,
   stage: "offer",
-  notes: "تم قبوله للوظيفة"
+  notes: "تم قبوله للوظيفة",
 });
 ```
 
 **المراحل المتاحة:**
+
 - `applied`: تقدم للوظيفة
 - `screening`: فحص أولي
 - `interview`: مقابلة
@@ -348,11 +352,12 @@ await createTicket.mutateAsync({
   title: "مشكلة في الراتب",
   description: "لم أستلم راتب الشهر الحالي",
   category: "payroll",
-  priority: "high"
+  priority: "high",
 });
 ```
 
 **الفئات المتاحة:**
+
 - `payroll`: الرواتب
 - `leave`: الإجازات
 - `benefits`: المزايا
@@ -360,6 +365,7 @@ await createTicket.mutateAsync({
 - `other`: أخرى
 
 **الأولويات:**
+
 - `low`: منخفضة
 - `medium`: متوسطة
 - `high`: عالية
@@ -373,7 +379,7 @@ await createTicket.mutateAsync({
 ```typescript
 const { data: tickets } = trpc.tickets.list.useQuery({
   status: "open",
-  category: "payroll"
+  category: "payroll",
 });
 ```
 
@@ -407,7 +413,7 @@ const replyTicket = trpc.tickets.reply.useMutation();
 await replyTicket.mutateAsync({
   ticketId: 1,
   message: "تم حل المشكلة",
-  attachments: ["https://storage.rabit.sa/files/proof.pdf"]
+  attachments: ["https://storage.rabit.sa/files/proof.pdf"],
 });
 ```
 
@@ -427,11 +433,12 @@ await requestLeave.mutateAsync({
   type: "annual",
   startDate: "2025-12-01",
   endDate: "2025-12-05",
-  reason: "سفر عائلي"
+  reason: "سفر عائلي",
 });
 ```
 
 **أنواع الإجازات:**
+
 - `annual`: سنوية (21 يوم)
 - `sick`: مرضية (30 يوم بأجر كامل + 60 يوم بنصف أجر)
 - `maternity`: أمومة (10 أسابيع)
@@ -482,7 +489,7 @@ const approveLeave = trpc.leaves.approve.useMutation();
 await approveLeave.mutateAsync({
   leaveId: 1,
   status: "approved",
-  notes: "موافق عليها"
+  notes: "موافق عليها",
 });
 ```
 
@@ -498,7 +505,7 @@ await approveLeave.mutateAsync({
 ```typescript
 const { data: salary } = trpc.payroll.calculate.useQuery({
   employeeId: 1,
-  month: "2025-11"
+  month: "2025-11",
 });
 ```
 
@@ -534,7 +541,7 @@ const generatePayslip = trpc.payroll.generatePayslip.useMutation();
 
 await generatePayslip.mutateAsync({
   employeeId: 1,
-  month: "2025-11"
+  month: "2025-11",
 });
 ```
 
@@ -564,11 +571,12 @@ await issueCertificate.mutateAsync({
   type: "salary",
   purpose: "للبنك",
   language: "ar",
-  copies: 1
+  copies: 1,
 });
 ```
 
 **أنواع الشهادات:**
+
 - `salary`: شهادة راتب
 - `experience`: شهادة خبرة
 - `employment`: شهادة تعريف بالراتب
@@ -593,7 +601,7 @@ await issueCertificate.mutateAsync({
 ```typescript
 const { data: certificates } = trpc.certificates.list.useQuery({
   employeeId: 1,
-  type: "salary"
+  type: "salary",
 });
 ```
 
@@ -610,7 +618,7 @@ const { data: certificates } = trpc.certificates.list.useQuery({
 const { data: report } = trpc.reports.employees.useQuery({
   startDate: "2025-01-01",
   endDate: "2025-11-02",
-  department: "IT"
+  department: "IT",
 });
 ```
 
@@ -639,7 +647,7 @@ const { data: report } = trpc.reports.employees.useQuery({
 ```typescript
 const { data: attendance } = trpc.reports.attendance.useQuery({
   employeeId: 1,
-  month: "2025-11"
+  month: "2025-11",
 });
 ```
 
@@ -664,7 +672,7 @@ const { data: attendance } = trpc.reports.attendance.useQuery({
 ```typescript
 const { data: leavesReport } = trpc.reports.leaves.useQuery({
   startDate: "2025-01-01",
-  endDate: "2025-11-02"
+  endDate: "2025-11-02",
 });
 ```
 
@@ -685,7 +693,7 @@ await bookConsultation.mutateAsync({
   packageId: 2,
   preferredDate: "2025-11-10",
   preferredTime: "10:00",
-  topic: "تطوير سياسات الموارد البشرية"
+  topic: "تطوير سياسات الموارد البشرية",
 });
 ```
 
@@ -701,7 +709,7 @@ await createConsultingTicket.mutateAsync({
   packageId: 1,
   title: "استفسار عن نظام العمل",
   description: "ما هي حقوق الموظف في حالة...",
-  priority: "medium"
+  priority: "medium",
 });
 ```
 
@@ -712,7 +720,7 @@ await createConsultingTicket.mutateAsync({
 
 ```typescript
 const { data: consultations } = trpc.consultations.list.useQuery({
-  status: "active"
+  status: "active",
 });
 ```
 
@@ -730,7 +738,7 @@ const enrollCourse = trpc.courses.enroll.useMutation();
 
 await enrollCourse.mutateAsync({
   courseId: 1,
-  paymentMethod: "credit_card"
+  paymentMethod: "credit_card",
 });
 ```
 
@@ -742,7 +750,7 @@ await enrollCourse.mutateAsync({
 ```typescript
 const { data: courses } = trpc.courses.list.useQuery({
   category: "hr-management",
-  level: "intermediate"
+  level: "intermediate",
 });
 ```
 
@@ -776,7 +784,7 @@ const { data: courses } = trpc.courses.list.useQuery({
 
 ```typescript
 const { data: templates } = trpc.documents.templates.list.useQuery({
-  category: "employment"
+  category: "employment",
 });
 ```
 
@@ -794,10 +802,10 @@ await generateDoc.mutateAsync({
     employeeName: "أحمد محمد",
     position: "مطور برمجيات",
     salary: 15000,
-    startDate: "2025-01-01"
+    startDate: "2025-01-01",
   },
   language: "ar",
-  style: "formal"
+  style: "formal",
 });
 ```
 
@@ -820,7 +828,7 @@ await generateDoc.mutateAsync({
 const saveDoc = trpc.documents.toggleSave.useMutation();
 
 await saveDoc.mutateAsync({
-  documentId: 456
+  documentId: 456,
 });
 ```
 
@@ -831,7 +839,7 @@ await saveDoc.mutateAsync({
 
 ```typescript
 const { data: myDocs } = trpc.documents.saved.list.useQuery({
-  search: "شهادة"
+  search: "شهادة",
 });
 ```
 
@@ -846,7 +854,7 @@ const { data: myDocs } = trpc.documents.saved.list.useQuery({
 
 ```typescript
 const { data: notifications } = trpc.notifications.list.useQuery({
-  unreadOnly: true
+  unreadOnly: true,
 });
 ```
 
@@ -877,7 +885,7 @@ const { data: notifications } = trpc.notifications.list.useQuery({
 const markRead = trpc.notifications.markRead.useMutation();
 
 await markRead.mutateAsync({
-  notificationId: 1
+  notificationId: 1,
 });
 ```
 
@@ -889,15 +897,15 @@ await markRead.mutateAsync({
 
 ### رموز الأخطاء
 
-| الرمز | الوصف | المعنى |
-|-------|-------|--------|
-| 400 | BAD_REQUEST | طلب غير صحيح |
-| 401 | UNAUTHORIZED | غير مصادق |
-| 403 | FORBIDDEN | غير مصرح |
-| 404 | NOT_FOUND | غير موجود |
-| 409 | CONFLICT | تعارض في البيانات |
-| 429 | TOO_MANY_REQUESTS | طلبات كثيرة جداً |
-| 500 | INTERNAL_SERVER_ERROR | خطأ في الخادم |
+| الرمز | الوصف                 | المعنى            |
+| ----- | --------------------- | ----------------- |
+| 400   | BAD_REQUEST           | طلب غير صحيح      |
+| 401   | UNAUTHORIZED          | غير مصادق         |
+| 403   | FORBIDDEN             | غير مصرح          |
+| 404   | NOT_FOUND             | غير موجود         |
+| 409   | CONFLICT              | تعارض في البيانات |
+| 429   | TOO_MANY_REQUESTS     | طلبات كثيرة جداً  |
+| 500   | INTERNAL_SERVER_ERROR | خطأ في الخادم     |
 
 ### مثال على الخطأ
 
@@ -914,15 +922,15 @@ await markRead.mutateAsync({
 
 ```typescript
 const createEmployee = trpc.employees.create.useMutation({
-  onError: (error) => {
-    if (error.data?.code === 'UNAUTHORIZED') {
+  onError: error => {
+    if (error.data?.code === "UNAUTHORIZED") {
       // إعادة توجيه لصفحة تسجيل الدخول
-      router.push('/login');
-    } else if (error.data?.code === 'CONFLICT') {
+      router.push("/login");
+    } else if (error.data?.code === "CONFLICT") {
       // عرض رسالة خطأ للمستخدم
-      toast.error('البريد الإلكتروني مستخدم بالفعل');
+      toast.error("البريد الإلكتروني مستخدم بالفعل");
     }
-  }
+  },
 });
 ```
 
@@ -932,12 +940,12 @@ const createEmployee = trpc.employees.create.useMutation({
 
 لحماية المنصة من الاستخدام المفرط، يتم تطبيق حدود على الطلبات:
 
-| النوع | الحد | الفترة |
-|-------|------|--------|
+| النوع        | الحد      | الفترة   |
+| ------------ | --------- | -------- |
 | تسجيل الدخول | 5 محاولات | 15 دقيقة |
-| APIs العامة | 100 طلب | دقيقة |
-| APIs المحمية | 1000 طلب | ساعة |
-| رفع الملفات | 10 ملفات | ساعة |
+| APIs العامة  | 100 طلب   | دقيقة    |
+| APIs المحمية | 1000 طلب  | ساعة     |
+| رفع الملفات  | 10 ملفات  | ساعة     |
 
 عند تجاوز الحد، سيتم إرجاع خطأ `429 TOO_MANY_REQUESTS` مع رأس `Retry-After` يحدد متى يمكن المحاولة مرة أخرى.
 
@@ -948,7 +956,7 @@ const createEmployee = trpc.employees.create.useMutation({
 ### مثال 1: إضافة موظف وإصدار شهادة راتب
 
 ```typescript
-import { trpc } from '@/lib/trpc';
+import { trpc } from "@/lib/trpc";
 
 async function addEmployeeAndIssueCertificate() {
   // 1. إضافة موظف جديد
@@ -959,10 +967,10 @@ async function addEmployeeAndIssueCertificate() {
     position: "أخصائي موارد بشرية",
     salary: 12000,
     hireDate: "2025-01-01",
-    contractType: "permanent"
+    contractType: "permanent",
   });
 
-  console.log('تم إضافة الموظف:', newEmployee.id);
+  console.log("تم إضافة الموظف:", newEmployee.id);
 
   // 2. إصدار شهادة راتب
   const certificate = await trpc.certificates.issue.mutateAsync({
@@ -970,11 +978,11 @@ async function addEmployeeAndIssueCertificate() {
     type: "salary",
     purpose: "للبنك",
     language: "ar",
-    copies: 1
+    copies: 1,
   });
 
-  console.log('تم إصدار الشهادة:', certificate.certificateUrl);
-  
+  console.log("تم إصدار الشهادة:", certificate.certificateUrl);
+
   return { employee: newEmployee, certificate };
 }
 ```
@@ -1011,7 +1019,7 @@ function LeaveRequestForm() {
       <h2>رصيد الإجازات</h2>
       <p>السنوية: {balance?.annual.remaining} يوم</p>
       <p>المرضية: {balance?.sick.remaining} يوم</p>
-      
+
       {/* نموذج طلب الإجازة */}
     </div>
   );
@@ -1026,7 +1034,7 @@ import { trpc } from '@/lib/trpc';
 function ATSDashboard() {
   const { data: jobs } = trpc.ats.jobs.list.useQuery({ status: 'open' });
   const { data: applicants } = trpc.ats.applicants.list.useQuery({});
-  
+
   const updateStage = trpc.ats.applicants.updateStage.useMutation({
     onSuccess: () => {
       // تحديث القائمة
@@ -1046,7 +1054,7 @@ function ATSDashboard() {
     <div>
       <h2>الوظائف المفتوحة: {jobs?.length}</h2>
       <h2>المتقدمين: {applicants?.length}</h2>
-      
+
       {/* عرض البيانات */}
     </div>
   );
@@ -1067,15 +1075,15 @@ deleteEmployee: protectedProcedure
   .input(z.object({ id: z.number() }))
   .mutation(async ({ ctx, input }) => {
     // التحقق من الصلاحية
-    if (ctx.user.role !== 'admin') {
+    if (ctx.user.role !== "admin") {
       throw new TRPCError({
-        code: 'FORBIDDEN',
-        message: 'غير مصرح لك بحذف الموظفين'
+        code: "FORBIDDEN",
+        message: "غير مصرح لك بحذف الموظفين",
       });
     }
-    
+
     return await deleteEmployeeById(input.id);
-  })
+  });
 ```
 
 ### 2. التحقق من صحة البيانات
@@ -1083,13 +1091,13 @@ deleteEmployee: protectedProcedure
 استخدم Zod للتحقق من صحة البيانات المدخلة:
 
 ```typescript
-import { z } from 'zod';
+import { z } from "zod";
 
 const createEmployeeSchema = z.object({
   name: z.string().min(3).max(100),
   email: z.string().email(),
   salary: z.number().positive().max(1000000),
-  hireDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/)
+  hireDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
 });
 ```
 
@@ -1104,9 +1112,9 @@ const createEmployeeSchema = z.object({
 ```typescript
 await logAuditEvent({
   userId: ctx.user.id,
-  action: 'DELETE_EMPLOYEE',
+  action: "DELETE_EMPLOYEE",
   resourceId: employeeId,
-  details: { reason: 'تم الفصل' }
+  details: { reason: "تم الفصل" },
 });
 ```
 

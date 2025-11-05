@@ -28,7 +28,7 @@ export async function runSQLMigrations() {
       queueLimit: 0,
       ssl: {
         rejectUnauthorized: false, // Allow self-signed certificates
-      }
+      },
     };
 
     // Create connection
@@ -37,7 +37,10 @@ export async function runSQLMigrations() {
       connection = await mysql.createConnection(config);
     } catch (error: any) {
       // If SSL fails, try without it (for local development)
-      if (error.code === 'PROTOCOL_CONNECTION_LOST' || error.code === 'ER_UNKNOWN_ERROR') {
+      if (
+        error.code === "PROTOCOL_CONNECTION_LOST" ||
+        error.code === "ER_UNKNOWN_ERROR"
+      ) {
         console.log("[SQL Migrations] Retrying without SSL...");
         const configNoSSL: any = { ...config, ssl: false };
         connection = await mysql.createConnection(configNoSSL);
@@ -51,19 +54,21 @@ export async function runSQLMigrations() {
       const migrationsDir = path.join(process.cwd(), "drizzle");
       const files = fs
         .readdirSync(migrationsDir)
-        .filter((f) => f.endsWith(".sql"))
+        .filter(f => f.endsWith(".sql"))
         .sort();
 
       console.log(`[SQL Migrations] Found ${files.length} migration files`);
 
       // Create migrations tracking table if it doesn't exist
-      await connection.execute(`
+      await connection.execute(
+        `
         CREATE TABLE IF NOT EXISTS __drizzle_migrations (
           id INT AUTO_INCREMENT PRIMARY KEY,
           name VARCHAR(255) NOT NULL UNIQUE,
           executed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
-      ` as any);
+      ` as any
+      );
 
       // Get already executed migrations
       const [executed] = await connection.execute(
@@ -88,8 +93,8 @@ export async function runSQLMigrations() {
           // Split by semicolon and execute each statement
           const statements = sql
             .split(";")
-            .map((s) => s.trim())
-            .filter((s) => s.length > 0);
+            .map(s => s.trim())
+            .filter(s => s.length > 0);
 
           for (const statement of statements) {
             await connection.execute(statement as any);

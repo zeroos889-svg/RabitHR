@@ -1,8 +1,17 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ChevronLeft, FileText, CheckCircle, XCircle, AlertTriangle, Scale, CreditCard, RefreshCw } from 'lucide-react';
-import { Link } from 'wouter';
-import { Footer } from '@/components/Footer';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  ChevronLeft,
+  FileText,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  Scale,
+  CreditCard,
+  RefreshCw,
+} from "lucide-react";
+import { Link } from "wouter";
+import { Footer } from "@/components/Footer";
 
 export default function Terms() {
   return (
@@ -23,7 +32,7 @@ export default function Terms() {
               الشروط والأحكام
             </h1>
             <p className="text-muted-foreground">
-              آخر تحديث: {new Date().toLocaleDateString('ar-SA')}
+              آخر تحديث: {new Date().toLocaleDateString("ar-SA")}
             </p>
           </div>
         </div>
@@ -31,7 +40,8 @@ export default function Terms() {
         {/* Commercial Register Notice */}
         <div className="bg-yellow-50 border-r-4 border-yellow-400 p-4 rounded-lg mb-6">
           <p className="text-sm text-yellow-800">
-            <strong>ملاحظة:</strong> السجل التجاري تحت الإصدار. هذه النسخة التجريبية من المنصة.
+            <strong>ملاحظة:</strong> السجل التجاري تحت الإصدار. هذه النسخة
+            التجريبية من المنصة.
           </p>
         </div>
 
@@ -47,12 +57,14 @@ export default function Terms() {
             </CardHeader>
             <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
               <p>
-                مرحباً بك في <strong className="text-foreground">رابِط</strong>. 
-                هذه الشروط والأحكام تحكم استخدامك لمنصتنا وخدماتنا. باستخدامك للمنصة، فإنك توافق على الالتزام بهذه الشروط.
+                مرحباً بك في <strong className="text-foreground">رابِط</strong>.
+                هذه الشروط والأحكام تحكم استخدامك لمنصتنا وخدماتنا. باستخدامك
+                للمنصة، فإنك توافق على الالتزام بهذه الشروط.
               </p>
               <p>
-                إذا كنت لا توافق على أي جزء من هذه الشروط، يرجى عدم استخدام خدماتنا. 
-                نحتفظ بالحق في تعديل هذه الشروط في أي وقت، وسنخطرك بأي تغييرات جوهرية.
+                إذا كنت لا توافق على أي جزء من هذه الشروط، يرجى عدم استخدام
+                خدماتنا. نحتفظ بالحق في تعديل هذه الشروط في أي وقت، وسنخطرك بأي
+                تغييرات جوهرية.
               </p>
             </CardContent>
           </Card>
@@ -67,19 +79,24 @@ export default function Terms() {
             </CardHeader>
             <CardContent className="space-y-3 text-muted-foreground leading-relaxed">
               <div>
-                <strong className="text-foreground">المنصة:</strong> منصة رابِط الإلكترونية وجميع خدماتها وميزاتها
+                <strong className="text-foreground">المنصة:</strong> منصة رابِط
+                الإلكترونية وجميع خدماتها وميزاتها
               </div>
               <div>
-                <strong className="text-foreground">المستخدم:</strong> أي شخص أو كيان يستخدم المنصة
+                <strong className="text-foreground">المستخدم:</strong> أي شخص أو
+                كيان يستخدم المنصة
               </div>
               <div>
-                <strong className="text-foreground">الحساب:</strong> حساب المستخدم المسجل على المنصة
+                <strong className="text-foreground">الحساب:</strong> حساب
+                المستخدم المسجل على المنصة
               </div>
               <div>
-                <strong className="text-foreground">المحتوى:</strong> جميع البيانات والمعلومات والملفات المرفوعة
+                <strong className="text-foreground">المحتوى:</strong> جميع
+                البيانات والمعلومات والملفات المرفوعة
               </div>
               <div>
-                <strong className="text-foreground">الخدمات:</strong> جميع الأدوات والميزات المتاحة على المنصة
+                <strong className="text-foreground">الخدمات:</strong> جميع
+                الأدوات والميزات المتاحة على المنصة
               </div>
             </CardContent>
           </Card>
@@ -94,7 +111,9 @@ export default function Terms() {
             </CardHeader>
             <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
               <div>
-                <h3 className="font-semibold text-foreground mb-2">1. شروط التسجيل:</h3>
+                <h3 className="font-semibold text-foreground mb-2">
+                  1. شروط التسجيل:
+                </h3>
                 <ul className="list-disc list-inside space-y-2 mr-4">
                   <li>يجب أن يكون عمرك 18 عاماً أو أكثر</li>
                   <li>تقديم معلومات صحيحة ودقيقة</li>
@@ -104,17 +123,22 @@ export default function Terms() {
               </div>
 
               <div>
-                <h3 className="font-semibold text-foreground mb-2">2. مسؤولية الحساب:</h3>
+                <h3 className="font-semibold text-foreground mb-2">
+                  2. مسؤولية الحساب:
+                </h3>
                 <p>
-                  أنت مسؤول عن جميع الأنشطة التي تتم من خلال حسابك. نحن غير مسؤولين عن أي خسائر ناتجة عن 
-                  الاستخدام غير المصرح به لحسابك.
+                  أنت مسؤول عن جميع الأنشطة التي تتم من خلال حسابك. نحن غير
+                  مسؤولين عن أي خسائر ناتجة عن الاستخدام غير المصرح به لحسابك.
                 </p>
               </div>
 
               <div>
-                <h3 className="font-semibold text-foreground mb-2">3. تعليق الحساب:</h3>
+                <h3 className="font-semibold text-foreground mb-2">
+                  3. تعليق الحساب:
+                </h3>
                 <p>
-                  نحتفظ بالحق في تعليق أو إنهاء حسابك في حالة انتهاك هذه الشروط أو أي سلوك مسيء أو غير قانوني.
+                  نحتفظ بالحق في تعليق أو إنهاء حسابك في حالة انتهاك هذه الشروط
+                  أو أي سلوك مسيء أو غير قانوني.
                 </p>
               </div>
             </CardContent>
@@ -172,16 +196,24 @@ export default function Terms() {
             </CardHeader>
             <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
               <div>
-                <h3 className="font-semibold text-foreground mb-2">1. الباقات:</h3>
+                <h3 className="font-semibold text-foreground mb-2">
+                  1. الباقات:
+                </h3>
                 <p>
-                  نوفر باقات مختلفة (مجانية ومدفوعة). الميزات والأسعار موضحة في صفحة الباقات وقابلة للتغيير بإشعار مسبق.
+                  نوفر باقات مختلفة (مجانية ومدفوعة). الميزات والأسعار موضحة في
+                  صفحة الباقات وقابلة للتغيير بإشعار مسبق.
                 </p>
               </div>
 
               <div>
-                <h3 className="font-semibold text-foreground mb-2">2. الدفع:</h3>
+                <h3 className="font-semibold text-foreground mb-2">
+                  2. الدفع:
+                </h3>
                 <ul className="list-disc list-inside space-y-2 mr-4">
-                  <li>جميع الأسعار بالريال السعودي وغير شاملة لضريبة القيمة المضافة (15%)</li>
+                  <li>
+                    جميع الأسعار بالريال السعودي وغير شاملة لضريبة القيمة
+                    المضافة (15%)
+                  </li>
                   <li>الدفع يتم عبر بوابات دفع آمنة ومعتمدة</li>
                   <li>يتم تجديد الاشتراك تلقائياً ما لم تقم بإلغائه</li>
                   <li>نرسل إشعار قبل 7 أيام من التجديد</li>
@@ -189,17 +221,22 @@ export default function Terms() {
               </div>
 
               <div>
-                <h3 className="font-semibold text-foreground mb-2">3. الفترة التجريبية:</h3>
+                <h3 className="font-semibold text-foreground mb-2">
+                  3. الفترة التجريبية:
+                </h3>
                 <p>
-                  نوفر فترة تجريبية 14 يوم للباقات المدفوعة. يمكنك الإلغاء في أي وقت خلال الفترة التجريبية دون رسوم.
+                  نوفر فترة تجريبية 14 يوم للباقات المدفوعة. يمكنك الإلغاء في أي
+                  وقت خلال الفترة التجريبية دون رسوم.
                 </p>
               </div>
 
               <div>
-                <h3 className="font-semibold text-foreground mb-2">4. استرجاع الأموال:</h3>
+                <h3 className="font-semibold text-foreground mb-2">
+                  4. استرجاع الأموال:
+                </h3>
                 <p>
-                  نوفر ضمان استرجاع الأموال خلال 30 يوم من الاشتراك إذا لم تكن راضياً عن الخدمة. 
-                  للتفاصيل، راجع صفحة سياسة الاسترجاع.
+                  نوفر ضمان استرجاع الأموال خلال 30 يوم من الاشتراك إذا لم تكن
+                  راضياً عن الخدمة. للتفاصيل، راجع صفحة سياسة الاسترجاع.
                 </p>
               </div>
             </CardContent>
@@ -215,17 +252,23 @@ export default function Terms() {
             </CardHeader>
             <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
               <div>
-                <h3 className="font-semibold text-foreground mb-2">1. ملكيتنا:</h3>
+                <h3 className="font-semibold text-foreground mb-2">
+                  1. ملكيتنا:
+                </h3>
                 <p>
-                  جميع حقوق الملكية الفكرية للمنصة (الشعار، التصميم، الكود، المحتوى) مملوكة لنا أو لمرخصينا. 
-                  لا يحق لك استخدامها دون إذن كتابي.
+                  جميع حقوق الملكية الفكرية للمنصة (الشعار، التصميم، الكود،
+                  المحتوى) مملوكة لنا أو لمرخصينا. لا يحق لك استخدامها دون إذن
+                  كتابي.
                 </p>
               </div>
 
               <div>
-                <h3 className="font-semibold text-foreground mb-2">2. ملكيتك:</h3>
+                <h3 className="font-semibold text-foreground mb-2">
+                  2. ملكيتك:
+                </h3>
                 <p>
-                  تحتفظ بملكية جميع البيانات والمحتوى الذي ترفعه. بتحميل المحتوى، تمنحنا ترخيصاً لاستخدامه لتقديم الخدمة فقط.
+                  تحتفظ بملكية جميع البيانات والمحتوى الذي ترفعه. بتحميل
+                  المحتوى، تمنحنا ترخيصاً لاستخدامه لتقديم الخدمة فقط.
                 </p>
               </div>
             </CardContent>
@@ -241,25 +284,34 @@ export default function Terms() {
             </CardHeader>
             <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
               <div>
-                <h3 className="font-semibold text-foreground mb-2">1. الخدمة "كما هي":</h3>
+                <h3 className="font-semibold text-foreground mb-2">
+                  1. الخدمة "كما هي":
+                </h3>
                 <p>
-                  نوفر المنصة "كما هي" دون أي ضمانات صريحة أو ضمنية. لا نضمن أن الخدمة ستكون خالية من الأخطاء أو متاحة دائماً.
+                  نوفر المنصة "كما هي" دون أي ضمانات صريحة أو ضمنية. لا نضمن أن
+                  الخدمة ستكون خالية من الأخطاء أو متاحة دائماً.
                 </p>
               </div>
 
               <div>
-                <h3 className="font-semibold text-foreground mb-2">2. حدود المسؤولية:</h3>
+                <h3 className="font-semibold text-foreground mb-2">
+                  2. حدود المسؤولية:
+                </h3>
                 <p>
-                  لن نكون مسؤولين عن أي أضرار غير مباشرة أو عرضية أو خاصة ناتجة عن استخدام أو عدم القدرة على استخدام المنصة، 
-                  بما في ذلك فقدان البيانات أو الأرباح.
+                  لن نكون مسؤولين عن أي أضرار غير مباشرة أو عرضية أو خاصة ناتجة
+                  عن استخدام أو عدم القدرة على استخدام المنصة، بما في ذلك فقدان
+                  البيانات أو الأرباح.
                 </p>
               </div>
 
               <div>
-                <h3 className="font-semibold text-foreground mb-2">3. مسؤوليتك:</h3>
+                <h3 className="font-semibold text-foreground mb-2">
+                  3. مسؤوليتك:
+                </h3>
                 <p>
-                  أنت مسؤول عن نسخ بياناتك احتياطياً والتأكد من دقة المعلومات التي تدخلها. 
-                  نوصي بشدة بمراجعة جميع المخرجات (الحسابات، الخطابات) قبل استخدامها رسمياً.
+                  أنت مسؤول عن نسخ بياناتك احتياطياً والتأكد من دقة المعلومات
+                  التي تدخلها. نوصي بشدة بمراجعة جميع المخرجات (الحسابات،
+                  الخطابات) قبل استخدامها رسمياً.
                 </p>
               </div>
             </CardContent>
@@ -275,16 +327,22 @@ export default function Terms() {
             </CardHeader>
             <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
               <div>
-                <h3 className="font-semibold text-foreground mb-2">1. إنهاء من قبلك:</h3>
+                <h3 className="font-semibold text-foreground mb-2">
+                  1. إنهاء من قبلك:
+                </h3>
                 <p>
-                  يمكنك إلغاء حسابك في أي وقت من الإعدادات. ستبقى بياناتك محفوظة لمدة 90 يوم بعد الإلغاء.
+                  يمكنك إلغاء حسابك في أي وقت من الإعدادات. ستبقى بياناتك محفوظة
+                  لمدة 90 يوم بعد الإلغاء.
                 </p>
               </div>
 
               <div>
-                <h3 className="font-semibold text-foreground mb-2">2. إنهاء من قبلنا:</h3>
+                <h3 className="font-semibold text-foreground mb-2">
+                  2. إنهاء من قبلنا:
+                </h3>
                 <p>
-                  نحتفظ بالحق في تعليق أو إنهاء حسابك فوراً في حالة انتهاك هذه الشروط، دون إشعار مسبق أو استرداد.
+                  نحتفظ بالحق في تعليق أو إنهاء حسابك فوراً في حالة انتهاك هذه
+                  الشروط، دون إشعار مسبق أو استرداد.
                 </p>
               </div>
             </CardContent>
@@ -300,8 +358,8 @@ export default function Terms() {
             </CardHeader>
             <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
               <p>
-                تخضع هذه الشروط وتفسر وفقاً لأنظمة المملكة العربية السعودية. 
-                أي نزاع ينشأ عن هذه الشروط يخضع للاختصاص الحصري للمحاكم السعودية.
+                تخضع هذه الشروط وتفسر وفقاً لأنظمة المملكة العربية السعودية. أي
+                نزاع ينشأ عن هذه الشروط يخضع للاختصاص الحصري للمحاكم السعودية.
               </p>
             </CardContent>
           </Card>
@@ -316,8 +374,9 @@ export default function Terms() {
             </CardHeader>
             <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
               <p>
-                نحتفظ بالحق في تعديل هذه الشروط في أي وقت. سنخطرك بأي تغييرات جوهرية عبر البريد الإلكتروني أو إشعار على المنصة. 
-                استمرارك في استخدام المنصة بعد التعديلات يعني موافقتك على الشروط الجديدة.
+                نحتفظ بالحق في تعديل هذه الشروط في أي وقت. سنخطرك بأي تغييرات
+                جوهرية عبر البريد الإلكتروني أو إشعار على المنصة. استمرارك في
+                استخدام المنصة بعد التعديلات يعني موافقتك على الشروط الجديدة.
               </p>
             </CardContent>
           </Card>
@@ -326,18 +385,28 @@ export default function Terms() {
           <Card className="bg-gradient-to-r from-blue-500 to-purple-600 text-white border-0">
             <CardContent className="py-8 text-center">
               <FileText className="h-12 w-12 mx-auto mb-4" />
-              <h2 className="text-2xl font-bold mb-4">هل لديك استفسار قانوني؟</h2>
+              <h2 className="text-2xl font-bold mb-4">
+                هل لديك استفسار قانوني؟
+              </h2>
               <p className="text-lg mb-6 text-white/90">
                 تواصل معنا للحصول على توضيح حول أي بند من الشروط والأحكام
               </p>
               <div className="flex gap-4 justify-center flex-wrap">
                 <Link href="/contact">
-                  <Button size="lg" variant="secondary" className="bg-white text-blue-600 hover:bg-gray-100">
+                  <Button
+                    size="lg"
+                    variant="secondary"
+                    className="bg-white text-blue-600 hover:bg-gray-100"
+                  >
                     تواصل معنا
                   </Button>
                 </Link>
                 <a href="mailto:info@rbithr.com">
-                  <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-white text-white hover:bg-white/10"
+                  >
                     info@rbithr.com
                   </Button>
                 </a>

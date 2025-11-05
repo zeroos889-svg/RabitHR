@@ -1,16 +1,22 @@
 import { useState, useMemo } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Search, 
-  Star, 
-  MessageSquare, 
+import {
+  Search,
+  Star,
+  MessageSquare,
   Calendar,
   ChevronRight,
-  Filter
+  Filter,
 } from "lucide-react";
 import { Footer } from "@/components/Footer";
 
@@ -33,7 +39,7 @@ export default function ConsultantsList() {
       bio: "متخصص في قانون العمل السعودي والعقود التجارية",
       hourlyRate: 199,
       responseTime: "< 1 ساعة",
-      experience: "15 سنة"
+      experience: "15 سنة",
     },
     {
       id: "2",
@@ -46,7 +52,7 @@ export default function ConsultantsList() {
       bio: "خبيرة في إدارة الموارد البشرية والتطوير التنظيمي",
       hourlyRate: 179,
       responseTime: "< 2 ساعة",
-      experience: "12 سنة"
+      experience: "12 سنة",
     },
     {
       id: "3",
@@ -59,7 +65,7 @@ export default function ConsultantsList() {
       bio: "متخصص في صياغة والمراجعة القانونية للعقود",
       hourlyRate: 219,
       responseTime: "< 30 دقيقة",
-      experience: "18 سنة"
+      experience: "18 سنة",
     },
     {
       id: "4",
@@ -72,7 +78,7 @@ export default function ConsultantsList() {
       bio: "متخصصة في حل النزاعات والعلاقات الوظيفية",
       hourlyRate: 159,
       responseTime: "< 3 ساعات",
-      experience: "10 سنوات"
+      experience: "10 سنوات",
     },
     {
       id: "5",
@@ -85,7 +91,7 @@ export default function ConsultantsList() {
       bio: "متخصص في قضايا العمل والتقاضي",
       hourlyRate: 199,
       responseTime: "< 2 ساعة",
-      experience: "14 سنة"
+      experience: "14 سنة",
     },
     {
       id: "6",
@@ -98,8 +104,8 @@ export default function ConsultantsList() {
       bio: "خبيرة في استقطاب المواهب والتطوير الوظيفي",
       hourlyRate: 189,
       responseTime: "< 1 ساعة",
-      experience: "13 سنة"
-    }
+      experience: "13 سنة",
+    },
   ];
 
   const specialties = [
@@ -107,7 +113,7 @@ export default function ConsultantsList() {
     { id: "قانون العمل", name: "قانون العمل" },
     { id: "الموارد البشرية", name: "الموارد البشرية" },
     { id: "العقود والاتفاقيات", name: "العقود والاتفاقيات" },
-    { id: "العلاقات الوظيفية", name: "العلاقات الوظيفية" }
+    { id: "العلاقات الوظيفية", name: "العلاقات الوظيفية" },
   ];
 
   // البحث والفلترة
@@ -116,10 +122,11 @@ export default function ConsultantsList() {
 
     // البحث
     if (searchQuery) {
-      filtered = filtered.filter(c =>
-        c.name.includes(searchQuery) ||
-        c.specialty.includes(searchQuery) ||
-        c.bio.includes(searchQuery)
+      filtered = filtered.filter(
+        c =>
+          c.name.includes(searchQuery) ||
+          c.specialty.includes(searchQuery) ||
+          c.bio.includes(searchQuery)
       );
     }
 
@@ -164,7 +171,7 @@ export default function ConsultantsList() {
                 placeholder="ابحث عن مستشار..."
                 className="pl-4 pr-12 h-12"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
               />
             </div>
           </div>
@@ -181,20 +188,24 @@ export default function ConsultantsList() {
                 <label className="text-sm font-medium mb-2 block">التخصص</label>
                 <select
                   value={selectedSpecialty}
-                  onChange={(e) => setSelectedSpecialty(e.target.value)}
+                  onChange={e => setSelectedSpecialty(e.target.value)}
                   className="w-full px-4 py-2 border rounded-lg bg-background"
                 >
                   {specialties.map(s => (
-                    <option key={s.id} value={s.id}>{s.name}</option>
+                    <option key={s.id} value={s.id}>
+                      {s.name}
+                    </option>
                   ))}
                 </select>
               </div>
 
               <div className="flex-1">
-                <label className="text-sm font-medium mb-2 block">الترتيب</label>
+                <label className="text-sm font-medium mb-2 block">
+                  الترتيب
+                </label>
                 <select
                   value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
+                  onChange={e => setSortBy(e.target.value)}
                   className="w-full px-4 py-2 border rounded-lg bg-background"
                 >
                   <option value="rating">الأعلى تقييماً</option>
@@ -207,26 +218,41 @@ export default function ConsultantsList() {
             {/* Results Info */}
             <div className="mb-6">
               <p className="text-muted-foreground">
-                وجدنا <span className="font-bold text-foreground">{filteredConsultants.length}</span> مستشار
+                وجدنا{" "}
+                <span className="font-bold text-foreground">
+                  {filteredConsultants.length}
+                </span>{" "}
+                مستشار
               </p>
             </div>
 
             {/* Consultants Grid */}
             {filteredConsultants.length > 0 ? (
               <div className="grid md:grid-cols-2 gap-6">
-                {filteredConsultants.map((consultant) => (
-                  <Card key={consultant.id} className="hover:shadow-lg transition-shadow">
+                {filteredConsultants.map(consultant => (
+                  <Card
+                    key={consultant.id}
+                    className="hover:shadow-lg transition-shadow"
+                  >
                     <CardHeader>
                       <div className="flex items-start gap-4">
                         <div className="text-5xl">{consultant.avatar}</div>
                         <div className="flex-1">
-                          <CardTitle className="text-lg">{consultant.name}</CardTitle>
-                          <CardDescription>{consultant.specialty}</CardDescription>
+                          <CardTitle className="text-lg">
+                            {consultant.name}
+                          </CardTitle>
+                          <CardDescription>
+                            {consultant.specialty}
+                          </CardDescription>
                           <div className="flex items-center gap-4 mt-3 text-sm">
                             <div className="flex items-center gap-1">
                               <Star className="h-4 w-4 fill-yellow-500 text-yellow-500" />
-                              <span className="font-semibold">{consultant.rating}</span>
-                              <span className="text-muted-foreground">({consultant.reviews})</span>
+                              <span className="font-semibold">
+                                {consultant.rating}
+                              </span>
+                              <span className="text-muted-foreground">
+                                ({consultant.reviews})
+                              </span>
                             </div>
                             <div className="text-muted-foreground">
                               {consultant.consultations} استشارة
@@ -237,26 +263,44 @@ export default function ConsultantsList() {
                     </CardHeader>
 
                     <CardContent className="space-y-4">
-                      <p className="text-sm text-muted-foreground">{consultant.bio}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {consultant.bio}
+                      </p>
 
                       <div className="grid grid-cols-3 gap-4 py-4 border-y">
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-primary">{consultant.hourlyRate}</div>
-                          <div className="text-xs text-muted-foreground">ريال/ساعة</div>
+                          <div className="text-2xl font-bold text-primary">
+                            {consultant.hourlyRate}
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            ريال/ساعة
+                          </div>
                         </div>
                         <div className="text-center">
-                          <div className="text-sm font-semibold">{consultant.responseTime}</div>
-                          <div className="text-xs text-muted-foreground">وقت الرد</div>
+                          <div className="text-sm font-semibold">
+                            {consultant.responseTime}
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            وقت الرد
+                          </div>
                         </div>
                         <div className="text-center">
-                          <div className="text-sm font-semibold">{consultant.experience}</div>
-                          <div className="text-xs text-muted-foreground">الخبرة</div>
+                          <div className="text-sm font-semibold">
+                            {consultant.experience}
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            الخبرة
+                          </div>
                         </div>
                       </div>
 
-                      <Button 
+                      <Button
                         className="w-full"
-                        onClick={() => setLocation(`/consulting-book?consultant=${consultant.id}`)}
+                        onClick={() =>
+                          setLocation(
+                            `/consulting-book?consultant=${consultant.id}`
+                          )
+                        }
                       >
                         احجز استشارة
                         <ChevronRight className="mr-2 h-4 w-4" />
@@ -269,8 +313,12 @@ export default function ConsultantsList() {
               <Card>
                 <CardContent className="py-12 text-center">
                   <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-                  <p className="text-lg font-semibold mb-2">لم يتم العثور على مستشارين</p>
-                  <p className="text-muted-foreground">حاول تغيير معايير البحث</p>
+                  <p className="text-lg font-semibold mb-2">
+                    لم يتم العثور على مستشارين
+                  </p>
+                  <p className="text-muted-foreground">
+                    حاول تغيير معايير البحث
+                  </p>
                 </CardContent>
               </Card>
             )}

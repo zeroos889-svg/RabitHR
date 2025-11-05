@@ -1,15 +1,15 @@
-import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { LanguageSwitcher } from '@/components/LanguageSwitcher';
-import { trpc } from '@/lib/trpc';
-import { getLoginUrl } from '@/const';
-import { 
-  Building2, 
-  UserCheck, 
-  Users, 
-  Calculator, 
-  Calendar, 
+import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { trpc } from "@/lib/trpc";
+import { getLoginUrl } from "@/const";
+import {
+  Building2,
+  UserCheck,
+  Users,
+  Calculator,
+  Calendar,
   FileText,
   CheckCircle2,
   Brain,
@@ -19,18 +19,19 @@ import {
   Headphones,
   ArrowRight,
   Play,
-  Menu
-} from 'lucide-react';
-import { useState } from 'react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { Link } from 'wouter';
-import { FAQSection } from '@/components/FAQSection';
-import { Footer } from '@/components/Footer';
-import { VimeoVideo } from '@/components/VimeoVideo';
+  Menu,
+} from "lucide-react";
+import { useState } from "react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Link } from "wouter";
+import { FAQSection } from "@/components/FAQSection";
+import { Footer } from "@/components/Footer";
+import { VimeoVideo } from "@/components/VimeoVideo";
 
 // Consulting Services Section Component
 function ConsultingServicesSection() {
-  const { data: typesData, isLoading } = trpc.consultant.getConsultationTypes.useQuery();
+  const { data: typesData, isLoading } =
+    trpc.consultant.getConsultationTypes.useQuery();
   const consultationTypes = typesData?.types?.slice(0, 6) || [];
 
   if (isLoading) {
@@ -38,7 +39,9 @@ function ConsultingServicesSection() {
       <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">استشارات الموارد البشرية</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              استشارات الموارد البشرية
+            </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               جاري التحميل...
             </p>
@@ -52,7 +55,9 @@ function ConsultingServicesSection() {
     <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
       <div className="container">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">استشارات الموارد البشرية</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            استشارات الموارد البشرية
+          </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             استشارات متخصصة في جميع مجالات الموارد البشرية من خبراء معتمدين
           </p>
@@ -60,14 +65,21 @@ function ConsultingServicesSection() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {consultationTypes.map((type: any, index: number) => (
-            <Card key={type.id} className="p-6 hover-lift cursor-pointer group h-full">
+            <Card
+              key={type.id}
+              className="p-6 hover-lift cursor-pointer group h-full"
+            >
               <div className="flex items-start justify-between mb-4">
                 <div className="h-14 w-14 rounded-lg bg-blue-100 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Headphones className="h-7 w-7 text-blue-600" />
                 </div>
                 <div className="text-right">
-                  <div className="text-sm text-muted-foreground">{type.duration} دقيقة</div>
-                  <div className="text-2xl font-bold text-blue-600">{type.price} ر.س</div>
+                  <div className="text-sm text-muted-foreground">
+                    {type.duration} دقيقة
+                  </div>
+                  <div className="text-2xl font-bold text-blue-600">
+                    {type.price} ر.س
+                  </div>
                 </div>
               </div>
               <h3 className="text-xl font-bold mb-2">{type.nameAr}</h3>
@@ -110,18 +122,18 @@ export default function Home() {
         <div className="container relative flex items-center justify-center gap-4 flex-wrap">
           <div className="flex items-center gap-2">
             <span className="text-2xl">🎁</span>
-            <span className="font-bold text-lg">{t('offer.special')}</span>
+            <span className="font-bold text-lg">{t("offer.special")}</span>
           </div>
           <p className="text-sm md:text-base">
-            <strong>{t('offer.description')}</strong>
+            <strong>{t("offer.description")}</strong>
           </p>
-          <Button 
-            size="sm" 
+          <Button
+            size="sm"
             variant="secondary"
             className="bg-white text-purple-600 hover:bg-white/90 font-bold"
-            onClick={() => window.location.href = getLoginUrl()}
+            onClick={() => (window.location.href = getLoginUrl())}
           >
-            {t('offer.button')}
+            {t("offer.button")}
           </Button>
         </div>
       </div>
@@ -130,52 +142,75 @@ export default function Home() {
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <Link
+            href="/"
+            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+          >
             <img src="/rabit-logo.svg" alt="Rabit" className="h-8 w-8" />
-            <span className="text-xl font-bold text-gradient-primary">رابِط</span>
+            <span className="text-xl font-bold text-gradient-primary">
+              رابِط
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
-            <a href="#home" className="text-sm font-medium hover:text-primary transition-colors">
-              {t('nav.home')}
+            <a
+              href="#home"
+              className="text-sm font-medium hover:text-primary transition-colors"
+            >
+              {t("nav.home")}
             </a>
-            <Link href="/consulting" className="text-sm font-medium hover:text-primary transition-colors">
-              {t('nav.consulting') || 'الاستشارات'}
+            <Link
+              href="/consulting"
+              className="text-sm font-medium hover:text-primary transition-colors"
+            >
+              {t("nav.consulting") || "الاستشارات"}
             </Link>
-            <Link href="/courses" className="text-sm font-medium hover:text-primary transition-colors">
-              {t('nav.courses') || 'الدورات'}
+            <Link
+              href="/courses"
+              className="text-sm font-medium hover:text-primary transition-colors"
+            >
+              {t("nav.courses") || "الدورات"}
             </Link>
-            <Link href="/knowledge-base" className="text-sm font-medium hover:text-primary transition-colors">
-              {t('nav.knowledge_base') || 'قاعدة المعرفة'}
+            <Link
+              href="/knowledge-base"
+              className="text-sm font-medium hover:text-primary transition-colors"
+            >
+              {t("nav.knowledge_base") || "قاعدة المعرفة"}
             </Link>
-            <a href="#tools" className="text-sm font-medium hover:text-primary transition-colors">
-              {t('nav.tools')}
+            <a
+              href="#tools"
+              className="text-sm font-medium hover:text-primary transition-colors"
+            >
+              {t("nav.tools")}
             </a>
-            <a href="#pricing" className="text-sm font-medium hover:text-primary transition-colors">
-              {t('nav.pricing')}
+            <a
+              href="#pricing"
+              className="text-sm font-medium hover:text-primary transition-colors"
+            >
+              {t("nav.pricing")}
             </a>
           </nav>
 
           {/* Actions */}
           <div className="flex items-center gap-3">
             <LanguageSwitcher />
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               className="hidden sm:inline-flex"
-              onClick={() => window.location.href = getLoginUrl()}
+              onClick={() => (window.location.href = getLoginUrl())}
             >
-              {t('btn.login')}
+              {t("btn.login")}
             </Button>
-            <Button 
+            <Button
               className="gradient-primary text-white hidden sm:inline-flex"
-              onClick={() => window.location.href = getLoginUrl()}
+              onClick={() => (window.location.href = getLoginUrl())}
             >
-              {t('btn.start_free')}
+              {t("btn.start_free")}
             </Button>
-            <Button 
-              variant="ghost" 
-              size="icon" 
+            <Button
+              variant="ghost"
+              size="icon"
               className="md:hidden"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
@@ -187,43 +222,67 @@ export default function Home() {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden border-t bg-background p-4 space-y-3 animate-in slide-in-from-top">
-            <a href="#home" className="block py-2 text-sm font-medium hover:text-primary transition-colors">
-              {t('nav.home')}
+            <a
+              href="#home"
+              className="block py-2 text-sm font-medium hover:text-primary transition-colors"
+            >
+              {t("nav.home")}
             </a>
-            <Link href="/consulting" className="block py-2 text-sm font-medium hover:text-primary transition-colors">
-              {t('nav.consulting') || 'الاستشارات'}
+            <Link
+              href="/consulting"
+              className="block py-2 text-sm font-medium hover:text-primary transition-colors"
+            >
+              {t("nav.consulting") || "الاستشارات"}
             </Link>
-            <Link href="/courses" className="block py-2 text-sm font-medium hover:text-primary transition-colors">
-              {t('nav.courses') || 'الدورات'}
+            <Link
+              href="/courses"
+              className="block py-2 text-sm font-medium hover:text-primary transition-colors"
+            >
+              {t("nav.courses") || "الدورات"}
             </Link>
-            <Link href="/knowledge-base" className="block py-2 text-sm font-medium hover:text-primary transition-colors">
-              {t('nav.knowledge_base') || 'قاعدة المعرفة'}
+            <Link
+              href="/knowledge-base"
+              className="block py-2 text-sm font-medium hover:text-primary transition-colors"
+            >
+              {t("nav.knowledge_base") || "قاعدة المعرفة"}
             </Link>
-            <a href="#tools" className="block py-2 text-sm font-medium hover:text-primary transition-colors">
-              {t('nav.tools')}
+            <a
+              href="#tools"
+              className="block py-2 text-sm font-medium hover:text-primary transition-colors"
+            >
+              {t("nav.tools")}
             </a>
-            <a href="#pricing" className="block py-2 text-sm font-medium hover:text-primary transition-colors">
-              {t('nav.pricing')}
+            <a
+              href="#pricing"
+              className="block py-2 text-sm font-medium hover:text-primary transition-colors"
+            >
+              {t("nav.pricing")}
             </a>
-            <a href="#about" className="block py-2 text-sm font-medium hover:text-primary transition-colors">
-              {t('nav.about')}
+            <a
+              href="#about"
+              className="block py-2 text-sm font-medium hover:text-primary transition-colors"
+            >
+              {t("nav.about")}
             </a>
-            <a href="#contact" className="block py-2 text-sm font-medium hover:text-primary transition-colors">
-              {t('nav.contact')}
+            <a
+              href="#contact"
+              className="block py-2 text-sm font-medium hover:text-primary transition-colors"
+            >
+              {t("nav.contact")}
             </a>
             <div className="pt-3 space-y-2">
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 className="w-full"
-                onClick={() => window.location.href = getLoginUrl()}
+                onClick={() => (window.location.href = getLoginUrl())}
               >
-                {t('btn.login')}
+                {t("btn.login")}
               </Button>
-              <Button 
+              <Button
                 className="gradient-primary text-white w-full"
-                onClick={() => window.location.href = getLoginUrl()}
+                onClick={() => (window.location.href = getLoginUrl())}
               >
-                {t('btn.start_free')}
+                {t("btn.start_free")}
               </Button>
             </div>
           </div>
@@ -234,7 +293,7 @@ export default function Home() {
       <section id="home" className="relative overflow-hidden py-20 md:py-32">
         {/* Background Gradient */}
         <div className="absolute inset-0 gradient-primary opacity-5"></div>
-        
+
         <div className="container relative">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Content */}
@@ -245,48 +304,56 @@ export default function Home() {
                   متوافق 100% مع نظام العمل السعودي
                 </span>
               </div>
-              
+
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                {t('hero.title')}
+                {t("hero.title")}
               </h1>
-              
+
               <p className="text-lg md:text-xl text-muted-foreground max-w-2xl">
-                {t('hero.description')}
+                {t("hero.description")}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button 
-                  size="lg" 
+                <Button
+                  size="lg"
                   className="gradient-primary text-white text-lg px-8 hover-lift"
-                  onClick={() => window.location.href = getLoginUrl()}
+                  onClick={() => (window.location.href = getLoginUrl())}
                 >
-                  {t('btn.start_free')}
+                  {t("btn.start_free")}
                   <ArrowRight className="mr-2 h-5 w-5" />
                 </Button>
-                <Button 
-                  size="lg" 
-                  variant="outline" 
+                <Button
+                  size="lg"
+                  variant="outline"
                   className="text-lg px-8"
                   onClick={() => setVideoModalOpen(true)}
                 >
                   <Play className="ml-2 h-5 w-5" />
-                  {t('hero.watch_demo')}
+                  {t("hero.watch_demo")}
                 </Button>
               </div>
 
               {/* Stats */}
               <div className="grid grid-cols-3 gap-6 pt-8 border-t">
                 <div>
-                  <div className="text-3xl font-bold text-gradient-primary">500+</div>
+                  <div className="text-3xl font-bold text-gradient-primary">
+                    500+
+                  </div>
                   <div className="text-sm text-muted-foreground">شركة</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-gradient-primary">10K+</div>
+                  <div className="text-3xl font-bold text-gradient-primary">
+                    10K+
+                  </div>
                   <div className="text-sm text-muted-foreground">مستخدم</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-gradient-primary">99%</div>
-                  <div className="text-sm text-muted-foreground">رضا العملاء</div>
+                  <div className="text-3xl font-bold text-gradient-primary">
+                    99%
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    رضا العملاء
+                  </div>
                 </div>
               </div>
             </div>
@@ -295,7 +362,11 @@ export default function Home() {
             <div className="relative animate-in fade-in slide-in-from-right duration-700 delay-300">
               <div className="relative aspect-square rounded-2xl gradient-primary p-1">
                 <div className="h-full w-full rounded-xl bg-background flex items-center justify-center">
-                  <img src="/rabit-logo.svg" alt="Rabit Platform" className="h-48 w-48 opacity-20" />
+                  <img
+                    src="/rabit-logo.svg"
+                    alt="Rabit Platform"
+                    className="h-48 w-48 opacity-20"
+                  />
                 </div>
               </div>
               {/* Floating Cards */}
@@ -303,7 +374,9 @@ export default function Home() {
                 <div className="flex items-center gap-2">
                   <div className="h-10 w-10 rounded-full gradient-company"></div>
                   <div>
-                    <div className="text-xs text-muted-foreground">نظام ATS</div>
+                    <div className="text-xs text-muted-foreground">
+                      نظام ATS
+                    </div>
                     <div className="text-sm font-semibold">متقدم</div>
                   </div>
                 </div>
@@ -312,7 +385,9 @@ export default function Home() {
                 <div className="flex items-center gap-2">
                   <div className="h-10 w-10 rounded-full gradient-individual"></div>
                   <div>
-                    <div className="text-xs text-muted-foreground">ذكاء اصطناعي</div>
+                    <div className="text-xs text-muted-foreground">
+                      ذكاء اصطناعي
+                    </div>
                     <div className="text-sm font-semibold">متطور</div>
                   </div>
                 </div>
@@ -326,7 +401,9 @@ export default function Home() {
       <section className="py-20 bg-muted/30">
         <div className="container">
           <div className="text-center mb-12 animate-in fade-in slide-in-from-bottom">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">اختر الفئة المناسبة لك</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              اختر الفئة المناسبة لك
+            </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               حلول مخصصة لكل فئة من المستخدمين
             </p>
@@ -338,28 +415,40 @@ export default function Home() {
               <div className="h-16 w-16 rounded-xl gradient-company flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Building2 className="h-8 w-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold mb-3">{t('category.companies')}</h3>
-              <p className="text-muted-foreground mb-6">{t('category.companies.desc')}</p>
+              <h3 className="text-2xl font-bold mb-3">
+                {t("category.companies")}
+              </h3>
+              <p className="text-muted-foreground mb-6">
+                {t("category.companies.desc")}
+              </p>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="h-5 w-5 text-blue-500 shrink-0 mt-0.5" />
-                  <span className="text-sm">{t('category.companies.feature1')}</span>
+                  <span className="text-sm">
+                    {t("category.companies.feature1")}
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="h-5 w-5 text-blue-500 shrink-0 mt-0.5" />
-                  <span className="text-sm">{t('category.companies.feature2')}</span>
+                  <span className="text-sm">
+                    {t("category.companies.feature2")}
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="h-5 w-5 text-blue-500 shrink-0 mt-0.5" />
-                  <span className="text-sm">{t('category.companies.feature3')}</span>
+                  <span className="text-sm">
+                    {t("category.companies.feature3")}
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="h-5 w-5 text-blue-500 shrink-0 mt-0.5" />
-                  <span className="text-sm">{t('category.companies.feature4')}</span>
+                  <span className="text-sm">
+                    {t("category.companies.feature4")}
+                  </span>
                 </li>
               </ul>
               <Button className="w-full gradient-company text-white">
-                {t('category.companies.btn')}
+                {t("category.companies.btn")}
                 <ArrowRight className="mr-2 h-4 w-4" />
               </Button>
             </Card>
@@ -372,31 +461,45 @@ export default function Home() {
               <div className="h-16 w-16 rounded-xl gradient-individual flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <UserCheck className="h-8 w-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold mb-3">{t('category.individual')}</h3>
-              <p className="text-muted-foreground mb-6">{t('category.individual.desc')}</p>
+              <h3 className="text-2xl font-bold mb-3">
+                {t("category.individual")}
+              </h3>
+              <p className="text-muted-foreground mb-6">
+                {t("category.individual.desc")}
+              </p>
               <ul className="space-y-3 mb-6">
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="h-5 w-5 text-purple-500 shrink-0 mt-0.5" />
-                  <span className="text-sm">{t('category.individual.feature1')}</span>
+                  <span className="text-sm">
+                    {t("category.individual.feature1")}
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="h-5 w-5 text-purple-500 shrink-0 mt-0.5" />
-                  <span className="text-sm">{t('category.individual.feature2')}</span>
+                  <span className="text-sm">
+                    {t("category.individual.feature2")}
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="h-5 w-5 text-purple-500 shrink-0 mt-0.5" />
-                  <span className="text-sm">{t('category.individual.feature3')}</span>
+                  <span className="text-sm">
+                    {t("category.individual.feature3")}
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="h-5 w-5 text-purple-500 shrink-0 mt-0.5" />
-                  <span className="text-sm">{t('category.individual.feature4')}</span>
+                  <span className="text-sm">
+                    {t("category.individual.feature4")}
+                  </span>
                 </li>
               </ul>
               <div className="text-center mb-4">
-                <span className="text-3xl font-bold text-gradient-primary">{t('category.individual.price')}</span>
+                <span className="text-3xl font-bold text-gradient-primary">
+                  {t("category.individual.price")}
+                </span>
               </div>
               <Button className="w-full gradient-individual text-white">
-                {t('category.individual.btn')}
+                {t("category.individual.btn")}
                 <ArrowRight className="mr-2 h-4 w-4" />
               </Button>
             </Card>
@@ -406,31 +509,45 @@ export default function Home() {
               <div className="h-16 w-16 rounded-xl gradient-employee flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Users className="h-8 w-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold mb-3">{t('category.employee')}</h3>
-              <p className="text-muted-foreground mb-6">{t('category.employee.desc')}</p>
+              <h3 className="text-2xl font-bold mb-3">
+                {t("category.employee")}
+              </h3>
+              <p className="text-muted-foreground mb-6">
+                {t("category.employee.desc")}
+              </p>
               <ul className="space-y-3 mb-6">
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
-                  <span className="text-sm">{t('category.employee.feature1')}</span>
+                  <span className="text-sm">
+                    {t("category.employee.feature1")}
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
-                  <span className="text-sm">{t('category.employee.feature2')}</span>
+                  <span className="text-sm">
+                    {t("category.employee.feature2")}
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
-                  <span className="text-sm">{t('category.employee.feature3')}</span>
+                  <span className="text-sm">
+                    {t("category.employee.feature3")}
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
-                  <span className="text-sm">{t('category.employee.feature4')}</span>
+                  <span className="text-sm">
+                    {t("category.employee.feature4")}
+                  </span>
                 </li>
               </ul>
               <div className="text-center mb-4">
-                <span className="text-2xl font-bold text-green-600">{t('category.employee.price')}</span>
+                <span className="text-2xl font-bold text-green-600">
+                  {t("category.employee.price")}
+                </span>
               </div>
               <Button className="w-full gradient-employee text-white">
-                {t('category.employee.btn')}
+                {t("category.employee.btn")}
                 <ArrowRight className="mr-2 h-4 w-4" />
               </Button>
             </Card>
@@ -442,7 +559,9 @@ export default function Home() {
       <section className="py-20">
         <div className="container">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">كيف يعمل رابِط؟</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              كيف يعمل رابِط؟
+            </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               أربع خطوات بسيطة للبدء في إدارة مواردك البشرية بكفاءة
             </p>
@@ -510,10 +629,10 @@ export default function Home() {
 
           {/* CTA */}
           <div className="text-center mt-12">
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="gradient-primary text-white text-lg px-8 hover-lift"
-              onClick={() => window.location.href = getLoginUrl()}
+              onClick={() => (window.location.href = getLoginUrl())}
             >
               ابدأ الآن مجاناً
               <ArrowRight className="mr-2 h-5 w-5" />
@@ -526,9 +645,12 @@ export default function Home() {
       <section id="tools" className="py-20 bg-muted/30">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">أدوات الموارد البشرية الذكية</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              أدوات الموارد البشرية الذكية
+            </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              أدوات ذكية مدعومة بالذكاء الاصطناعي لتسهيل جميع عمليات الموارد البشرية
+              أدوات ذكية مدعومة بالذكاء الاصطناعي لتسهيل جميع عمليات الموارد
+              البشرية
             </p>
           </div>
 
@@ -543,7 +665,10 @@ export default function Home() {
                 <p className="text-sm text-muted-foreground mb-4">
                   احسب مستحقات نهاية الخدمة بدقة وفقاً لنظام العمل السعودي
                 </p>
-                <Button variant="ghost" className="w-full group-hover:bg-blue-50">
+                <Button
+                  variant="ghost"
+                  className="w-full group-hover:bg-blue-50"
+                >
                   جرّب الآن
                   <ArrowRight className="mr-2 h-4 w-4" />
                 </Button>
@@ -560,7 +685,10 @@ export default function Home() {
                 <p className="text-sm text-muted-foreground mb-4">
                   احسب رصيد الإجازات السنوية والمرضية والأعياد
                 </p>
-                <Button variant="ghost" className="w-full group-hover:bg-purple-50">
+                <Button
+                  variant="ghost"
+                  className="w-full group-hover:bg-purple-50"
+                >
                   جرّب الآن
                   <ArrowRight className="mr-2 h-4 w-4" />
                 </Button>
@@ -577,7 +705,10 @@ export default function Home() {
                 <p className="text-sm text-muted-foreground mb-4">
                   أنشئ خطابات رسمية احترافية بالذكاء الاصطناعي (55+ نوع)
                 </p>
-                <Button variant="ghost" className="w-full group-hover:bg-green-50">
+                <Button
+                  variant="ghost"
+                  className="w-full group-hover:bg-green-50"
+                >
                   جرّب الآن
                   <ArrowRight className="mr-2 h-4 w-4" />
                 </Button>
@@ -594,7 +725,10 @@ export default function Home() {
                 <p className="text-sm text-muted-foreground mb-4">
                   أنشئ نماذج ومستندات HR مخصصة بسهولة
                 </p>
-                <Button variant="ghost" className="w-full group-hover:bg-orange-50">
+                <Button
+                  variant="ghost"
+                  className="w-full group-hover:bg-orange-50"
+                >
                   جرّب الآن
                   <ArrowRight className="mr-2 h-4 w-4" />
                 </Button>
@@ -611,7 +745,10 @@ export default function Home() {
                 <p className="text-sm text-muted-foreground mb-4">
                   أصدر شهادات عمل وخبرة احترافية فوراً
                 </p>
-                <Button variant="ghost" className="w-full group-hover:bg-indigo-50">
+                <Button
+                  variant="ghost"
+                  className="w-full group-hover:bg-indigo-50"
+                >
                   جرّب الآن
                   <ArrowRight className="mr-2 h-4 w-4" />
                 </Button>
@@ -628,7 +765,10 @@ export default function Home() {
                 <p className="text-sm text-muted-foreground mb-4">
                   تقارير تحليلية شاملة عن أداء الموارد البشرية
                 </p>
-                <Button variant="ghost" className="w-full group-hover:bg-pink-50">
+                <Button
+                  variant="ghost"
+                  className="w-full group-hover:bg-pink-50"
+                >
                   جرّب الآن
                   <ArrowRight className="mr-2 h-4 w-4" />
                 </Button>
@@ -651,7 +791,9 @@ export default function Home() {
       <section className="py-20 bg-muted/30">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t('features.title')}</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              {t("features.title")}
+            </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               ميزات متقدمة تجعل إدارة الموارد البشرية أسهل وأكثر فعالية
             </p>
@@ -663,7 +805,9 @@ export default function Home() {
                 <CheckCircle2 className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h3 className="font-semibold mb-2">{t('features.saudi_compliant')}</h3>
+                <h3 className="font-semibold mb-2">
+                  {t("features.saudi_compliant")}
+                </h3>
                 <p className="text-sm text-muted-foreground">
                   متوافق 100% مع نظام العمل السعودي والمادة 84
                 </p>
@@ -675,7 +819,9 @@ export default function Home() {
                 <Brain className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h3 className="font-semibold mb-2">{t('features.ai_powered')}</h3>
+                <h3 className="font-semibold mb-2">
+                  {t("features.ai_powered")}
+                </h3>
                 <p className="text-sm text-muted-foreground">
                   ذكاء اصطناعي متقدم لتحليل السير الذاتية وتوليد المحتوى
                 </p>
@@ -687,7 +833,9 @@ export default function Home() {
                 <Smartphone className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h3 className="font-semibold mb-2">{t('features.easy_to_use')}</h3>
+                <h3 className="font-semibold mb-2">
+                  {t("features.easy_to_use")}
+                </h3>
                 <p className="text-sm text-muted-foreground">
                   واجهة سهلة وبديهية تعمل على جميع الأجهزة
                 </p>
@@ -699,7 +847,7 @@ export default function Home() {
                 <BarChart3 className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h3 className="font-semibold mb-2">{t('features.reports')}</h3>
+                <h3 className="font-semibold mb-2">{t("features.reports")}</h3>
                 <p className="text-sm text-muted-foreground">
                   تقارير شاملة ورؤى تحليلية متقدمة
                 </p>
@@ -711,7 +859,7 @@ export default function Home() {
                 <Shield className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h3 className="font-semibold mb-2">{t('features.security')}</h3>
+                <h3 className="font-semibold mb-2">{t("features.security")}</h3>
                 <p className="text-sm text-muted-foreground">
                   أمان عالي المستوى وحماية كاملة لبياناتك
                 </p>
@@ -723,7 +871,7 @@ export default function Home() {
                 <Headphones className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h3 className="font-semibold mb-2">{t('features.support')}</h3>
+                <h3 className="font-semibold mb-2">{t("features.support")}</h3>
                 <p className="text-sm text-muted-foreground">
                   دعم فني متواصل باللغة العربية
                 </p>
@@ -738,10 +886,10 @@ export default function Home() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              {t('testimonials.title') || 'ماذا يقول عملاؤنا'}
+              {t("testimonials.title") || "ماذا يقول عملاؤنا"}
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              {t('testimonials.subtitle') || 'قصص نجاح حقيقية من شركات سعودية'}
+              {t("testimonials.subtitle") || "قصص نجاح حقيقية من شركات سعودية"}
             </p>
           </div>
 
@@ -755,16 +903,21 @@ export default function Home() {
                   </div>
                   <div>
                     <h4 className="font-semibold">أحمد القحطاني</h4>
-                    <p className="text-sm text-muted-foreground">مدير الموارد البشرية - شركة النخيل</p>
+                    <p className="text-sm text-muted-foreground">
+                      مدير الموارد البشرية - شركة النخيل
+                    </p>
                   </div>
                 </div>
                 <div className="flex gap-1 mb-3">
                   {[...Array(5)].map((_, i) => (
-                    <span key={i} className="text-yellow-400">★</span>
+                    <span key={i} className="text-yellow-400">
+                      ★
+                    </span>
                   ))}
                 </div>
                 <p className="text-muted-foreground leading-relaxed">
-                  "رابِط وفّر علينا ساعات عمل كثيرة. مولد الخطابات بالذكاء الاصطناعي رائع ويضمن التوافق مع نظام العمل. أنصح به بشدة!"
+                  "رابِط وفّر علينا ساعات عمل كثيرة. مولد الخطابات بالذكاء
+                  الاصطناعي رائع ويضمن التوافق مع نظام العمل. أنصح به بشدة!"
                 </p>
               </CardContent>
             </Card>
@@ -778,16 +931,21 @@ export default function Home() {
                   </div>
                   <div>
                     <h4 className="font-semibold">سارة العتيبي</h4>
-                    <p className="text-sm text-muted-foreground">مستقلة HR - تخدم 15 عميل</p>
+                    <p className="text-sm text-muted-foreground">
+                      مستقلة HR - تخدم 15 عميل
+                    </p>
                   </div>
                 </div>
                 <div className="flex gap-1 mb-3">
                   {[...Array(5)].map((_, i) => (
-                    <span key={i} className="text-yellow-400">★</span>
+                    <span key={i} className="text-yellow-400">
+                      ★
+                    </span>
                   ))}
                 </div>
                 <p className="text-muted-foreground leading-relaxed">
-                  "كمستقلة HR، رابِط ساعدني في خدمة عملائي بشكل أسرع وأكثر احترافية. نظام ATS ممتاز والدعم الفني سريع."
+                  "كمستقلة HR، رابِط ساعدني في خدمة عملائي بشكل أسرع وأكثر
+                  احترافية. نظام ATS ممتاز والدعم الفني سريع."
                 </p>
               </CardContent>
             </Card>
@@ -801,16 +959,21 @@ export default function Home() {
                   </div>
                   <div>
                     <h4 className="font-semibold">محمد الغامدي</h4>
-                    <p className="text-sm text-muted-foreground">مدير عام - شركة الريادة للتقنية</p>
+                    <p className="text-sm text-muted-foreground">
+                      مدير عام - شركة الريادة للتقنية
+                    </p>
                   </div>
                 </div>
                 <div className="flex gap-1 mb-3">
                   {[...Array(5)].map((_, i) => (
-                    <span key={i} className="text-yellow-400">★</span>
+                    <span key={i} className="text-yellow-400">
+                      ★
+                    </span>
                   ))}
                 </div>
                 <p className="text-muted-foreground leading-relaxed">
-                  "حسابة نهاية الخدمة دقيقة جداً ووفرت علينا الكثير من الوقت. المنصة سهلة الاستخدام والفريق متعاون."
+                  "حسابة نهاية الخدمة دقيقة جداً ووفرت علينا الكثير من الوقت.
+                  المنصة سهلة الاستخدام والفريق متعاون."
                 </p>
               </CardContent>
             </Card>
@@ -832,24 +995,24 @@ export default function Home() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              {t('partners.title') || 'شركاؤنا'}
+              {t("partners.title") || "شركاؤنا"}
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              {t('partners.subtitle') || 'يثق بنا المئات من الشركات السعودية'}
+              {t("partners.subtitle") || "يثق بنا المئات من الشركات السعودية"}
             </p>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center">
             {/* Partner Logos - Using placeholder */}
             {[
-              { name: 'شركة النخيل', icon: Building2 },
-              { name: 'مجموعة الريادة', icon: Building2 },
-              { name: 'شركة الأفق', icon: Building2 },
-              { name: 'مؤسسة التميز', icon: Building2 },
-              { name: 'شركة الإبداع', icon: Building2 },
-              { name: 'مجموعة النجاح', icon: Building2 },
-              { name: 'شركة التطوير', icon: Building2 },
-              { name: 'مؤسسة الرؤية', icon: Building2 },
+              { name: "شركة النخيل", icon: Building2 },
+              { name: "مجموعة الريادة", icon: Building2 },
+              { name: "شركة الأفق", icon: Building2 },
+              { name: "مؤسسة التميز", icon: Building2 },
+              { name: "شركة الإبداع", icon: Building2 },
+              { name: "مجموعة النجاح", icon: Building2 },
+              { name: "شركة التطوير", icon: Building2 },
+              { name: "مؤسسة الرؤية", icon: Building2 },
             ].map((partner, index) => (
               <div
                 key={index}
@@ -870,19 +1033,29 @@ export default function Home() {
               <CardContent className="py-8">
                 <div className="grid md:grid-cols-4 gap-6">
                   <div className="text-center">
-                    <div className="text-4xl font-bold text-blue-600 mb-2">500+</div>
-                    <p className="text-sm text-muted-foreground">شركة تثق بنا</p>
+                    <div className="text-4xl font-bold text-blue-600 mb-2">
+                      500+
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      شركة تثق بنا
+                    </p>
                   </div>
                   <div className="text-center">
-                    <div className="text-4xl font-bold text-green-600 mb-2">10,000+</div>
+                    <div className="text-4xl font-bold text-green-600 mb-2">
+                      10,000+
+                    </div>
                     <p className="text-sm text-muted-foreground">موظف مسجل</p>
                   </div>
                   <div className="text-center">
-                    <div className="text-4xl font-bold text-purple-600 mb-2">98%</div>
+                    <div className="text-4xl font-bold text-purple-600 mb-2">
+                      98%
+                    </div>
                     <p className="text-sm text-muted-foreground">رضا العملاء</p>
                   </div>
                   <div className="text-center">
-                    <div className="text-4xl font-bold text-orange-600 mb-2">24/7</div>
+                    <div className="text-4xl font-bold text-orange-600 mb-2">
+                      24/7
+                    </div>
                     <p className="text-sm text-muted-foreground">دعم فني</p>
                   </div>
                 </div>
@@ -899,7 +1072,9 @@ export default function Home() {
       <section className="py-20">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">التعليم والتطوير</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              التعليم والتطوير
+            </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               دورات تدريبية وموارد تعليمية لتطوير مهارات HR
             </p>
@@ -912,7 +1087,8 @@ export default function Home() {
               </div>
               <h3 className="text-2xl font-bold mb-4">الدورات التدريبية</h3>
               <p className="text-muted-foreground mb-6">
-                أكثر من 20 دورة تدريبية متخصصة في الموارد البشرية مع شهادات معتمدة
+                أكثر من 20 دورة تدريبية متخصصة في الموارد البشرية مع شهادات
+                معتمدة
               </p>
               <ul className="space-y-3 mb-6">
                 <li className="flex items-center gap-2">
@@ -992,7 +1168,11 @@ export default function Home() {
                   ابدأ مجاناً
                   <ArrowRight className="mr-2 h-5 w-5" />
                 </Button>
-                <Button size="lg" variant="outline" className="text-lg px-8 bg-white/10 border-white/20 text-white hover:bg-white/20">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="text-lg px-8 bg-white/10 border-white/20 text-white hover:bg-white/20"
+                >
                   تواصل معنا
                 </Button>
               </div>

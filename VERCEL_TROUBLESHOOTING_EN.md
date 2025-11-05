@@ -1,6 +1,7 @@
 # 🔧 Vercel Troubleshooting Guide - Complete Solutions
 
 ## 📋 Table of Contents
+
 1. [Schema Validation Errors](#schema-validation-errors)
 2. [Build Failures](#build-failures)
 3. [Runtime Errors](#runtime-errors)
@@ -17,8 +18,9 @@
 ### Error: "env should be object"
 
 **Error Message:**
+
 ```
-The vercel.json schema validation failed with the following message: 
+The vercel.json schema validation failed with the following message:
 "env" should be object.
 ```
 
@@ -26,16 +28,15 @@ The vercel.json schema validation failed with the following message:
 The `env` field in `vercel.json` was defined as an array instead of an object.
 
 **❌ Incorrect Configuration:**
+
 ```json
 {
-  "env": [
-    "DATABASE_URL",
-    "JWT_SECRET"
-  ]
+  "env": ["DATABASE_URL", "JWT_SECRET"]
 }
 ```
 
 **✅ Correct Configuration:**
+
 ```json
 {
   "env": {
@@ -46,6 +47,7 @@ The `env` field in `vercel.json` was defined as an array instead of an object.
 ```
 
 **Solution Steps:**
+
 1. Open `vercel.json`
 2. Change `env` from array to object format
 3. Use `@secret_name` references for sensitive values
@@ -53,6 +55,7 @@ The `env` field in `vercel.json` was defined as an array instead of an object.
 5. Redeploy on Vercel
 
 **Verification:**
+
 ```bash
 # Validate JSON syntax
 cat vercel.json | jq .
@@ -68,11 +71,13 @@ grep -A 5 '"env"' vercel.json
 ### Error: "Build exceeded maximum duration"
 
 **Error Message:**
+
 ```
 Error: The build exceeded the maximum duration of 45 minutes
 ```
 
 **Solution 1: Increase Timeout**
+
 ```json
 {
   "functions": {
@@ -84,6 +89,7 @@ Error: The build exceeded the maximum duration of 45 minutes
 ```
 
 **Solution 2: Optimize Build**
+
 ```bash
 # Clear build cache
 rm -rf .next dist node_modules/.cache
@@ -98,12 +104,14 @@ pnpm build
 ### Error: "Command failed with exit code 1"
 
 **Common Causes:**
+
 1. TypeScript compilation errors
 2. Missing dependencies
 3. Build script issues
 4. Insufficient memory
 
 **Diagnostic Steps:**
+
 ```bash
 # Check TypeScript errors
 pnpm check
@@ -116,6 +124,7 @@ tail -f dist/build.log
 ```
 
 **Solution:**
+
 ```bash
 # Fix TypeScript errors first
 pnpm check
@@ -129,13 +138,16 @@ pnpm build
 ### Error: "Cannot find module"
 
 **Error Message:**
+
 ```
 Error: Cannot find module '@/components/ui/button'
 Module not found: Can't resolve './lib/utils'
 ```
 
 **Solution:**
+
 1. Check `tsconfig.json` paths configuration:
+
 ```json
 {
   "compilerOptions": {
@@ -148,17 +160,19 @@ Module not found: Can't resolve './lib/utils'
 ```
 
 2. Verify file exists:
+
 ```bash
 ls -la client/src/components/ui/button.tsx
 ```
 
 3. Check import paths:
+
 ```typescript
 // Use absolute paths
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 
 // Not relative paths from wrong location
-import { Button } from '../../../components/ui/button'
+import { Button } from "../../../components/ui/button";
 ```
 
 ---
@@ -168,6 +182,7 @@ import { Button } from '../../../components/ui/button'
 ### Error: "Internal Server Error (500)"
 
 **Diagnostic Steps:**
+
 ```bash
 # Check Vercel logs
 vercel logs your-deployment-url
@@ -179,51 +194,52 @@ grep "Error:" deployment.log
 **Common Causes & Solutions:**
 
 #### 1. Database Connection Failed
+
 ```javascript
 // Check DATABASE_URL is set correctly
-console.log('Database URL:', process.env.DATABASE_URL ? 'Set' : 'Missing')
+console.log("Database URL:", process.env.DATABASE_URL ? "Set" : "Missing");
 
 // Verify connection
-import { db } from './db'
-await db.raw('SELECT 1')
+import { db } from "./db";
+await db.raw("SELECT 1");
 ```
 
 #### 2. Missing Environment Variables
+
 ```javascript
 // Add validation
-const requiredEnvVars = [
-  'DATABASE_URL',
-  'JWT_SECRET',
-  'SESSION_SECRET'
-]
+const requiredEnvVars = ["DATABASE_URL", "JWT_SECRET", "SESSION_SECRET"];
 
 requiredEnvVars.forEach(envVar => {
   if (!process.env[envVar]) {
-    throw new Error(`Missing required env var: ${envVar}`)
+    throw new Error(`Missing required env var: ${envVar}`);
   }
-})
+});
 ```
 
 #### 3. Unhandled Promise Rejection
+
 ```javascript
 // Add global error handlers
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason)
-})
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled Rejection at:", promise, "reason:", reason);
+});
 
-process.on('uncaughtException', (error) => {
-  console.error('Uncaught Exception:', error)
-})
+process.on("uncaughtException", error => {
+  console.error("Uncaught Exception:", error);
+});
 ```
 
 ### Error: "Function execution timed out"
 
 **Error Message:**
+
 ```
 Task timed out after 10.00 seconds
 ```
 
 **Solution:**
+
 ```json
 {
   "functions": {
@@ -242,12 +258,14 @@ Task timed out after 10.00 seconds
 ### Error: "connect ETIMEDOUT"
 
 **Error Message:**
+
 ```
 Error: connect ETIMEDOUT
     at Connection._handleConnectTimeout
 ```
 
 **Causes:**
+
 1. Database server is down
 2. Firewall blocking Vercel IPs
 3. Incorrect connection string
@@ -256,6 +274,7 @@ Error: connect ETIMEDOUT
 **Solution Steps:**
 
 #### 1. Verify Connection String
+
 ```bash
 # Format check
 DATABASE_URL=mysql://username:password@host:port/database
@@ -265,6 +284,7 @@ mysql -h host -P port -u username -p database
 ```
 
 #### 2. Check Firewall/Whitelist
+
 ```bash
 # For Railway
 # Add 0.0.0.0/0 in Railway Dashboard → Settings → Network
@@ -274,6 +294,7 @@ mysql -h host -P port -u username -p database
 ```
 
 #### 3. SSL Configuration
+
 ```javascript
 // Add SSL config if required
 const connection = {
@@ -283,21 +304,22 @@ const connection = {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   ssl: {
-    rejectUnauthorized: false
-  }
-}
+    rejectUnauthorized: false,
+  },
+};
 ```
 
 ### Error: "Too many connections"
 
 **Solution:**
+
 ```javascript
 // Limit connection pool
 const pool = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0,
-  waitForConnections: true
-})
+  waitForConnections: true,
+});
 ```
 
 ---
@@ -307,6 +329,7 @@ const pool = mysql.createPool({
 ### Error: "Environment variable not found"
 
 **Diagnostic:**
+
 ```bash
 # List all environment variables in Vercel
 vercel env ls
@@ -319,6 +342,7 @@ cat .env.local | grep DATABASE_URL
 **Solution:**
 
 #### 1. Add Missing Variables
+
 ```bash
 # Via Vercel CLI
 vercel env add DATABASE_URL production
@@ -328,6 +352,7 @@ vercel env add DATABASE_URL production
 ```
 
 #### 2. Verify Variable Names
+
 ```bash
 # Case-sensitive check
 # ❌ database_url
@@ -335,7 +360,9 @@ vercel env add DATABASE_URL production
 ```
 
 #### 3. Check Environment Scope
+
 Variables must be set for:
+
 - ✅ Production
 - ✅ Preview (optional)
 - ✅ Development (optional)
@@ -345,6 +372,7 @@ Variables must be set for:
 **Common Issues:**
 
 #### 1. Special Characters in Values
+
 ```bash
 # Escape special characters
 PASSWORD='MyP@ss$word!'
@@ -355,6 +383,7 @@ vercel env add DB_PASSWORD
 ```
 
 #### 2. Multiline Values
+
 ```bash
 # For certificates or long values
 vercel env add PRIVATE_KEY
@@ -368,6 +397,7 @@ vercel env add PRIVATE_KEY
 ### Issue: "Slow page load times"
 
 **Diagnostic:**
+
 ```bash
 # Check bundle size
 pnpm build
@@ -380,12 +410,14 @@ npx vite-bundle-visualizer
 **Solutions:**
 
 #### 1. Code Splitting
+
 ```typescript
 // Use dynamic imports
-const Dashboard = lazy(() => import('./pages/Dashboard'))
+const Dashboard = lazy(() => import("./pages/Dashboard"));
 ```
 
 #### 2. Optimize Images
+
 ```bash
 # Use next/image or optimize manually
 npm install sharp
@@ -393,6 +425,7 @@ sharp input.png -o output.webp
 ```
 
 #### 3. Enable Caching
+
 ```json
 {
   "headers": [
@@ -412,6 +445,7 @@ sharp input.png -o output.webp
 ### Issue: "High memory usage"
 
 **Solution:**
+
 ```json
 {
   "functions": {
@@ -429,6 +463,7 @@ sharp input.png -o output.webp
 ### Error: "Type 'X' is not assignable to type 'Y'"
 
 **Solution:**
+
 ```bash
 # Run type check locally
 pnpm check
@@ -441,6 +476,7 @@ npx tsc --noEmit server/index.ts
 ### Error: "Cannot find type definition"
 
 **Solution:**
+
 ```bash
 # Install missing type definitions
 pnpm add -D @types/express
@@ -450,14 +486,15 @@ pnpm add -D @types/node
 ### Error: "Implicit 'any' type"
 
 **Solution:**
+
 ```typescript
 // Add explicit types
 function processData(data: unknown): Result {
   // Type guard
-  if (typeof data === 'string') {
-    return { value: data }
+  if (typeof data === "string") {
+    return { value: data };
   }
-  throw new Error('Invalid data type')
+  throw new Error("Invalid data type");
 }
 ```
 
@@ -470,6 +507,7 @@ function processData(data: unknown): Result {
 **Solutions:**
 
 #### 1. Reduce Bundle Size
+
 ```bash
 # Analyze dependencies
 pnpm list --depth=0
@@ -479,6 +517,7 @@ pnpm remove unused-package
 ```
 
 #### 2. Optimize Build Process
+
 ```json
 {
   "build": {
@@ -490,13 +529,11 @@ pnpm remove unused-package
 ```
 
 #### 3. Use Build Cache
+
 ```json
 {
   "buildCommand": "pnpm build --cache",
-  "cacheDirectories": [
-    ".next/cache",
-    "node_modules/.cache"
-  ]
+  "cacheDirectories": [".next/cache", "node_modules/.cache"]
 }
 ```
 
@@ -543,6 +580,7 @@ echo "✅ All pre-deployment checks passed!"
 ```
 
 Run before deploying:
+
 ```bash
 chmod +x scripts/pre-deploy-check.sh
 ./scripts/pre-deploy-check.sh
@@ -556,13 +594,13 @@ chmod +x scripts/pre-deploy-check.sh
 
 ```typescript
 // server/_core/index.ts
-if (process.env.NODE_ENV === 'production') {
-  console.log('Environment:', {
+if (process.env.NODE_ENV === "production") {
+  console.log("Environment:", {
     nodeEnv: process.env.NODE_ENV,
     databaseConfigured: !!process.env.DATABASE_URL,
     redisConfigured: !!process.env.REDIS_URL,
     // Don't log actual values!
-  })
+  });
 }
 ```
 
@@ -583,13 +621,13 @@ vercel logs --function server/_core/index.ts
 
 ```typescript
 // Add Sentry or similar
-import * as Sentry from '@sentry/node'
+import * as Sentry from "@sentry/node";
 
 Sentry.init({
   dsn: process.env.VITE_SENTRY_DSN,
   environment: process.env.NODE_ENV,
   tracesSampleRate: 1.0,
-})
+});
 ```
 
 ---
@@ -662,6 +700,7 @@ Before asking for help, verify:
 ---
 
 **Related Documents:**
+
 - [Deployment Guide](./VERCEL_DEPLOYMENT_EN.md)
 - [Security Guide](./SECURITY_NOTE.md)
 - [README](./README.md)

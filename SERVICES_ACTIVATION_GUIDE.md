@@ -9,6 +9,7 @@
 ## 1. Email Service (SMTP) ⭐⭐⭐
 
 ### الخيار 1: Resend (موصى به)
+
 ```bash
 # 1. سجل في https://resend.com
 # 2. احصل على API key
@@ -23,6 +24,7 @@ SMTP_SECURE=true
 ```
 
 ### الخيار 2: SendGrid
+
 ```env
 SMTP_HOST=smtp.sendgrid.net
 SMTP_PORT=587
@@ -32,6 +34,7 @@ SMTP_FROM=noreply@rabithr.com
 ```
 
 ### الخيار 3: AWS SES
+
 ```env
 SMTP_HOST=email-smtp.me-south-1.amazonaws.com
 SMTP_PORT=587
@@ -41,6 +44,7 @@ SMTP_FROM=noreply@rabithr.com
 ```
 
 ### اختبار الإرسال:
+
 ```bash
 # في Docker container
 docker exec rabithr-app node -e "
@@ -58,6 +62,7 @@ docker exec rabithr-app node -e "
 ## 2. SMS Service (Twilio/Unifonic) ⭐⭐
 
 ### الخيار 1: Unifonic (للسعودية - موصى به)
+
 ```bash
 # 1. سجل في https://www.unifonic.com
 # 2. احصل على App SID
@@ -69,6 +74,7 @@ UNIFONIC_SENDER_ID=RABITHR
 ```
 
 ### الخيار 2: Twilio (عالمي)
+
 ```env
 SMS_PROVIDER=twilio
 TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxx
@@ -77,6 +83,7 @@ TWILIO_PHONE_NUMBER=+966xxxxxxxxx
 ```
 
 ### اختبار الإرسال:
+
 ```bash
 docker exec rabithr-app node -e "
   const { sendSMS } = require('./dist/server/_core/sms');
@@ -94,6 +101,7 @@ docker exec rabithr-app node -e "
 ### خطوات التفعيل:
 
 #### 1. إنشاء S3 Bucket
+
 ```bash
 # في AWS Console أو CLI
 aws s3 mb s3://rabithr-storage --region me-south-1
@@ -103,6 +111,7 @@ aws s3api put-bucket-cors --bucket rabithr-storage --cors-configuration file://s
 ```
 
 #### 2. s3-cors.json
+
 ```json
 {
   "CORSRules": [
@@ -117,17 +126,14 @@ aws s3api put-bucket-cors --bucket rabithr-storage --cors-configuration file://s
 ```
 
 #### 3. IAM Policy
+
 ```json
 {
   "Version": "2012-10-17",
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": [
-        "s3:PutObject",
-        "s3:GetObject",
-        "s3:DeleteObject"
-      ],
+      "Action": ["s3:PutObject", "s3:GetObject", "s3:DeleteObject"],
       "Resource": "arn:aws:s3:::rabithr-storage/*"
     }
   ]
@@ -135,6 +141,7 @@ aws s3api put-bucket-cors --bucket rabithr-storage --cors-configuration file://s
 ```
 
 #### 4. Environment Variables
+
 ```env
 AWS_ACCESS_KEY_ID=AKIAxxxxxxxxxxxxx
 AWS_SECRET_ACCESS_KEY=xxxxxxxxxxxxx
@@ -147,6 +154,7 @@ AWS_S3_BUCKET=rabithr-storage
 ## 4. Payment Gateway ⭐⭐⭐
 
 ### الخيار 1: Moyasar (للسعودية - موصى به)
+
 ```bash
 # 1. سجل في https://moyasar.com
 # 2. فعّل الحساب
@@ -164,12 +172,14 @@ PAYMENT_MODE=live
 ```
 
 ### الخيار 2: Tap Payment
+
 ```env
 TAP_SECRET_KEY=sk_live_xxxxxxxxxxxxx
 TAP_PUBLIC_KEY=pk_live_xxxxxxxxxxxxx
 ```
 
 ### Webhook Setup:
+
 ```bash
 # أضف في Moyasar Dashboard:
 Webhook URL: https://rabithr.com/api/webhooks/moyasar
@@ -183,6 +193,7 @@ Events: payment.paid, payment.failed
 ### تلقائي مع Certbot:
 
 #### 1. إعداد DNS
+
 ```bash
 # تأكد من أن النطاق يشير إلى السيرفر
 A Record: rabithr.com -> YOUR_SERVER_IP
@@ -190,6 +201,7 @@ A Record: www.rabithr.com -> YOUR_SERVER_IP
 ```
 
 #### 2. الحصول على الشهادة
+
 ```bash
 # تشغيل certbot
 docker-compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
@@ -208,6 +220,7 @@ docker run -it --rm \
 ```
 
 #### 3. التجديد التلقائي
+
 الشهادة ستتجدد تلقائياً كل 12 ساعة.
 
 ---
@@ -226,6 +239,7 @@ AI_TEMPERATURE=0.7
 ```
 
 ### اختبار:
+
 ```bash
 docker exec rabithr-app node -e "
   const { invokeLLM } = require('./dist/server/_core/llm');
@@ -241,6 +255,7 @@ docker exec rabithr-app node -e "
 ## 7. Backup Automation ⭐⭐⭐
 
 ### التفعيل:
+
 ```bash
 # 1. تشغيل خدمة النسخ الاحتياطي
 docker-compose -f docker-compose.yml -f docker-compose.backup.yml up -d
@@ -253,10 +268,12 @@ docker exec rabithr-backup-cron /scripts/backup.sh
 ```
 
 ### الجدول الزمني (افتراضي):
+
 - **النسخ الاحتياطي:** كل يوم الساعة 2:00 صباحاً
 - **التنظيف:** كل أحد الساعة 3:00 صباحاً
 
 ### تعديل الجدول:
+
 ```env
 # في docker-compose.backup.yml
 # صيغة Cron: minute hour day month weekday
@@ -271,6 +288,7 @@ BACKUP_SCHEDULE=0 */6 * * *
 ### الخطوات:
 
 #### 1. إنشاء Firebase Project
+
 ```bash
 # 1. اذهب إلى https://console.firebase.google.com
 # 2. أنشئ مشروع جديد
@@ -279,6 +297,7 @@ BACKUP_SCHEDULE=0 */6 * * *
 ```
 
 #### 2. Environment Variables
+
 ```env
 FIREBASE_PROJECT_ID=rabithr-xxxxx
 FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nxxxxx\n-----END PRIVATE KEY-----\n"
@@ -290,6 +309,7 @@ FIREBASE_CLIENT_EMAIL=firebase-adminsdk-xxxxx@rabithr-xxxxx.iam.gserviceaccount.
 ## 9. Monitoring (Grafana) ✅
 
 ### الوصول:
+
 ```
 URL: http://localhost:3001
 Username: admin
@@ -297,6 +317,7 @@ Password: admin (غيّره فوراً!)
 ```
 
 ### إعداد Dashboard:
+
 ```bash
 # 1. سجّل الدخول إلى Grafana
 # 2. أضف Prometheus كـ data source:
@@ -313,6 +334,7 @@ URL: http://prometheus:9090
 ## 10. فحص الخدمات
 
 ### اختبار شامل:
+
 ```bash
 # 1. Health Check
 make health
@@ -334,6 +356,7 @@ docker exec rabithr-redis redis-cli ping
 ## 📋 Checklist النشر
 
 ### قبل الإنتاج:
+
 - [ ] SSL Certificates مفعّلة
 - [ ] Email Service يعمل
 - [ ] SMS Service يعمل (اختياري)
@@ -347,6 +370,7 @@ docker exec rabithr-redis redis-cli ping
 - [ ] Firewall rules مضبوطة
 
 ### بعد النشر:
+
 - [ ] اختبر جميع الخدمات
 - [ ] راقب الـ logs
 - [ ] فحص النسخ الاحتياطية
@@ -361,6 +385,7 @@ docker exec rabithr-redis redis-cli ping
 ### المشاكل الشائعة:
 
 **Email لا يُرسل:**
+
 ```bash
 # فحص الـ logs
 docker logs rabithr-app | grep -i email
@@ -370,6 +395,7 @@ telnet smtp.resend.com 587
 ```
 
 **Payment يفشل:**
+
 ```bash
 # فحص الـ webhook
 docker logs rabithr-app | grep -i payment
@@ -379,6 +405,7 @@ echo $MOYASAR_API_KEY
 ```
 
 **Backup لا يعمل:**
+
 ```bash
 # فحص cron logs
 docker logs rabithr-backup-cron
@@ -392,6 +419,7 @@ docker exec rabithr-backup-cron /scripts/backup.sh
 ## 📞 الدعم
 
 للمزيد من المساعدة، راجع:
+
 - `FINAL_AUDIT_REPORT.md` - تقرير الفحص الشامل
 - `DEPLOYMENT_GUIDE_FULL.md` - دليل النشر
 - `DOCKER.md` - دليل Docker

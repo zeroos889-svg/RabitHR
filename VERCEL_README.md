@@ -7,6 +7,7 @@
 ## 📋 متطلبات النشر
 
 ### 1. حساب Vercel
+
 - سجل في [vercel.com](https://vercel.com)
 - اربط حساب GitHub الخاص بك
 
@@ -22,6 +23,7 @@
 ## ⚙️ إعدادات المشروع
 
 ### Build & Output Settings
+
 ```
 Framework Preset: Vite
 Build Command: pnpm vercel-build
@@ -30,6 +32,7 @@ Install Command: pnpm install
 ```
 
 ### Root Directory
+
 ```
 . (root)
 ```
@@ -66,7 +69,9 @@ VITE_SENTRY_DSN=your-sentry-dsn
 ## 🚀 النشر
 
 ### نشر تلقائي
+
 Vercel يقوم بالنشر التلقائي:
+
 - **Production**: عند push إلى `main`
 - **Preview**: عند إنشاء Pull Request
 
@@ -76,6 +81,7 @@ git push origin main
 ```
 
 ### نشر يدوي
+
 ```bash
 # باستخدام Vercel CLI
 npm i -g vercel
@@ -117,6 +123,7 @@ Vercel يطبق رؤوس الأمان التالية تلقائياً (من `ver
 ## 📊 الأداء
 
 ### تحسينات تلقائية من Vercel
+
 - ✅ Edge Network (CDN عالمي)
 - ✅ Automatic Compression (Gzip/Brotli)
 - ✅ Smart Caching
@@ -124,6 +131,7 @@ Vercel يطبق رؤوس الأمان التالية تلقائياً (من `ver
 - ✅ HTTP/2 & HTTP/3
 
 ### تحسينات في الكود
+
 - ✅ Code Splitting (React, UI components, Charts)
 - ✅ Lazy Loading للمكونات الكبيرة
 - ✅ Asset Caching (1 year للـ assets)
@@ -140,7 +148,7 @@ Vercel يطبق رؤوس الأمان التالية تلقائياً (من `ver
    - Type: A
    - Name: @
    - Value: 76.76.21.21
-   
+
    أو CNAME:
    - Type: CNAME
    - Name: www
@@ -148,7 +156,9 @@ Vercel يطبق رؤوس الأمان التالية تلقائياً (من `ver
 ```
 
 ### تحديث متغيرات البيئة
+
 بعد إضافة النطاق المخصص، حدّث:
+
 ```env
 VITE_APP_URL=https://app.rabit.sa
 ```
@@ -156,6 +166,7 @@ VITE_APP_URL=https://app.rabit.sa
 ## 📱 Preview Deployments
 
 كل Pull Request يحصل على preview URL فريد:
+
 ```
 https://rabithr-pr-123.vercel.app
 ```
@@ -165,6 +176,7 @@ https://rabithr-pr-123.vercel.app
 ## 🔍 المراقبة
 
 ### Vercel Analytics
+
 ```bash
 # تفعيل في Dashboard
 1. اذهب إلى Analytics
@@ -172,6 +184,7 @@ https://rabithr-pr-123.vercel.app
 ```
 
 ### الـ Logs
+
 ```bash
 # عرض deployment logs
 1. اذهب إلى Deployments
@@ -182,7 +195,9 @@ https://rabithr-pr-123.vercel.app
 ## ❗ استكشاف الأخطاء
 
 ### المشكلة: Build يفشل
+
 **الحل**:
+
 ```bash
 # تحقق محلياً
 pnpm install
@@ -195,14 +210,18 @@ pnpm vercel-build # Build
 ```
 
 ### المشكلة: API calls تفشل
+
 **الحل**:
+
 1. تحقق من `VITE_API_URL` في Environment Variables
 2. تأكد من أن Railway backend يعمل
 3. تحقق من CORS settings في Backend
 4. تحقق من rewrites في `vercel.json`
 
 ### المشكلة: Assets لا تحمّل
+
 **الحل**:
+
 1. تأكد من `outputDirectory: dist/public` في settings
 2. تحقق من مسارات الملفات في الكود
 3. تحقق من build logs
@@ -216,6 +235,7 @@ pnpm vercel-build # Build
    - احصل على Railway URL
 
 2. **تحديث vercel.json**
+
    ```json
    {
      "rewrites": [
@@ -228,6 +248,7 @@ pnpm vercel-build # Build
    ```
 
 3. **إضافة متغيرات البيئة في Vercel**
+
    ```env
    VITE_API_URL=https://your-railway-url.railway.app
    ```
@@ -242,6 +263,7 @@ pnpm vercel-build # Build
 ## 💰 التكلفة
 
 Vercel يقدم:
+
 - **Hobby Plan**: مجاني
   - Unlimited deployments
   - 100 GB bandwidth/month
@@ -253,6 +275,7 @@ Vercel يقدم:
   - Password protection
 
 ### للاستخدام الشخصي أو الشركات الصغيرة
+
 **Hobby Plan** كافٍ تماماً! 🎉
 
 ## 🎯 نصائح للأداء الأفضل

@@ -1,13 +1,25 @@
-import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
-import { Badge } from '@/components/ui/badge';
-import { Textarea } from '@/components/ui/textarea';
+import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Calculator,
   Download,
@@ -24,10 +36,10 @@ import {
   Upload,
   Bot,
   FileCheck,
-} from 'lucide-react';
-import { Link } from 'wouter';
-import { trpc } from '@/lib/trpc';
-import { toast } from 'sonner';
+} from "lucide-react";
+import { Link } from "wouter";
+import { trpc } from "@/lib/trpc";
+import { toast } from "sonner";
 
 // Types
 interface CalculationResult {
@@ -48,20 +60,20 @@ interface CalculationResult {
 
 export default function EndOfServiceCalculator() {
   const { t, i18n } = useTranslation();
-  const isRTL = i18n.language === 'ar';
+  const isRTL = i18n.language === "ar";
 
   // Form State
-  const [salary, setSalary] = useState<string>('');
-  const [contractType, setContractType] = useState<string>('');
-  const [terminationReason, setTerminationReason] = useState<string>('');
-  const [startDate, setStartDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
-  
+  const [salary, setSalary] = useState<string>("");
+  const [contractType, setContractType] = useState<string>("");
+  const [terminationReason, setTerminationReason] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
+
   // AI Features
-  const [aiQuestion, setAiQuestion] = useState<string>('');
-  const [aiResponse, setAiResponse] = useState<string>('');
+  const [aiQuestion, setAiQuestion] = useState<string>("");
+  const [aiResponse, setAiResponse] = useState<string>("");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [verificationResult, setVerificationResult] = useState<string>('');
+  const [verificationResult, setVerificationResult] = useState<string>("");
 
   // Result State
   const [result, setResult] = useState<CalculationResult | null>(null);
@@ -70,25 +82,25 @@ export default function EndOfServiceCalculator() {
   // Calculate service duration from dates
   const calculateDuration = (start: string, end: string) => {
     if (!start || !end) return { years: 0, months: 0, days: 0 };
-    
+
     const startD = new Date(start);
     const endD = new Date(end);
-    
+
     let years = endD.getFullYear() - startD.getFullYear();
     let months = endD.getMonth() - startD.getMonth();
     let days = endD.getDate() - startD.getDate();
-    
+
     if (days < 0) {
       months--;
       const prevMonth = new Date(endD.getFullYear(), endD.getMonth(), 0);
       days += prevMonth.getDate();
     }
-    
+
     if (months < 0) {
       years--;
       months += 12;
     }
-    
+
     return { years, months, days };
   };
 
@@ -101,14 +113,14 @@ export default function EndOfServiceCalculator() {
 
   const calculateEOSB = async () => {
     const salaryNum = parseFloat(salary) || 0;
-    
+
     if (salaryNum <= 0 || !startDate || !endDate) return;
 
     const duration = calculateDuration(startDate, endDate);
     const { years: yearsNum, months: monthsNum, days: daysNum } = duration;
 
     // Convert everything to years
-    const totalYears = yearsNum + (monthsNum / 12) + (daysNum / 365);
+    const totalYears = yearsNum + monthsNum / 12 + daysNum / 365;
 
     // Calculate first 5 years
     const firstFiveYearsCount = Math.min(totalYears, 5);
@@ -124,7 +136,7 @@ export default function EndOfServiceCalculator() {
     // Determine percentage based on contract type and termination reason
     let percentage = 100;
 
-    if (contractType === 'unlimited' && terminationReason === 'resignation') {
+    if (contractType === "unlimited" && terminationReason === "resignation") {
       if (totalYears < 2) {
         percentage = 0;
       } else if (totalYears < 5) {
@@ -134,7 +146,10 @@ export default function EndOfServiceCalculator() {
       } else {
         percentage = 100;
       }
-    } else if (contractType === 'limited' && terminationReason === 'resignation_before_end') {
+    } else if (
+      contractType === "limited" &&
+      terminationReason === "resignation_before_end"
+    ) {
       if (totalYears < 2) {
         percentage = 0;
       } else if (totalYears < 5) {
@@ -144,19 +159,19 @@ export default function EndOfServiceCalculator() {
       } else {
         percentage = 100;
       }
-    } else if (terminationReason === 'disciplinary_severe') {
+    } else if (terminationReason === "disciplinary_severe") {
       percentage = 0;
     }
 
     const finalAmount = (totalBeforePercentage * percentage) / 100;
 
     // Get AI insights
-    let aiInsights = '';
+    let aiInsights = "";
     try {
       // This would call the AI to provide insights
       aiInsights = `بناءً على الحساب، الموظف يستحق ${percentage}% من المكافأة الكاملة حسب المادة 84 من نظام العمل السعودي.`;
     } catch (error) {
-      console.error('AI insights error:', error);
+      console.error("AI insights error:", error);
     }
 
     setResult({
@@ -182,13 +197,13 @@ export default function EndOfServiceCalculator() {
 
   const handleExportPDF = async () => {
     if (!result || !salary || !startDate || !endDate) {
-      toast.error('يجب إجراء الحساب أولاً');
+      toast.error("يجب إجراء الحساب أولاً");
       return;
     }
 
     try {
-      toast.info('جاري إنشاء ملف PDF...');
-      
+      toast.info("جاري إنشاء ملف PDF...");
+
       const response = await generatePDFMutation.mutateAsync({
         salary: parseFloat(salary),
         startDate,
@@ -207,63 +222,67 @@ export default function EndOfServiceCalculator() {
       });
 
       // Create blob and download
-      const blob = new Blob([response.pdfContent], { type: 'text/html' });
+      const blob = new Blob([response.pdfContent], { type: "text/html" });
       const url = window.URL.createObjectURL(blob);
-      
+
       // Open in new window for printing
-      const printWindow = window.open(url, '_blank');
+      const printWindow = window.open(url, "_blank");
       if (printWindow) {
         printWindow.onload = () => {
           printWindow.print();
         };
       }
-      
-      toast.success('تم إنشاء التقرير بنجاح');
+
+      toast.success("تم إنشاء التقرير بنجاح");
     } catch (error) {
-      console.error('PDF generation error:', error);
-      toast.error('حدث خطأ في إنشاء التقرير');
+      console.error("PDF generation error:", error);
+      toast.error("حدث خطأ في إنشاء التقرير");
     }
   };
 
   const handleReset = () => {
-    setSalary('');
-    setContractType('');
-    setTerminationReason('');
-    setStartDate('');
-    setEndDate('');
+    setSalary("");
+    setContractType("");
+    setTerminationReason("");
+    setStartDate("");
+    setEndDate("");
     setResult(null);
     setShowResult(false);
-    setAiQuestion('');
-    setAiResponse('');
+    setAiQuestion("");
+    setAiResponse("");
     setUploadedFile(null);
-    setVerificationResult('');
+    setVerificationResult("");
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setUploadedFile(file);
-      toast.success('تم رفع الملف بنجاح');
+      toast.success("تم رفع الملف بنجاح");
       // Here you would process the file with AI
       setTimeout(() => {
-        setVerificationResult('جاري التحقق من الملف باستخدام الذكاء الاصطناعي...');
+        setVerificationResult(
+          "جاري التحقق من الملف باستخدام الذكاء الاصطناعي..."
+        );
       }, 500);
     }
   };
 
   const handleAskAI = async () => {
     if (!aiQuestion.trim()) return;
-    
-    toast.info('جاري الحصول على الإجابة...');
+
+    toast.info("جاري الحصول على الإجابة...");
     // Here you would call the AI API
     setTimeout(() => {
-      setAiResponse('هذا مثال على إجابة الذكاء الاصطناعي. سيتم ربطها بالنظام الفعلي قريباً.');
-      toast.success('تم الحصول على الإجابة');
+      setAiResponse(
+        "هذا مثال على إجابة الذكاء الاصطناعي. سيتم ربطها بالنظام الفعلي قريباً."
+      );
+      toast.success("تم الحصول على الإجابة");
     }, 1000);
   };
 
   const formatCurrency = (amount: number) => {
-    return `${amount.toLocaleString('ar-SA')} ﷼`;
+    return `${amount.toLocaleString("ar-SA")} ﷼`;
   };
 
   return (
@@ -295,7 +314,8 @@ export default function EndOfServiceCalculator() {
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto flex items-center justify-center gap-2">
             <Sparkles className="h-5 w-5 text-primary" />
-            احسب مكافأة نهاية الخدمة بدقة وفقاً للمادة 84 - مدعومة بالذكاء الاصطناعي
+            احسب مكافأة نهاية الخدمة بدقة وفقاً للمادة 84 - مدعومة بالذكاء
+            الاصطناعي
           </p>
         </div>
 
@@ -325,7 +345,7 @@ export default function EndOfServiceCalculator() {
                       type="number"
                       placeholder="مثال: 10000"
                       value={salary}
-                      onChange={(e) => setSalary(e.target.value)}
+                      onChange={e => setSalary(e.target.value)}
                       className="text-lg pr-12"
                     />
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-bold">
@@ -340,7 +360,10 @@ export default function EndOfServiceCalculator() {
                 {/* Dates */}
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="start-date" className="flex items-center gap-2">
+                    <Label
+                      htmlFor="start-date"
+                      className="flex items-center gap-2"
+                    >
                       <Calendar className="h-4 w-4" />
                       تاريخ المباشرة *
                     </Label>
@@ -348,11 +371,14 @@ export default function EndOfServiceCalculator() {
                       id="start-date"
                       type="date"
                       value={startDate}
-                      onChange={(e) => setStartDate(e.target.value)}
+                      onChange={e => setStartDate(e.target.value)}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="end-date" className="flex items-center gap-2">
+                    <Label
+                      htmlFor="end-date"
+                      className="flex items-center gap-2"
+                    >
                       <Calendar className="h-4 w-4" />
                       آخر يوم عمل *
                     </Label>
@@ -360,7 +386,7 @@ export default function EndOfServiceCalculator() {
                       id="end-date"
                       type="date"
                       value={endDate}
-                      onChange={(e) => setEndDate(e.target.value)}
+                      onChange={e => setEndDate(e.target.value)}
                     />
                   </div>
                 </div>
@@ -368,7 +394,9 @@ export default function EndOfServiceCalculator() {
                 {/* Service Duration Display */}
                 {startDate && endDate && (
                   <div className="p-4 bg-primary/10 rounded-lg">
-                    <p className="text-sm font-medium mb-2">مدة الخدمة المحسوبة:</p>
+                    <p className="text-sm font-medium mb-2">
+                      مدة الخدمة المحسوبة:
+                    </p>
                     <p className="text-lg font-bold gradient-text">
                       {(() => {
                         const duration = calculateDuration(startDate, endDate);
@@ -388,7 +416,9 @@ export default function EndOfServiceCalculator() {
                       <SelectValue placeholder="اختر نوع العقد" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="unlimited">عقد غير محدد المدة</SelectItem>
+                      <SelectItem value="unlimited">
+                        عقد غير محدد المدة
+                      </SelectItem>
                       <SelectItem value="limited">عقد محدد المدة</SelectItem>
                     </SelectContent>
                   </Select>
@@ -396,24 +426,45 @@ export default function EndOfServiceCalculator() {
 
                 {/* Termination Reason */}
                 <div className="space-y-2">
-                  <Label htmlFor="termination-reason">سبب انتهاء الخدمة *</Label>
-                  <Select value={terminationReason} onValueChange={setTerminationReason}>
+                  <Label htmlFor="termination-reason">
+                    سبب انتهاء الخدمة *
+                  </Label>
+                  <Select
+                    value={terminationReason}
+                    onValueChange={setTerminationReason}
+                  >
                     <SelectTrigger id="termination-reason">
                       <SelectValue placeholder="اختر سبب الإنهاء" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="contract_end">انتهاء مدة العقد</SelectItem>
-                      <SelectItem value="resignation">استقالة العامل</SelectItem>
-                      <SelectItem value="resignation_before_end">استقالة قبل انتهاء العقد</SelectItem>
-                      <SelectItem value="employer_termination">إنهاء من صاحب العمل</SelectItem>
-                      <SelectItem value="retirement">بلوغ سن التقاعد</SelectItem>
-                      <SelectItem value="disability">العجز الكلي/الجزئي</SelectItem>
+                      <SelectItem value="contract_end">
+                        انتهاء مدة العقد
+                      </SelectItem>
+                      <SelectItem value="resignation">
+                        استقالة العامل
+                      </SelectItem>
+                      <SelectItem value="resignation_before_end">
+                        استقالة قبل انتهاء العقد
+                      </SelectItem>
+                      <SelectItem value="employer_termination">
+                        إنهاء من صاحب العمل
+                      </SelectItem>
+                      <SelectItem value="retirement">
+                        بلوغ سن التقاعد
+                      </SelectItem>
+                      <SelectItem value="disability">
+                        العجز الكلي/الجزئي
+                      </SelectItem>
                       <SelectItem value="death">الوفاة</SelectItem>
-                      <SelectItem value="force_majeure">القوة القاهرة</SelectItem>
+                      <SelectItem value="force_majeure">
+                        القوة القاهرة
+                      </SelectItem>
                       <SelectItem value="marriage">زواج (للمرأة)</SelectItem>
                       <SelectItem value="maternity">ولادة (للمرأة)</SelectItem>
                       <SelectItem value="disciplinary">فصل تأديبي</SelectItem>
-                      <SelectItem value="disciplinary_severe">فصل تأديبي جسيم</SelectItem>
+                      <SelectItem value="disciplinary_severe">
+                        فصل تأديبي جسيم
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -424,16 +475,18 @@ export default function EndOfServiceCalculator() {
                     onClick={calculateEOSB}
                     className="flex-1 gradient-primary"
                     size="lg"
-                    disabled={!salary || !contractType || !terminationReason || !startDate || !endDate}
+                    disabled={
+                      !salary ||
+                      !contractType ||
+                      !terminationReason ||
+                      !startDate ||
+                      !endDate
+                    }
                   >
                     <Calculator className="h-5 w-5 ml-2" />
                     احسب المكافأة
                   </Button>
-                  <Button
-                    onClick={handleReset}
-                    variant="outline"
-                    size="lg"
-                  >
+                  <Button onClick={handleReset} variant="outline" size="lg">
                     إعادة تعيين
                   </Button>
                 </div>
@@ -456,7 +509,7 @@ export default function EndOfServiceCalculator() {
                   <Textarea
                     placeholder="مثال: ما هي حقوقي في حالة الاستقالة بعد 3 سنوات؟"
                     value={aiQuestion}
-                    onChange={(e) => setAiQuestion(e.target.value)}
+                    onChange={e => setAiQuestion(e.target.value)}
                     rows={3}
                   />
                   <Button
@@ -468,7 +521,7 @@ export default function EndOfServiceCalculator() {
                     اسأل الذكاء الاصطناعي
                   </Button>
                 </div>
-                
+
                 {aiResponse && (
                   <div className="p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg border border-purple-200 dark:border-purple-800">
                     <p className="text-sm">{aiResponse}</p>
@@ -484,9 +537,7 @@ export default function EndOfServiceCalculator() {
                   <FileCheck className="h-5 w-5 text-green-600" />
                   التحقق من الحساب
                 </CardTitle>
-                <CardDescription>
-                  ارفع ملف لتحقق من صحة الحساب
-                </CardDescription>
+                <CardDescription>ارفع ملف لتحقق من صحة الحساب</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center hover:border-primary/50 transition-colors cursor-pointer">
@@ -500,14 +551,14 @@ export default function EndOfServiceCalculator() {
                   <label htmlFor="file-upload" className="cursor-pointer">
                     <Upload className="h-10 w-10 mx-auto mb-3 text-muted-foreground" />
                     <p className="text-sm font-medium mb-1">
-                      {uploadedFile ? uploadedFile.name : 'اضغط لرفع ملف'}
+                      {uploadedFile ? uploadedFile.name : "اضغط لرفع ملف"}
                     </p>
                     <p className="text-xs text-muted-foreground">
                       PDF, Excel, أو صورة
                     </p>
                   </label>
                 </div>
-                
+
                 {verificationResult && (
                   <div className="p-4 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800">
                     <p className="text-sm">{verificationResult}</p>
@@ -551,24 +602,29 @@ export default function EndOfServiceCalculator() {
                     <Info className="h-4 w-4" />
                     تفاصيل الحساب
                   </h4>
-                  
+
                   <div className="space-y-2">
                     <div className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
                       <span className="text-sm">السنوات الخمس الأولى</span>
-                      <span className="font-semibold">{formatCurrency(result.firstFiveYears)}</span>
+                      <span className="font-semibold">
+                        {formatCurrency(result.firstFiveYears)}
+                      </span>
                     </div>
-                    
+
                     {result.afterFiveYears > 0 && (
                       <div className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
                         <span className="text-sm">ما بعد السنوات الخمس</span>
-                        <span className="font-semibold">{formatCurrency(result.afterFiveYears)}</span>
+                        <span className="font-semibold">
+                          {formatCurrency(result.afterFiveYears)}
+                        </span>
                       </div>
                     )}
-                    
+
                     <div className="flex justify-between items-center p-3 bg-primary/10 rounded-lg">
                       <span className="text-sm font-medium">مدة الخدمة</span>
                       <span className="font-semibold">
-                        {result.yearsCount} سنة، {result.monthsCount} شهر، {result.daysCount} يوم
+                        {result.yearsCount} سنة، {result.monthsCount} شهر،{" "}
+                        {result.daysCount} يوم
                       </span>
                     </div>
                   </div>
@@ -580,8 +636,12 @@ export default function EndOfServiceCalculator() {
                     <div className="flex gap-3">
                       <Sparkles className="h-5 w-5 text-purple-600 flex-shrink-0 mt-0.5" />
                       <div className="text-sm">
-                        <p className="font-medium mb-1 text-purple-900 dark:text-purple-100">رؤية ذكية</p>
-                        <p className="text-xs opacity-90">{result.aiInsights}</p>
+                        <p className="font-medium mb-1 text-purple-900 dark:text-purple-100">
+                          رؤية ذكية
+                        </p>
+                        <p className="text-xs opacity-90">
+                          {result.aiInsights}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -594,7 +654,8 @@ export default function EndOfServiceCalculator() {
                     <div className="text-sm text-blue-900 dark:text-blue-100">
                       <p className="font-medium mb-1">الحساب وفقاً للمادة 84</p>
                       <p className="text-xs opacity-90">
-                        تم احتساب المكافأة وفقاً لنظام العمل السعودي. النتيجة تقريبية ويُنصح بمراجعة قسم الموارد البشرية للتأكيد.
+                        تم احتساب المكافأة وفقاً لنظام العمل السعودي. النتيجة
+                        تقريبية ويُنصح بمراجعة قسم الموارد البشرية للتأكيد.
                       </p>
                     </div>
                   </div>
@@ -602,14 +663,16 @@ export default function EndOfServiceCalculator() {
 
                 {/* Action Buttons */}
                 <div className="grid grid-cols-2 gap-3 pt-4">
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     className="w-full"
                     onClick={handleExportPDF}
                     disabled={generatePDFMutation.isPending}
                   >
                     <Download className="h-4 w-4 ml-2" />
-                    {generatePDFMutation.isPending ? 'جاري الإنشاء...' : 'تصدير PDF'}
+                    {generatePDFMutation.isPending
+                      ? "جاري الإنشاء..."
+                      : "تصدير PDF"}
                   </Button>
                   <Button variant="outline" className="w-full">
                     <Share2 className="h-4 w-4 ml-2" />

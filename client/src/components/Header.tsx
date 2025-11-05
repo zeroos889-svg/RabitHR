@@ -30,14 +30,19 @@ export function Header() {
       <div className="container flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <img src={APP_LOGO} alt={APP_TITLE} className="h-8 w-8" />
-          <span className="text-xl font-bold text-gradient-primary">{APP_TITLE}</span>
+          <span className="text-xl font-bold text-gradient-primary">
+            {APP_TITLE}
+          </span>
         </Link>
 
         <nav className="flex items-center gap-4">
           {isAuthenticated ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                <Button
+                  variant="ghost"
+                  className="relative h-10 w-10 rounded-full"
+                >
                   <Avatar className="h-10 w-10">
                     <AvatarImage src={user?.profilePicture || undefined} />
                     <AvatarFallback className="bg-gradient-primary text-white">
@@ -49,7 +54,9 @@ export function Header() {
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">{user?.name || "مستخدم"}</p>
+                    <p className="text-sm font-medium leading-none">
+                      {user?.name || "مستخدم"}
+                    </p>
                     <p className="text-xs leading-none text-muted-foreground">
                       {user?.email || ""}
                     </p>

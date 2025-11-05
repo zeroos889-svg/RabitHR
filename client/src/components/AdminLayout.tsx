@@ -57,7 +57,9 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             {sidebarOpen && (
               <Link href="/admin">
                 <a className="flex items-center gap-2">
-                  {APP_LOGO && <img src={APP_LOGO} alt={APP_TITLE} className="h-8" />}
+                  {APP_LOGO && (
+                    <img src={APP_LOGO} alt={APP_TITLE} className="h-8" />
+                  )}
                   <span className="font-bold text-lg">{APP_TITLE}</span>
                 </a>
               </Link>
@@ -73,7 +75,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
           {/* Menu Items */}
           <nav className="flex-1 p-4 space-y-2">
-            {menuItems.map((item) => {
+            {menuItems.map(item => {
               const Icon = item.icon;
               const isActive = location === item.href;
               return (
@@ -98,7 +100,9 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           <div className="p-4 border-t border-gray-200 dark:border-gray-700">
             {sidebarOpen && (
               <div className="mb-3">
-                <p className="text-sm font-medium">{user?.name || "مدير النظام"}</p>
+                <p className="text-sm font-medium">
+                  {user?.name || "مدير النظام"}
+                </p>
                 <p className="text-xs text-muted-foreground">{user?.email}</p>
               </div>
             )}
@@ -115,12 +119,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       </aside>
 
       {/* Main Content */}
-      <main
-        className={cn(
-          "transition-all",
-          sidebarOpen ? "mr-64" : "mr-20"
-        )}
-      >
+      <main className={cn("transition-all", sidebarOpen ? "mr-64" : "mr-20")}>
         {children}
       </main>
     </div>

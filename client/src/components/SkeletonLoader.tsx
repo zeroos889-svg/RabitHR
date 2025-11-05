@@ -1,17 +1,20 @@
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 interface SkeletonLoaderProps {
-  type?: 'card' | 'list' | 'table' | 'profile' | 'blog';
+  type?: "card" | "list" | "table" | "profile" | "blog";
   count?: number;
 }
 
-export function SkeletonLoader({ type = 'card', count = 1 }: SkeletonLoaderProps) {
+export function SkeletonLoader({
+  type = "card",
+  count = 1,
+}: SkeletonLoaderProps) {
   const skeletons = Array.from({ length: count }, (_, i) => i);
 
-  if (type === 'card') {
+  if (type === "card") {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {skeletons.map((i) => (
+        {skeletons.map(i => (
           <Card key={i} className="animate-pulse">
             <CardHeader>
               <div className="skeleton skeleton-title" />
@@ -30,10 +33,10 @@ export function SkeletonLoader({ type = 'card', count = 1 }: SkeletonLoaderProps
     );
   }
 
-  if (type === 'list') {
+  if (type === "list") {
     return (
       <div className="space-y-4">
-        {skeletons.map((i) => (
+        {skeletons.map(i => (
           <Card key={i} className="animate-pulse">
             <CardContent className="pt-6">
               <div className="flex items-center gap-4">
@@ -50,12 +53,12 @@ export function SkeletonLoader({ type = 'card', count = 1 }: SkeletonLoaderProps
     );
   }
 
-  if (type === 'table') {
+  if (type === "table") {
     return (
       <Card className="animate-pulse">
         <CardContent className="pt-6">
           <div className="space-y-3">
-            {skeletons.map((i) => (
+            {skeletons.map(i => (
               <div key={i} className="flex items-center gap-4">
                 <div className="skeleton skeleton-avatar" />
                 <div className="flex-1 grid grid-cols-4 gap-4">
@@ -72,7 +75,7 @@ export function SkeletonLoader({ type = 'card', count = 1 }: SkeletonLoaderProps
     );
   }
 
-  if (type === 'profile') {
+  if (type === "profile") {
     return (
       <Card className="animate-pulse">
         <CardContent className="pt-6">
@@ -93,10 +96,10 @@ export function SkeletonLoader({ type = 'card', count = 1 }: SkeletonLoaderProps
     );
   }
 
-  if (type === 'blog') {
+  if (type === "blog") {
     return (
       <div className="space-y-6">
-        {skeletons.map((i) => (
+        {skeletons.map(i => (
           <Card key={i} className="animate-pulse">
             <div className="skeleton h-48 rounded-t-lg" />
             <CardHeader>
@@ -127,18 +130,18 @@ export function SkeletonLoader({ type = 'card', count = 1 }: SkeletonLoaderProps
 }
 
 // Individual skeleton components for custom layouts
-export function SkeletonText({ className = '' }: { className?: string }) {
+export function SkeletonText({ className = "" }: { className?: string }) {
   return <div className={`skeleton skeleton-text ${className}`} />;
 }
 
-export function SkeletonTitle({ className = '' }: { className?: string }) {
+export function SkeletonTitle({ className = "" }: { className?: string }) {
   return <div className={`skeleton skeleton-title ${className}`} />;
 }
 
-export function SkeletonAvatar({ className = '' }: { className?: string }) {
+export function SkeletonAvatar({ className = "" }: { className?: string }) {
   return <div className={`skeleton skeleton-avatar ${className}`} />;
 }
 
-export function SkeletonCard({ className = '' }: { className?: string }) {
+export function SkeletonCard({ className = "" }: { className?: string }) {
   return <div className={`skeleton skeleton-card ${className}`} />;
 }

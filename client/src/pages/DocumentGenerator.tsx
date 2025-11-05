@@ -1,67 +1,92 @@
-import { useState } from 'react';
-import { useAuth } from '@/_core/hooks/useAuth';
-import { trpc } from '@/lib/trpc';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { FileText, Sparkles, Download, Save, ArrowRight, ArrowLeft, Loader2, CheckCircle2 } from 'lucide-react';
-import { toast } from 'sonner';
-import { Streamdown } from 'streamdown';
+import { useState } from "react";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { trpc } from "@/lib/trpc";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  FileText,
+  Sparkles,
+  Download,
+  Save,
+  ArrowRight,
+  ArrowLeft,
+  Loader2,
+  CheckCircle2,
+} from "lucide-react";
+import { toast } from "sonner";
+import { Streamdown } from "streamdown";
 
-type Step = 'select' | 'input' | 'result';
+type Step = "select" | "input" | "result";
 
 const categoryLabels: Record<string, string> = {
-  employment: 'التوظيف',
-  certificates: 'الشهادات',
-  internal: 'خطابات داخلية',
-  disciplinary: 'الإجراءات التأديبية',
-  termination: 'إنهاء الخدمة',
+  employment: "التوظيف",
+  certificates: "الشهادات",
+  internal: "خطابات داخلية",
+  disciplinary: "الإجراءات التأديبية",
+  termination: "إنهاء الخدمة",
 };
 
 export default function DocumentGenerator() {
   const { user, loading: authLoading } = useAuth();
-  const [step, setStep] = useState<Step>('select');
+  const [step, setStep] = useState<Step>("select");
   const [selectedTemplate, setSelectedTemplate] = useState<any>(null);
   const [formData, setFormData] = useState<Record<string, any>>({});
   const [generatedDoc, setGeneratedDoc] = useState<any>(null);
 
   // Fetch templates
-  const { data: templatesData, isLoading: templatesLoading } = trpc.documentGenerator.getTemplates.useQuery();
+  const { data: templatesData, isLoading: templatesLoading } =
+    trpc.documentGenerator.getTemplates.useQuery();
   const templates = templatesData?.templates || [];
 
   // Generate document mutation
   const generateMutation = trpc.documentGenerator.generateDocument.useMutation({
-    onSuccess: (data) => {
+    onSuccess: data => {
       setGeneratedDoc(data);
-      setStep('result');
-      toast.success('تم توليد المستند بنجاح!');
+      setStep("result");
+      toast.success("تم توليد المستند بنجاح!");
     },
-    onError: (error) => {
-      toast.error('فشل توليد المستند: ' + error.message);
+    onError: error => {
+      toast.error("فشل توليد المستند: " + error.message);
     },
   });
 
   // Toggle save document mutation
-  const toggleSaveMutation = trpc.documentGenerator.toggleSaveDocument.useMutation({
-    onSuccess: (data) => {
-      if (generatedDoc) {
-        setGeneratedDoc({ ...generatedDoc, isSaved: data.isSaved });
-      }
-      toast.success(data.isSaved ? 'تم حفظ المستند في مكتبتك!' : 'تم إلغاء الحفظ');
-    },
-    onError: (error) => {
-      toast.error('فشل حفظ المستند: ' + error.message);
-    },
-  });
+  const toggleSaveMutation =
+    trpc.documentGenerator.toggleSaveDocument.useMutation({
+      onSuccess: data => {
+        if (generatedDoc) {
+          setGeneratedDoc({ ...generatedDoc, isSaved: data.isSaved });
+        }
+        toast.success(
+          data.isSaved ? "تم حفظ المستند في مكتبتك!" : "تم إلغاء الحفظ"
+        );
+      },
+      onError: error => {
+        toast.error("فشل حفظ المستند: " + error.message);
+      },
+    });
 
   // Group templates by category
   const groupedTemplates = templates.reduce((acc: any, template: any) => {
-    const cat = template.category || 'other';
+    const cat = template.category || "other";
     if (!acc[cat]) acc[cat] = [];
     acc[cat].push(template);
     return acc;
@@ -70,7 +95,7 @@ export default function DocumentGenerator() {
   const handleSelectTemplate = (template: any) => {
     setSelectedTemplate(template);
     setFormData({});
-    setStep('input');
+    setStep("input");
   };
 
   const handleGenerate = () => {
@@ -79,8 +104,8 @@ export default function DocumentGenerator() {
     generateMutation.mutate({
       templateCode: selectedTemplate.code,
       inputData: formData,
-      lang: formData.lang || 'ar',
-      style: formData.style || 'formal',
+      lang: formData.lang || "ar",
+      style: formData.style || "formal",
       companyLogo: formData.companyLogo,
       companyName: formData.companyName,
     });
@@ -100,10 +125,15 @@ export default function DocumentGenerator() {
         <Card className="max-w-md">
           <CardHeader>
             <CardTitle>تسجيل الدخول مطلوب</CardTitle>
-            <CardDescription>يجب تسجيل الدخول لاستخدام مولّد النماذج</CardDescription>
+            <CardDescription>
+              يجب تسجيل الدخول لاستخدام مولّد النماذج
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button onClick={() => window.location.href = '/api/oauth/login'} className="w-full">
+            <Button
+              onClick={() => (window.location.href = "/api/oauth/login")}
+              className="w-full"
+            >
               تسجيل الدخول
             </Button>
           </CardContent>
@@ -130,22 +160,34 @@ export default function DocumentGenerator() {
 
         {/* Progress Steps */}
         <div className="flex items-center justify-center gap-4 mb-8">
-          <div className={`flex items-center gap-2 ${step === 'select' ? 'text-primary' : 'text-muted-foreground'}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === 'select' ? 'bg-primary text-white' : 'bg-muted'}`}>
+          <div
+            className={`flex items-center gap-2 ${step === "select" ? "text-primary" : "text-muted-foreground"}`}
+          >
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center ${step === "select" ? "bg-primary text-white" : "bg-muted"}`}
+            >
               1
             </div>
             <span className="hidden sm:inline">اختر القالب</span>
           </div>
           <ArrowRight className="h-4 w-4 text-muted-foreground" />
-          <div className={`flex items-center gap-2 ${step === 'input' ? 'text-primary' : 'text-muted-foreground'}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === 'input' ? 'bg-primary text-white' : 'bg-muted'}`}>
+          <div
+            className={`flex items-center gap-2 ${step === "input" ? "text-primary" : "text-muted-foreground"}`}
+          >
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center ${step === "input" ? "bg-primary text-white" : "bg-muted"}`}
+            >
               2
             </div>
             <span className="hidden sm:inline">أدخل البيانات</span>
           </div>
           <ArrowRight className="h-4 w-4 text-muted-foreground" />
-          <div className={`flex items-center gap-2 ${step === 'result' ? 'text-primary' : 'text-muted-foreground'}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === 'result' ? 'bg-primary text-white' : 'bg-muted'}`}>
+          <div
+            className={`flex items-center gap-2 ${step === "result" ? "text-primary" : "text-muted-foreground"}`}
+          >
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center ${step === "result" ? "bg-primary text-white" : "bg-muted"}`}
+            >
               3
             </div>
             <span className="hidden sm:inline">النتيجة</span>
@@ -153,48 +195,54 @@ export default function DocumentGenerator() {
         </div>
 
         {/* Step 1: Select Template */}
-        {step === 'select' && (
+        {step === "select" && (
           <div className="space-y-6">
-            {Object.entries(groupedTemplates).map(([category, categoryTemplates]: [string, any]) => (
-              <Card key={category}>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <FileText className="h-5 w-5 text-primary" />
-                    {categoryLabels[category] || category}
-                  </CardTitle>
-                  <CardDescription>
-                    {(categoryTemplates as any[]).length} قالب متاح
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {(categoryTemplates as any[]).map((template) => (
-                      <Card
-                        key={template.id}
-                        className="cursor-pointer hover:shadow-lg transition-shadow border-2 hover:border-primary"
-                        onClick={() => handleSelectTemplate(template)}
-                      >
-                        <CardHeader>
-                          <CardTitle className="text-lg">{template.titleAr}</CardTitle>
-                          <CardDescription className="text-sm">{template.titleEn}</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <Button variant="outline" className="w-full">
-                            اختر هذا القالب
-                            <ArrowRight className="mr-2 h-4 w-4" />
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+            {Object.entries(groupedTemplates).map(
+              ([category, categoryTemplates]: [string, any]) => (
+                <Card key={category}>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <FileText className="h-5 w-5 text-primary" />
+                      {categoryLabels[category] || category}
+                    </CardTitle>
+                    <CardDescription>
+                      {(categoryTemplates as any[]).length} قالب متاح
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {(categoryTemplates as any[]).map(template => (
+                        <Card
+                          key={template.id}
+                          className="cursor-pointer hover:shadow-lg transition-shadow border-2 hover:border-primary"
+                          onClick={() => handleSelectTemplate(template)}
+                        >
+                          <CardHeader>
+                            <CardTitle className="text-lg">
+                              {template.titleAr}
+                            </CardTitle>
+                            <CardDescription className="text-sm">
+                              {template.titleEn}
+                            </CardDescription>
+                          </CardHeader>
+                          <CardContent>
+                            <Button variant="outline" className="w-full">
+                              اختر هذا القالب
+                              <ArrowRight className="mr-2 h-4 w-4" />
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            )}
           </div>
         )}
 
         {/* Step 2: Input Data */}
-        {step === 'input' && selectedTemplate && (
+        {step === "input" && selectedTemplate && (
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
@@ -202,7 +250,11 @@ export default function DocumentGenerator() {
                   <CardTitle>{selectedTemplate.titleAr}</CardTitle>
                   <CardDescription>{selectedTemplate.titleEn}</CardDescription>
                 </div>
-                <Button variant="ghost" size="sm" onClick={() => setStep('select')}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setStep("select")}
+                >
                   <ArrowLeft className="ml-2 h-4 w-4" />
                   العودة
                 </Button>
@@ -217,8 +269,13 @@ export default function DocumentGenerator() {
                     <Label htmlFor="companyName">اسم الشركة</Label>
                     <Input
                       id="companyName"
-                      value={formData.companyName || ''}
-                      onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
+                      value={formData.companyName || ""}
+                      onChange={e =>
+                        setFormData({
+                          ...formData,
+                          companyName: e.target.value,
+                        })
+                      }
                       placeholder="مثال: شركة رابِط للموارد البشرية"
                     />
                   </div>
@@ -226,8 +283,13 @@ export default function DocumentGenerator() {
                     <Label htmlFor="companyLogo">رابط شعار الشركة</Label>
                     <Input
                       id="companyLogo"
-                      value={formData.companyLogo || ''}
-                      onChange={(e) => setFormData({ ...formData, companyLogo: e.target.value })}
+                      value={formData.companyLogo || ""}
+                      onChange={e =>
+                        setFormData({
+                          ...formData,
+                          companyLogo: e.target.value,
+                        })
+                      }
                       placeholder="https://example.com/logo.png"
                     />
                   </div>
@@ -240,7 +302,12 @@ export default function DocumentGenerator() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="lang">اللغة</Label>
-                    <Select value={formData.lang || 'ar'} onValueChange={(value) => setFormData({ ...formData, lang: value })}>
+                    <Select
+                      value={formData.lang || "ar"}
+                      onValueChange={value =>
+                        setFormData({ ...formData, lang: value })
+                      }
+                    >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -253,7 +320,12 @@ export default function DocumentGenerator() {
                   </div>
                   <div>
                     <Label htmlFor="style">الأسلوب</Label>
-                    <Select value={formData.style || 'formal'} onValueChange={(value) => setFormData({ ...formData, style: value })}>
+                    <Select
+                      value={formData.style || "formal"}
+                      onValueChange={value =>
+                        setFormData({ ...formData, style: value })
+                      }
+                    >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -275,8 +347,13 @@ export default function DocumentGenerator() {
                     <Label htmlFor="employeeName">اسم الموظف</Label>
                     <Input
                       id="employeeName"
-                      value={formData.employeeName || ''}
-                      onChange={(e) => setFormData({ ...formData, employeeName: e.target.value })}
+                      value={formData.employeeName || ""}
+                      onChange={e =>
+                        setFormData({
+                          ...formData,
+                          employeeName: e.target.value,
+                        })
+                      }
                       placeholder="مثال: أحمد محمد"
                       required
                     />
@@ -285,8 +362,10 @@ export default function DocumentGenerator() {
                     <Label htmlFor="jobTitle">المسمى الوظيفي</Label>
                     <Input
                       id="jobTitle"
-                      value={formData.jobTitle || ''}
-                      onChange={(e) => setFormData({ ...formData, jobTitle: e.target.value })}
+                      value={formData.jobTitle || ""}
+                      onChange={e =>
+                        setFormData({ ...formData, jobTitle: e.target.value })
+                      }
                       placeholder="مثال: مدير الموارد البشرية"
                     />
                   </div>
@@ -294,8 +373,13 @@ export default function DocumentGenerator() {
                     <Label htmlFor="additionalInfo">معلومات إضافية</Label>
                     <Textarea
                       id="additionalInfo"
-                      value={formData.additionalInfo || ''}
-                      onChange={(e) => setFormData({ ...formData, additionalInfo: e.target.value })}
+                      value={formData.additionalInfo || ""}
+                      onChange={e =>
+                        setFormData({
+                          ...formData,
+                          additionalInfo: e.target.value,
+                        })
+                      }
                       placeholder="أي معلومات أخرى تريد تضمينها في المستند..."
                       rows={4}
                     />
@@ -307,7 +391,9 @@ export default function DocumentGenerator() {
               <div className="flex gap-4">
                 <Button
                   onClick={handleGenerate}
-                  disabled={generateMutation.isPending || !formData.employeeName}
+                  disabled={
+                    generateMutation.isPending || !formData.employeeName
+                  }
                   className="flex-1"
                   size="lg"
                 >
@@ -329,7 +415,7 @@ export default function DocumentGenerator() {
         )}
 
         {/* Step 3: Result */}
-        {step === 'result' && generatedDoc && (
+        {step === "result" && generatedDoc && (
           <div className="space-y-6">
             <Card>
               <CardHeader>
@@ -338,7 +424,11 @@ export default function DocumentGenerator() {
                     <CheckCircle2 className="h-6 w-6 text-green-600" />
                     <CardTitle>تم توليد المستند بنجاح!</CardTitle>
                   </div>
-                  <Button variant="ghost" size="sm" onClick={() => setStep('select')}>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setStep("select")}
+                  >
                     <ArrowLeft className="ml-2 h-4 w-4" />
                     مستند جديد
                   </Button>
@@ -351,8 +441,9 @@ export default function DocumentGenerator() {
                 {/* Warning */}
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                   <p className="text-sm text-yellow-800">
-                    ⚠️ <strong>تنبيه مهم:</strong> هذا المستند مولّد بالذكاء الاصطناعي ويخضع للمراجعة البشرية قبل الاستخدام الرسمي. 
-                    يُنصح بمراجعته من قبل متخصص HR أو قانوني.
+                    ⚠️ <strong>تنبيه مهم:</strong> هذا المستند مولّد بالذكاء
+                    الاصطناعي ويخضع للمراجعة البشرية قبل الاستخدام الرسمي. يُنصح
+                    بمراجعته من قبل متخصص HR أو قانوني.
                   </p>
                 </div>
 
@@ -371,10 +462,12 @@ export default function DocumentGenerator() {
                     <Download className="ml-2 h-4 w-4" />
                     تحميل Word
                   </Button>
-                  <Button 
+                  <Button
                     className="flex-1"
                     variant={generatedDoc.isSaved ? "secondary" : "default"}
-                    onClick={() => toggleSaveMutation.mutate({ documentId: generatedDoc.id })}
+                    onClick={() =>
+                      toggleSaveMutation.mutate({ documentId: generatedDoc.id })
+                    }
                     disabled={toggleSaveMutation.isPending}
                   >
                     {toggleSaveMutation.isPending ? (
@@ -382,7 +475,7 @@ export default function DocumentGenerator() {
                     ) : (
                       <Save className="ml-2 h-4 w-4" />
                     )}
-                    {generatedDoc.isSaved ? 'محفوظ ✓' : 'حفظ في مكتبتي'}
+                    {generatedDoc.isSaved ? "محفوظ ✓" : "حفظ في مكتبتي"}
                   </Button>
                 </div>
               </CardContent>

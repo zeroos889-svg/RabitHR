@@ -263,11 +263,17 @@ export default function KnowledgeBaseArticle() {
                             return `<h4 class="text-lg font-bold mt-3 mb-2">${line.substring(5)}</h4>`;
                           } else if (line.startsWith("- ")) {
                             return `<li class="mr-6">${line.substring(2)}</li>`;
-                          } else if (line.startsWith("**") && line.endsWith("**")) {
+                          } else if (
+                            line.startsWith("**") &&
+                            line.endsWith("**")
+                          ) {
                             return `<p class="font-bold">${line.substring(2, line.length - 2)}</p>`;
                           } else if (line.trim() === "---") {
                             return `<hr class="my-8 border-gray-200" />`;
-                          } else if (line.startsWith("*") && line.endsWith("*")) {
+                          } else if (
+                            line.startsWith("*") &&
+                            line.endsWith("*")
+                          ) {
                             return `<p class="text-sm text-gray-600 italic">${line.substring(1, line.length - 1)}</p>`;
                           } else if (line.trim() !== "") {
                             return `<p class="mb-4">${line}</p>`;
@@ -285,7 +291,10 @@ export default function KnowledgeBaseArticle() {
                 <h3 className="text-2xl font-bold mb-4">مقالات ذات صلة</h3>
                 <div className="grid md:grid-cols-2 gap-4">
                   {article.relatedArticles.map((related: any) => (
-                    <Link key={related.id} href={`/knowledge-base/${related.id}`}>
+                    <Link
+                      key={related.id}
+                      href={`/knowledge-base/${related.id}`}
+                    >
                       <Card className="hover:shadow-lg transition-shadow cursor-pointer">
                         <CardContent className="pt-6">
                           <Badge className="mb-2">{related.category}</Badge>
@@ -307,11 +316,19 @@ export default function KnowledgeBaseArticle() {
               <Card>
                 <CardContent className="pt-6 space-y-3">
                   <h4 className="font-bold mb-4">تحميل المستندات</h4>
-                  <Button variant="outline" className="w-full justify-start" size="sm">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start"
+                    size="sm"
+                  >
                     <Download className="ml-2 h-4 w-4" />
                     تحميل PDF
                   </Button>
-                  <Button variant="outline" className="w-full justify-start" size="sm">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start"
+                    size="sm"
+                  >
                     <FileText className="ml-2 h-4 w-4" />
                     نسخة Word
                   </Button>

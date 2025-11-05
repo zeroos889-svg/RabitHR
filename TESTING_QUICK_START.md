@@ -3,16 +3,19 @@
 ## 🚀 اختبار سريع لقاعدة البيانات
 
 ### خطوة 1: تعيين DATABASE_URL
+
 ```bash
 export DATABASE_URL="mysql://root:CMMyDTJYozRfFgTcccnMfcEpwRbqqWMz@shortline.proxy.rlwy.net:18829/railway"
 ```
 
 ### خطوة 2: تشغيل سكريبت الاختبار
+
 ```bash
 node scripts/test-database-connection.mjs
 ```
 
 ### النتيجة المتوقعة ✅
+
 ```
 ╔════════════════════════════════════════════════════════════════╗
 ║         Database Connection Test Suite                        ║
@@ -40,11 +43,13 @@ Passed: 7/7
 ## 📝 الاختبارات المتاحة
 
 ### 1. اختبار قاعدة البيانات الشامل
+
 ```bash
 node scripts/test-database-connection.mjs
 ```
 
 **يختبر:**
+
 - ✅ الاتصال بـ MySQL
 - ✅ وجود الجداول
 - ✅ عمليات المستخدمين
@@ -54,6 +59,7 @@ node scripts/test-database-connection.mjs
 - ✅ الأداء
 
 ### 2. اختبارات الوحدة (Unit Tests)
+
 ```bash
 pnpm test server/db.test.ts
 ```
@@ -61,6 +67,7 @@ pnpm test server/db.test.ts
 لا تحتاج اتصال حقيقي بقاعدة البيانات.
 
 ### 3. اختبارات التكامل (Integration Tests)
+
 ```bash
 export DATABASE_URL="..."
 pnpm test server/__tests__/db-integration.test.ts
@@ -69,6 +76,7 @@ pnpm test server/__tests__/db-integration.test.ts
 تحتاج اتصال حقيقي بقاعدة البيانات.
 
 ### 4. جميع الاختبارات
+
 ```bash
 pnpm test
 ```
@@ -78,22 +86,28 @@ pnpm test
 ## 🔧 استكشاف الأخطاء السريع
 
 ### خطأ: `ENOTFOUND shortline.proxy.rlwy.net`
+
 **السبب:** لا يمكن الوصول إلى Railway من البيئة الحالية
 
 **الحل:**
+
 1. جرب من جهازك المحلي
 2. تأكد من اتصالك بالإنترنت
 3. في CI: هذا متوقع - Railway غير متاح من GitHub Actions
 
 ### خطأ: `Access denied`
+
 **السبب:** كلمة المرور خاطئة
 
 **الحل:**
+
 1. تحقق من DATABASE_URL
 2. احصل على credentials جديدة من Railway dashboard
 
 ### خطأ: `pnpm: command not found`
+
 **الحل:**
+
 ```bash
 corepack enable
 pnpm install

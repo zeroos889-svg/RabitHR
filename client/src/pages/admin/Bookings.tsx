@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -23,7 +29,14 @@ import { toast } from "sonner";
 
 export default function AdminBookings() {
   const [page, setPage] = useState(1);
-  const [statusFilter, setStatusFilter] = useState<"pending" | "assigned" | "in-progress" | "completed" | "cancelled" | undefined>();
+  const [statusFilter, setStatusFilter] = useState<
+    | "pending"
+    | "assigned"
+    | "in-progress"
+    | "completed"
+    | "cancelled"
+    | undefined
+  >();
 
   const { data, isLoading, refetch } = trpc.admin.getAllBookings.useQuery({
     page,
@@ -36,15 +49,20 @@ export default function AdminBookings() {
       toast.success("تم تحديث الحجز بنجاح");
       refetch();
     },
-    onError: (error) => {
+    onError: error => {
       toast.error("فشل تحديث الحجز: " + error.message);
     },
   });
 
   const handleStatusChange = (id: number, status: string) => {
-    updateBookingMutation.mutate({ 
-      id, 
-      status: status as "pending" | "assigned" | "in-progress" | "completed" | "cancelled"
+    updateBookingMutation.mutate({
+      id,
+      status: status as
+        | "pending"
+        | "assigned"
+        | "in-progress"
+        | "completed"
+        | "cancelled",
     });
   };
 
@@ -64,20 +82,23 @@ export default function AdminBookings() {
     <div className="p-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold">إدارة الحجوزات</h1>
-        <p className="text-muted-foreground mt-2">عرض وإدارة جميع حجوزات الاستشارات</p>
+        <p className="text-muted-foreground mt-2">
+          عرض وإدارة جميع حجوزات الاستشارات
+        </p>
       </div>
 
       <Card>
         <CardHeader>
           <CardTitle>الحجوزات</CardTitle>
-          <CardDescription>
-            {data?.total || 0} حجز في المنصة
-          </CardDescription>
+          <CardDescription>{data?.total || 0} حجز في المنصة</CardDescription>
         </CardHeader>
         <CardContent>
           {/* Filters */}
           <div className="flex gap-4 mb-6">
-            <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as any)}>
+            <Select
+              value={statusFilter}
+              onValueChange={value => setStatusFilter(value as any)}
+            >
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="جميع الحالات" />
               </SelectTrigger>
@@ -116,37 +137,56 @@ export default function AdminBookings() {
                   </TableRow>
                 ) : data?.bookings.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+                    <TableCell
+                      colSpan={8}
+                      className="text-center py-8 text-muted-foreground"
+                    >
                       لا توجد حجوزات
                     </TableCell>
                   </TableRow>
                 ) : (
-                  data?.bookings.map((item) => (
+                  data?.bookings.map(item => (
                     <TableRow key={item.booking.id}>
-                      <TableCell className="font-medium">{item.booking.ticketNumber}</TableCell>
+                      <TableCell className="font-medium">
+                        {item.booking.ticketNumber}
+                      </TableCell>
                       <TableCell>
                         <div>
-                          <div className="font-medium">{item.user?.name || "-"}</div>
-                          <div className="text-sm text-muted-foreground">{item.user?.email || "-"}</div>
+                          <div className="font-medium">
+                            {item.user?.name || "-"}
+                          </div>
+                          <div className="text-sm text-muted-foreground">
+                            {item.user?.email || "-"}
+                          </div>
                         </div>
                       </TableCell>
                       <TableCell>{item.package?.name || "-"}</TableCell>
                       <TableCell>
                         {item.booking.scheduledAt
-                          ? new Date(item.booking.scheduledAt).toLocaleDateString("ar-SA")
+                          ? new Date(
+                              item.booking.scheduledAt
+                            ).toLocaleDateString("ar-SA")
                           : "-"}
                       </TableCell>
-                      <TableCell>{getStatusBadge(item.booking.status || "")}</TableCell>
                       <TableCell>
-                        {item.package?.priceSAR ? `${item.package.priceSAR} ﷼` : "-"}
+                        {getStatusBadge(item.booking.status || "")}
                       </TableCell>
                       <TableCell>
-                        {new Date(item.booking.createdAt).toLocaleDateString("ar-SA")}
+                        {item.package?.priceSAR
+                          ? `${item.package.priceSAR} ﷼`
+                          : "-"}
+                      </TableCell>
+                      <TableCell>
+                        {new Date(item.booking.createdAt).toLocaleDateString(
+                          "ar-SA"
+                        )}
                       </TableCell>
                       <TableCell className="text-left">
                         <Select
                           value={item.booking.status || ""}
-                          onValueChange={(value) => handleStatusChange(item.booking.id, value)}
+                          onValueChange={value =>
+                            handleStatusChange(item.booking.id, value)
+                          }
                         >
                           <SelectTrigger className="w-[140px]">
                             <SelectValue />
@@ -154,7 +194,9 @@ export default function AdminBookings() {
                           <SelectContent>
                             <SelectItem value="pending">معلق</SelectItem>
                             <SelectItem value="assigned">معين</SelectItem>
-                            <SelectItem value="in-progress">قيد التنفيذ</SelectItem>
+                            <SelectItem value="in-progress">
+                              قيد التنفيذ
+                            </SelectItem>
                             <SelectItem value="completed">مكتمل</SelectItem>
                             <SelectItem value="cancelled">ملغي</SelectItem>
                           </SelectContent>

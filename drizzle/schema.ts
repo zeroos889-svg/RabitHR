@@ -1,4 +1,13 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, boolean, date } from "drizzle-orm/mysql-core";
+import {
+  int,
+  mysqlEnum,
+  mysqlTable,
+  text,
+  timestamp,
+  varchar,
+  boolean,
+  date,
+} from "drizzle-orm/mysql-core";
 
 /**
  * قاعدة بيانات منصة رابِط - 21 جدول
@@ -42,13 +51,27 @@ export const companies = mysqlTable("companies", {
   nameEn: varchar("nameEn", { length: 255 }),
   commercialRegister: varchar("commercialRegister", { length: 50 }).unique(),
   industry: varchar("industry", { length: 100 }),
-  employeeCount: mysqlEnum("employeeCount", ["1-50", "51-200", "201-500", "500+"]),
+  employeeCount: mysqlEnum("employeeCount", [
+    "1-50",
+    "51-200",
+    "201-500",
+    "500+",
+  ]),
   city: varchar("city", { length: 100 }),
   address: text("address"),
   website: varchar("website", { length: 255 }),
   logoUrl: text("logoUrl"),
-  subscriptionPlan: mysqlEnum("subscriptionPlan", ["starter", "professional", "enterprise", "custom"]),
-  subscriptionStatus: mysqlEnum("subscriptionStatus", ["active", "inactive", "trial"]),
+  subscriptionPlan: mysqlEnum("subscriptionPlan", [
+    "starter",
+    "professional",
+    "enterprise",
+    "custom",
+  ]),
+  subscriptionStatus: mysqlEnum("subscriptionStatus", [
+    "active",
+    "inactive",
+    "trial",
+  ]),
   subscriptionStartDate: date("subscriptionStartDate"),
   subscriptionEndDate: date("subscriptionEndDate"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
@@ -64,7 +87,11 @@ export const individualHRs = mysqlTable("individualHRs", {
   specialization: varchar("specialization", { length: 100 }),
   experienceYears: int("experienceYears"),
   certifications: text("certifications"),
-  subscriptionStatus: mysqlEnum("subscriptionStatus", ["active", "inactive", "trial"]),
+  subscriptionStatus: mysqlEnum("subscriptionStatus", [
+    "active",
+    "inactive",
+    "trial",
+  ]),
   subscriptionStartDate: date("subscriptionStartDate"),
   subscriptionEndDate: date("subscriptionEndDate"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
@@ -87,7 +114,14 @@ export const employees = mysqlTable("employees", {
 export const subscriptions = mysqlTable("subscriptions", {
   id: int("id").autoincrement().primaryKey(),
   userId: int("userId").notNull(),
-  planType: mysqlEnum("planType", ["free", "individual", "starter", "professional", "enterprise", "custom"]),
+  planType: mysqlEnum("planType", [
+    "free",
+    "individual",
+    "starter",
+    "professional",
+    "enterprise",
+    "custom",
+  ]),
   status: mysqlEnum("status", ["active", "inactive", "trial", "cancelled"]),
   startDate: date("startDate"),
   endDate: date("endDate"),
@@ -102,7 +136,14 @@ export const subscriptions = mysqlTable("subscriptions", {
 export const permissions = mysqlTable("permissions", {
   id: int("id").autoincrement().primaryKey(),
   userId: int("userId").notNull(),
-  permissionLevel: mysqlEnum("permissionLevel", ["view_only", "basic_tools", "advanced_tools", "ats_access", "full_access", "admin"]),
+  permissionLevel: mysqlEnum("permissionLevel", [
+    "view_only",
+    "basic_tools",
+    "advanced_tools",
+    "ats_access",
+    "full_access",
+    "admin",
+  ]),
   canUseCalculators: boolean("canUseCalculators").default(false),
   canGenerateLetters: boolean("canGenerateLetters").default(false),
   canAccessATS: boolean("canAccessATS").default(false),
@@ -122,8 +163,18 @@ export const jobs = mysqlTable("jobs", {
   description: text("description"),
   requirements: text("requirements"),
   responsibilities: text("responsibilities"),
-  employmentType: mysqlEnum("employmentType", ["full-time", "part-time", "contract", "temporary"]),
-  experienceLevel: mysqlEnum("experienceLevel", ["entry", "mid", "senior", "executive"]),
+  employmentType: mysqlEnum("employmentType", [
+    "full-time",
+    "part-time",
+    "contract",
+    "temporary",
+  ]),
+  experienceLevel: mysqlEnum("experienceLevel", [
+    "entry",
+    "mid",
+    "senior",
+    "executive",
+  ]),
   educationLevel: varchar("educationLevel", { length: 100 }),
   salaryMin: int("salaryMin"),
   salaryMax: int("salaryMax"),
@@ -143,7 +194,15 @@ export const jobApplications = mysqlTable("jobApplications", {
   id: int("id").autoincrement().primaryKey(),
   jobId: int("jobId").notNull(),
   candidateId: int("candidateId").notNull(),
-  status: mysqlEnum("status", ["pending", "reviewing", "shortlisted", "interview", "offer", "rejected", "hired"]),
+  status: mysqlEnum("status", [
+    "pending",
+    "reviewing",
+    "shortlisted",
+    "interview",
+    "offer",
+    "rejected",
+    "hired",
+  ]),
   cvUrl: text("cvUrl"),
   coverLetter: text("coverLetter"),
   appliedAt: timestamp("appliedAt").defaultNow().notNull(),
@@ -193,7 +252,12 @@ export const candidateEvaluations = mysqlTable("candidateEvaluations", {
   cultureFitScore: int("cultureFitScore"),
   overallScore: int("overallScore"),
   notes: text("notes"),
-  recommendation: mysqlEnum("recommendation", ["strongly_recommend", "recommend", "neutral", "not_recommend"]),
+  recommendation: mysqlEnum("recommendation", [
+    "strongly_recommend",
+    "recommend",
+    "neutral",
+    "not_recommend",
+  ]),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -203,7 +267,13 @@ export const candidateActivities = mysqlTable("candidateActivities", {
   id: int("id").autoincrement().primaryKey(),
   applicationId: int("applicationId").notNull(),
   userId: int("userId").notNull(),
-  activityType: mysqlEnum("activityType", ["status_change", "note_added", "email_sent", "interview_scheduled", "evaluation_added"]),
+  activityType: mysqlEnum("activityType", [
+    "status_change",
+    "note_added",
+    "email_sent",
+    "interview_scheduled",
+    "evaluation_added",
+  ]),
   description: text("description"),
   metadata: text("metadata"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
@@ -213,13 +283,24 @@ export const candidateActivities = mysqlTable("candidateActivities", {
 export const interviewSchedules = mysqlTable("interviewSchedules", {
   id: int("id").autoincrement().primaryKey(),
   applicationId: int("applicationId").notNull(),
-  interviewType: mysqlEnum("interviewType", ["phone", "video", "in-person", "technical", "hr"]),
+  interviewType: mysqlEnum("interviewType", [
+    "phone",
+    "video",
+    "in-person",
+    "technical",
+    "hr",
+  ]),
   scheduledAt: timestamp("scheduledAt"),
   duration: int("duration"),
   location: varchar("location", { length: 255 }),
   meetingLink: varchar("meetingLink", { length: 500 }),
   interviewers: text("interviewers"),
-  status: mysqlEnum("status", ["scheduled", "completed", "cancelled", "rescheduled"]),
+  status: mysqlEnum("status", [
+    "scheduled",
+    "completed",
+    "cancelled",
+    "rescheduled",
+  ]),
   notes: text("notes"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
@@ -233,9 +314,22 @@ export const hrCases = mysqlTable("hrCases", {
   assignedTo: int("assignedTo"),
   title: varchar("title", { length: 255 }),
   description: text("description"),
-  caseType: mysqlEnum("caseType", ["complaint", "request", "inquiry", "disciplinary", "grievance", "other"]),
+  caseType: mysqlEnum("caseType", [
+    "complaint",
+    "request",
+    "inquiry",
+    "disciplinary",
+    "grievance",
+    "other",
+  ]),
   priority: mysqlEnum("priority", ["low", "medium", "high", "urgent"]),
-  status: mysqlEnum("status", ["open", "in-progress", "pending", "resolved", "closed"]),
+  status: mysqlEnum("status", [
+    "open",
+    "in-progress",
+    "pending",
+    "resolved",
+    "closed",
+  ]),
   relatedEmployeeId: int("relatedEmployeeId"),
   attachments: text("attachments"),
   resolution: text("resolution"),
@@ -254,7 +348,12 @@ export const tasks = mysqlTable("tasks", {
   description: text("description"),
   dueDate: date("dueDate"),
   priority: mysqlEnum("priority", ["low", "medium", "high"]),
-  status: mysqlEnum("status", ["todo", "in-progress", "completed", "cancelled"]),
+  status: mysqlEnum("status", [
+    "todo",
+    "in-progress",
+    "completed",
+    "cancelled",
+  ]),
   completedAt: timestamp("completedAt"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
@@ -288,7 +387,12 @@ export const documents = mysqlTable("documents", {
 export const calculationHistory = mysqlTable("calculationHistory", {
   id: int("id").autoincrement().primaryKey(),
   userId: int("userId").notNull(),
-  calculationType: mysqlEnum("calculationType", ["end-of-service", "vacation", "overtime", "deduction"]),
+  calculationType: mysqlEnum("calculationType", [
+    "end-of-service",
+    "vacation",
+    "overtime",
+    "deduction",
+  ]),
   inputData: text("inputData"),
   result: text("result"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
@@ -381,8 +485,16 @@ export const consultingTickets = mysqlTable("consultingTickets", {
   packageId: int("packageId").notNull(),
   consultantId: int("consultantId"),
   ticketNumber: varchar("ticketNumber", { length: 50 }).notNull().unique(),
-  status: mysqlEnum("status", ["pending", "assigned", "in-progress", "completed", "cancelled"]).default("pending"),
-  priority: mysqlEnum("priority", ["low", "medium", "high", "urgent"]).default("medium"),
+  status: mysqlEnum("status", [
+    "pending",
+    "assigned",
+    "in-progress",
+    "completed",
+    "cancelled",
+  ]).default("pending"),
+  priority: mysqlEnum("priority", ["low", "medium", "high", "urgent"]).default(
+    "medium"
+  ),
   subject: varchar("subject", { length: 255 }),
   description: text("description"),
   submittedFormJson: text("submittedFormJson"), // JSON
@@ -452,7 +564,9 @@ export const discountCodeUsage = mysqlTable("discountCodeUsage", {
 export const notifications = mysqlTable("notifications", {
   id: int("id").autoincrement().primaryKey(),
   userId: int("userId").notNull(),
-  type: mysqlEnum("type", ["success", "info", "warning", "error"]).default("info").notNull(),
+  type: mysqlEnum("type", ["success", "info", "warning", "error"])
+    .default("info")
+    .notNull(),
   title: varchar("title", { length: 255 }).notNull(),
   message: text("message").notNull(),
   link: varchar("link", { length: 500 }),
@@ -486,7 +600,9 @@ export const emailLogs = mysqlTable("emailLogs", {
   toEmail: varchar("toEmail", { length: 320 }).notNull(),
   subject: varchar("subject", { length: 500 }).notNull(),
   template: varchar("template", { length: 100 }),
-  status: mysqlEnum("status", ["pending", "sent", "failed"]).default("pending").notNull(),
+  status: mysqlEnum("status", ["pending", "sent", "failed"])
+    .default("pending")
+    .notNull(),
   errorMessage: text("errorMessage"),
   sentAt: timestamp("sentAt"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
@@ -498,7 +614,9 @@ export const smsLogs = mysqlTable("smsLogs", {
   userId: int("userId"),
   toPhone: varchar("toPhone", { length: 20 }).notNull(),
   message: text("message").notNull(),
-  status: mysqlEnum("status", ["pending", "sent", "failed"]).default("pending").notNull(),
+  status: mysqlEnum("status", ["pending", "sent", "failed"])
+    .default("pending")
+    .notNull(),
   errorMessage: text("errorMessage"),
   sentAt: timestamp("sentAt"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
@@ -510,13 +628,31 @@ export const payments = mysqlTable("payments", {
   userId: int("userId").notNull(),
   amount: int("amount").notNull(), // in halalas (SAR * 100)
   currency: varchar("currency", { length: 3 }).default("SAR").notNull(),
-  status: mysqlEnum("status", ["pending", "paid", "failed", "refunded", "cancelled"]).default("pending").notNull(),
-  paymentMethod: mysqlEnum("paymentMethod", ["creditcard", "mada", "applepay", "stcpay"]),
+  status: mysqlEnum("status", [
+    "pending",
+    "paid",
+    "failed",
+    "refunded",
+    "cancelled",
+  ])
+    .default("pending")
+    .notNull(),
+  paymentMethod: mysqlEnum("paymentMethod", [
+    "creditcard",
+    "mada",
+    "applepay",
+    "stcpay",
+  ]),
   gateway: mysqlEnum("gateway", ["moyasar", "tap"]).notNull(),
   gatewayPaymentId: varchar("gatewayPaymentId", { length: 255 }),
   gatewayResponse: text("gatewayResponse"), // JSON response from gateway
   description: text("description"),
-  itemType: mysqlEnum("itemType", ["consultation", "course", "subscription", "document"]),
+  itemType: mysqlEnum("itemType", [
+    "consultation",
+    "course",
+    "subscription",
+    "document",
+  ]),
   itemId: int("itemId"), // Reference to the item being purchased
   discountCodeId: int("discountCodeId"),
   discountAmount: int("discountAmount").default(0), // in halalas
@@ -553,12 +689,12 @@ export type InsertDiscountCode = typeof discountCodes.$inferInsert;
 export type DiscountCodeUsage = typeof discountCodeUsage.$inferSelect;
 export type Notification = typeof notifications.$inferSelect;
 export type InsertNotification = typeof notifications.$inferInsert;
-export type NotificationPreference = typeof notificationPreferences.$inferSelect;
+export type NotificationPreference =
+  typeof notificationPreferences.$inferSelect;
 export type EmailLog = typeof emailLogs.$inferSelect;
 export type SmsLog = typeof smsLogs.$inferSelect;
 export type Payment = typeof payments.$inferSelect;
 export type InsertPayment = typeof payments.$inferInsert;
-
 
 // 22. محادثات الدردشة المباشرة
 export const chatConversations = mysqlTable("chatConversations", {
@@ -596,7 +732,7 @@ export type InsertChatMessage = typeof chatMessages.$inferInsert;
 export const consultants = mysqlTable("consultants", {
   id: int("id").autoincrement().primaryKey(),
   userId: int("userId").notNull().unique(), // ربط مع جدول users
-  
+
   // معلومات شخصية
   fullNameAr: varchar("fullNameAr", { length: 255 }).notNull(),
   fullNameEn: varchar("fullNameEn", { length: 255 }).notNull(),
@@ -604,7 +740,7 @@ export const consultants = mysqlTable("consultants", {
   phone: varchar("phone", { length: 20 }).notNull(),
   city: varchar("city", { length: 100 }),
   profilePicture: text("profilePicture"),
-  
+
   // معلومات مهنية
   mainSpecialization: varchar("mainSpecialization", { length: 100 }).notNull(),
   subSpecializations: text("subSpecializations"), // JSON array
@@ -613,29 +749,31 @@ export const consultants = mysqlTable("consultants", {
   certifications: text("certifications"), // JSON array
   bioAr: text("bioAr"), // نبذة تعريفية بالعربي
   bioEn: text("bioEn"), // نبذة تعريفية بالإنجليزي
-  
+
   // معلومات الأرباح
   ibanNumber: varchar("ibanNumber", { length: 34 }),
   bankName: varchar("bankName", { length: 100 }),
   accountHolderName: varchar("accountHolderName", { length: 255 }),
   commissionRate: int("commissionRate").default(20).notNull(), // نسبة العمولة (%)
-  
+
   // الحالة والموافقة
-  status: mysqlEnum("status", ["pending", "approved", "rejected", "suspended"]).default("pending").notNull(),
+  status: mysqlEnum("status", ["pending", "approved", "rejected", "suspended"])
+    .default("pending")
+    .notNull(),
   rejectionReason: text("rejectionReason"),
   approvedAt: timestamp("approvedAt"),
   approvedBy: int("approvedBy"), // userId of admin
-  
+
   // إحصائيات
   totalConsultations: int("totalConsultations").default(0).notNull(),
   completedConsultations: int("completedConsultations").default(0).notNull(),
   averageRating: int("averageRating").default(0), // من 0 إلى 500 (5.00 * 100)
   totalEarnings: int("totalEarnings").default(0).notNull(), // بالهللة
-  
+
   // التوفر
   isAvailable: boolean("isAvailable").default(true).notNull(),
   maxDailyBookings: int("maxDailyBookings").default(5).notNull(),
-  
+
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -644,19 +782,31 @@ export const consultants = mysqlTable("consultants", {
 export const consultantDocuments = mysqlTable("consultantDocuments", {
   id: int("id").autoincrement().primaryKey(),
   consultantId: int("consultantId").notNull(),
-  
-  documentType: mysqlEnum("documentType", ["cv", "certificate", "id", "license", "other"]).notNull(),
+
+  documentType: mysqlEnum("documentType", [
+    "cv",
+    "certificate",
+    "id",
+    "license",
+    "other",
+  ]).notNull(),
   documentName: varchar("documentName", { length: 255 }).notNull(),
   documentUrl: text("documentUrl").notNull(), // S3 URL
   fileSize: int("fileSize"), // بالبايت
   mimeType: varchar("mimeType", { length: 100 }),
-  
+
   // حالة التحقق
-  verificationStatus: mysqlEnum("verificationStatus", ["pending", "verified", "rejected"]).default("pending").notNull(),
+  verificationStatus: mysqlEnum("verificationStatus", [
+    "pending",
+    "verified",
+    "rejected",
+  ])
+    .default("pending")
+    .notNull(),
   verificationNotes: text("verificationNotes"),
   verifiedBy: int("verifiedBy"), // userId of admin
   verifiedAt: timestamp("verifiedAt"),
-  
+
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -665,19 +815,19 @@ export const consultantDocuments = mysqlTable("consultantDocuments", {
 export const specializations = mysqlTable("specializations", {
   id: int("id").autoincrement().primaryKey(),
   code: varchar("code", { length: 50 }).notNull().unique(),
-  
+
   nameAr: varchar("nameAr", { length: 255 }).notNull(),
   nameEn: varchar("nameEn", { length: 255 }).notNull(),
   descriptionAr: text("descriptionAr"),
   descriptionEn: text("descriptionEn"),
-  
+
   icon: varchar("icon", { length: 100 }), // اسم الأيقونة من lucide-react
   imageUrl: text("imageUrl"),
   color: varchar("color", { length: 20 }), // hex color
-  
+
   isActive: boolean("isActive").default(true).notNull(),
   orderIndex: int("orderIndex").default(0).notNull(),
-  
+
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -686,32 +836,32 @@ export const specializations = mysqlTable("specializations", {
 export const consultationTypes = mysqlTable("consultationTypes", {
   id: int("id").autoincrement().primaryKey(),
   code: varchar("code", { length: 50 }).notNull().unique(),
-  
+
   nameAr: varchar("nameAr", { length: 255 }).notNull(),
   nameEn: varchar("nameEn", { length: 255 }).notNull(),
   descriptionAr: text("descriptionAr"),
   descriptionEn: text("descriptionEn"),
-  
+
   // التسعير
   basePriceSAR: int("basePriceSAR").notNull(), // بالهللة
   estimatedDuration: int("estimatedDuration").default(60).notNull(), // بالدقائق
-  
+
   // التخصصات المرتبطة
   relatedSpecializations: text("relatedSpecializations"), // JSON array of specialization codes
-  
+
   // العرض
   icon: varchar("icon", { length: 100 }),
   imageUrl: text("imageUrl"),
   color: varchar("color", { length: 20 }),
   features: text("features"), // JSON array بالعربي والإنجليزي
-  
+
   // المتطلبات من العميل
   requiredDocuments: text("requiredDocuments"), // JSON array: [{nameAr, nameEn, required, description}]
   requiredInfo: text("requiredInfo"), // JSON array: [{nameAr, nameEn, type, required}]
-  
+
   isActive: boolean("isActive").default(true).notNull(),
   orderIndex: int("orderIndex").default(0).notNull(),
-  
+
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -720,21 +870,21 @@ export const consultationTypes = mysqlTable("consultationTypes", {
 export const consultationBookings = mysqlTable("consultationBookings", {
   id: int("id").autoincrement().primaryKey(),
   bookingNumber: varchar("bookingNumber", { length: 50 }).notNull().unique(),
-  
+
   // الأطراف
   clientId: int("clientId").notNull(), // userId
   consultantId: int("consultantId").notNull(),
   consultationTypeId: int("consultationTypeId").notNull(),
-  
+
   // معلومات الحجز
   scheduledDate: date("scheduledDate").notNull(),
   scheduledTime: varchar("scheduledTime", { length: 10 }).notNull(), // "14:00"
   duration: int("duration").default(60).notNull(), // بالدقائق
-  
+
   // تفاصيل الاستشارة
   clientNotes: text("clientNotes"), // ملاحظات العميل
   consultantNotes: text("consultantNotes"), // ملاحظات المستشار (خاصة)
-  
+
   // الحالة
   status: mysqlEnum("status", [
     "pending", // في انتظار التأكيد
@@ -742,35 +892,39 @@ export const consultationBookings = mysqlTable("consultationBookings", {
     "in-progress", // جارية
     "completed", // مكتملة
     "cancelled", // ملغاة
-    "no-show" // لم يحضر العميل
-  ]).default("pending").notNull(),
-  
+    "no-show", // لم يحضر العميل
+  ])
+    .default("pending")
+    .notNull(),
+
   cancellationReason: text("cancellationReason"),
   cancelledBy: int("cancelledBy"), // userId
   cancelledAt: timestamp("cancelledAt"),
-  
+
   // المالية
   totalAmount: int("totalAmount").notNull(), // بالهللة
   discountAmount: int("discountAmount").default(0).notNull(),
   finalAmount: int("finalAmount").notNull(),
   discountCodeId: int("discountCodeId"), // ربط مع جدول discount_codes
-  
+
   // الدفع
-  paymentStatus: mysqlEnum("paymentStatus", ["pending", "paid", "refunded"]).default("pending").notNull(),
+  paymentStatus: mysqlEnum("paymentStatus", ["pending", "paid", "refunded"])
+    .default("pending")
+    .notNull(),
   paymentMethod: varchar("paymentMethod", { length: 50 }),
   paymentTransactionId: varchar("paymentTransactionId", { length: 255 }),
   paidAt: timestamp("paidAt"),
-  
+
   // التقييم
   rating: int("rating"), // من 1 إلى 5
   review: text("review"),
   reviewedAt: timestamp("reviewedAt"),
-  
+
   // الأوقات
   confirmedAt: timestamp("confirmedAt"),
   startedAt: timestamp("startedAt"),
   completedAt: timestamp("completedAt"),
-  
+
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -780,26 +934,28 @@ export const consultantEarnings = mysqlTable("consultantEarnings", {
   id: int("id").autoincrement().primaryKey(),
   consultantId: int("consultantId").notNull(),
   bookingId: int("bookingId").notNull(),
-  
+
   // المبالغ
   totalAmount: int("totalAmount").notNull(), // إجمالي المبلغ المدفوع
   platformCommission: int("platformCommission").notNull(), // عمولة المنصة
   consultantEarning: int("consultantEarning").notNull(), // صافي ربح المستشار
   commissionRate: int("commissionRate").notNull(), // نسبة العمولة المطبقة
-  
+
   // حالة الدفع
   payoutStatus: mysqlEnum("payoutStatus", [
     "pending", // في انتظار الدفع
     "processing", // قيد المعالجة
     "paid", // تم الدفع
-    "cancelled" // ملغى
-  ]).default("pending").notNull(),
-  
+    "cancelled", // ملغى
+  ])
+    .default("pending")
+    .notNull(),
+
   payoutMethod: varchar("payoutMethod", { length: 50 }), // "bank_transfer", "wallet", etc.
   payoutTransactionId: varchar("payoutTransactionId", { length: 255 }),
   payoutDate: timestamp("payoutDate"),
   payoutNotes: text("payoutNotes"),
-  
+
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -808,13 +964,21 @@ export const consultantEarnings = mysqlTable("consultantEarnings", {
 export const consultantAvailability = mysqlTable("consultantAvailability", {
   id: int("id").autoincrement().primaryKey(),
   consultantId: int("consultantId").notNull(),
-  
-  dayOfWeek: mysqlEnum("dayOfWeek", ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]).notNull(),
+
+  dayOfWeek: mysqlEnum("dayOfWeek", [
+    "sunday",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+  ]).notNull(),
   startTime: varchar("startTime", { length: 10 }).notNull(), // "09:00"
   endTime: varchar("endTime", { length: 10 }).notNull(), // "17:00"
-  
+
   isAvailable: boolean("isAvailable").default(true).notNull(),
-  
+
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -823,10 +987,10 @@ export const consultantAvailability = mysqlTable("consultantAvailability", {
 export const consultantBlockedDates = mysqlTable("consultantBlockedDates", {
   id: int("id").autoincrement().primaryKey(),
   consultantId: int("consultantId").notNull(),
-  
+
   blockedDate: date("blockedDate").notNull(),
   reason: text("reason"),
-  
+
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
@@ -836,22 +1000,22 @@ export const consultantReviews = mysqlTable("consultantReviews", {
   consultantId: int("consultantId").notNull(),
   bookingId: int("bookingId").notNull().unique(),
   clientId: int("clientId").notNull(),
-  
+
   rating: int("rating").notNull(), // من 1 إلى 5
   review: text("review"),
-  
+
   // تقييمات فرعية
   professionalismRating: int("professionalismRating"), // الاحترافية
   communicationRating: int("communicationRating"), // التواصل
   knowledgeRating: int("knowledgeRating"), // المعرفة
   timelinessRating: int("timelinessRating"), // الالتزام بالوقت
-  
+
   isPublished: boolean("isPublished").default(true).notNull(),
-  
+
   // رد المستشار
   consultantResponse: text("consultantResponse"),
   respondedAt: timestamp("respondedAt"),
-  
+
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -866,13 +1030,16 @@ export type InsertSpecialization = typeof specializations.$inferInsert;
 export type ConsultationType = typeof consultationTypes.$inferSelect;
 export type InsertConsultationType = typeof consultationTypes.$inferInsert;
 export type ConsultationBooking = typeof consultationBookings.$inferSelect;
-export type InsertConsultationBooking = typeof consultationBookings.$inferInsert;
+export type InsertConsultationBooking =
+  typeof consultationBookings.$inferInsert;
 export type ConsultantEarning = typeof consultantEarnings.$inferSelect;
 export type InsertConsultantEarning = typeof consultantEarnings.$inferInsert;
 export type ConsultantAvailability = typeof consultantAvailability.$inferSelect;
-export type InsertConsultantAvailability = typeof consultantAvailability.$inferInsert;
+export type InsertConsultantAvailability =
+  typeof consultantAvailability.$inferInsert;
 export type ConsultantBlockedDate = typeof consultantBlockedDates.$inferSelect;
-export type InsertConsultantBlockedDate = typeof consultantBlockedDates.$inferInsert;
+export type InsertConsultantBlockedDate =
+  typeof consultantBlockedDates.$inferInsert;
 export type ConsultantReview = typeof consultantReviews.$inferSelect;
 export type InsertConsultantReview = typeof consultantReviews.$inferInsert;
 
@@ -880,29 +1047,29 @@ export type InsertConsultantReview = typeof consultantReviews.$inferInsert;
 export const consultationMessages = mysqlTable("consultationMessages", {
   id: int("id").autoincrement().primaryKey(),
   bookingId: int("bookingId").notNull(), // ربط مع consultationBookings
-  
+
   // المرسل
   senderId: int("senderId").notNull(), // userId
   senderType: mysqlEnum("senderType", ["client", "consultant"]).notNull(),
-  
+
   // المحتوى
   message: text("message").notNull(),
   attachments: text("attachments"), // JSON array of file URLs
-  
+
   // حالة القراءة
   isRead: boolean("isRead").default(false).notNull(),
   readAt: timestamp("readAt"),
-  
+
   // AI assistance (للمستشار فقط)
   isAiAssisted: boolean("isAiAssisted").default(false).notNull(),
   aiSuggestion: text("aiSuggestion"), // الاقتراح الأصلي من AI
-  
+
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
 export type ConsultationMessage = typeof consultationMessages.$inferSelect;
-export type InsertConsultationMessage = typeof consultationMessages.$inferInsert;
-
+export type InsertConsultationMessage =
+  typeof consultationMessages.$inferInsert;
 
 // ============================================
 // PDPL Compliance Tables (نظام حماية البيانات الشخصية السعودي)
@@ -926,9 +1093,17 @@ export type InsertUserConsent = typeof userConsents.$inferInsert;
 export const dataSubjectRequests = mysqlTable("dataSubjectRequests", {
   id: int("id").autoincrement().primaryKey(),
   userId: int("userId").notNull(),
-  type: mysqlEnum("type", ["access", "correct", "delete", "withdraw", "object"]).notNull(),
+  type: mysqlEnum("type", [
+    "access",
+    "correct",
+    "delete",
+    "withdraw",
+    "object",
+  ]).notNull(),
   payloadJson: text("payloadJson"), // تفاصيل الطلب
-  status: mysqlEnum("status", ["new", "in_progress", "done", "rejected"]).default("new").notNull(),
+  status: mysqlEnum("status", ["new", "in_progress", "done", "rejected"])
+    .default("new")
+    .notNull(),
   adminNotes: text("adminNotes"), // ملاحظات الأدمن
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   closedAt: timestamp("closedAt"),
@@ -972,7 +1147,9 @@ export const securityIncidents = mysqlTable("securityIncidents", {
   affectedDataCategories: text("affectedDataCategories"), // JSON array
   affectedUsersCount: int("affectedUsersCount"),
   riskLevel: mysqlEnum("riskLevel", ["low", "medium", "high"]).notNull(),
-  status: mysqlEnum("status", ["new", "investigating", "reported", "resolved"]).default("new").notNull(),
+  status: mysqlEnum("status", ["new", "investigating", "reported", "resolved"])
+    .default("new")
+    .notNull(),
   isLate: boolean("isLate").default(false).notNull(), // تجاوز 72 ساعة
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
@@ -990,7 +1167,7 @@ export const dataTransfers = mysqlTable("dataTransfers", {
     "scc",
     "explicit_consent",
     "vital_interest",
-    "central_processing"
+    "central_processing",
   ]).notNull(),
   destinationCountry: varchar("destinationCountry", { length: 2 }).notNull(), // ISO country code
   dataCategories: text("dataCategories"), // JSON array
@@ -1023,12 +1200,17 @@ export type InsertProcessingActivity = typeof processingActivities.$inferInsert;
 export const customerPdplSettings = mysqlTable("customerPdplSettings", {
   id: int("id").autoincrement().primaryKey(),
   customerId: int("customerId").notNull().unique(),
-  processingRole: mysqlEnum("processingRole", ["controller", "processor"]).default("controller").notNull(),
-  dataStorageLocation: mysqlEnum("dataStorageLocation", ["SA", "EU", "Other"]).default("SA").notNull(),
+  processingRole: mysqlEnum("processingRole", ["controller", "processor"])
+    .default("controller")
+    .notNull(),
+  dataStorageLocation: mysqlEnum("dataStorageLocation", ["SA", "EU", "Other"])
+    .default("SA")
+    .notNull(),
   allowAiTraining: boolean("allowAiTraining").default(false).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
 export type CustomerPdplSetting = typeof customerPdplSettings.$inferSelect;
-export type InsertCustomerPdplSetting = typeof customerPdplSettings.$inferInsert;
+export type InsertCustomerPdplSetting =
+  typeof customerPdplSettings.$inferInsert;

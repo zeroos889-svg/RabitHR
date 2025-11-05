@@ -1,4 +1,5 @@
 # 📚 توثيق الأكواد الشامل - Comprehensive Code Documentation
+
 ## منصة رابِط HR - Rabit HR Platform
 
 ## 🎯 الهدف من هذا الملف - Purpose of This Document
@@ -39,6 +40,7 @@ RabitHR/
 ### 1. Dockerfile
 
 **الغرض - Purpose:**
+
 - **عربي:** بناء صورة Docker محسّنة للتطبيق
 - **English:** Build an optimized Docker image for the application
 
@@ -148,6 +150,7 @@ CMD ["node", "dist/index.js"]
 ```
 
 **الفوائد:**
+
 - ✅ Multi-stage build يقلل حجم الصورة النهائية
 - ✅ Layer caching يسرع البناء المتكرر
 - ✅ Non-root user يحسن الأمان
@@ -162,7 +165,7 @@ CMD ["node", "dist/index.js"]
 **الشرح التفصيلي:**
 
 ```yaml
-version: '3.8'
+version: "3.8"
 
 services:
   # ====================================
@@ -170,11 +173,11 @@ services:
   # ====================================
   app:
     build:
-      context: .              # المجلد الحالي
-      dockerfile: Dockerfile  # ملف البناء
+      context: . # المجلد الحالي
+      dockerfile: Dockerfile # ملف البناء
     container_name: rabithr-app
     ports:
-      - "3000:3000"          # المنفذ الخارجي:الداخلي
+      - "3000:3000" # المنفذ الخارجي:الداخلي
     environment:
       # متغيرات البيئة - تؤخذ من .env أو تُعرّف هنا
       - NODE_ENV=production
@@ -188,22 +191,28 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    restart: unless-stopped   # إعادة التشغيل التلقائية
+    restart: unless-stopped # إعادة التشغيل التلقائية
     deploy:
       resources:
-        limits:               # الحد الأقصى للموارد
-          cpus: '2'          # 2 نواة معالج كحد أقصى
-          memory: 2G         # 2 جيجابايت RAM كحد أقصى
-        reservations:        # الحد الأدنى المضمون
-          cpus: '0.5'
+        limits: # الحد الأقصى للموارد
+          cpus: "2" # 2 نواة معالج كحد أقصى
+          memory: 2G # 2 جيجابايت RAM كحد أقصى
+        reservations: # الحد الأدنى المضمون
+          cpus: "0.5"
           memory: 512M
     healthcheck:
       # فحص صحي للتأكد من عمل التطبيق
-      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
-      interval: 30s          # كل 30 ثانية
-      timeout: 3s            # انتظار 3 ثواني للرد
-      retries: 3             # 3 محاولات قبل الفشل
-      start_period: 40s      # 40 ثانية للبدء الأولي
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "require('http').get('http://localhost:3000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})",
+        ]
+      interval: 30s # كل 30 ثانية
+      timeout: 3s # انتظار 3 ثواني للرد
+      retries: 3 # 3 محاولات قبل الفشل
+      start_period: 40s # 40 ثانية للبدء الأولي
     networks:
       - rabithr-network
 
@@ -211,7 +220,7 @@ services:
   # قاعدة البيانات MySQL
   # ====================================
   db:
-    image: mysql:8.0         # استخدام صورة رسمية
+    image: mysql:8.0 # استخدام صورة رسمية
     container_name: rabithr-db
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-rootpassword}
@@ -227,16 +236,16 @@ services:
     command:
       # إعدادات MySQL المخصصة
       - --default-authentication-plugin=mysql_native_password
-      - --character-set-server=utf8mb4        # دعم اللغة العربية
+      - --character-set-server=utf8mb4 # دعم اللغة العربية
       - --collation-server=utf8mb4_unicode_ci # ترتيب Unicode
-      - --max_connections=200                 # 200 اتصال متزامن
+      - --max_connections=200 # 200 اتصال متزامن
     deploy:
       resources:
         limits:
-          cpus: '1'
+          cpus: "1"
           memory: 1G
         reservations:
-          cpus: '0.25'
+          cpus: "0.25"
           memory: 256M
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
@@ -251,22 +260,22 @@ services:
   # Redis للتخزين المؤقت
   # ====================================
   redis:
-    image: redis:7-alpine    # Alpine = صورة خفيفة
+    image: redis:7-alpine # Alpine = صورة خفيفة
     container_name: rabithr-redis
     ports:
       - "6379:6379"
     volumes:
       - redis_data:/data
     restart: unless-stopped
-    command: redis-server --appendonly yes  # AOF persistence
+    command: redis-server --appendonly yes # AOF persistence
     # AOF = Append-Only File - يحفظ كل عملية كتابة
     deploy:
       resources:
         limits:
-          cpus: '0.5'
+          cpus: "0.5"
           memory: 512M
         reservations:
-          cpus: '0.1'
+          cpus: "0.1"
           memory: 128M
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
@@ -284,8 +293,8 @@ services:
     image: nginx:alpine
     container_name: rabithr-nginx
     ports:
-      - "80:80"              # HTTP
-      - "443:443"            # HTTPS
+      - "80:80" # HTTP
+      - "443:443" # HTTPS
     volumes:
       # :ro = read-only - أمان إضافي
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
@@ -296,13 +305,21 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5'
+          cpus: "0.5"
           memory: 256M
         reservations:
-          cpus: '0.1'
+          cpus: "0.1"
           memory: 64M
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost/health",
+        ]
       interval: 30s
       timeout: 3s
       retries: 3
@@ -315,7 +332,7 @@ services:
 # ====================================
 volumes:
   mysql_data:
-    driver: local            # تخزين محلي على القرص
+    driver: local # تخزين محلي على القرص
   redis_data:
     driver: local
 
@@ -324,10 +341,11 @@ volumes:
 # ====================================
 networks:
   rabithr-network:
-    driver: bridge           # شبكة bridge = عزل الحاويات
+    driver: bridge # شبكة bridge = عزل الحاويات
 ```
 
 **الفوائد:**
+
 - ✅ إدارة سهلة لجميع الخدمات
 - ✅ Health checks تلقائية
 - ✅ Resource limits تمنع استهلاك زائد
@@ -335,7 +353,7 @@ networks:
 
 ---
 
-### 3. server/_core/healthCheck.ts
+### 3. server/\_core/healthCheck.ts
 
 **الغرض:** نظام متقدم لفحص صحة التطبيق ومكوناته
 
@@ -344,29 +362,29 @@ networks:
 ```typescript
 /**
  * نظام فحص الصحة المتقدم
- * 
+ *
  * يراقب جميع مكونات النظام والاعتمادات
  * ويعيد تقريراً شاملاً عن حالة كل مكون
- * 
+ *
  * @module healthCheck
  */
 
-import { db } from '../db';
+import { db } from "../db";
 
 /**
  * نتيجة فحص الصحة الشامل
  */
 export interface HealthCheckResult {
-  status: 'healthy' | 'degraded' | 'unhealthy';  // الحالة العامة
-  timestamp: string;                              // وقت الفحص
-  uptime: number;                                 // مدة التشغيل بالميلي ثانية
-  version: string;                                // إصدار التطبيق
+  status: "healthy" | "degraded" | "unhealthy"; // الحالة العامة
+  timestamp: string; // وقت الفحص
+  uptime: number; // مدة التشغيل بالميلي ثانية
+  version: string; // إصدار التطبيق
   checks: {
-    database: ComponentHealth;                    // حالة قاعدة البيانات
-    redis: ComponentHealth;                       // حالة Redis
-    disk: ComponentHealth;                        // مساحة القرص
-    memory: ComponentHealth;                      // استخدام الذاكرة
-    cpu: ComponentHealth;                         // استخدام المعالج
+    database: ComponentHealth; // حالة قاعدة البيانات
+    redis: ComponentHealth; // حالة Redis
+    disk: ComponentHealth; // مساحة القرص
+    memory: ComponentHealth; // استخدام الذاكرة
+    cpu: ComponentHealth; // استخدام المعالج
   };
 }
 
@@ -374,10 +392,10 @@ export interface HealthCheckResult {
  * صحة مكون واحد
  */
 export interface ComponentHealth {
-  status: 'up' | 'down' | 'degraded';  // up=يعمل, down=متوقف, degraded=بطيء
-  responseTime?: number;                // وقت الاستجابة بالميلي ثانية
-  message?: string;                     // رسالة توضيحية
-  details?: any;                        // تفاصيل إضافية
+  status: "up" | "down" | "degraded"; // up=يعمل, down=متوقف, degraded=بطيء
+  responseTime?: number; // وقت الاستجابة بالميلي ثانية
+  message?: string; // رسالة توضيحية
+  details?: any; // تفاصيل إضافية
 }
 
 // وقت بدء التطبيق (لحساب uptime)
@@ -385,38 +403,38 @@ const startTime = Date.now();
 
 /**
  * فحص صحة قاعدة البيانات
- * 
+ *
  * يجري استعلام بسيط (SELECT 1) لاختبار الاتصال
  * إذا كان وقت الاستجابة > 1000ms يعتبر "degraded"
- * 
+ *
  * @returns {Promise<ComponentHealth>} حالة قاعدة البيانات
  */
 async function checkDatabase(): Promise<ComponentHealth> {
   const start = Date.now();
-  
+
   try {
     // استعلام بسيط لاختبار الاتصال
-    await db.query('SELECT 1');
-    
+    await db.query("SELECT 1");
+
     const responseTime = Date.now() - start;
-    
+
     // إذا كان بطيئاً جداً
     if (responseTime > 1000) {
       return {
-        status: 'degraded',
+        status: "degraded",
         responseTime,
-        message: 'Database is slow',
+        message: "Database is slow",
       };
     }
-    
+
     return {
-      status: 'up',
+      status: "up",
       responseTime,
-      message: 'Database is healthy',
+      message: "Database is healthy",
     };
   } catch (error: any) {
     return {
-      status: 'down',
+      status: "down",
       responseTime: Date.now() - start,
       message: error.message,
     };
@@ -425,69 +443,69 @@ async function checkDatabase(): Promise<ComponentHealth> {
 
 /**
  * فحص صحة Redis
- * 
+ *
  * يختبر الاتصال بـ Redis باستخدام PING
- * 
+ *
  * @returns {Promise<ComponentHealth>} حالة Redis
  */
 async function checkRedis(): Promise<ComponentHealth> {
   const start = Date.now();
-  
+
   try {
-    const { getCache } = await import('./cache');
+    const { getCache } = await import("./cache");
     const cache = getCache();
-    
+
     // اختبار PING
     await cache.ping();
-    
+
     const responseTime = Date.now() - start;
-    
+
     return {
-      status: 'up',
+      status: "up",
       responseTime,
-      message: 'Redis is healthy',
+      message: "Redis is healthy",
     };
   } catch (error: any) {
     return {
-      status: 'down',
+      status: "down",
       responseTime: Date.now() - start,
-      message: error.message || 'Redis not available',
+      message: error.message || "Redis not available",
     };
   }
 }
 
 /**
  * فحص مساحة القرص
- * 
+ *
  * يفحص النسبة المئوية المستخدمة
  * إذا كانت > 90% يعتبر "degraded"
- * 
+ *
  * @returns {Promise<ComponentHealth>} حالة القرص
  */
 async function checkDisk(): Promise<ComponentHealth> {
   try {
-    const os = await import('os');
-    
+    const os = await import("os");
+
     const totalMem = os.totalmem();
     const freeMem = os.freemem();
     const usedPercent = ((totalMem - freeMem) / totalMem) * 100;
-    
+
     if (usedPercent > 90) {
       return {
-        status: 'degraded',
-        message: 'Disk usage is high',
+        status: "degraded",
+        message: "Disk usage is high",
         details: { usedPercent: usedPercent.toFixed(2) },
       };
     }
-    
+
     return {
-      status: 'up',
-      message: 'Disk space is healthy',
+      status: "up",
+      message: "Disk space is healthy",
       details: { usedPercent: usedPercent.toFixed(2) },
     };
   } catch (error: any) {
     return {
-      status: 'down',
+      status: "down",
       message: error.message,
     };
   }
@@ -495,21 +513,21 @@ async function checkDisk(): Promise<ComponentHealth> {
 
 /**
  * فحص استخدام الذاكرة
- * 
+ *
  * يفحص استخدام Heap
  * إذا كان > 90% يعتبر "degraded"
- * 
+ *
  * @returns {Promise<ComponentHealth>} حالة الذاكرة
  */
 async function checkMemory(): Promise<ComponentHealth> {
   try {
     const used = process.memoryUsage();
     const heapPercent = (used.heapUsed / used.heapTotal) * 100;
-    
+
     if (heapPercent > 90) {
       return {
-        status: 'degraded',
-        message: 'Memory usage is high',
+        status: "degraded",
+        message: "Memory usage is high",
         details: {
           heapUsed: `${(used.heapUsed / 1024 / 1024).toFixed(2)} MB`,
           heapTotal: `${(used.heapTotal / 1024 / 1024).toFixed(2)} MB`,
@@ -517,10 +535,10 @@ async function checkMemory(): Promise<ComponentHealth> {
         },
       };
     }
-    
+
     return {
-      status: 'up',
-      message: 'Memory usage is healthy',
+      status: "up",
+      message: "Memory usage is healthy",
       details: {
         heapUsed: `${(used.heapUsed / 1024 / 1024).toFixed(2)} MB`,
         heapTotal: `${(used.heapTotal / 1024 / 1024).toFixed(2)} MB`,
@@ -529,7 +547,7 @@ async function checkMemory(): Promise<ComponentHealth> {
     };
   } catch (error: any) {
     return {
-      status: 'down',
+      status: "down",
       message: error.message,
     };
   }
@@ -537,37 +555,37 @@ async function checkMemory(): Promise<ComponentHealth> {
 
 /**
  * فحص استخدام المعالج
- * 
+ *
  * يحسب متوسط استخدام CPU
  * إذا كان > 80% يعتبر "degraded"
- * 
+ *
  * @returns {Promise<ComponentHealth>} حالة المعالج
  */
 async function checkCPU(): Promise<ComponentHealth> {
   try {
-    const os = await import('os');
+    const os = await import("os");
     const cpus = os.cpus();
     const loadAvg = os.loadavg();
-    
+
     // حساب متوسط استخدام CPU
     let totalIdle = 0;
     let totalTick = 0;
-    
+
     cpus.forEach(cpu => {
       for (const type in cpu.times) {
         totalTick += cpu.times[type as keyof typeof cpu.times];
       }
       totalIdle += cpu.times.idle;
     });
-    
+
     const avgIdle = totalIdle / cpus.length;
     const avgTotal = totalTick / cpus.length;
-    const cpuPercent = 100 - ~~(100 * avgIdle / avgTotal);
-    
+    const cpuPercent = 100 - ~~((100 * avgIdle) / avgTotal);
+
     if (cpuPercent > 80) {
       return {
-        status: 'degraded',
-        message: 'CPU usage is high',
+        status: "degraded",
+        message: "CPU usage is high",
         details: {
           usage: `${cpuPercent}%`,
           cores: cpus.length,
@@ -575,10 +593,10 @@ async function checkCPU(): Promise<ComponentHealth> {
         },
       };
     }
-    
+
     return {
-      status: 'up',
-      message: 'CPU usage is healthy',
+      status: "up",
+      message: "CPU usage is healthy",
       details: {
         usage: `${cpuPercent}%`,
         cores: cpus.length,
@@ -587,7 +605,7 @@ async function checkCPU(): Promise<ComponentHealth> {
     };
   } catch (error: any) {
     return {
-      status: 'down',
+      status: "down",
       message: error.message,
     };
   }
@@ -595,12 +613,12 @@ async function checkCPU(): Promise<ComponentHealth> {
 
 /**
  * تنفيذ فحص صحة شامل
- * 
+ *
  * يفحص جميع المكونات ويحدد الحالة العامة:
  * - healthy: جميع المكونات تعمل بشكل جيد
  * - degraded: بعض المكونات بطيئة لكن تعمل
  * - unhealthy: أحد المكونات متوقف
- * 
+ *
  * @returns {Promise<HealthCheckResult>} التقرير الشامل
  */
 export async function performHealthCheck(): Promise<HealthCheckResult> {
@@ -612,37 +630,37 @@ export async function performHealthCheck(): Promise<HealthCheckResult> {
     memory: await checkMemory(),
     cpu: await checkCPU(),
   };
-  
+
   // تحديد الحالة العامة
   const statuses = Object.values(checks).map(c => c.status);
-  let overallStatus: 'healthy' | 'degraded' | 'unhealthy' = 'healthy';
-  
-  if (statuses.includes('down')) {
-    overallStatus = 'unhealthy';
-  } else if (statuses.includes('degraded')) {
-    overallStatus = 'degraded';
+  let overallStatus: "healthy" | "degraded" | "unhealthy" = "healthy";
+
+  if (statuses.includes("down")) {
+    overallStatus = "unhealthy";
+  } else if (statuses.includes("degraded")) {
+    overallStatus = "degraded";
   }
-  
+
   return {
     status: overallStatus,
     timestamp: new Date().toISOString(),
     uptime: Date.now() - startTime,
-    version: process.env.npm_package_version || '1.0.0',
+    version: process.env.npm_package_version || "1.0.0",
     checks,
   };
 }
 
 /**
  * فحص صحة بسيط لـ Load Balancers
- * 
+ *
  * يفحص فقط قاعدة البيانات (الأهم)
  * يستخدمه Load Balancer لتحديد ما إذا كانت الحاوية صحية
- * 
+ *
  * @returns {Promise<boolean>} true إذا كان صحياً
  */
 export async function simpleHealthCheck(): Promise<boolean> {
   try {
-    await db.query('SELECT 1');
+    await db.query("SELECT 1");
     return true;
   } catch {
     return false;
@@ -654,23 +672,24 @@ export async function simpleHealthCheck(): Promise<boolean> {
 
 ```typescript
 // في Express route
-app.get('/health', async (req, res) => {
+app.get("/health", async (req, res) => {
   const health = await performHealthCheck();
-  
+
   // إرجاع 503 إذا كان غير صحي
-  const statusCode = health.status === 'healthy' ? 200 : 503;
-  
+  const statusCode = health.status === "healthy" ? 200 : 503;
+
   res.status(statusCode).json(health);
 });
 
 // للـ Load Balancer
-app.get('/health/simple', async (req, res) => {
+app.get("/health/simple", async (req, res) => {
   const isHealthy = await simpleHealthCheck();
-  res.status(isHealthy ? 200 : 503).send(isHealthy ? 'OK' : 'NOT OK');
+  res.status(isHealthy ? 200 : 503).send(isHealthy ? "OK" : "NOT OK");
 });
 ```
 
 **الفوائد:**
+
 - ✅ مراقبة شاملة لجميع المكونات
 - ✅ اكتشاف المشاكل قبل تأثيرها على المستخدمين
 - ✅ معلومات تفصيلية لتسهيل التشخيص
@@ -685,11 +704,13 @@ app.get('/health/simple', async (req, res) => {
 **الفكرة:** بناء الصورة على مراحل منفصلة
 
 **الفوائد:**
+
 - المرحلة النهائية تحتوي فقط على ما هو ضروري
 - حجم أصغر = تحميل أسرع = تكلفة أقل
 - أمان أفضل (لا توجد أدوات تطوير في الإنتاج)
 
 **مثال:**
+
 ```dockerfile
 # مرحلة البناء - تحتوي على كل شيء
 FROM node:18 AS builder
@@ -706,11 +727,13 @@ COPY --from=builder /app/dist ./dist  # نسخ المبني فقط
 **الفكرة:** فحص دوري للتأكد من عمل التطبيق
 
 **الفوائد:**
+
 - اكتشاف تلقائي للمشاكل
 - إعادة تشغيل تلقائية عند الفشل
 - Load Balancers يمكنها توجيه الطلبات للحاويات الصحية فقط
 
 **أنواع:**
+
 1. **Simple:** فحص نقطة نهاية واحدة
 2. **Comprehensive:** فحص جميع المكونات
 
@@ -719,11 +742,13 @@ COPY --from=builder /app/dist ./dist  # نسخ المبني فقط
 **الفكرة:** تحديد حد أقصى للموارد لكل حاوية
 
 **الفوائد:**
+
 - منع استهلاك موارد زائد
 - عدالة في توزيع الموارد
 - استقرار أفضل للنظام
 
 **المستويات:**
+
 - **Limits:** الحد الأقصى المسموح
 - **Reservations:** الحد الأدنى المضمون
 
@@ -732,11 +757,13 @@ COPY --from=builder /app/dist ./dist  # نسخ المبني فقط
 **الفكرة:** إنشاء فهارس لتسريع الاستعلامات
 
 **الفوائد:**
+
 - استعلامات أسرع بكثير (50-70%)
 - أداء أفضل تحت الضغط
 - تجربة مستخدم أفضل
 
 **أنواع:**
+
 - **Single Column:** على عمود واحد
 - **Composite:** على عدة أعمدة
 - **Full-text:** للبحث النصي
@@ -746,6 +773,7 @@ COPY --from=builder /app/dist ./dist  # نسخ المبني فقط
 ## 📞 الدعم
 
 للمزيد من المعلومات:
+
 - راجع `PROJECT_STATUS.md` للحالة الشاملة
 - راجع `DEVELOPMENT_ENHANCEMENTS.md` للتحسينات
 - راجع التعليقات inline في الكود

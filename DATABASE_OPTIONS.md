@@ -13,27 +13,29 @@
 
 ## ⚡ المقارنة السريعة
 
-| الميزة | Railway MySQL | TiDB Cloud |
-|--------|--------------|-----------|
-| **السرعة** | سريع جداً | سريع جداً |
-| **المنطقة** | US West | EU Central |
-| **التكلفة** | مجاني ($5/شهر) | مجاني (5GB) |
-| **الأداء** | ممتاز للمشاريع الصغيرة/المتوسطة | ممتاز للمشاريع الكبيرة |
-| **التوافق** | MySQL 8+ | MySQL متوافق 100% |
-| **التوسع** | محدود | غير محدود |
-| **النسخ الاحتياطي** | يومي | تلقائي |
+| الميزة              | Railway MySQL                   | TiDB Cloud             |
+| ------------------- | ------------------------------- | ---------------------- |
+| **السرعة**          | سريع جداً                       | سريع جداً              |
+| **المنطقة**         | US West                         | EU Central             |
+| **التكلفة**         | مجاني ($5/شهر)                  | مجاني (5GB)            |
+| **الأداء**          | ممتاز للمشاريع الصغيرة/المتوسطة | ممتاز للمشاريع الكبيرة |
+| **التوافق**         | MySQL 8+                        | MySQL متوافق 100%      |
+| **التوسع**          | محدود                           | غير محدود              |
+| **النسخ الاحتياطي** | يومي                            | تلقائي                 |
 
 ---
 
 ## 🎯 أي واحدة تختار؟
 
 ### استخدم Railway إذا:
+
 - ✅ تريد البدء بسرعة
 - ✅ مشروع صغير أو متوسط
 - ✅ عدد مستخدمين < 1000
 - ✅ تفضل البساطة
 
 ### استخدم TiDB Cloud إذا:
+
 - ✅ تحتاج أداء عالي جداً
 - ✅ مشروع كبير أو متنامي
 - ✅ عدد مستخدمين > 1000
@@ -46,6 +48,7 @@
 ### 🟦 الخيار 1: Railway MySQL
 
 #### رابط الاتصال:
+
 ⚠️ **تحذير أمني**: احصل على كلمة المرور من Railway Dashboard ولا تشاركها أبداً
 
 ```bash
@@ -53,6 +56,7 @@ DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:
 ```
 
 #### معلومات الاتصال:
+
 - **المضيف**: `containers-us-west-xxx.railway.app`
 - **المنفذ**: `3306`
 - **المستخدم**: `root`
@@ -60,6 +64,7 @@ DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:
 - **قاعدة البيانات**: `railway`
 
 #### المميزات:
+
 - ✅ جاهز للاستخدام مباشرة
 - ✅ لوحة تحكم سهلة
 - ✅ نسخ احتياطي تلقائي
@@ -70,6 +75,7 @@ DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:
 ### 🟩 الخيار 2: TiDB Cloud
 
 #### رابط الاتصال:
+
 ⚠️ **مهم**: استبدل `<PASSWORD>` بكلمة المرور الفعلية من لوحة تحكم TiDB
 
 ```bash
@@ -77,6 +83,7 @@ DATABASE_URL=mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.
 ```
 
 #### معلومات الاتصال:
+
 - **المضيف**: `gateway01.eu-central-1.prod.aws.tidbcloud.com`
 - **المنفذ**: `4000`
 - **المستخدم**: `<USERNAME>.root`
@@ -84,6 +91,7 @@ DATABASE_URL=mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.
 - **قاعدة البيانات**: `test`
 
 #### للحصول على كلمة المرور:
+
 1. اذهب إلى [tidbcloud.com](https://tidbcloud.com)
 2. افتح لوحة التحكم
 3. اختر Cluster الخاص بك
@@ -91,6 +99,7 @@ DATABASE_URL=mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.
 5. انسخ كلمة المرور أو أعد إنشاء واحدة جديدة
 
 #### المميزات:
+
 - ✅ أداء عالي للغاية
 - ✅ توسع تلقائي
 - ✅ HTAP (معالجة تحليلية وعملياتية)
@@ -122,12 +131,14 @@ DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:
 في **Settings → Environment Variables**، أضف:
 
 #### للاستخدام Railway:
+
 ```
 Key: DATABASE_URL
 Value: mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:3306/railway
 ```
 
 #### للاستخدام TiDB:
+
 ```
 Key: DATABASE_URL
 Value: mysql://<USERNAME>.root:YOUR_PASSWORD_HERE@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
@@ -142,6 +153,7 @@ Value: mysql://<USERNAME>.root:YOUR_PASSWORD_HERE@gateway01.eu-central-1.prod.aw
 ### الخطوات:
 
 1. **انسخ البيانات** (إذا كانت هناك بيانات مهمة):
+
 ```bash
 # تصدير من القاعدة القديمة
 mysqldump -h OLD_HOST -u OLD_USER -p OLD_DB > backup.sql
@@ -151,12 +163,14 @@ mysql -h NEW_HOST -u NEW_USER -p NEW_DB < backup.sql
 ```
 
 2. **حدّث .env**:
+
 ```bash
 # غيّر DATABASE_URL للقاعدة الجديدة
 DATABASE_URL=mysql://...
 ```
 
 3. **شغّل الهجرات** (إذا لزم الأمر):
+
 ```bash
 pnpm db:push
 ```
@@ -171,6 +185,7 @@ pnpm db:push
 ## 🧪 اختبار الاتصال
 
 ### Railway:
+
 ```bash
 mysql -h containers-us-west-xxx.railway.app \
   -P 3306 \
@@ -180,6 +195,7 @@ mysql -h containers-us-west-xxx.railway.app \
 ```
 
 ### TiDB:
+
 ```bash
 mysql -h gateway01.eu-central-1.prod.aws.tidbcloud.com \
   -P 4000 \
@@ -193,18 +209,21 @@ mysql -h gateway01.eu-central-1.prod.aws.tidbcloud.com \
 ## 💡 توصيات
 
 ### للبداية (Development):
+
 ```bash
 # استخدم Railway - جاهز ومباشر
 DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:3306/railway
 ```
 
 ### للإنتاج (Production - قليل المستخدمين):
+
 ```bash
 # استخدم Railway - كافي تماماً
 DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:3306/railway
 ```
 
 ### للإنتاج (Production - كثير المستخدمين):
+
 ```bash
 # استخدم TiDB - أداء أفضل
 DATABASE_URL=mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
@@ -215,11 +234,13 @@ DATABASE_URL=mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.
 ## 🔐 الأمان
 
 ### Railway:
+
 - ✅ كلمة المرور موجودة بالفعل
 - ✅ SSL مفعّل تلقائياً
 - ✅ IP Whitelisting متاح
 
 ### TiDB:
+
 - ⚠️ احصل على كلمة المرور من Dashboard
 - ✅ SSL إلزامي
 - ✅ IP Whitelisting متاح
@@ -230,12 +251,14 @@ DATABASE_URL=mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.
 ## 📊 الحدود والقيود
 
 ### Railway (الخطة المجانية):
+
 - **التخزين**: حتى استهلاك $5
 - **الاتصالات**: غير محدودة
 - **النطاق**: 100GB/شهر
 - **النسخ الاحتياطي**: يومي
 
 ### TiDB (الخطة المجانية):
+
 - **التخزين**: 5GB
 - **الاتصالات**: 100 متزامنة
 - **النطاق**: غير محدود
@@ -246,24 +269,28 @@ DATABASE_URL=mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.
 ## 🚀 الاستخدام الموصى به
 
 ### سيناريو 1: تطوير محلي
+
 ```bash
 # استخدم Railway - سريع وسهل
 DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:3306/railway
 ```
 
 ### سيناريو 2: عرض تجريبي للعميل
+
 ```bash
 # استخدم Railway - كافي تماماً
 DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:3306/railway
 ```
 
 ### سيناريو 3: إطلاق رسمي (50-500 مستخدم)
+
 ```bash
 # استخدم Railway - أداء ممتاز
 DATABASE_URL=mysql://root:<RAILWAY_PASSWORD>@containers-us-west-xxx.railway.app:3306/railway
 ```
 
 ### سيناريو 4: إطلاق رسمي (500+ مستخدم)
+
 ```bash
 # استخدم TiDB - توسع أفضل
 DATABASE_URL=mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/test
@@ -274,6 +301,7 @@ DATABASE_URL=mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.
 ## 🆘 دعم وحلول المشاكل
 
 ### مشكلة: لا يمكن الاتصال بـ Railway
+
 ```bash
 # تحقق من:
 1. الرابط صحيح بدون مسافات
@@ -282,6 +310,7 @@ DATABASE_URL=mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.
 ```
 
 ### مشكلة: لا يمكن الاتصال بـ TiDB
+
 ```bash
 # تحقق من:
 1. كلمة المرور صحيحة (من Dashboard)
@@ -295,11 +324,13 @@ DATABASE_URL=mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.
 ## 📚 روابط مفيدة
 
 ### Railway:
+
 - [Dashboard](https://railway.app/dashboard)
 - [Documentation](https://docs.railway.app/databases/mysql)
 - [Status](https://status.railway.app)
 
 ### TiDB Cloud:
+
 - [Dashboard](https://tidbcloud.com)
 - [Documentation](https://docs.pingcap.com/tidbcloud)
 - [Status](https://status.tidbcloud.com)
@@ -308,13 +339,13 @@ DATABASE_URL=mysql://<USERNAME>.root:<PASSWORD>@gateway01.eu-central-1.prod.aws.
 
 ## ✅ الخلاصة
 
-| الاستخدام | القاعدة الموصى بها |
-|-----------|-------------------|
-| تطوير محلي | Railway |
-| اختبار | Railway |
-| إنتاج صغير | Railway |
-| إنتاج كبير | TiDB Cloud |
-| توسع مستقبلي | TiDB Cloud |
+| الاستخدام    | القاعدة الموصى بها |
+| ------------ | ------------------ |
+| تطوير محلي   | Railway            |
+| اختبار       | Railway            |
+| إنتاج صغير   | Railway            |
+| إنتاج كبير   | TiDB Cloud         |
+| توسع مستقبلي | TiDB Cloud         |
 
 **💡 نصيحة**: ابدأ بـ Railway، وإذا نما المشروع، انتقل إلى TiDB
 

@@ -1,5 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -118,9 +124,9 @@ export default function Tickets() {
   // إحصائيات
   const stats = {
     total: ticketsData.length,
-    open: ticketsData.filter((t) => t.status === "مفتوح").length,
-    inProgress: ticketsData.filter((t) => t.status === "قيد المعالجة").length,
-    resolved: ticketsData.filter((t) => t.status === "محلول").length,
+    open: ticketsData.filter(t => t.status === "مفتوح").length,
+    inProgress: ticketsData.filter(t => t.status === "قيد المعالجة").length,
+    resolved: ticketsData.filter(t => t.status === "محلول").length,
   };
 
   return (
@@ -139,7 +145,10 @@ export default function Tickets() {
             </p>
           </div>
 
-          <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+          <Dialog
+            open={isCreateDialogOpen}
+            onOpenChange={setIsCreateDialogOpen}
+          >
             <DialogTrigger asChild>
               <Button className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700">
                 <Plus className="h-4 w-4 ml-2" />
@@ -216,7 +225,10 @@ export default function Tickets() {
                 </div>
               </div>
               <DialogFooter>
-                <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsCreateDialogOpen(false)}
+                >
                   إلغاء
                 </Button>
                 <Button className="bg-gradient-to-r from-pink-600 to-purple-600">
@@ -235,7 +247,9 @@ export default function Tickets() {
                 <Ticket className="h-4 w-4" />
                 إجمالي التذاكر
               </CardDescription>
-              <CardTitle className="text-3xl text-pink-600">{stats.total}</CardTitle>
+              <CardTitle className="text-3xl text-pink-600">
+                {stats.total}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-xs text-muted-foreground">
@@ -250,7 +264,9 @@ export default function Tickets() {
                 <AlertCircle className="h-4 w-4" />
                 تذاكر مفتوحة
               </CardDescription>
-              <CardTitle className="text-3xl text-blue-600">{stats.open}</CardTitle>
+              <CardTitle className="text-3xl text-blue-600">
+                {stats.open}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-xs text-muted-foreground">
@@ -265,7 +281,9 @@ export default function Tickets() {
                 <Clock className="h-4 w-4" />
                 قيد المعالجة
               </CardDescription>
-              <CardTitle className="text-3xl text-yellow-600">{stats.inProgress}</CardTitle>
+              <CardTitle className="text-3xl text-yellow-600">
+                {stats.inProgress}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-xs text-muted-foreground">
@@ -280,7 +298,9 @@ export default function Tickets() {
                 <CheckCircle2 className="h-4 w-4" />
                 تذاكر محلولة
               </CardDescription>
-              <CardTitle className="text-3xl text-green-600">{stats.resolved}</CardTitle>
+              <CardTitle className="text-3xl text-green-600">
+                {stats.resolved}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-xs text-muted-foreground">
@@ -298,7 +318,9 @@ export default function Tickets() {
               <Sparkles className="h-5 w-5 text-purple-600" />
               قنوات استقبال التذاكر
             </CardTitle>
-            <CardDescription>يمكن فتح التذاكر من خلال القنوات التالية</CardDescription>
+            <CardDescription>
+              يمكن فتح التذاكر من خلال القنوات التالية
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -306,7 +328,9 @@ export default function Tickets() {
                 <Mail className="h-8 w-8 text-blue-600" />
                 <div>
                   <p className="font-semibold">البريد الإلكتروني</p>
-                  <p className="text-sm text-muted-foreground">info@rbithr.com</p>
+                  <p className="text-sm text-muted-foreground">
+                    info@rbithr.com
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-3 bg-white dark:bg-gray-900 p-3 rounded-lg">
@@ -320,7 +344,9 @@ export default function Tickets() {
                 <FileText className="h-8 w-8 text-purple-600" />
                 <div>
                   <p className="font-semibold">نموذج ويب</p>
-                  <p className="text-sm text-muted-foreground">من داخل النظام</p>
+                  <p className="text-sm text-muted-foreground">
+                    من داخل النظام
+                  </p>
                 </div>
               </div>
             </div>
@@ -334,7 +360,7 @@ export default function Tickets() {
             <Input
               placeholder="بحث عن تذكرة..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
               className="pr-10"
             />
           </div>
@@ -375,10 +401,14 @@ export default function Tickets() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {ticketsData.map((ticket) => (
+                  {ticketsData.map(ticket => (
                     <TableRow key={ticket.id}>
-                      <TableCell className="font-mono font-semibold">{ticket.id}</TableCell>
-                      <TableCell className="font-medium">{ticket.title}</TableCell>
+                      <TableCell className="font-mono font-semibold">
+                        {ticket.id}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {ticket.title}
+                      </TableCell>
                       <TableCell>
                         <Badge variant="outline">{ticket.category}</Badge>
                       </TableCell>
@@ -403,8 +433,8 @@ export default function Tickets() {
                             ticket.priority === "عاجل"
                               ? "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300"
                               : ticket.priority === "متوسط"
-                              ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300"
-                              : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"
+                                ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300"
+                                : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"
                           }
                         >
                           {ticket.priority}
@@ -417,22 +447,28 @@ export default function Tickets() {
                             ticket.status === "مفتوح"
                               ? "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
                               : ticket.status === "قيد المعالجة"
-                              ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300"
-                              : ticket.status === "محلول"
-                              ? "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300"
-                              : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"
+                                ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300"
+                                : ticket.status === "محلول"
+                                  ? "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300"
+                                  : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"
                           }
                         >
                           {ticket.status}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-sm">{ticket.assignedTo}</TableCell>
+                      <TableCell className="text-sm">
+                        {ticket.assignedTo}
+                      </TableCell>
                       <TableCell className="text-sm text-muted-foreground">
                         {ticket.createdAt}
                       </TableCell>
                       <TableCell>
                         <div className="flex justify-center gap-2">
-                          <Button variant="ghost" size="icon" title="عرض التفاصيل">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            title="عرض التفاصيل"
+                          >
                             <Eye className="h-4 w-4" />
                           </Button>
                         </div>

@@ -3,6 +3,7 @@
 ## ✅ فحوصات الأمان المكتملة
 
 ### 1. حماية المتغيرات البيئية
+
 - ✅ لا توجد أسرار مشفرة في الكود
 - ✅ جميع المفاتيح السرية تستخدم `process.env.*`
 - ✅ ملف `.env.example` محدث ويوثق جميع المتغيرات المطلوبة
@@ -12,6 +13,7 @@
 ### 2. رؤوس الأمان (Security Headers)
 
 #### Frontend (Vercel)
+
 ```json
 ✅ X-Content-Type-Options: nosniff
 ✅ X-Frame-Options: DENY
@@ -23,6 +25,7 @@
 ```
 
 #### Backend (Railway - Express + Helmet)
+
 ```javascript
 ✅ Helmet.js configured with:
    - Content Security Policy
@@ -33,6 +36,7 @@
 ```
 
 ### 3. الحماية من CSRF
+
 ```javascript
 ✅ Double Submit CSRF Protection
 ✅ CSRF tokens في جميع الطلبات المعدلة
@@ -42,18 +46,21 @@
 ### 4. المصادقة والترخيص
 
 #### JWT Authentication
+
 - ✅ JWT tokens آمنة ومشفرة
 - ✅ Secret keys عشوائية وقوية (32+ حرف)
 - ✅ Token expiration محدد
 - ✅ Refresh token mechanism
 
 #### Session Management
+
 - ✅ Session secrets عشوائية
 - ✅ Session timeout محدد
 - ✅ Secure cookies في Production
 - ✅ HttpOnly cookies
 
 #### Password Security
+
 - ✅ Bcrypt hashing (salt rounds: 10)
 - ✅ Password validation (minimum 8 characters)
 - ✅ No password storage in logs
@@ -78,6 +85,7 @@
 ### 7. ثغرات التبعيات (npm audit)
 
 #### قبل الإصلاح
+
 ```
 ❌ 9 vulnerabilities (2 low, 7 moderate)
    - cookie < 0.7.0 (used by csurf)
@@ -85,6 +93,7 @@
 ```
 
 #### بعد الإصلاح
+
 ```
 ✅ cookie upgraded to 0.7.2 via pnpm overrides
 ✅ esbuild already at 0.25.0 (safe)
@@ -125,10 +134,12 @@
 ### 1. مراقبة الأمان
 
 #### Sentry Integration
+
 ```env
 VITE_SENTRY_DSN=your-sentry-dsn
 SENTRY_AUTH_TOKEN=your-auth-token
 ```
+
 - [ ] تفعيل Sentry للمراقبة
 - [ ] إعداد error alerts
 - [ ] تتبع security events
@@ -149,11 +160,13 @@ npx snyk test
 ### 3. Secrets Management
 
 #### استخدام Secrets Manager
+
 - [ ] AWS Secrets Manager
 - [ ] HashiCorp Vault
 - [ ] Railway/Vercel Environment Variables
 
 **لا تقم بـ**:
+
 - ❌ حفظ الأسرار في الكود
 - ❌ مشاركة الأسرار عبر البريد الإلكتروني
 - ❌ commit ملفات `.env`
@@ -161,6 +174,7 @@ npx snyk test
 ### 4. API Security Best Practices
 
 #### معدلات الطلبات
+
 ```javascript
 // للـ public APIs
 ✅ Rate limiting: 100 req/15min
@@ -169,6 +183,7 @@ npx snyk test
 ```
 
 #### التوثيق
+
 ```javascript
 ✅ OpenAPI documentation (openapi.yaml)
 ⚠️  تأكد من عدم كشف endpoints حساسة
@@ -178,6 +193,7 @@ npx snyk test
 ### 5. Frontend Security
 
 #### XSS Prevention
+
 ```javascript
 ✅ React auto-escapes output
 ✅ No dangerouslySetInnerHTML without sanitization
@@ -185,6 +201,7 @@ npx snyk test
 ```
 
 #### Data Exposure
+
 ```javascript
 ✅ لا تخزن JWT في localStorage (استخدم httpOnly cookies)
 ✅ لا تسجل sensitive data في console
@@ -220,32 +237,35 @@ pnpm build
 
 ## 📊 ملخص حالة الأمان
 
-| الفئة | الحالة | الملاحظات |
-|------|--------|----------|
-| Environment Variables | ✅ آمن | لا توجد أسرار مشفرة |
-| Security Headers | ✅ آمن | جميع الرؤوس مطبقة |
-| CSRF Protection | ✅ آمن | Double Submit implemented |
-| Authentication | ✅ آمن | JWT + Sessions |
-| Rate Limiting | ✅ آمن | Configured |
-| Input Validation | ✅ آمن | Zod schemas |
-| Dependencies | ⚠️ جيد | csurf deprecated |
-| HTTPS/SSL | ✅ آمن | Automatic |
-| Database | ✅ آمن | SSL + ORM |
-| Monitoring | ⚠️ اختياري | يحتاج Sentry |
+| الفئة                 | الحالة     | الملاحظات                 |
+| --------------------- | ---------- | ------------------------- |
+| Environment Variables | ✅ آمن     | لا توجد أسرار مشفرة       |
+| Security Headers      | ✅ آمن     | جميع الرؤوس مطبقة         |
+| CSRF Protection       | ✅ آمن     | Double Submit implemented |
+| Authentication        | ✅ آمن     | JWT + Sessions            |
+| Rate Limiting         | ✅ آمن     | Configured                |
+| Input Validation      | ✅ آمن     | Zod schemas               |
+| Dependencies          | ⚠️ جيد     | csurf deprecated          |
+| HTTPS/SSL             | ✅ آمن     | Automatic                 |
+| Database              | ✅ آمن     | SSL + ORM                 |
+| Monitoring            | ⚠️ اختياري | يحتاج Sentry              |
 
 ## 🎯 الخطوات التالية
 
 ### قصيرة المدى (الأسبوع القادم)
+
 1. [ ] تفعيل Sentry للمراقبة
 2. [ ] إعداد automated security scanning
 3. [ ] مراجعة API permissions
 
 ### متوسطة المدى (الشهر القادم)
+
 1. [ ] إضافة 2FA (Two-Factor Authentication)
 2. [ ] تحسين password policies
 3. [ ] إضافة audit logging
 
 ### طويلة المدى (3-6 أشهر)
+
 1. [ ] Penetration testing
 2. [ ] Security compliance audit (ISO 27001)
 3. [ ] Bug bounty program
@@ -261,6 +281,7 @@ pnpm build
 ## 🆘 الإبلاغ عن ثغرات أمنية
 
 إذا اكتشفت ثغرة أمنية، يرجى:
+
 1. **لا تنشرها علناً**
 2. أرسل تقرير خاص إلى: security@rabit.sa
 3. سنرد خلال 48 ساعة

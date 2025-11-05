@@ -61,6 +61,7 @@ RabitHR/
 ### Frontend (Vercel)
 
 1. **البناء**: يقوم Vercel ببناء التطبيق باستخدام:
+
    ```bash
    pnpm vercel-build
    ```
@@ -68,6 +69,7 @@ RabitHR/
 2. **المخرجات**: الملفات الثابتة في `dist/public/`
 
 3. **API Proxy**: يتم إعادة توجيه جميع طلبات `/api/*` إلى Railway backend:
+
    ```json
    {
      "rewrites": [
@@ -89,6 +91,7 @@ RabitHR/
 ### Backend (Railway)
 
 1. **البناء**: Railway يقوم ببناء وتشغيل Express server:
+
    ```bash
    pnpm install
    pnpm build
@@ -113,6 +116,7 @@ RabitHR/
 ## 🔒 الأمان
 
 ### Frontend Security Headers (Vercel)
+
 - `X-Content-Type-Options: nosniff`
 - `X-Frame-Options: DENY`
 - `Strict-Transport-Security: max-age=31536000`
@@ -120,6 +124,7 @@ RabitHR/
 - `Referrer-Policy: strict-origin-when-cross-origin`
 
 ### Backend Security (Railway)
+
 - Helmet.js لرؤوس الأمان
 - CSRF Protection (Double Submit Cookie)
 - Rate Limiting على API endpoints
@@ -129,12 +134,14 @@ RabitHR/
 ## 📊 الأداء
 
 ### Frontend Optimizations
+
 - ✅ Code Splitting (React, UI components, Charts)
 - ✅ Static Asset Caching (1 year)
 - ✅ CDN Distribution عبر Vercel
 - ✅ Gzip/Brotli Compression
 
 ### Backend Optimizations
+
 - ✅ Response Compression
 - ✅ Redis Caching (اختياري)
 - ✅ Database Connection Pooling
@@ -197,12 +204,13 @@ pnpm build
    - عند نشر Backend على Railway، حدث URL في `vercel.json`
 
 4. **متغيرات البيئة منفصلة**
-   - Vercel: فقط VITE_* variables
+   - Vercel: فقط VITE\_\* variables
    - Railway: جميع المتغيرات (Database, JWT, etc.)
 
 ## 🆘 المساعدة والدعم
 
 للمزيد من التفاصيل، راجع:
+
 - `VERCEL_DEPLOYMENT_AR.md` - دليل نشر Vercel
 - `DATABASE_SETUP.md` - إعداد قاعدة البيانات
 - `.env.example` - جميع متغيرات البيئة المطلوبة

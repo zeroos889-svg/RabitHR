@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -51,7 +57,7 @@ export default function AdminUsers() {
       refetch();
       setDeleteUserId(null);
     },
-    onError: (error) => {
+    onError: error => {
       toast.error("فشل حذف المستخدم: " + error.message);
     },
   });
@@ -66,7 +72,9 @@ export default function AdminUsers() {
     <div className="p-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold">إدارة المستخدمين</h1>
-        <p className="text-muted-foreground mt-2">عرض وإدارة جميع مستخدمي المنصة</p>
+        <p className="text-muted-foreground mt-2">
+          عرض وإدارة جميع مستخدمي المنصة
+        </p>
       </div>
 
       <Card>
@@ -84,11 +92,14 @@ export default function AdminUsers() {
               <Input
                 placeholder="بحث بالاسم أو البريد الإلكتروني..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={e => setSearch(e.target.value)}
                 className="pr-10"
               />
             </div>
-            <Select value={roleFilter} onValueChange={(value) => setRoleFilter(value as any)}>
+            <Select
+              value={roleFilter}
+              onValueChange={value => setRoleFilter(value as any)}
+            >
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="جميع الأدوار" />
               </SelectTrigger>
@@ -123,18 +134,25 @@ export default function AdminUsers() {
                   </TableRow>
                 ) : data?.users.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                    <TableCell
+                      colSpan={7}
+                      className="text-center py-8 text-muted-foreground"
+                    >
                       لا توجد نتائج
                     </TableCell>
                   </TableRow>
                 ) : (
-                  data?.users.map((user) => (
+                  data?.users.map(user => (
                     <TableRow key={user.id}>
                       <TableCell className="font-medium">{user.id}</TableCell>
                       <TableCell>{user.name || "-"}</TableCell>
                       <TableCell>{user.email || "-"}</TableCell>
                       <TableCell>
-                        <Badge variant={user.role === "admin" ? "default" : "secondary"}>
+                        <Badge
+                          variant={
+                            user.role === "admin" ? "default" : "secondary"
+                          }
+                        >
                           {user.role === "admin" ? "مدير" : "مستخدم"}
                         </Badge>
                       </TableCell>
@@ -142,10 +160,10 @@ export default function AdminUsers() {
                         {user.userType === "employee"
                           ? "موظف"
                           : user.userType === "individual"
-                          ? "مستقل"
-                          : user.userType === "company"
-                          ? "شركة"
-                          : "-"}
+                            ? "مستقل"
+                            : user.userType === "company"
+                              ? "شركة"
+                              : "-"}
                       </TableCell>
                       <TableCell>
                         {new Date(user.createdAt).toLocaleDateString("ar-SA")}
@@ -204,7 +222,10 @@ export default function AdminUsers() {
       </Card>
 
       {/* Delete Confirmation Dialog */}
-      <AlertDialog open={deleteUserId !== null} onOpenChange={() => setDeleteUserId(null)}>
+      <AlertDialog
+        open={deleteUserId !== null}
+        onOpenChange={() => setDeleteUserId(null)}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>هل أنت متأكد؟</AlertDialogTitle>
@@ -214,7 +235,10 @@ export default function AdminUsers() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>إلغاء</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} className="bg-destructive">
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-destructive"
+            >
               حذف
             </AlertDialogAction>
           </AlertDialogFooter>

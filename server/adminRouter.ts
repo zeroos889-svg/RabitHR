@@ -11,13 +11,15 @@ export const adminRouter = router({
 
   // Users Management
   getAllUsers: adminProcedure
-    .input(z.object({
-      page: z.number().default(1),
-      limit: z.number().default(20),
-      search: z.string().optional(),
-      role: z.enum(["admin", "user"]).optional(),
-      userType: z.enum(["employee", "individual", "company"]).optional(),
-    }))
+    .input(
+      z.object({
+        page: z.number().default(1),
+        limit: z.number().default(20),
+        search: z.string().optional(),
+        role: z.enum(["admin", "user"]).optional(),
+        userType: z.enum(["employee", "individual", "company"]).optional(),
+      })
+    )
     .query(async ({ input }) => {
       const users = await adminDb.getAllUsersAdmin(input);
       return users;
@@ -31,13 +33,15 @@ export const adminRouter = router({
     }),
 
   updateUser: adminProcedure
-    .input(z.object({
-      id: z.number(),
-      name: z.string().optional(),
-      email: z.string().optional(),
-      role: z.enum(["admin", "user"]).optional(),
-      userType: z.enum(["employee", "individual", "company"]).optional(),
-    }))
+    .input(
+      z.object({
+        id: z.number(),
+        name: z.string().optional(),
+        email: z.string().optional(),
+        role: z.enum(["admin", "user"]).optional(),
+        userType: z.enum(["employee", "individual", "company"]).optional(),
+      })
+    )
     .mutation(async ({ input, ctx }) => {
       await adminDb.updateUser(input.id, input);
       await adminDb.createAuditLog({
@@ -66,22 +70,26 @@ export const adminRouter = router({
 
   // Subscriptions Management
   getAllSubscriptions: adminProcedure
-    .input(z.object({
-      page: z.number().default(1),
-      limit: z.number().default(20),
-      status: z.enum(["active", "inactive", "trial", "cancelled"]).optional(),
-    }))
+    .input(
+      z.object({
+        page: z.number().default(1),
+        limit: z.number().default(20),
+        status: z.enum(["active", "inactive", "trial", "cancelled"]).optional(),
+      })
+    )
     .query(async ({ input }) => {
       const subscriptions = await adminDb.getAllSubscriptions(input);
       return subscriptions;
     }),
 
   updateSubscription: adminProcedure
-    .input(z.object({
-      id: z.number(),
-      status: z.enum(["active", "inactive", "trial", "cancelled"]).optional(),
-      endDate: z.string().optional(),
-    }))
+    .input(
+      z.object({
+        id: z.number(),
+        status: z.enum(["active", "inactive", "trial", "cancelled"]).optional(),
+        endDate: z.string().optional(),
+      })
+    )
     .mutation(async ({ input, ctx }) => {
       await adminDb.updateSubscription(input.id, input);
       await adminDb.createAuditLog({
@@ -96,22 +104,42 @@ export const adminRouter = router({
 
   // Bookings Management
   getAllBookings: adminProcedure
-    .input(z.object({
-      page: z.number().default(1),
-      limit: z.number().default(20),
-      status: z.enum(["pending", "assigned", "in-progress", "completed", "cancelled"]).optional(),
-    }))
+    .input(
+      z.object({
+        page: z.number().default(1),
+        limit: z.number().default(20),
+        status: z
+          .enum([
+            "pending",
+            "assigned",
+            "in-progress",
+            "completed",
+            "cancelled",
+          ])
+          .optional(),
+      })
+    )
     .query(async ({ input }) => {
       const bookings = await adminDb.getAllBookings(input);
       return bookings;
     }),
 
   updateBooking: adminProcedure
-    .input(z.object({
-      id: z.number(),
-      status: z.enum(["pending", "assigned", "in-progress", "completed", "cancelled"]).optional(),
-      consultantId: z.number().optional(),
-    }))
+    .input(
+      z.object({
+        id: z.number(),
+        status: z
+          .enum([
+            "pending",
+            "assigned",
+            "in-progress",
+            "completed",
+            "cancelled",
+          ])
+          .optional(),
+        consultantId: z.number().optional(),
+      })
+    )
     .mutation(async ({ input, ctx }) => {
       await adminDb.updateBooking(input.id, input);
       await adminDb.createAuditLog({
@@ -126,12 +154,14 @@ export const adminRouter = router({
 
   // Audit Logs
   getAuditLogs: adminProcedure
-    .input(z.object({
-      page: z.number().default(1),
-      limit: z.number().default(50),
-      userId: z.number().optional(),
-      action: z.string().optional(),
-    }))
+    .input(
+      z.object({
+        page: z.number().default(1),
+        limit: z.number().default(50),
+        userId: z.number().optional(),
+        action: z.string().optional(),
+      })
+    )
     .query(async ({ input }) => {
       const logs = await adminDb.getAuditLogs(input);
       return logs;

@@ -1,15 +1,15 @@
-import { useState, useEffect, useRef } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card } from '@/components/ui/card';
-import { MessageCircle, X, Send, Minimize2 } from 'lucide-react';
-import { trpc } from '@/lib/trpc';
-import { useAuth } from '@/_core/hooks/useAuth';
-import { toast } from 'sonner';
+import { useState, useEffect, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
+import { MessageCircle, X, Send, Minimize2 } from "lucide-react";
+import { trpc } from "@/lib/trpc";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { toast } from "sonner";
 
 interface Message {
   id: number;
-  senderType: 'visitor' | 'admin';
+  senderType: "visitor" | "admin";
   senderName: string | null;
   message: string;
   createdAt: Date;
@@ -18,13 +18,13 @@ interface Message {
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [conversationId, setConversationId] = useState<number | null>(null);
-  const [visitorName, setVisitorName] = useState('');
-  const [visitorEmail, setVisitorEmail] = useState('');
+  const [visitorName, setVisitorName] = useState("");
+  const [visitorEmail, setVisitorEmail] = useState("");
   const [showWelcome, setShowWelcome] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  
+
   const { user } = useAuth();
 
   // جلب المحادثة الحالية
@@ -34,36 +34,37 @@ export function ChatWidget() {
   );
 
   // جلب الرسائل
-  const { data: messages = [], refetch: refetchMessages } = trpc.chat.getMessages.useQuery(
-    { conversationId: conversationId! },
-    { enabled: !!conversationId, refetchInterval: 3000 } // تحديث كل 3 ثواني
-  );
+  const { data: messages = [], refetch: refetchMessages } =
+    trpc.chat.getMessages.useQuery(
+      { conversationId: conversationId! },
+      { enabled: !!conversationId, refetchInterval: 3000 } // تحديث كل 3 ثواني
+    );
 
   // إنشاء محادثة
   const createConversation = trpc.chat.createConversation.useMutation({
-    onSuccess: (data) => {
+    onSuccess: data => {
       setConversationId(data.conversationId);
       setShowWelcome(false);
     },
     onError: () => {
-      toast.error('فشل بدء المحادثة');
+      toast.error("فشل بدء المحادثة");
     },
   });
 
   // إرسال رسالة
   const sendMessageMutation = trpc.chat.sendMessage.useMutation({
     onSuccess: () => {
-      setMessage('');
+      setMessage("");
       refetchMessages();
     },
     onError: () => {
-      toast.error('فشل إرسال الرسالة');
+      toast.error("فشل إرسال الرسالة");
     },
   });
 
   // التمرير التلقائي للأسفل
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   // تحميل المحادثة الموجودة
@@ -76,7 +77,7 @@ export function ChatWidget() {
 
   const handleStartChat = () => {
     if (!user && (!visitorName || !visitorEmail)) {
-      toast.error('الرجاء إدخال الاسم والبريد الإلكتروني');
+      toast.error("الرجاء إدخال الاسم والبريد الإلكتروني");
       return;
     }
 
@@ -97,7 +98,7 @@ export function ChatWidget() {
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       if (showWelcome) {
         handleStartChat();
@@ -121,9 +122,11 @@ export function ChatWidget() {
   }
 
   return (
-    <Card className={`fixed bottom-6 left-6 z-50 w-96 shadow-2xl transition-all duration-300 ${
-      isMinimized ? 'h-16' : 'h-[600px]'
-    }`}>
+    <Card
+      className={`fixed bottom-6 left-6 z-50 w-96 shadow-2xl transition-all duration-300 ${
+        isMinimized ? "h-16" : "h-[600px]"
+      }`}
+    >
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-t-lg">
         <div className="flex items-center gap-3">
@@ -171,14 +174,14 @@ export function ChatWidget() {
                   <Input
                     placeholder="الاسم"
                     value={visitorName}
-                    onChange={(e) => setVisitorName(e.target.value)}
+                    onChange={e => setVisitorName(e.target.value)}
                     onKeyPress={handleKeyPress}
                   />
                   <Input
                     type="email"
                     placeholder="البريد الإلكتروني"
                     value={visitorEmail}
-                    onChange={(e) => setVisitorEmail(e.target.value)}
+                    onChange={e => setVisitorEmail(e.target.value)}
                     onKeyPress={handleKeyPress}
                   />
                 </div>
@@ -189,7 +192,9 @@ export function ChatWidget() {
                 className="w-full gradient-primary"
                 disabled={createConversation.isPending}
               >
-                {createConversation.isPending ? 'جاري البدء...' : 'بدء المحادثة'}
+                {createConversation.isPending
+                  ? "جاري البدء..."
+                  : "بدء المحادثة"}
               </Button>
             </div>
           ) : (
@@ -201,27 +206,35 @@ export function ChatWidget() {
                     ابدأ المحادثة بإرسال رسالة
                   </div>
                 ) : (
-                  messages.map((msg) => (
+                  messages.map(msg => (
                     <div
                       key={msg.id}
                       className={`flex ${
-                        msg.senderType === 'admin' ? 'justify-start' : 'justify-end'
+                        msg.senderType === "admin"
+                          ? "justify-start"
+                          : "justify-end"
                       }`}
                     >
                       <div
                         className={`max-w-[80%] rounded-lg px-4 py-2 ${
-                          msg.senderType === 'admin'
-                            ? 'bg-gray-100 text-gray-900'
-                            : 'bg-gradient-to-r from-purple-600 to-pink-600 text-white'
+                          msg.senderType === "admin"
+                            ? "bg-gray-100 text-gray-900"
+                            : "bg-gradient-to-r from-purple-600 to-pink-600 text-white"
                         }`}
                       >
-                        <p className="text-sm whitespace-pre-wrap">{msg.message}</p>
-                        <p className={`text-xs mt-1 ${
-                          msg.senderType === 'admin' ? 'text-gray-500' : 'text-white/80'
-                        }`}>
-                          {new Date(msg.createdAt).toLocaleTimeString('ar-SA', {
-                            hour: '2-digit',
-                            minute: '2-digit',
+                        <p className="text-sm whitespace-pre-wrap">
+                          {msg.message}
+                        </p>
+                        <p
+                          className={`text-xs mt-1 ${
+                            msg.senderType === "admin"
+                              ? "text-gray-500"
+                              : "text-white/80"
+                          }`}
+                        >
+                          {new Date(msg.createdAt).toLocaleTimeString("ar-SA", {
+                            hour: "2-digit",
+                            minute: "2-digit",
                           })}
                         </p>
                       </div>
@@ -237,7 +250,7 @@ export function ChatWidget() {
                   <Input
                     placeholder="اكتب رسالتك..."
                     value={message}
-                    onChange={(e) => setMessage(e.target.value)}
+                    onChange={e => setMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
                     disabled={sendMessageMutation.isPending}
                   />
