@@ -56,9 +56,16 @@ async function startServer() {
   // Check environment variables
   checkEnv();
 
-  // Run database migrations on startup
+  // Run database migrations on startup (can be disabled via env)
   try {
-    if (process.env.DATABASE_URL) {
+    const migrationsEnabled = process.env.DB_MIGRATIONS_ENABLED !== "false";
+    if (!migrationsEnabled) {
+      console.log(
+        "[Server] Skipping DB migrations (DB_MIGRATIONS_ENABLED=false)"
+      );
+    }
+
+    if (migrationsEnabled && process.env.DATABASE_URL) {
       const url = new URL(process.env.DATABASE_URL);
       const connection = await mysql.createConnection({
         host: url.hostname,
