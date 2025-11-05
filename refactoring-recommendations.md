@@ -1,6 +1,7 @@
 # 🔧 توصيات إعادة الهيكلة - خطة عملية
 
 ## 🎯 الهدف
+
 تحويل قاعدة الكود لتتوافق مع أفضل الممارسات العالمية
 
 ---
@@ -8,6 +9,7 @@
 ## 1️⃣ تقسيم server/db.ts (1917 سطر)
 
 ### البنية المقترحة:
+
 ```
 server/
 ├── db/
@@ -23,6 +25,7 @@ server/
 ### مثال التقسيم:
 
 **db/index.ts** (القديم db.ts - الجزء الرئيسي فقط):
+
 ```typescript
 import { drizzle } from "drizzle-orm/mysql2";
 import { logger } from "../_core/logger";
@@ -34,17 +37,20 @@ export async function getDb() {
 }
 
 // Re-export all functions
-export * from './users';
-export * from './consultants';
-export * from './bookings';
+export * from "./users";
+export * from "./consultants";
+export * from "./bookings";
 ```
 
 **db/users.ts**:
-```typescript
-import { getDb } from './index';
-import { users, passwords } from '../../drizzle/schema';
 
-export async function createUserWithPassword(data: InsertUser & { password: string }) {
+```typescript
+import { getDb } from "./index";
+import { users, passwords } from "../../drizzle/schema";
+
+export async function createUserWithPassword(
+  data: InsertUser & { password: string }
+) {
   // User creation logic
 }
 
@@ -62,6 +68,7 @@ export async function verifyUserLogin(email: string, password: string) {
 ## 2️⃣ تقسيم server/routers.ts (1646 سطر)
 
 ### البنية المقترحة:
+
 ```
 server/
 ├── routers/
@@ -79,11 +86,12 @@ server/
 ### مثال التقسيم:
 
 **routers/index.ts**:
+
 ```typescript
-import { router } from '../_core/trpc';
-import { authRouter } from './auth';
-import { eosbRouter } from './eosb';
-import { usersRouter } from './users';
+import { router } from "../_core/trpc";
+import { authRouter } from "./auth";
+import { eosbRouter } from "./eosb";
+import { usersRouter } from "./users";
 // ... imports
 
 export const appRouter = router({
@@ -97,29 +105,34 @@ export const appRouter = router({
 ```
 
 **routers/auth.ts**:
+
 ```typescript
-import { router, publicProcedure } from '../_core/trpc';
-import { z } from 'zod';
-import * as db from '../db';
+import { router, publicProcedure } from "../_core/trpc";
+import { z } from "zod";
+import * as db from "../db";
 
 export const authRouter = router({
   me: publicProcedure.query(opts => opts.ctx.user),
-  
+
   register: publicProcedure
-    .input(z.object({
-      name: z.string().min(2),
-      email: z.string().email(),
-      password: z.string().min(8),
-    }))
+    .input(
+      z.object({
+        name: z.string().min(2),
+        email: z.string().email(),
+        password: z.string().min(8),
+      })
+    )
     .mutation(async ({ input }) => {
       // Registration logic
     }),
-    
+
   login: publicProcedure
-    .input(z.object({
-      email: z.string().email(),
-      password: z.string().min(1),
-    }))
+    .input(
+      z.object({
+        email: z.string().email(),
+        password: z.string().min(1),
+      })
+    )
     .mutation(async ({ input }) => {
       // Login logic
     }),
@@ -131,6 +144,7 @@ export const authRouter = router({
 ## 3️⃣ إزالة التكرار - Tasks & Tickets
 
 ### البنية المقترحة:
+
 ```
 client/src/components/
 ├── shared/
@@ -143,6 +157,7 @@ client/src/components/
 ### مثال المكون المشترك:
 
 **components/shared/ItemList.tsx**:
+
 ```typescript
 interface ItemListProps<T> {
   items: T[];
@@ -152,12 +167,12 @@ interface ItemListProps<T> {
   renderItem: (item: T) => React.ReactNode;
 }
 
-export function ItemList<T extends { id: number }>({ 
-  items, 
-  type, 
+export function ItemList<T extends { id: number }>({
+  items,
+  type,
   onStatusChange,
   onDelete,
-  renderItem 
+  renderItem
 }: ItemListProps<T>) {
   return (
     <div className="grid gap-4">
@@ -177,6 +192,7 @@ export function ItemList<T extends { id: number }>({
 ```
 
 **استخدام المكون في Tasks.tsx**:
+
 ```typescript
 import { ItemList } from '@/components/shared/ItemList';
 
@@ -217,6 +233,7 @@ logger.info("User logged in", { userId, context: "Auth" });
 ### إنشاء logger للـ client:
 
 **client/src/lib/logger.ts**:
+
 ```typescript
 const isDev = import.meta.env.DEV;
 
@@ -241,6 +258,7 @@ export const logger = {
 ### الأنماط الشائعة:
 
 **Pattern 1: Error Handling**
+
 ```typescript
 // ❌ Before
 } catch (error: any) {
@@ -261,6 +279,7 @@ export const logger = {
 ```
 
 **Pattern 2: Generic Data**
+
 ```typescript
 // ❌ Before
 function processData(data: any) {
@@ -269,7 +288,7 @@ function processData(data: any) {
 
 // ✅ After
 function processData(data: unknown): string {
-  if (typeof data === 'object' && data !== null && 'value' in data) {
+  if (typeof data === "object" && data !== null && "value" in data) {
     return String((data as { value: unknown }).value);
   }
   throw new Error("Invalid data format");
@@ -282,23 +301,24 @@ function processData(data: unknown): string {
 
 ### Admin Check Middleware:
 
-**server/_core/middleware/adminCheck.ts**:
+**server/\_core/middleware/adminCheck.ts**:
+
 ```typescript
-import { TRPCError } from '@trpc/server';
-import { middleware } from '../trpc';
+import { TRPCError } from "@trpc/server";
+import { middleware } from "../trpc";
 
 export const adminOnly = middleware(async ({ ctx, next }) => {
   if (!ctx.user) {
     throw new TRPCError({
-      code: 'UNAUTHORIZED',
-      message: 'يجب تسجيل الدخول'
+      code: "UNAUTHORIZED",
+      message: "يجب تسجيل الدخول",
     });
   }
 
-  if (ctx.user.role !== 'admin') {
+  if (ctx.user.role !== "admin") {
     throw new TRPCError({
-      code: 'FORBIDDEN',
-      message: 'غير مصرح لك بالوصول'
+      code: "FORBIDDEN",
+      message: "غير مصرح لك بالوصول",
     });
   }
 
@@ -309,6 +329,7 @@ export const adminProcedure = publicProcedure.use(adminOnly);
 ```
 
 ### استخدام:
+
 ```typescript
 // في الـ routers
 export const adminRouter = router({
@@ -353,20 +374,21 @@ client/src/pages/home/
 ## 8️⃣ إضافة ESLint Configuration
 
 **eslint.config.js**:
+
 ```javascript
 export default [
   {
-    files: ['**/*.ts', '**/*.tsx'],
+    files: ["**/*.ts", "**/*.tsx"],
     rules: {
-      'max-lines': ['error', { max: 500, skipBlankLines: true }],
-      'max-lines-per-function': ['warn', { max: 100 }],
-      'complexity': ['warn', 10],
-      'no-console': 'error',
-      '@typescript-eslint/no-explicit-any': 'error',
-      '@typescript-eslint/explicit-function-return-type': 'warn',
-      'no-duplicate-imports': 'error',
-    }
-  }
+      "max-lines": ["error", { max: 500, skipBlankLines: true }],
+      "max-lines-per-function": ["warn", { max: 100 }],
+      complexity: ["warn", 10],
+      "no-console": "error",
+      "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/explicit-function-return-type": "warn",
+      "no-duplicate-imports": "error",
+    },
+  },
 ];
 ```
 
@@ -375,21 +397,25 @@ export default [
 ## 📝 أولوية التنفيذ
 
 ### Week 1: Critical Refactoring
+
 1. ✅ تقسيم server/db.ts
 2. ✅ تقسيم server/routers.ts
 3. ✅ إكمال admin checks
 
 ### Week 2: Code Quality
+
 4. ✅ إزالة Tasks/Tickets duplication
 5. ✅ استبدال console.log
 6. ✅ استبدال any types
 
 ### Week 3: Optimization
+
 7. ✅ تقسيم ملفات client كبيرة
 8. ✅ إضافة ESLint rules
 9. ✅ تحسين type safety
 
 ### Week 4: Testing & Documentation
+
 10. ✅ إضافة unit tests
 11. ✅ تحديث documentation
 12. ✅ Code review
@@ -399,6 +425,7 @@ export default [
 ## 🎯 النتيجة المتوقعة
 
 بعد التنفيذ:
+
 - ✅ متوسط حجم الملف: < 300 سطر
 - ✅ التكرار: < 5%
 - ✅ Type safety: 100%

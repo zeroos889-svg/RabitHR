@@ -73,7 +73,10 @@ export async function upsertUser(user: InsertUser): Promise<void> {
       set: updateSet,
     });
   } catch (error) {
-    logger.error("Failed to upsert user", { error, context: "Database" });
+    logger.error("Failed to upsert user", {
+      error: error instanceof Error ? error : undefined,
+      context: "Database",
+    });
     throw error;
   }
 }
@@ -252,7 +255,10 @@ export async function createUserWithPassword(data: {
       .limit(1);
     return newUser[0];
   } catch (error) {
-    logger.error("Failed to create user", { error, context: "Database" });
+    logger.error("Failed to create user", {
+      error: error instanceof Error ? error : undefined,
+      context: "Database",
+    });
     throw error;
   }
 }
@@ -300,7 +306,10 @@ export async function verifyUserLogin(email: string, password: string) {
 
     return user;
   } catch (error) {
-    logger.error("Failed to verify login", { error, context: "Database" });
+    logger.error("Failed to verify login", {
+      error: error instanceof Error ? error : undefined,
+      context: "Database",
+    });
     throw error;
   }
 }
@@ -328,8 +337,7 @@ export async function getPasswordByUserId(userId: number) {
 
   const row: any = result[0];
   // normalize column names: some DB dumps use `hashedPassword`, drizzle schema uses `passwordHash`.
-  const hashed =
-    row.hashedPassword ?? row.passwordHash ?? row.password ?? null;
+  const hashed = row.hashedPassword ?? row.passwordHash ?? row.password ?? null;
   return { ...row, hashedPassword: hashed };
 }
 

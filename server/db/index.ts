@@ -68,7 +68,7 @@ export async function getDb() {
           context: "Database",
         });
 
-        await new Promise((resolve) => setTimeout(resolve, delay));
+        await new Promise(resolve => setTimeout(resolve, delay));
         return getDb();
       }
 
@@ -83,9 +83,10 @@ export async function getDb() {
 
 // Re-export all database functions from their respective modules
 export * from "./users";
-export * from "./consultants";
-export * from "./documents";
-export * from "./packages";
-export * from "./notifications";
-export * from "./discounts";
-export * from "./analytics";
+// TODO: Add more modules as they are created
+// export * from "./consultants";
+// export * from "./documents";
+// export * from "./packages";
+// export * from "./notifications";
+// export * from "./discounts";
+// export * from "./analytics";

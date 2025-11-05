@@ -3,11 +3,13 @@
 ## 1. 🔴 التكرار الكبير - Tasks.tsx & Tickets.tsx
 
 ### المشكلة:
+
 269 سطر من الكود مكررة بشكل شبه كامل بين الملفين!
 
 ### مثال من التكرار:
 
 **في Tasks.tsx:**
+
 ```typescript
 // السطر 144-413
 const [tasks, setTasks] = useState<Task[]>([]);
@@ -26,6 +28,7 @@ const handleDelete = async (taskId: number) => {
 ```
 
 **في Tickets.tsx:**
+
 ```typescript
 // السطر 149-405 - نفس الكود بالضبط!
 const [tickets, setTickets] = useState<Ticket[]>([]);
@@ -44,6 +47,7 @@ const handleDelete = async (ticketId: number) => {
 ```
 
 ### الحل المقترح:
+
 ```typescript
 // components/shared/useItemManagement.ts
 export function useItemManagement<T extends { id: number }>(
@@ -75,6 +79,7 @@ const { items: tickets, handleStatusChange } = useItemManagement<Ticket>('ticket
 ## 2. 🔴 ملف ضخم جداً - server/db.ts (1917 سطر)
 
 ### المشكلة:
+
 كل database queries في ملف واحد ضخم!
 
 ### أمثلة من الكود:
@@ -106,6 +111,7 @@ server/
 ```
 
 **التحسين:**
+
 - ✅ أسهل في الصيانة
 - ✅ أسهل في الاختبار
 - ✅ أسهل في فهم الكود
@@ -118,6 +124,7 @@ server/
 ### أمثلة من الكود:
 
 **❌ مثال 1: Error Handling**
+
 ```typescript
 // server/routers.ts
 } catch (error: any) {
@@ -129,12 +136,13 @@ server/
 ```
 
 **✅ الحل:**
+
 ```typescript
 } catch (error) {
-  const err = error instanceof Error 
-    ? error 
+  const err = error instanceof Error
+    ? error
     : new Error("Unknown error");
-  
+
   throw new TRPCError({
     code: "BAD_REQUEST",
     message: err.message || "فشل في العملية"
@@ -143,6 +151,7 @@ server/
 ```
 
 **❌ مثال 2: Generic Data**
+
 ```typescript
 function processData(data: any) {
   return data.value;
@@ -150,6 +159,7 @@ function processData(data: any) {
 ```
 
 **✅ الحل:**
+
 ```typescript
 interface DataWithValue {
   value: string;
@@ -164,10 +174,10 @@ function processData(data: unknown): string {
 
 function isDataWithValue(data: unknown): data is DataWithValue {
   return (
-    typeof data === 'object' &&
+    typeof data === "object" &&
     data !== null &&
-    'value' in data &&
-    typeof (data as any).value === 'string'
+    "value" in data &&
+    typeof (data as any).value === "string"
   );
 }
 ```
@@ -179,6 +189,7 @@ function isDataWithValue(data: unknown): data is DataWithValue {
 ### أمثلة من الكود:
 
 **❌ في Server:**
+
 ```typescript
 // server/routers.ts
 console.log("User logged in:", userId);
@@ -187,8 +198,9 @@ console.error("Error occurred:", error);
 ```
 
 **✅ الحل:**
+
 ```typescript
-import { logger } from './_core/logger';
+import { logger } from "./_core/logger";
 
 logger.info("User logged in", { userId, context: "Auth" });
 logger.info("Booking created", { bookingId, context: "Bookings" });
@@ -196,6 +208,7 @@ logger.error("Error occurred", { error, context: "Bookings" });
 ```
 
 **❌ في Client:**
+
 ```typescript
 // client/src/pages/Login.tsx
 console.log("Login attempt");
@@ -203,6 +216,7 @@ console.log("User data:", user);
 ```
 
 **✅ الحل:**
+
 ```typescript
 // client/src/lib/logger.ts
 const logger = {
@@ -212,7 +226,7 @@ const logger = {
   error: (msg: string, error?: any) => {
     console.error(`[ERROR] ${msg}`, error);
     // Send to monitoring service
-  }
+  },
 };
 
 // استخدام
@@ -227,6 +241,7 @@ logger.info("User data", { user });
 ### أمثلة من الكود:
 
 **❌ في server/routers.ts:**
+
 ```typescript
 // سطر 145
 deleteUser: protectedProcedure
@@ -248,6 +263,7 @@ updateSubscription: protectedProcedure
 ```
 
 **✅ الحل:**
+
 ```typescript
 // server/_core/middleware.ts
 import { middleware } from './trpc';
@@ -281,13 +297,18 @@ deleteUser: adminProcedure  // ✅ محمي بشكل صحيح
 ### مثال من الكود:
 
 **❌ دالة 150+ سطر:**
+
 ```typescript
 // server/routers.ts
 export const appRouter = router({
   // ... 1600+ سطر في function واحدة!
   eosb: router({
     generatePDF: publicProcedure
-      .input(z.object({ /* ... */ }))
+      .input(
+        z.object({
+          /* ... */
+        })
+      )
       .mutation(async ({ input }) => {
         // 100+ سطر من الكود
         // حسابات معقدة
@@ -301,6 +322,7 @@ export const appRouter = router({
 ```
 
 **✅ الحل:**
+
 ```typescript
 // routers/eosb/generatePDF.ts
 export async function generateEosbPDF(input: EosbInput) {
@@ -326,7 +348,7 @@ export const eosbRouter = router({
   generatePDF: publicProcedure
     .input(eosbInputSchema)
     .mutation(async ({ input }) => {
-      return await generateEosbPDF(input);  // 1 سطر!
+      return await generateEosbPDF(input); // 1 سطر!
     }),
 });
 ```
@@ -336,6 +358,7 @@ export const eosbRouter = router({
 ## 7. 🟡 تكرار في Templates.tsx (داخلي)
 
 ### المشكلة:
+
 نفس الكود يتكرر 3 مرات داخل نفس الملف!
 
 ```typescript
@@ -365,6 +388,7 @@ export const eosbRouter = router({
 ```
 
 **✅ الحل:**
+
 ```typescript
 // components/TemplateCard.tsx
 interface TemplateCardProps {
@@ -392,7 +416,7 @@ export function TemplateCard({ template, onEdit, onDelete }: TemplateCardProps) 
 
 // استخدام
 {templates.map(template => (
-  <TemplateCard 
+  <TemplateCard
     key={template.id}
     template={template}
     onEdit={handleEdit}
@@ -406,12 +430,14 @@ export function TemplateCard({ template, onEdit, onDelete }: TemplateCardProps) 
 ## 📊 الخلاصة
 
 ### التوفير المتوقع:
+
 - **التكرار:** توفير ~2000+ سطر
 - **التقسيم:** تحسين القابلية للصيانة بنسبة 70%+
 - **Type Safety:** تحسين الأمان بنسبة 60%+
 - **Code Quality:** من 6/10 إلى 9/10
 
 ### الأولويات:
+
 1. 🔴 إصلاح التكرار (أعلى توفير)
 2. 🔴 تقسيم الملفات الضخمة (أعلى تأثير)
 3. ⚠️ إكمال TODO الأمنية (أهم أمنياً)
