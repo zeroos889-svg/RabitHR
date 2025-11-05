@@ -1,5 +1,11 @@
 import { trpc } from "@/lib/trpc";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Users, CreditCard, Calendar, DollarSign } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AdminNotifications } from "@/components/AdminNotifications";
@@ -8,17 +14,17 @@ export default function AdminDashboard() {
   const { data: stats, isLoading } = trpc.admin.getStats.useQuery();
 
   if (isLoading) {
-  return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-8">لوحة التحكم الإدارية</h1>
-      
-      {/* PDPL Notifications */}
-      <div className="mb-6">
-        <AdminNotifications />
-      </div>
+    return (
+      <div className="p-8">
+        <h1 className="text-3xl font-bold mb-8">لوحة التحكم الإدارية</h1>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {[1, 2, 3, 4].map((i) => (
+        {/* PDPL Notifications */}
+        <div className="mb-6">
+          <AdminNotifications />
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {[1, 2, 3, 4].map(i => (
             <Card key={i}>
               <CardHeader>
                 <Skeleton className="h-4 w-24" />
@@ -57,7 +63,7 @@ export default function AdminDashboard() {
     },
     {
       title: "إجمالي الإيرادات",
-      value: `${((stats?.totalRevenue || 0) / 100).toLocaleString('ar-SA')} ﷼`,
+      value: `${((stats?.totalRevenue || 0) / 100).toLocaleString("ar-SA")} ﷼`,
       icon: DollarSign,
       description: "الإيرادات الإجمالية",
       color: "text-purple-600",
@@ -68,11 +74,13 @@ export default function AdminDashboard() {
     <div className="p-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold">لوحة التحكم الإدارية</h1>
-        <p className="text-muted-foreground mt-2">مرحباً بك في لوحة التحكم الإدارية لمنصة رابِط</p>
+        <p className="text-muted-foreground mt-2">
+          مرحباً بك في لوحة التحكم الإدارية لمنصة رابِط
+        </p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {statsCards.map((stat) => {
+        {statsCards.map(stat => {
           const Icon = stat.icon;
           return (
             <Card key={stat.title}>
@@ -84,7 +92,9 @@ export default function AdminDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold">{stat.value}</div>
-                <p className="text-xs text-muted-foreground mt-1">{stat.description}</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {stat.description}
+                </p>
               </CardContent>
             </Card>
           );
@@ -100,15 +110,21 @@ export default function AdminDashboard() {
           <CardContent>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">معدل التحويل</span>
+                <span className="text-sm text-muted-foreground">
+                  معدل التحويل
+                </span>
                 <span className="font-medium">-</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">متوسط قيمة الاشتراك</span>
+                <span className="text-sm text-muted-foreground">
+                  متوسط قيمة الاشتراك
+                </span>
                 <span className="font-medium">-</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">معدل الاحتفاظ</span>
+                <span className="text-sm text-muted-foreground">
+                  معدل الاحتفاظ
+                </span>
                 <span className="font-medium">-</span>
               </div>
             </div>
@@ -122,7 +138,9 @@ export default function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <p className="text-sm text-muted-foreground">لا توجد نشاطات حديثة</p>
+              <p className="text-sm text-muted-foreground">
+                لا توجد نشاطات حديثة
+              </p>
             </div>
           </CardContent>
         </Card>

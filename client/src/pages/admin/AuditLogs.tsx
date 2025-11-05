@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -49,15 +55,15 @@ export default function AdminAuditLogs() {
     <div className="p-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold">سجل النشاطات</h1>
-        <p className="text-muted-foreground mt-2">عرض جميع النشاطات والتغييرات في المنصة</p>
+        <p className="text-muted-foreground mt-2">
+          عرض جميع النشاطات والتغييرات في المنصة
+        </p>
       </div>
 
       <Card>
         <CardHeader>
           <CardTitle>سجل النشاطات</CardTitle>
-          <CardDescription>
-            {data?.total || 0} نشاط مسجل
-          </CardDescription>
+          <CardDescription>{data?.total || 0} نشاط مسجل</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="border rounded-lg">
@@ -82,21 +88,32 @@ export default function AdminAuditLogs() {
                   </TableRow>
                 ) : data?.logs.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                    <TableCell
+                      colSpan={7}
+                      className="text-center py-8 text-muted-foreground"
+                    >
                       لا توجد نشاطات
                     </TableCell>
                   </TableRow>
                 ) : (
-                  data?.logs.map((item) => (
+                  data?.logs.map(item => (
                     <TableRow key={item.log.id}>
-                      <TableCell className="font-medium">{item.log.id}</TableCell>
+                      <TableCell className="font-medium">
+                        {item.log.id}
+                      </TableCell>
                       <TableCell>
                         <div>
-                          <div className="font-medium">{item.user?.name || "-"}</div>
-                          <div className="text-sm text-muted-foreground">{item.user?.email || "-"}</div>
+                          <div className="font-medium">
+                            {item.user?.name || "-"}
+                          </div>
+                          <div className="text-sm text-muted-foreground">
+                            {item.user?.email || "-"}
+                          </div>
                         </div>
                       </TableCell>
-                      <TableCell>{getActionBadge(item.log.action || "")}</TableCell>
+                      <TableCell>
+                        {getActionBadge(item.log.action || "")}
+                      </TableCell>
                       <TableCell>{item.log.entityType || "-"}</TableCell>
                       <TableCell>{item.log.entityId || "-"}</TableCell>
                       <TableCell>

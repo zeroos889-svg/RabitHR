@@ -1,23 +1,28 @@
-import { useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { trpc } from '@/lib/trpc';
-import { toast } from 'sonner';
-import { Loader2, Check, Tag } from 'lucide-react';
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { trpc } from "@/lib/trpc";
+import { toast } from "sonner";
+import { Loader2, Check, Tag } from "lucide-react";
 
 interface DiscountCodeInputProps {
   originalAmount: number;
-  onDiscountApplied: (discount: {
-    originalAmount: number;
-    discountAmount: number;
-    finalAmount: number;
-    code: string;
-  } | null) => void;
+  onDiscountApplied: (
+    discount: {
+      originalAmount: number;
+      discountAmount: number;
+      finalAmount: number;
+      code: string;
+    } | null
+  ) => void;
 }
 
-export function DiscountCodeInput({ originalAmount, onDiscountApplied }: DiscountCodeInputProps) {
-  const [code, setCode] = useState('');
+export function DiscountCodeInput({
+  originalAmount,
+  onDiscountApplied,
+}: DiscountCodeInputProps) {
+  const [code, setCode] = useState("");
   const [appliedDiscount, setAppliedDiscount] = useState<any>(null);
 
   const validateMutation = trpc.discountCodes.validate.useQuery(
@@ -32,22 +37,22 @@ export function DiscountCodeInput({ originalAmount, onDiscountApplied }: Discoun
 
   const handleApply = async () => {
     if (!code.trim()) {
-      toast.error('الرجاء إدخال كود الخصم');
+      toast.error("الرجاء إدخال كود الخصم");
       return;
     }
 
     try {
       // Validate code
       const validation = await validateMutation.refetch();
-      
+
       if (!validation.data?.valid) {
-        toast.error(validation.data?.message || 'كود غير صحيح');
+        toast.error(validation.data?.message || "كود غير صحيح");
         return;
       }
 
       // Calculate discount
       const calculation = await calculateMutation.refetch();
-      
+
       if (calculation.data) {
         const discountData = {
           ...calculation.data,
@@ -55,18 +60,18 @@ export function DiscountCodeInput({ originalAmount, onDiscountApplied }: Discoun
         };
         setAppliedDiscount(discountData);
         onDiscountApplied(discountData);
-        toast.success('تم تطبيق كود الخصم بنجاح!');
+        toast.success("تم تطبيق كود الخصم بنجاح!");
       }
     } catch (error: any) {
-      toast.error('فشل تطبيق الكود: ' + error.message);
+      toast.error("فشل تطبيق الكود: " + error.message);
     }
   };
 
   const handleRemove = () => {
-    setCode('');
+    setCode("");
     setAppliedDiscount(null);
     onDiscountApplied(null);
-    toast.success('تم إلغاء كود الخصم');
+    toast.success("تم إلغاء كود الخصم");
   };
 
   return (
@@ -78,10 +83,10 @@ export function DiscountCodeInput({ originalAmount, onDiscountApplied }: Discoun
             <Input
               placeholder="أدخل كود الخصم"
               value={code}
-              onChange={(e) => setCode(e.target.value.toUpperCase())}
+              onChange={e => setCode(e.target.value.toUpperCase())}
               className="pr-10"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
+              onKeyDown={e => {
+                if (e.key === "Enter") {
                   handleApply();
                 }
               }}
@@ -89,13 +94,17 @@ export function DiscountCodeInput({ originalAmount, onDiscountApplied }: Discoun
           </div>
           <Button
             onClick={handleApply}
-            disabled={!code.trim() || validateMutation.isFetching || calculateMutation.isFetching}
+            disabled={
+              !code.trim() ||
+              validateMutation.isFetching ||
+              calculateMutation.isFetching
+            }
             variant="outline"
           >
             {validateMutation.isFetching || calculateMutation.isFetching ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
-              'تطبيق'
+              "تطبيق"
             )}
           </Button>
         </div>
@@ -104,7 +113,9 @@ export function DiscountCodeInput({ originalAmount, onDiscountApplied }: Discoun
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Check className="h-4 w-4 text-green-600" />
-              <span className="font-semibold text-green-900">كود الخصم مفعّل</span>
+              <span className="font-semibold text-green-900">
+                كود الخصم مفعّل
+              </span>
             </div>
             <Button
               variant="ghost"
@@ -115,23 +126,24 @@ export function DiscountCodeInput({ originalAmount, onDiscountApplied }: Discoun
               إلغاء
             </Button>
           </div>
-          
+
           <div className="flex items-center gap-2">
             <Badge variant="secondary" className="font-mono">
               {appliedDiscount.code}
             </Badge>
             <span className="text-sm text-muted-foreground">
-              {appliedDiscount.discountType === 'percentage' 
+              {appliedDiscount.discountType === "percentage"
                 ? `خصم ${appliedDiscount.discountValue}%`
-                : `خصم ${appliedDiscount.discountValue} ﷼`
-              }
+                : `خصم ${appliedDiscount.discountValue} ﷼`}
             </span>
           </div>
 
           <div className="pt-2 border-t border-green-200 space-y-1">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">السعر الأصلي:</span>
-              <span className="line-through">{appliedDiscount.originalAmount} ﷼</span>
+              <span className="line-through">
+                {appliedDiscount.originalAmount} ﷼
+              </span>
             </div>
             <div className="flex justify-between text-sm text-green-700 font-semibold">
               <span>الخصم:</span>

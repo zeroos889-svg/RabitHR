@@ -1,7 +1,7 @@
-import { ReactNode } from 'react';
-import { useAuth } from '@/_core/hooks/useAuth';
-import { getLoginUrl } from '@/const';
-import { Loader2 } from 'lucide-react';
+import { ReactNode } from "react";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { getLoginUrl } from "@/const";
+import { Loader2 } from "lucide-react";
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -40,14 +40,16 @@ export function ProtectedRoute({
   // إذا كان هناك دور مطلوب، التحقق منه
   if (requiredRole && user) {
     const roles = Array.isArray(requiredRole) ? requiredRole : [requiredRole];
-    
+
     if (!roles.includes(user.role)) {
       return (
         fallback || (
           <div className="flex items-center justify-center min-h-screen">
             <div className="text-center">
               <h1 className="text-2xl font-bold mb-2">غير مصرح</h1>
-              <p className="text-muted-foreground">ليس لديك صلاحية للوصول إلى هذه الصفحة</p>
+              <p className="text-muted-foreground">
+                ليس لديك صلاحية للوصول إلى هذه الصفحة
+              </p>
             </div>
           </div>
         )

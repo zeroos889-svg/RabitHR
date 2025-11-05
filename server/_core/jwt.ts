@@ -15,9 +15,11 @@ export interface SessionPayload {
 /**
  * Create a session token
  */
-export async function createSessionToken(payload: SessionPayload): Promise<string> {
+export async function createSessionToken(
+  payload: SessionPayload
+): Promise<string> {
   const secret = new TextEncoder().encode(ENV.jwtSecret);
-  
+
   return await new jose.SignJWT({
     userId: payload.userId,
     email: payload.email,
@@ -32,11 +34,13 @@ export async function createSessionToken(payload: SessionPayload): Promise<strin
 /**
  * Verify a session token
  */
-export async function verifySessionToken(token: string): Promise<SessionPayload | null> {
+export async function verifySessionToken(
+  token: string
+): Promise<SessionPayload | null> {
   try {
     const secret = new TextEncoder().encode(ENV.jwtSecret);
     const { payload } = await jose.jwtVerify(token, secret);
-    
+
     return {
       userId: payload.userId as number,
       email: payload.email as string,

@@ -51,14 +51,14 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 async function startServer() {
   // Check environment variables
   checkEnv();
-  
+
   // Run database migrations on startup
   try {
     if (process.env.DATABASE_URL) {
       const url = new URL(process.env.DATABASE_URL);
       const connection = await mysql.createConnection({
         host: url.hostname,
-        port: parseInt(url.port || '3306'),
+        port: parseInt(url.port || "3306"),
         user: url.username,
         password: url.password,
         database: url.pathname.slice(1),
@@ -72,15 +72,15 @@ async function startServer() {
   } catch (error) {
     console.error("[Server] Failed to run migrations:", error);
   }
-  
+
   const app = express();
   const server = createServer(app);
-  
+
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   app.use(cookieParser());
-  
+
   // Authentication routes
   registerAuthRoutes(app);
   // tRPC API

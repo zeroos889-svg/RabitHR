@@ -43,13 +43,15 @@ try {
   for (const policy of policiesData) {
     try {
       await connection.query(
-        'INSERT INTO retentionPolicies (resource, retentionDays, description) VALUES (?, ?, ?)',
+        "INSERT INTO retentionPolicies (resource, retentionDays, description) VALUES (?, ?, ?)",
         [policy.resource, policy.retentionDays, policy.description]
       );
-      console.log(`✅ سياسة الاحتفاظ: ${policy.resource} - ${policy.retentionDays} يوم`);
+      console.log(
+        `✅ سياسة الاحتفاظ: ${policy.resource} - ${policy.retentionDays} يوم`
+      );
     } catch (error) {
       // تجاهل خطأ التكرار
-      if (error.code !== 'ER_DUP_ENTRY') {
+      if (error.code !== "ER_DUP_ENTRY") {
         throw error;
       }
       console.log(`⚠️  سياسة موجودة مسبقاً: ${policy.resource}`);
@@ -57,7 +59,6 @@ try {
   }
 
   console.log("\n🎉 تم إضافة جميع البيانات الأولية بنجاح!");
-  
 } catch (error) {
   console.error("❌ خطأ:", error);
   process.exit(1);

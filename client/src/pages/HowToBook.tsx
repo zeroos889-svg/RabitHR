@@ -1,6 +1,12 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useLocation } from 'wouter';
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useLocation } from "wouter";
 import {
   Search,
   Calendar,
@@ -14,8 +20,8 @@ import {
   Zap,
   ArrowRight,
   ChevronDown,
-} from 'lucide-react';
-import { useState } from 'react';
+} from "lucide-react";
+import { useState } from "react";
 
 interface Step {
   number: number;
@@ -29,88 +35,88 @@ interface Step {
 const steps: Step[] = [
   {
     number: 1,
-    title: 'اختر الخدمة المناسبة',
-    description: 'تصفح قائمة الخدمات الاستشارية المتنوعة',
+    title: "اختر الخدمة المناسبة",
+    description: "تصفح قائمة الخدمات الاستشارية المتنوعة",
     details: [
-      'استشارات سريعة (نصية، صوتية، فيديو)',
-      'مراجعة العقود والاتفاقيات',
-      'تدقيق قرارات الفصل',
-      'دراسات الحالات المعقدة',
-      'استشارات استراتيجية شاملة'
+      "استشارات سريعة (نصية، صوتية، فيديو)",
+      "مراجعة العقود والاتفاقيات",
+      "تدقيق قرارات الفصل",
+      "دراسات الحالات المعقدة",
+      "استشارات استراتيجية شاملة",
     ],
     icon: <Search className="w-12 h-12" />,
-    color: 'from-blue-500 to-cyan-500'
+    color: "from-blue-500 to-cyan-500",
   },
   {
     number: 2,
-    title: 'اختر المستشار المتخصص',
-    description: 'اختر من بين أفضل المستشارين المعتمدين',
+    title: "اختر المستشار المتخصص",
+    description: "اختر من بين أفضل المستشارين المعتمدين",
     details: [
-      'عرض ملف المستشار الكامل',
-      'مراجعة التقييمات والشهادات',
-      'عرض عدد الاستشارات السابقة',
-      'معرفة التخصصات والخبرات',
-      'قراءة آراء العملاء السابقين'
+      "عرض ملف المستشار الكامل",
+      "مراجعة التقييمات والشهادات",
+      "عرض عدد الاستشارات السابقة",
+      "معرفة التخصصات والخبرات",
+      "قراءة آراء العملاء السابقين",
     ],
     icon: <Users className="w-12 h-12" />,
-    color: 'from-purple-500 to-pink-500'
+    color: "from-purple-500 to-pink-500",
   },
   {
     number: 3,
-    title: 'حدد الموعد والوقت',
-    description: 'اختر التاريخ والوقت المناسب لك',
+    title: "حدد الموعد والوقت",
+    description: "اختر التاريخ والوقت المناسب لك",
     details: [
-      'عرض الأوقات المتاحة للمستشار',
-      'اختيار التاريخ المفضل',
-      'اختيار الوقت المناسب',
-      'إمكانية تغيير الموعد لاحقاً',
-      'تذكيرات تلقائية قبل الاستشارة'
+      "عرض الأوقات المتاحة للمستشار",
+      "اختيار التاريخ المفضل",
+      "اختيار الوقت المناسب",
+      "إمكانية تغيير الموعد لاحقاً",
+      "تذكيرات تلقائية قبل الاستشارة",
     ],
     icon: <Calendar className="w-12 h-12" />,
-    color: 'from-green-500 to-emerald-500'
+    color: "from-green-500 to-emerald-500",
   },
   {
     number: 4,
-    title: 'أكمل البيانات والدفع',
-    description: 'أدخل البيانات المطلوبة وأكمل عملية الدفع',
+    title: "أكمل البيانات والدفع",
+    description: "أدخل البيانات المطلوبة وأكمل عملية الدفع",
     details: [
-      'ملء بيانات الاستشارة',
-      'شرح المشكلة أو الموضوع',
-      'اختيار طريقة الدفع',
-      'دفع آمن ومشفر',
-      'استرجاع المبلغ في حالة عدم الرضا'
+      "ملء بيانات الاستشارة",
+      "شرح المشكلة أو الموضوع",
+      "اختيار طريقة الدفع",
+      "دفع آمن ومشفر",
+      "استرجاع المبلغ في حالة عدم الرضا",
     ],
     icon: <CreditCard className="w-12 h-12" />,
-    color: 'from-orange-500 to-red-500'
+    color: "from-orange-500 to-red-500",
   },
   {
     number: 5,
-    title: 'احصل على الاستشارة',
-    description: 'تواصل مع المستشار واحصل على الحل',
+    title: "احصل على الاستشارة",
+    description: "تواصل مع المستشار واحصل على الحل",
     details: [
-      'تواصل مباشر مع المستشار',
-      'استقبال الاستشارة في الموعد المحدد',
-      'الحصول على توصيات مفصلة',
-      'إمكانية طرح أسئلة متابعة',
-      'الحصول على ملخص مكتوب'
+      "تواصل مباشر مع المستشار",
+      "استقبال الاستشارة في الموعد المحدد",
+      "الحصول على توصيات مفصلة",
+      "إمكانية طرح أسئلة متابعة",
+      "الحصول على ملخص مكتوب",
     ],
     icon: <MessageSquare className="w-12 h-12" />,
-    color: 'from-indigo-500 to-blue-500'
+    color: "from-indigo-500 to-blue-500",
   },
   {
     number: 6,
-    title: 'المتابعة والدعم',
-    description: 'دعم مستمر بعد الاستشارة',
+    title: "المتابعة والدعم",
+    description: "دعم مستمر بعد الاستشارة",
     details: [
-      'دعم متابعة لمدة 30 يوم',
-      'الإجابة على الأسئلة الإضافية',
-      'مساعدة في التنفيذ',
-      'تقييم النتائج والتحسينات',
-      'ضمان الرضا الكامل'
+      "دعم متابعة لمدة 30 يوم",
+      "الإجابة على الأسئلة الإضافية",
+      "مساعدة في التنفيذ",
+      "تقييم النتائج والتحسينات",
+      "ضمان الرضا الكامل",
     ],
     icon: <CheckCircle2 className="w-12 h-12" />,
-    color: 'from-teal-500 to-green-500'
-  }
+    color: "from-teal-500 to-green-500",
+  },
 ];
 
 interface FAQ {
@@ -120,29 +126,35 @@ interface FAQ {
 
 const faqs: FAQ[] = [
   {
-    question: 'كم تستغرق الاستشارة؟',
-    answer: 'تختلف مدة الاستشارة حسب نوعها. الاستشارات السريعة تستغرق 15-45 دقيقة، بينما الاستشارات الشاملة قد تستغرق عدة ساعات أو أيام.'
+    question: "كم تستغرق الاستشارة؟",
+    answer:
+      "تختلف مدة الاستشارة حسب نوعها. الاستشارات السريعة تستغرق 15-45 دقيقة، بينما الاستشارات الشاملة قد تستغرق عدة ساعات أو أيام.",
   },
   {
-    question: 'هل يمكن تغيير الموعد؟',
-    answer: 'نعم، يمكنك تغيير الموعد قبل 24 ساعة من الاستشارة بدون أي رسوم إضافية.'
+    question: "هل يمكن تغيير الموعد؟",
+    answer:
+      "نعم، يمكنك تغيير الموعد قبل 24 ساعة من الاستشارة بدون أي رسوم إضافية.",
   },
   {
-    question: 'ما هي طرق الدفع المتاحة؟',
-    answer: 'نقبل بطاقات الائتمان، التحويل البنكي، وأمازون باي. جميع العمليات آمنة ومشفرة.'
+    question: "ما هي طرق الدفع المتاحة؟",
+    answer:
+      "نقبل بطاقات الائتمان، التحويل البنكي، وأمازون باي. جميع العمليات آمنة ومشفرة.",
   },
   {
-    question: 'هل هناك ضمان للرضا؟',
-    answer: 'نعم، نقدم ضمان رضا 30 يوم. إذا لم تكن راضياً عن الاستشارة، نسترجع المبلغ كاملاً بدون أسئلة.'
+    question: "هل هناك ضمان للرضا؟",
+    answer:
+      "نعم، نقدم ضمان رضا 30 يوم. إذا لم تكن راضياً عن الاستشارة، نسترجع المبلغ كاملاً بدون أسئلة.",
   },
   {
-    question: 'هل المعلومات سرية؟',
-    answer: 'نعم، جميع المعلومات والاستشارات سرية تماماً. نلتزم بسياسة الخصوصية الصارمة.'
+    question: "هل المعلومات سرية؟",
+    answer:
+      "نعم، جميع المعلومات والاستشارات سرية تماماً. نلتزم بسياسة الخصوصية الصارمة.",
   },
   {
-    question: 'هل يمكن الحصول على استشارة مجانية؟',
-    answer: 'نقدم استشارة أولية مجانية لمدة 15 دقيقة لتقييم احتياجاتك واختيار الخدمة المناسبة.'
-  }
+    question: "هل يمكن الحصول على استشارة مجانية؟",
+    answer:
+      "نقدم استشارة أولية مجانية لمدة 15 دقيقة لتقييم احتياجاتك واختيار الخدمة المناسبة.",
+  },
 ];
 
 export default function HowToBook() {
@@ -173,14 +185,20 @@ export default function HowToBook() {
 
               <Card className="h-full hover:shadow-lg transition-shadow">
                 <CardHeader>
-                  <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r ${step.color} text-white mb-4`}>
+                  <div
+                    className={`inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r ${step.color} text-white mb-4`}
+                  >
                     {step.icon}
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="text-3xl font-bold text-primary">{step.number}</span>
+                    <span className="text-3xl font-bold text-primary">
+                      {step.number}
+                    </span>
                     <div>
                       <CardTitle className="text-right">{step.title}</CardTitle>
-                      <CardDescription className="text-right">{step.description}</CardDescription>
+                      <CardDescription className="text-right">
+                        {step.description}
+                      </CardDescription>
                     </div>
                   </div>
                 </CardHeader>
@@ -201,7 +219,9 @@ export default function HowToBook() {
 
         {/* Benefits Section */}
         <div className="bg-gradient-to-r from-primary/10 to-purple-500/10 rounded-lg p-8 mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8">فوائد الاستشارة معنا</h2>
+          <h2 className="text-3xl font-bold text-center mb-8">
+            فوائد الاستشارة معنا
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="flex gap-4">
               <Zap className="w-8 h-8 text-primary flex-shrink-0" />
@@ -262,24 +282,35 @@ export default function HowToBook() {
 
         {/* FAQ Section */}
         <div className="mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8">الأسئلة الشائعة</h2>
+          <h2 className="text-3xl font-bold text-center mb-8">
+            الأسئلة الشائعة
+          </h2>
           <div className="space-y-4 max-w-2xl mx-auto">
             {faqs.map((faq, index) => (
-              <Card key={index} className="cursor-pointer hover:shadow-md transition-shadow">
+              <Card
+                key={index}
+                className="cursor-pointer hover:shadow-md transition-shadow"
+              >
                 <div
-                  onClick={() => setExpandedFAQ(expandedFAQ === index ? null : index)}
+                  onClick={() =>
+                    setExpandedFAQ(expandedFAQ === index ? null : index)
+                  }
                   className="p-6 flex items-center justify-between"
                 >
-                  <h3 className="font-semibold text-right flex-1">{faq.question}</h3>
+                  <h3 className="font-semibold text-right flex-1">
+                    {faq.question}
+                  </h3>
                   <ChevronDown
                     className={`w-5 h-5 text-primary transition-transform ${
-                      expandedFAQ === index ? 'rotate-180' : ''
+                      expandedFAQ === index ? "rotate-180" : ""
                     }`}
                   />
                 </div>
                 {expandedFAQ === index && (
                   <div className="px-6 pb-6 border-t pt-4">
-                    <p className="text-muted-foreground text-right">{faq.answer}</p>
+                    <p className="text-muted-foreground text-right">
+                      {faq.answer}
+                    </p>
                   </div>
                 )}
               </Card>
@@ -291,13 +322,14 @@ export default function HowToBook() {
         <div className="bg-gradient-to-r from-primary to-purple-600 text-white rounded-lg p-12 text-center">
           <h2 className="text-3xl font-bold mb-4">جاهز للبدء؟</h2>
           <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">
-            اتبع الخطوات البسيطة أعلاه واحصل على استشارة احترافية من أفضل الخبراء
+            اتبع الخطوات البسيطة أعلاه واحصل على استشارة احترافية من أفضل
+            الخبراء
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
               variant="secondary"
-              onClick={() => navigate('/consulting/services')}
+              onClick={() => navigate("/consulting/services")}
               className="gap-2"
             >
               اعرض الخدمات
@@ -305,7 +337,7 @@ export default function HowToBook() {
             </Button>
             <Button
               size="lg"
-              onClick={() => navigate('/consulting/book')}
+              onClick={() => navigate("/consulting/book")}
               className="gap-2 bg-white text-primary hover:bg-white/90"
             >
               احجز الآن

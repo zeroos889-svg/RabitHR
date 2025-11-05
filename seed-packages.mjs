@@ -1,60 +1,64 @@
-import mysql from 'mysql2/promise';
+import mysql from "mysql2/promise";
 
 const connection = await mysql.createConnection(process.env.DATABASE_URL);
 
 const packagesData = [
   {
-    name: 'استشارة سريعة - 15 دقيقة',
-    nameEn: 'Quick Consultation - 15 min',
-    description: 'استشارة سريعة للإجابة على سؤال محدد أو توضيح نقطة قانونية',
-    descriptionEn: 'Quick consultation to answer a specific question or clarify a legal point',
+    name: "استشارة سريعة - 15 دقيقة",
+    nameEn: "Quick Consultation - 15 min",
+    description: "استشارة سريعة للإجابة على سؤال محدد أو توضيح نقطة قانونية",
+    descriptionEn:
+      "Quick consultation to answer a specific question or clarify a legal point",
     duration: 15,
     slaHours: 24,
     priceSAR: 200,
     features: JSON.stringify([
-      'رد خلال 24 ساعة',
-      'استشارة مركزة',
-      'إجابة على سؤال واحد',
-      'توضيح قانوني',
+      "رد خلال 24 ساعة",
+      "استشارة مركزة",
+      "إجابة على سؤال واحد",
+      "توضيح قانوني",
     ]),
     orderIndex: 1,
   },
   {
-    name: 'مراجعة مستند - 30 دقيقة',
-    nameEn: 'Document Review - 30 min',
-    description: 'مراجعة مستند أو عقد عمل والتأكد من مطابقته لنظام العمل السعودي',
-    descriptionEn: 'Review a document or employment contract and ensure compliance with Saudi labor law',
+    name: "مراجعة مستند - 30 دقيقة",
+    nameEn: "Document Review - 30 min",
+    description:
+      "مراجعة مستند أو عقد عمل والتأكد من مطابقته لنظام العمل السعودي",
+    descriptionEn:
+      "Review a document or employment contract and ensure compliance with Saudi labor law",
     duration: 30,
     slaHours: 48,
     priceSAR: 400,
     features: JSON.stringify([
-      'رد خلال 48 ساعة',
-      'مراجعة شاملة للمستند',
-      'تقرير بالملاحظات',
-      'توصيات للتحسين',
+      "رد خلال 48 ساعة",
+      "مراجعة شاملة للمستند",
+      "تقرير بالملاحظات",
+      "توصيات للتحسين",
     ]),
     orderIndex: 2,
   },
   {
-    name: 'استشارة شاملة - 60 دقيقة',
-    nameEn: 'Comprehensive Consultation - 60 min',
-    description: 'استشارة شاملة لحالة معقدة أو مشكلة تحتاج دراسة تفصيلية',
-    descriptionEn: 'Comprehensive consultation for complex cases requiring detailed analysis',
+    name: "استشارة شاملة - 60 دقيقة",
+    nameEn: "Comprehensive Consultation - 60 min",
+    description: "استشارة شاملة لحالة معقدة أو مشكلة تحتاج دراسة تفصيلية",
+    descriptionEn:
+      "Comprehensive consultation for complex cases requiring detailed analysis",
     duration: 60,
     slaHours: 72,
     priceSAR: 750,
     features: JSON.stringify([
-      'رد خلال 72 ساعة',
-      'دراسة تفصيلية للحالة',
-      'تقرير مكتوب شامل',
-      'خطة عمل موصى بها',
-      'متابعة لمدة أسبوع',
+      "رد خلال 72 ساعة",
+      "دراسة تفصيلية للحالة",
+      "تقرير مكتوب شامل",
+      "خطة عمل موصى بها",
+      "متابعة لمدة أسبوع",
     ]),
     orderIndex: 3,
   },
 ];
 
-console.log('🌱 Seeding consulting packages...');
+console.log("🌱 Seeding consulting packages...");
 
 for (const pkg of packagesData) {
   const query = `
@@ -71,7 +75,7 @@ for (const pkg of packagesData) {
       features = VALUES(features),
       orderIndex = VALUES(orderIndex)
   `;
-  
+
   await connection.execute(query, [
     pkg.name,
     pkg.nameEn,
@@ -83,10 +87,10 @@ for (const pkg of packagesData) {
     pkg.features,
     pkg.orderIndex,
   ]);
-  
+
   console.log(`✅ ${pkg.name}`);
 }
 
-console.log('✅ Consulting packages seeded successfully!');
+console.log("✅ Consulting packages seeded successfully!");
 await connection.end();
 process.exit(0);

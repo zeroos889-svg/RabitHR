@@ -60,11 +60,13 @@ git push origin feature/your-feature-name
 ### التثبيت
 
 1. تثبيت الحزم:
+
 ```bash
 pnpm install
 ```
 
 2. إنشاء ملف `.env`:
+
 ```bash
 cp .env.example .env
 ```
@@ -72,6 +74,7 @@ cp .env.example .env
 3. تحديث متغيرات البيئة في `.env`
 
 4. تشغيل المشروع:
+
 ```bash
 pnpm dev
 ```

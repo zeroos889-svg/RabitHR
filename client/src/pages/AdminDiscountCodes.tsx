@@ -1,18 +1,24 @@
-import { useState } from 'react';
-import { useAuth } from '@/_core/hooks/useAuth';
-import { trpc } from '@/lib/trpc';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
+import { useState } from "react";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { trpc } from "@/lib/trpc";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -21,7 +27,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -32,17 +38,26 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { Loader2, Plus, Trash2, Edit, Tag, TrendingUp, Users, Calendar } from 'lucide-react';
-import { toast } from 'sonner';
+} from "@/components/ui/alert-dialog";
+import {
+  Loader2,
+  Plus,
+  Trash2,
+  Edit,
+  Tag,
+  TrendingUp,
+  Users,
+  Calendar,
+} from "lucide-react";
+import { toast } from "sonner";
 
 export default function AdminDiscountCodes() {
   const { user, loading: authLoading } = useAuth();
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [newCode, setNewCode] = useState({
-    code: '',
-    description: '',
-    discountType: 'percentage' as 'percentage' | 'fixed',
+    code: "",
+    description: "",
+    discountType: "percentage" as "percentage" | "fixed",
     discountValue: 10,
     maxUses: undefined as number | undefined,
     validFrom: undefined as Date | undefined,
@@ -50,51 +65,54 @@ export default function AdminDiscountCodes() {
   });
 
   // Fetch all codes
-  const { data, isLoading, refetch } = trpc.discountCodes.getAll.useQuery(undefined, {
-    enabled: user?.role === 'admin',
-  });
+  const { data, isLoading, refetch } = trpc.discountCodes.getAll.useQuery(
+    undefined,
+    {
+      enabled: user?.role === "admin",
+    }
+  );
   const codes = data?.codes || [];
 
   // Create mutation
   const createMutation = trpc.discountCodes.create.useMutation({
     onSuccess: () => {
-      toast.success('تم إنشاء الكود بنجاح');
+      toast.success("تم إنشاء الكود بنجاح");
       setCreateDialogOpen(false);
       resetForm();
       refetch();
     },
-    onError: (error) => {
-      toast.error('فشل إنشاء الكود: ' + error.message);
+    onError: error => {
+      toast.error("فشل إنشاء الكود: " + error.message);
     },
   });
 
   // Delete mutation
   const deleteMutation = trpc.discountCodes.delete.useMutation({
     onSuccess: () => {
-      toast.success('تم حذف الكود بنجاح');
+      toast.success("تم حذف الكود بنجاح");
       refetch();
     },
-    onError: (error) => {
-      toast.error('فشل حذف الكود: ' + error.message);
+    onError: error => {
+      toast.error("فشل حذف الكود: " + error.message);
     },
   });
 
   // Update mutation (toggle active)
   const updateMutation = trpc.discountCodes.update.useMutation({
     onSuccess: () => {
-      toast.success('تم تحديث الكود بنجاح');
+      toast.success("تم تحديث الكود بنجاح");
       refetch();
     },
-    onError: (error) => {
-      toast.error('فشل تحديث الكود: ' + error.message);
+    onError: error => {
+      toast.error("فشل تحديث الكود: " + error.message);
     },
   });
 
   const resetForm = () => {
     setNewCode({
-      code: '',
-      description: '',
-      discountType: 'percentage',
+      code: "",
+      description: "",
+      discountType: "percentage",
       discountValue: 10,
       maxUses: undefined,
       validFrom: undefined,
@@ -104,15 +122,15 @@ export default function AdminDiscountCodes() {
 
   const handleCreate = () => {
     if (!newCode.code.trim()) {
-      toast.error('الرجاء إدخال الكود');
+      toast.error("الرجاء إدخال الكود");
       return;
     }
     if (newCode.discountValue <= 0) {
-      toast.error('قيمة الخصم يجب أن تكون أكبر من صفر');
+      toast.error("قيمة الخصم يجب أن تكون أكبر من صفر");
       return;
     }
-    if (newCode.discountType === 'percentage' && newCode.discountValue > 100) {
-      toast.error('نسبة الخصم يجب ألا تتجاوز 100%');
+    if (newCode.discountType === "percentage" && newCode.discountValue > 100) {
+      toast.error("نسبة الخصم يجب ألا تتجاوز 100%");
       return;
     }
 
@@ -131,7 +149,7 @@ export default function AdminDiscountCodes() {
     );
   }
 
-  if (!user || user.role !== 'admin') {
+  if (!user || user.role !== "admin") {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <Card className="max-w-md">
@@ -147,7 +165,10 @@ export default function AdminDiscountCodes() {
   // Calculate stats
   const totalCodes = codes.length;
   const activeCodes = codes.filter((c: any) => c.isActive).length;
-  const totalUsage = codes.reduce((sum: number, c: any) => sum + (c.usedCount || 0), 0);
+  const totalUsage = codes.reduce(
+    (sum: number, c: any) => sum + (c.usedCount || 0),
+    0
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-8 px-4">
@@ -157,7 +178,9 @@ export default function AdminDiscountCodes() {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h1 className="text-3xl font-bold">إدارة أكواد الخصم</h1>
-              <p className="text-muted-foreground">إنشاء وإدارة أكواد الخصم للاشتراكات</p>
+              <p className="text-muted-foreground">
+                إنشاء وإدارة أكواد الخصم للاشتراكات
+              </p>
             </div>
             <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
               <DialogTrigger asChild>
@@ -179,7 +202,12 @@ export default function AdminDiscountCodes() {
                     <Input
                       placeholder="SUMMER2024"
                       value={newCode.code}
-                      onChange={(e) => setNewCode({ ...newCode, code: e.target.value.toUpperCase() })}
+                      onChange={e =>
+                        setNewCode({
+                          ...newCode,
+                          code: e.target.value.toUpperCase(),
+                        })
+                      }
                     />
                   </div>
                   <div>
@@ -187,14 +215,16 @@ export default function AdminDiscountCodes() {
                     <Input
                       placeholder="خصم الصيف"
                       value={newCode.description}
-                      onChange={(e) => setNewCode({ ...newCode, description: e.target.value })}
+                      onChange={e =>
+                        setNewCode({ ...newCode, description: e.target.value })
+                      }
                     />
                   </div>
                   <div>
                     <Label>نوع الخصم *</Label>
                     <Select
                       value={newCode.discountType}
-                      onValueChange={(value: 'percentage' | 'fixed') => 
+                      onValueChange={(value: "percentage" | "fixed") =>
                         setNewCode({ ...newCode, discountType: value })
                       }
                     >
@@ -202,7 +232,9 @@ export default function AdminDiscountCodes() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="percentage">نسبة مئوية (%)</SelectItem>
+                        <SelectItem value="percentage">
+                          نسبة مئوية (%)
+                        </SelectItem>
                         <SelectItem value="fixed">مبلغ ثابت (﷼)</SelectItem>
                       </SelectContent>
                     </Select>
@@ -212,15 +244,21 @@ export default function AdminDiscountCodes() {
                     <Input
                       type="number"
                       min="1"
-                      max={newCode.discountType === 'percentage' ? 100 : undefined}
+                      max={
+                        newCode.discountType === "percentage" ? 100 : undefined
+                      }
                       value={newCode.discountValue}
-                      onChange={(e) => setNewCode({ ...newCode, discountValue: parseInt(e.target.value) || 0 })}
+                      onChange={e =>
+                        setNewCode({
+                          ...newCode,
+                          discountValue: parseInt(e.target.value) || 0,
+                        })
+                      }
                     />
                     <p className="text-xs text-muted-foreground mt-1">
-                      {newCode.discountType === 'percentage' 
-                        ? 'نسبة الخصم (1-100%)'
-                        : 'المبلغ بالريال السعودي'
-                      }
+                      {newCode.discountType === "percentage"
+                        ? "نسبة الخصم (1-100%)"
+                        : "المبلغ بالريال السعودي"}
                     </p>
                   </div>
                   <div>
@@ -229,23 +267,33 @@ export default function AdminDiscountCodes() {
                       type="number"
                       min="1"
                       placeholder="غير محدود"
-                      value={newCode.maxUses || ''}
-                      onChange={(e) => setNewCode({ 
-                        ...newCode, 
-                        maxUses: e.target.value ? parseInt(e.target.value) : undefined 
-                      })}
+                      value={newCode.maxUses || ""}
+                      onChange={e =>
+                        setNewCode({
+                          ...newCode,
+                          maxUses: e.target.value
+                            ? parseInt(e.target.value)
+                            : undefined,
+                        })
+                      }
                     />
                   </div>
                 </div>
                 <DialogFooter>
-                  <Button variant="outline" onClick={() => setCreateDialogOpen(false)}>
+                  <Button
+                    variant="outline"
+                    onClick={() => setCreateDialogOpen(false)}
+                  >
                     إلغاء
                   </Button>
-                  <Button onClick={handleCreate} disabled={createMutation.isPending}>
+                  <Button
+                    onClick={handleCreate}
+                    disabled={createMutation.isPending}
+                  >
                     {createMutation.isPending ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
-                      'إنشاء'
+                      "إنشاء"
                     )}
                   </Button>
                 </DialogFooter>
@@ -262,7 +310,9 @@ export default function AdminDiscountCodes() {
                     <Tag className="h-6 w-6 text-blue-600" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">إجمالي الأكواد</p>
+                    <p className="text-sm text-muted-foreground">
+                      إجمالي الأكواد
+                    </p>
                     <p className="text-2xl font-bold">{totalCodes}</p>
                   </div>
                 </div>
@@ -288,7 +338,9 @@ export default function AdminDiscountCodes() {
                     <Users className="h-6 w-6 text-purple-600" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">مرات الاستخدام</p>
+                    <p className="text-sm text-muted-foreground">
+                      مرات الاستخدام
+                    </p>
                     <p className="text-2xl font-bold">{totalUsage}</p>
                   </div>
                 </div>
@@ -303,7 +355,9 @@ export default function AdminDiscountCodes() {
             <CardContent className="py-12 text-center">
               <Tag className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">لا توجد أكواد خصم</h3>
-              <p className="text-muted-foreground mb-4">ابدأ بإنشاء كود خصم جديد</p>
+              <p className="text-muted-foreground mb-4">
+                ابدأ بإنشاء كود خصم جديد
+              </p>
               <Button onClick={() => setCreateDialogOpen(true)}>
                 <Plus className="ml-2 h-4 w-4" />
                 إنشاء كود جديد
@@ -313,16 +367,24 @@ export default function AdminDiscountCodes() {
         ) : (
           <div className="grid grid-cols-1 gap-4">
             {codes.map((code: any) => (
-              <Card key={code.id} className={!code.isActive ? 'opacity-60' : ''}>
+              <Card
+                key={code.id}
+                className={!code.isActive ? "opacity-60" : ""}
+              >
                 <CardContent className="pt-6">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <Badge variant="secondary" className="font-mono text-lg px-3 py-1">
+                        <Badge
+                          variant="secondary"
+                          className="font-mono text-lg px-3 py-1"
+                        >
                           {code.code}
                         </Badge>
-                        <Badge variant={code.isActive ? 'default' : 'secondary'}>
-                          {code.isActive ? 'نشط' : 'غير نشط'}
+                        <Badge
+                          variant={code.isActive ? "default" : "secondary"}
+                        >
+                          {code.isActive ? "نشط" : "غير نشط"}
                         </Badge>
                         {code.maxUses && (
                           <Badge variant="outline">
@@ -331,29 +393,37 @@ export default function AdminDiscountCodes() {
                         )}
                       </div>
                       {code.description && (
-                        <p className="text-sm text-muted-foreground mb-3">{code.description}</p>
+                        <p className="text-sm text-muted-foreground mb-3">
+                          {code.description}
+                        </p>
                       )}
                       <div className="flex flex-wrap gap-4 text-sm">
                         <div>
                           <span className="text-muted-foreground">الخصم: </span>
                           <span className="font-semibold">
-                            {code.discountType === 'percentage' 
+                            {code.discountType === "percentage"
                               ? `${code.discountValue}%`
-                              : `${code.discountValue} ﷼`
-                            }
+                              : `${code.discountValue} ﷼`}
                           </span>
                         </div>
                         <div>
-                          <span className="text-muted-foreground">الاستخدام: </span>
+                          <span className="text-muted-foreground">
+                            الاستخدام:{" "}
+                          </span>
                           <span className="font-semibold">
-                            {code.usedCount || 0} {code.maxUses ? `/ ${code.maxUses}` : ''}
+                            {code.usedCount || 0}{" "}
+                            {code.maxUses ? `/ ${code.maxUses}` : ""}
                           </span>
                         </div>
                         {code.validUntil && (
                           <div>
-                            <span className="text-muted-foreground">ينتهي: </span>
+                            <span className="text-muted-foreground">
+                              ينتهي:{" "}
+                            </span>
                             <span className="font-semibold">
-                              {new Date(code.validUntil).toLocaleDateString('ar-SA')}
+                              {new Date(code.validUntil).toLocaleDateString(
+                                "ar-SA"
+                              )}
                             </span>
                           </div>
                         )}
@@ -366,11 +436,15 @@ export default function AdminDiscountCodes() {
                         onClick={() => toggleActive(code.id, code.isActive)}
                         disabled={updateMutation.isPending}
                       >
-                        {code.isActive ? 'تعطيل' : 'تفعيل'}
+                        {code.isActive ? "تعطيل" : "تفعيل"}
                       </Button>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
-                          <Button variant="outline" size="sm" className="text-red-600">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-red-600"
+                          >
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </AlertDialogTrigger>
@@ -384,7 +458,9 @@ export default function AdminDiscountCodes() {
                           <AlertDialogFooter>
                             <AlertDialogCancel>إلغاء</AlertDialogCancel>
                             <AlertDialogAction
-                              onClick={() => deleteMutation.mutate({ id: code.id })}
+                              onClick={() =>
+                                deleteMutation.mutate({ id: code.id })
+                              }
                               className="bg-red-600 hover:bg-red-700"
                             >
                               حذف

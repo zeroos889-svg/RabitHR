@@ -1,8 +1,16 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ChevronLeft, Mail, Phone, MapPin, Shield, Clock, FileText } from 'lucide-react';
-import { Link } from 'wouter';
-import { Footer } from '@/components/Footer';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  ChevronLeft,
+  Mail,
+  Phone,
+  MapPin,
+  Shield,
+  Clock,
+  FileText,
+} from "lucide-react";
+import { Link } from "wouter";
+import { Footer } from "@/components/Footer";
 
 /**
  * صفحة التواصل مع مسؤول حماية البيانات (DPO)
@@ -27,7 +35,8 @@ export default function DataProtectionContact() {
               التواصل مع مسؤول حماية البيانات
             </h1>
             <p className="text-muted-foreground">
-              نحن هنا للإجابة على استفساراتك وحل مشاكلك المتعلقة بخصوصية البيانات
+              نحن هنا للإجابة على استفساراتك وحل مشاكلك المتعلقة بخصوصية
+              البيانات
             </p>
           </div>
         </div>
@@ -47,7 +56,10 @@ export default function DataProtectionContact() {
                   <Mail className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
                   <div>
                     <h4 className="font-semibold mb-1">البريد الإلكتروني</h4>
-                    <a href="mailto:dpo@rabit.sa" className="text-blue-600 hover:underline">
+                    <a
+                      href="mailto:dpo@rabit.sa"
+                      className="text-blue-600 hover:underline"
+                    >
                       dpo@rabit.sa
                     </a>
                     <p className="text-sm text-muted-foreground mt-1">
@@ -150,12 +162,28 @@ export default function DataProtectionContact() {
                 إذا لم تكن راضياً عن ردنا، يمكنك تقديم شكوى مباشرة إلى:
               </p>
               <div className="bg-white p-4 rounded-lg space-y-2">
-                <p className="font-semibold">الهيئة السعودية للبيانات والذكاء الاصطناعي (سدايا)</p>
-                <p className="text-sm">
-                  الموقع: <a href="https://sdaia.gov.sa" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">sdaia.gov.sa</a>
+                <p className="font-semibold">
+                  الهيئة السعودية للبيانات والذكاء الاصطناعي (سدايا)
                 </p>
                 <p className="text-sm">
-                  البريد: <a href="mailto:info@sdaia.gov.sa" className="text-blue-600 hover:underline">info@sdaia.gov.sa</a>
+                  الموقع:{" "}
+                  <a
+                    href="https://sdaia.gov.sa"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    sdaia.gov.sa
+                  </a>
+                </p>
+                <p className="text-sm">
+                  البريد:{" "}
+                  <a
+                    href="mailto:info@sdaia.gov.sa"
+                    className="text-blue-600 hover:underline"
+                  >
+                    info@sdaia.gov.sa
+                  </a>
                 </p>
               </div>
             </CardContent>
@@ -169,12 +197,13 @@ export default function DataProtectionContact() {
                 <div className="space-y-2 text-sm text-green-900">
                   <p className="font-semibold">التزامنا بالرد:</p>
                   <p>
-                    نلتزم بالرد على جميع الاستفسارات والطلبات خلال <strong>30 يوم عمل</strong> كحد أقصى، 
-                    وفقاً لمتطلبات نظام حماية البيانات الشخصية السعودي.
+                    نلتزم بالرد على جميع الاستفسارات والطلبات خلال{" "}
+                    <strong>30 يوم عمل</strong> كحد أقصى، وفقاً لمتطلبات نظام
+                    حماية البيانات الشخصية السعودي.
                   </p>
                   <p>
-                    في الحالات العاجلة أو المعقدة، قد نحتاج إلى تمديد المدة بحد أقصى 30 يوماً إضافياً، 
-                    وسنخطرك بذلك مسبقاً.
+                    في الحالات العاجلة أو المعقدة، قد نحتاج إلى تمديد المدة بحد
+                    أقصى 30 يوماً إضافياً، وسنخطرك بذلك مسبقاً.
                   </p>
                 </div>
               </div>

@@ -1,8 +1,19 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ChevronLeft, Shield, Building2, Database, Clock, UserCheck, FileText, Mail, AlertCircle, Globe } from 'lucide-react';
-import { Link } from 'wouter';
-import { Footer } from '@/components/Footer';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  ChevronLeft,
+  Shield,
+  Building2,
+  Database,
+  Clock,
+  UserCheck,
+  FileText,
+  Mail,
+  AlertCircle,
+  Globe,
+} from "lucide-react";
+import { Link } from "wouter";
+import { Footer } from "@/components/Footer";
 
 /**
  * صفحة سياسة الخصوصية المتوافقة مع PDPL
@@ -42,10 +53,13 @@ export default function PrivacyPolicy() {
               <AlertCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
               <div className="space-y-2 text-sm">
                 <p className="font-semibold text-blue-900">
-                  هذا الإشعار متوافق مع نظام حماية البيانات الشخصية السعودي (PDPL)
+                  هذا الإشعار متوافق مع نظام حماية البيانات الشخصية السعودي
+                  (PDPL)
                 </p>
                 <p className="text-blue-700">
-                  نلتزم بحماية بياناتك الشخصية وفقاً لأعلى معايير الأمان والخصوصية المعتمدة من الهيئة السعودية للبيانات والذكاء الاصطناعي (سدايا).
+                  نلتزم بحماية بياناتك الشخصية وفقاً لأعلى معايير الأمان
+                  والخصوصية المعتمدة من الهيئة السعودية للبيانات والذكاء
+                  الاصطناعي (سدايا).
                 </p>
               </div>
             </div>
@@ -63,13 +77,33 @@ export default function PrivacyPolicy() {
             </CardHeader>
             <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
               <div className="bg-slate-50 p-4 rounded-lg space-y-2">
-                <p><strong className="text-foreground">الاسم التجاري:</strong> رابِط - منصة الموارد البشرية الذكية</p>
-                <p><strong className="text-foreground">السجل التجاري:</strong> [يُضاف لاحقاً]</p>
-                <p><strong className="text-foreground">العنوان:</strong> المملكة العربية السعودية</p>
-                <p><strong className="text-foreground">البريد الإلكتروني:</strong> <a href="mailto:dpo@rabit.sa" className="text-blue-600 hover:underline">dpo@rabit.sa</a></p>
+                <p>
+                  <strong className="text-foreground">الاسم التجاري:</strong>{" "}
+                  رابِط - منصة الموارد البشرية الذكية
+                </p>
+                <p>
+                  <strong className="text-foreground">السجل التجاري:</strong>{" "}
+                  [يُضاف لاحقاً]
+                </p>
+                <p>
+                  <strong className="text-foreground">العنوان:</strong> المملكة
+                  العربية السعودية
+                </p>
+                <p>
+                  <strong className="text-foreground">
+                    البريد الإلكتروني:
+                  </strong>{" "}
+                  <a
+                    href="mailto:dpo@rabit.sa"
+                    className="text-blue-600 hover:underline"
+                  >
+                    dpo@rabit.sa
+                  </a>
+                </p>
               </div>
               <p>
-                نحن المتحكّم في بياناتك الشخصية، ونتحمل المسؤولية الكاملة عن معالجتها وفقاً للأغراض المحددة في هذا الإشعار.
+                نحن المتحكّم في بياناتك الشخصية، ونتحمل المسؤولية الكاملة عن
+                معالجتها وفقاً للأغراض المحددة في هذا الإشعار.
               </p>
             </CardContent>
           </Card>
@@ -85,11 +119,30 @@ export default function PrivacyPolicy() {
             <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
               <p>نقوم بمعالجة بياناتك الشخصية للأغراض التالية:</p>
               <ul className="list-disc list-inside space-y-2 mr-4">
-                <li><strong className="text-foreground">إنشاء وإدارة الحساب:</strong> لتمكينك من الوصول إلى خدمات المنصة</li>
-                <li><strong className="text-foreground">تقديم الخدمات:</strong> إدارة الموارد البشرية، الاستشارات، توليد المستندات</li>
-                <li><strong className="text-foreground">التواصل:</strong> إرسال الإشعارات والتحديثات المتعلقة بالخدمة</li>
-                <li><strong className="text-foreground">تحسين الخدمة:</strong> تحليل الاستخدام لتطوير المنصة</li>
-                <li><strong className="text-foreground">الامتثال القانوني:</strong> الالتزام بالمتطلبات النظامية</li>
+                <li>
+                  <strong className="text-foreground">
+                    إنشاء وإدارة الحساب:
+                  </strong>{" "}
+                  لتمكينك من الوصول إلى خدمات المنصة
+                </li>
+                <li>
+                  <strong className="text-foreground">تقديم الخدمات:</strong>{" "}
+                  إدارة الموارد البشرية، الاستشارات، توليد المستندات
+                </li>
+                <li>
+                  <strong className="text-foreground">التواصل:</strong> إرسال
+                  الإشعارات والتحديثات المتعلقة بالخدمة
+                </li>
+                <li>
+                  <strong className="text-foreground">تحسين الخدمة:</strong>{" "}
+                  تحليل الاستخدام لتطوير المنصة
+                </li>
+                <li>
+                  <strong className="text-foreground">
+                    الامتثال القانوني:
+                  </strong>{" "}
+                  الالتزام بالمتطلبات النظامية
+                </li>
               </ul>
             </CardContent>
           </Card>
@@ -105,7 +158,9 @@ export default function PrivacyPolicy() {
             <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold text-foreground mb-2">بيانات أساسية:</h4>
+                  <h4 className="font-semibold text-foreground mb-2">
+                    بيانات أساسية:
+                  </h4>
                   <ul className="list-disc list-inside space-y-1 mr-4">
                     <li>الاسم الكامل</li>
                     <li>البريد الإلكتروني</li>
@@ -114,7 +169,9 @@ export default function PrivacyPolicy() {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-foreground mb-2">بيانات الاستخدام:</h4>
+                  <h4 className="font-semibold text-foreground mb-2">
+                    بيانات الاستخدام:
+                  </h4>
                   <ul className="list-disc list-inside space-y-1 mr-4">
                     <li>عنوان IP</li>
                     <li>نوع المتصفح</li>
@@ -123,7 +180,9 @@ export default function PrivacyPolicy() {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-foreground mb-2">بيانات الخدمة (حسب الاستخدام):</h4>
+                  <h4 className="font-semibold text-foreground mb-2">
+                    بيانات الخدمة (حسب الاستخدام):
+                  </h4>
                   <ul className="list-disc list-inside space-y-1 mr-4">
                     <li>بيانات الموظفين (للشركات)</li>
                     <li>المستندات المرفوعة</li>
@@ -133,7 +192,8 @@ export default function PrivacyPolicy() {
               </div>
               <div className="bg-amber-50 border border-amber-200 p-4 rounded-lg">
                 <p className="text-amber-900 text-sm">
-                  <strong>ملاحظة:</strong> نطبق مبدأ "تقليل البيانات" - نجمع فقط البيانات الضرورية لتقديم الخدمة.
+                  <strong>ملاحظة:</strong> نطبق مبدأ "تقليل البيانات" - نجمع فقط
+                  البيانات الضرورية لتقديم الخدمة.
                 </p>
               </div>
             </CardContent>
@@ -150,10 +210,24 @@ export default function PrivacyPolicy() {
             <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
               <p>نعالج بياناتك بناءً على:</p>
               <ul className="list-disc list-inside space-y-2 mr-4">
-                <li><strong className="text-foreground">موافقتك الصريحة:</strong> عند التسجيل في المنصة</li>
-                <li><strong className="text-foreground">تنفيذ العقد:</strong> لتقديم الخدمات المتفق عليها</li>
-                <li><strong className="text-foreground">الالتزام القانوني:</strong> للامتثال للأنظمة السعودية</li>
-                <li><strong className="text-foreground">المصلحة المشروعة:</strong> لتحسين الخدمة وحماية الأمن</li>
+                <li>
+                  <strong className="text-foreground">موافقتك الصريحة:</strong>{" "}
+                  عند التسجيل في المنصة
+                </li>
+                <li>
+                  <strong className="text-foreground">تنفيذ العقد:</strong>{" "}
+                  لتقديم الخدمات المتفق عليها
+                </li>
+                <li>
+                  <strong className="text-foreground">
+                    الالتزام القانوني:
+                  </strong>{" "}
+                  للامتثال للأنظمة السعودية
+                </li>
+                <li>
+                  <strong className="text-foreground">المصلحة المشروعة:</strong>{" "}
+                  لتحسين الخدمة وحماية الأمن
+                </li>
               </ul>
             </CardContent>
           </Card>
@@ -171,7 +245,9 @@ export default function PrivacyPolicy() {
               <div className="space-y-3">
                 <div className="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
                   <span>بيانات المستخدمين</span>
-                  <span className="font-semibold text-foreground">5 سنوات بعد آخر نشاط</span>
+                  <span className="font-semibold text-foreground">
+                    5 سنوات بعد آخر نشاط
+                  </span>
                 </div>
                 <div className="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
                   <span>الملفات المرفوعة</span>
@@ -187,7 +263,8 @@ export default function PrivacyPolicy() {
                 </div>
               </div>
               <p className="text-sm">
-                بعد انتهاء المدة، يتم حذف البيانات تلقائياً أو إخفاء هويتها بشكل دائم.
+                بعد انتهاء المدة، يتم حذف البيانات تلقائياً أو إخفاء هويتها بشكل
+                دائم.
               </p>
             </CardContent>
           </Card>
@@ -205,34 +282,46 @@ export default function PrivacyPolicy() {
               <div className="grid md:grid-cols-2 gap-3">
                 <div className="p-4 bg-blue-50 rounded-lg border border-blue-100">
                   <h4 className="font-semibold text-blue-900 mb-2">الوصول</h4>
-                  <p className="text-sm text-blue-700">الحصول على نسخة من بياناتك</p>
+                  <p className="text-sm text-blue-700">
+                    الحصول على نسخة من بياناتك
+                  </p>
                 </div>
                 <div className="p-4 bg-green-50 rounded-lg border border-green-100">
                   <h4 className="font-semibold text-green-900 mb-2">التصحيح</h4>
-                  <p className="text-sm text-green-700">تعديل البيانات غير الصحيحة</p>
+                  <p className="text-sm text-green-700">
+                    تعديل البيانات غير الصحيحة
+                  </p>
                 </div>
                 <div className="p-4 bg-red-50 rounded-lg border border-red-100">
                   <h4 className="font-semibold text-red-900 mb-2">الحذف</h4>
                   <p className="text-sm text-red-700">طلب حذف بياناتك</p>
                 </div>
                 <div className="p-4 bg-purple-50 rounded-lg border border-purple-100">
-                  <h4 className="font-semibold text-purple-900 mb-2">سحب الموافقة</h4>
-                  <p className="text-sm text-purple-700">إلغاء موافقتك في أي وقت</p>
+                  <h4 className="font-semibold text-purple-900 mb-2">
+                    سحب الموافقة
+                  </h4>
+                  <p className="text-sm text-purple-700">
+                    إلغاء موافقتك في أي وقت
+                  </p>
                 </div>
                 <div className="p-4 bg-amber-50 rounded-lg border border-amber-100">
-                  <h4 className="font-semibold text-amber-900 mb-2">الاعتراض</h4>
-                  <p className="text-sm text-amber-700">الاعتراض على معالجة معينة</p>
+                  <h4 className="font-semibold text-amber-900 mb-2">
+                    الاعتراض
+                  </h4>
+                  <p className="text-sm text-amber-700">
+                    الاعتراض على معالجة معينة
+                  </p>
                 </div>
                 <div className="p-4 bg-indigo-50 rounded-lg border border-indigo-100">
                   <h4 className="font-semibold text-indigo-900 mb-2">النقل</h4>
-                  <p className="text-sm text-indigo-700">نقل بياناتك لجهة أخرى</p>
+                  <p className="text-sm text-indigo-700">
+                    نقل بياناتك لجهة أخرى
+                  </p>
                 </div>
               </div>
               <div className="mt-4">
                 <Link href="/my-data">
-                  <Button className="w-full md:w-auto">
-                    إدارة بياناتي
-                  </Button>
+                  <Button className="w-full md:w-auto">إدارة بياناتي</Button>
                 </Link>
               </div>
             </CardContent>
@@ -248,15 +337,18 @@ export default function PrivacyPolicy() {
             </CardHeader>
             <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
               <p>
-                <strong className="text-foreground">موقع التخزين الافتراضي:</strong> المملكة العربية السعودية
+                <strong className="text-foreground">
+                  موقع التخزين الافتراضي:
+                </strong>{" "}
+                المملكة العربية السعودية
               </p>
-              <p>
-                في حال الحاجة لنقل بياناتك خارج المملكة، سنقوم بـ:
-              </p>
+              <p>في حال الحاجة لنقل بياناتك خارج المملكة، سنقوم بـ:</p>
               <ul className="list-disc list-inside space-y-2 mr-4">
                 <li>إخطارك مسبقاً</li>
                 <li>الحصول على موافقتك الصريحة</li>
-                <li>تطبيق الضمانات الكافية (مثل البنود التعاقدية القياسية لسدايا)</li>
+                <li>
+                  تطبيق الضمانات الكافية (مثل البنود التعاقدية القياسية لسدايا)
+                </li>
                 <li>توثيق عملية النقل</li>
               </ul>
             </CardContent>
@@ -281,7 +373,8 @@ export default function PrivacyPolicy() {
               </ul>
               <div className="bg-red-50 border border-red-200 p-4 rounded-lg">
                 <p className="text-red-900 text-sm">
-                  <strong>الإخطار عن الخروقات:</strong> في حال حدوث خرق أمني، سنخطرك وسدايا خلال 72 ساعة.
+                  <strong>الإخطار عن الخروقات:</strong> في حال حدوث خرق أمني،
+                  سنخطرك وسدايا خلال 72 ساعة.
                 </p>
               </div>
             </CardContent>
@@ -297,11 +390,15 @@ export default function PrivacyPolicy() {
             </CardHeader>
             <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
               <p>
-                نستخدم الذكاء الاصطناعي في بعض خدماتنا (مثل المساعد الذكي للاستشارات). 
-                جميع المخرجات المولّدة آلياً تُعرض مع تنبيه واضح.
+                نستخدم الذكاء الاصطناعي في بعض خدماتنا (مثل المساعد الذكي
+                للاستشارات). جميع المخرجات المولّدة آلياً تُعرض مع تنبيه واضح.
               </p>
               <p>
-                <strong className="text-foreground">التدريب على البيانات:</strong> لا نستخدم بياناتك لتدريب نماذج الذكاء الاصطناعي إلا بموافقتك الصريحة.
+                <strong className="text-foreground">
+                  التدريب على البيانات:
+                </strong>{" "}
+                لا نستخدم بياناتك لتدريب نماذج الذكاء الاصطناعي إلا بموافقتك
+                الصريحة.
               </p>
             </CardContent>
           </Card>
@@ -315,12 +412,22 @@ export default function PrivacyPolicy() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
-              <p>
-                لأي استفسارات أو طلبات تتعلق بخصوصيتك، يمكنك التواصل معنا:
-              </p>
+              <p>لأي استفسارات أو طلبات تتعلق بخصوصيتك، يمكنك التواصل معنا:</p>
               <div className="bg-slate-50 p-4 rounded-lg space-y-2">
-                <p><strong className="text-foreground">مسؤول حماية البيانات (DPO):</strong></p>
-                <p>البريد الإلكتروني: <a href="mailto:dpo@rabit.sa" className="text-blue-600 hover:underline">dpo@rabit.sa</a></p>
+                <p>
+                  <strong className="text-foreground">
+                    مسؤول حماية البيانات (DPO):
+                  </strong>
+                </p>
+                <p>
+                  البريد الإلكتروني:{" "}
+                  <a
+                    href="mailto:dpo@rabit.sa"
+                    className="text-blue-600 hover:underline"
+                  >
+                    dpo@rabit.sa
+                  </a>
+                </p>
                 <p>الرد خلال: 30 يوم عمل</p>
               </div>
               <div className="mt-4">
@@ -343,7 +450,8 @@ export default function PrivacyPolicy() {
             </CardHeader>
             <CardContent className="space-y-4 text-muted-foreground leading-relaxed">
               <p>
-                قد نقوم بتحديث هذه السياسة من وقت لآخر. سنخطرك بأي تغييرات جوهرية عبر:
+                قد نقوم بتحديث هذه السياسة من وقت لآخر. سنخطرك بأي تغييرات
+                جوهرية عبر:
               </p>
               <ul className="list-disc list-inside space-y-2 mr-4">
                 <li>إشعار على المنصة</li>
@@ -351,7 +459,8 @@ export default function PrivacyPolicy() {
                 <li>تحديث تاريخ "آخر تحديث" أعلى الصفحة</li>
               </ul>
               <p>
-                استمرارك في استخدام المنصة بعد التحديثات يعني موافقتك على السياسة الجديدة.
+                استمرارك في استخدام المنصة بعد التحديثات يعني موافقتك على
+                السياسة الجديدة.
               </p>
             </CardContent>
           </Card>
@@ -361,7 +470,8 @@ export default function PrivacyPolicy() {
             <CardContent className="pt-6">
               <div className="text-center space-y-2">
                 <p className="text-sm text-muted-foreground">
-                  هذا الإشعار متوافق مع نظام حماية البيانات الشخصية السعودي (PDPL)
+                  هذا الإشعار متوافق مع نظام حماية البيانات الشخصية السعودي
+                  (PDPL)
                 </p>
                 <p className="text-sm text-muted-foreground">
                   الصادر عن الهيئة السعودية للبيانات والذكاء الاصطناعي (سدايا)

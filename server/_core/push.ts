@@ -28,10 +28,10 @@ export async function sendPushNotification(
   options: PushNotificationOptions
 ): Promise<boolean> {
   try {
-    console.log('[Push Service] Sending push notification:', options.title);
+    console.log("[Push Service] Sending push notification:", options.title);
     return true;
   } catch (error: any) {
-    console.error('[Push Service] Error:', error);
+    console.error("[Push Service] Error:", error);
     return false;
   }
 }

@@ -1,5 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -28,7 +34,15 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import DashboardLayout from "@/components/DashboardLayout";
-import { Search, Plus, Edit, Trash2, Eye, Download, Filter } from "lucide-react";
+import {
+  Search,
+  Plus,
+  Edit,
+  Trash2,
+  Eye,
+  Download,
+  Filter,
+} from "lucide-react";
 import { useState } from "react";
 
 // بيانات تجريبية للموظفين
@@ -97,7 +111,7 @@ export default function Employees() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
   // فلترة الموظفين
-  const filteredEmployees = employeesData.filter((emp) => {
+  const filteredEmployees = employeesData.filter(emp => {
     const matchesSearch =
       emp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       emp.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -135,9 +149,7 @@ export default function Employees() {
             <DialogContent className="sm:max-w-[600px]">
               <DialogHeader>
                 <DialogTitle>إضافة موظف جديد</DialogTitle>
-                <DialogDescription>
-                  أدخل بيانات الموظف الجديد
-                </DialogDescription>
+                <DialogDescription>أدخل بيانات الموظف الجديد</DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-2 gap-4">
@@ -147,7 +159,11 @@ export default function Employees() {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="email">البريد الإلكتروني *</Label>
-                    <Input id="email" type="email" placeholder="ahmed@company.com" />
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="ahmed@company.com"
+                    />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
@@ -206,7 +222,10 @@ export default function Employees() {
                 </div>
               </div>
               <DialogFooter>
-                <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsAddDialogOpen(false)}
+                >
                   إلغاء
                 </Button>
                 <Button className="bg-gradient-to-r from-blue-600 to-purple-600">
@@ -226,19 +245,26 @@ export default function Employees() {
                 <Input
                   placeholder="بحث عن موظف..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={e => setSearchTerm(e.target.value)}
                   className="pr-10"
                 />
               </div>
-              <Select value={filterDepartment} onValueChange={setFilterDepartment}>
+              <Select
+                value={filterDepartment}
+                onValueChange={setFilterDepartment}
+              >
                 <SelectTrigger className="w-full sm:w-[200px]">
                   <Filter className="h-4 w-4 ml-2" />
                   <SelectValue placeholder="القسم" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">جميع الأقسام</SelectItem>
-                  <SelectItem value="تقنية المعلومات">تقنية المعلومات</SelectItem>
-                  <SelectItem value="الموارد البشرية">الموارد البشرية</SelectItem>
+                  <SelectItem value="تقنية المعلومات">
+                    تقنية المعلومات
+                  </SelectItem>
+                  <SelectItem value="الموارد البشرية">
+                    الموارد البشرية
+                  </SelectItem>
                   <SelectItem value="المالية">المالية</SelectItem>
                   <SelectItem value="المبيعات">المبيعات</SelectItem>
                   <SelectItem value="التسويق">التسويق</SelectItem>
@@ -295,9 +321,7 @@ export default function Employees() {
         <Card>
           <CardHeader>
             <CardTitle>قائمة الموظفين ({filteredEmployees.length})</CardTitle>
-            <CardDescription>
-              جميع الموظفين المسجلين في النظام
-            </CardDescription>
+            <CardDescription>جميع الموظفين المسجلين في النظام</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="rounded-md border">
@@ -307,16 +331,20 @@ export default function Employees() {
                     <TableHead className="text-right">الاسم</TableHead>
                     <TableHead className="text-right">المسمى الوظيفي</TableHead>
                     <TableHead className="text-right">القسم</TableHead>
-                    <TableHead className="text-right">البريد الإلكتروني</TableHead>
+                    <TableHead className="text-right">
+                      البريد الإلكتروني
+                    </TableHead>
                     <TableHead className="text-right">تاريخ المباشرة</TableHead>
                     <TableHead className="text-right">الحالة</TableHead>
                     <TableHead className="text-center">الإجراءات</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredEmployees.map((employee) => (
+                  {filteredEmployees.map(employee => (
                     <TableRow key={employee.id}>
-                      <TableCell className="font-medium">{employee.name}</TableCell>
+                      <TableCell className="font-medium">
+                        {employee.name}
+                      </TableCell>
                       <TableCell>{employee.position}</TableCell>
                       <TableCell>{employee.department}</TableCell>
                       <TableCell className="text-muted-foreground">
@@ -325,7 +353,9 @@ export default function Employees() {
                       <TableCell>{employee.joinDate}</TableCell>
                       <TableCell>
                         <Badge
-                          variant={employee.status === "نشط" ? "default" : "secondary"}
+                          variant={
+                            employee.status === "نشط" ? "default" : "secondary"
+                          }
                           className={
                             employee.status === "نشط"
                               ? "bg-green-500 hover:bg-green-600"
@@ -337,7 +367,11 @@ export default function Employees() {
                       </TableCell>
                       <TableCell>
                         <div className="flex justify-center gap-2">
-                          <Button variant="ghost" size="icon" title="عرض التفاصيل">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            title="عرض التفاصيل"
+                          >
                             <Eye className="h-4 w-4" />
                           </Button>
                           <Button variant="ghost" size="icon" title="تعديل">

@@ -11,8 +11,8 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import SignupEmployee from "./pages/SignupEmployee";
 import AccountType from "./pages/AccountType";
-import SignupConsultant from '@/pages/SignupConsultant';
-import ConsultantLogin from '@/pages/ConsultantLogin';
+import SignupConsultant from "@/pages/SignupConsultant";
+import ConsultantLogin from "@/pages/ConsultantLogin";
 import DocumentGenerator from "./pages/DocumentGenerator";
 import MyDocuments from "./pages/MyDocuments";
 import AdminDiscountCodes from "./pages/AdminDiscountCodes";
@@ -93,11 +93,46 @@ function Router() {
       <Route path={"/signup/consultant"} component={SignupConsultant} />
       <Route path={"/login"} component={Login} />
       <Route path={"/consultant/login"} component={ConsultantLogin} />
-      <Route path={"/employee/dashboard"} component={() => <ProtectedRoute requiredRole="employee"><CompanyDashboard /></ProtectedRoute>} />
-      <Route path={"/payment"} component={() => <ProtectedRoute><Payment /></ProtectedRoute>} />
-      <Route path="/profile" component={() => <ProtectedRoute><Profile /></ProtectedRoute>} />
-      <Route path="/document-generator" component={() => <ProtectedRoute><DocumentGenerator /></ProtectedRoute>} />
-      <Route path="/my-documents" component={() => <ProtectedRoute><MyDocuments /></ProtectedRoute>} />
+      <Route
+        path={"/employee/dashboard"}
+        component={() => (
+          <ProtectedRoute requiredRole="employee">
+            <CompanyDashboard />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path={"/payment"}
+        component={() => (
+          <ProtectedRoute>
+            <Payment />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/profile"
+        component={() => (
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/document-generator"
+        component={() => (
+          <ProtectedRoute>
+            <DocumentGenerator />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/my-documents"
+        component={() => (
+          <ProtectedRoute>
+            <MyDocuments />
+          </ProtectedRoute>
+        )}
+      />
       <Route path={"/admin/discount-codes"} component={AdminDiscountCodes} />
       <Route path={"/404"} component={NotFound} />
       <Route path="/contact" component={Contact} />
@@ -108,9 +143,15 @@ function Router() {
       <Route path="/privacy" component={Privacy} />
       <Route path="/privacy-policy" component={PrivacyPolicy} />
       <Route path="/my-data" component={MyData} />
-      <Route path="/data-protection-contact" component={DataProtectionContact} />
+      <Route
+        path="/data-protection-contact"
+        component={DataProtectionContact}
+      />
       <Route path="/admin/data-requests" component={AdminDataRequests} />
-      <Route path="/admin/security-incidents" component={AdminSecurityIncidents} />
+      <Route
+        path="/admin/security-incidents"
+        component={AdminSecurityIncidents}
+      />
       <Route path="/terms" component={Terms} />
       <Route path="/cookies" component={Cookies} />
       <Route path="/cookies-policy" component={CookiesPolicy} />
@@ -123,41 +164,227 @@ function Router() {
       <Route path="/consulting/services" component={ConsultingServices} />
       <Route path="/consulting/how-to-book" component={HowToBook} />
       <Route path="/consulting/experts" component={ConsultingExperts} />
-      <Route path="/consulting/expert/:id" component={ConsultingExpertProfile} />
-      <Route path="/my-consultations" component={() => <ProtectedRoute><MyConsultations /></ProtectedRoute>} />
-      <Route path="/consultation/:id" component={() => <ProtectedRoute><ConsultationDetail /></ProtectedRoute>} />
-      <Route path="/consultation/:id/chat" component={() => <ProtectedRoute><ConsultationChat /></ProtectedRoute>} />
-      <Route path="/consultant-dashboard" component={() => <ProtectedRoute requiredRole="consultant"><ConsultantDashboard /></ProtectedRoute>} />
+      <Route
+        path="/consulting/expert/:id"
+        component={ConsultingExpertProfile}
+      />
+      <Route
+        path="/my-consultations"
+        component={() => (
+          <ProtectedRoute>
+            <MyConsultations />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/consultation/:id"
+        component={() => (
+          <ProtectedRoute>
+            <ConsultationDetail />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/consultation/:id/chat"
+        component={() => (
+          <ProtectedRoute>
+            <ConsultationChat />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/consultant-dashboard"
+        component={() => (
+          <ProtectedRoute requiredRole="consultant">
+            <ConsultantDashboard />
+          </ProtectedRoute>
+        )}
+      />
       <Route path={"/courses"} component={Courses} />
       <Route path={"/courses/:id"} component={CourseDetail} />
       <Route path={"/knowledge"} component={Knowledge} />
       <Route path={"/tools"} component={ToolsPage} />
       <Route path={"/knowledge-base"} component={KnowledgeBase} />
       <Route path={"/knowledge-base/:id"} component={KnowledgeBaseArticle} />
-      <Route path={"/tools/end-of-service"} component={EndOfServiceCalculator} />
+      <Route
+        path={"/tools/end-of-service"}
+        component={EndOfServiceCalculator}
+      />
       <Route path={"/tools/leave-calculator"} component={LeaveCalculator} />
       <Route path={"/tools/letter-generator"} component={LetterGenerator} />
       <Route path="/pricing" component={Pricing} />
-      <Route path="/dashboard" component={() => <ProtectedRoute requiredRole="company"><CompanyDashboard /></ProtectedRoute>} />
-      <Route path="/company/dashboard" component={() => <ProtectedRoute requiredRole="company"><CompanyDashboard /></ProtectedRoute>} />
-      <Route path="/admin" component={() => <ProtectedRoute requiredRole="admin"><AdminLayout><AdminDashboardNew /></AdminLayout></ProtectedRoute>} />
-      <Route path="/admin/users" component={() => <ProtectedRoute requiredRole="admin"><AdminLayout><AdminUsers /></AdminLayout></ProtectedRoute>} />
-      <Route path="/admin/subscriptions" component={() => <ProtectedRoute requiredRole="admin"><AdminLayout><AdminSubscriptions /></AdminLayout></ProtectedRoute>} />
-      <Route path="/admin/bookings" component={() => <ProtectedRoute requiredRole="admin"><AdminLayout><AdminBookings /></AdminLayout></ProtectedRoute>} />
-      <Route path="/admin/audit-logs" component={() => <ProtectedRoute requiredRole="admin"><AdminLayout><AdminAuditLogs /></AdminLayout></ProtectedRoute>} />
-      <Route path="/admin/chat" component={() => <ProtectedRoute requiredRole="admin"><AdminLayout><AdminChat /></AdminLayout></ProtectedRoute>} />
-      <Route path="/dashboard/employees" component={() => <ProtectedRoute requiredRole="company"><Employees /></ProtectedRoute>} />
-      <Route path="/dashboard/ats" component={() => <ProtectedRoute requiredRole="company"><ATS /></ProtectedRoute>} />
-      <Route path="/dashboard/tickets" component={() => <ProtectedRoute requiredRole="company"><Tickets /></ProtectedRoute>} />
-      <Route path="/dashboard/tasks" component={() => <ProtectedRoute requiredRole="company"><Tasks /></ProtectedRoute>} />
-      <Route path="/dashboard/reports" component={() => <ProtectedRoute requiredRole="company"><Reports /></ProtectedRoute>} />
-      <Route path="/dashboard/settings" component={() => <ProtectedRoute requiredRole="company"><Settings /></ProtectedRoute>} />
-      <Route path="/dashboard/certificates" component={() => <ProtectedRoute requiredRole="company"><Certificates /></ProtectedRoute>} />
-      <Route path="/dashboard/legal-check" component={() => <ProtectedRoute requiredRole="company"><LegalCheck /></ProtectedRoute>} />
-      <Route path="/dashboard/templates" component={() => <ProtectedRoute requiredRole="company"><Templates /></ProtectedRoute>} />
-      <Route path="/dashboard/reminders" component={() => <ProtectedRoute requiredRole="company"><Reminders /></ProtectedRoute>} />
-      <Route path="/dashboard/tools" component={() => <ProtectedRoute requiredRole="company"><DashboardTools /></ProtectedRoute>} />
-      <Route path="/dashboard/notifications" component={() => <ProtectedRoute requiredRole="company"><Notifications /></ProtectedRoute>} />
+      <Route
+        path="/dashboard"
+        component={() => (
+          <ProtectedRoute requiredRole="company">
+            <CompanyDashboard />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/company/dashboard"
+        component={() => (
+          <ProtectedRoute requiredRole="company">
+            <CompanyDashboard />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/admin"
+        component={() => (
+          <ProtectedRoute requiredRole="admin">
+            <AdminLayout>
+              <AdminDashboardNew />
+            </AdminLayout>
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/admin/users"
+        component={() => (
+          <ProtectedRoute requiredRole="admin">
+            <AdminLayout>
+              <AdminUsers />
+            </AdminLayout>
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/admin/subscriptions"
+        component={() => (
+          <ProtectedRoute requiredRole="admin">
+            <AdminLayout>
+              <AdminSubscriptions />
+            </AdminLayout>
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/admin/bookings"
+        component={() => (
+          <ProtectedRoute requiredRole="admin">
+            <AdminLayout>
+              <AdminBookings />
+            </AdminLayout>
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/admin/audit-logs"
+        component={() => (
+          <ProtectedRoute requiredRole="admin">
+            <AdminLayout>
+              <AdminAuditLogs />
+            </AdminLayout>
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/admin/chat"
+        component={() => (
+          <ProtectedRoute requiredRole="admin">
+            <AdminLayout>
+              <AdminChat />
+            </AdminLayout>
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/dashboard/employees"
+        component={() => (
+          <ProtectedRoute requiredRole="company">
+            <Employees />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/dashboard/ats"
+        component={() => (
+          <ProtectedRoute requiredRole="company">
+            <ATS />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/dashboard/tickets"
+        component={() => (
+          <ProtectedRoute requiredRole="company">
+            <Tickets />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/dashboard/tasks"
+        component={() => (
+          <ProtectedRoute requiredRole="company">
+            <Tasks />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/dashboard/reports"
+        component={() => (
+          <ProtectedRoute requiredRole="company">
+            <Reports />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/dashboard/settings"
+        component={() => (
+          <ProtectedRoute requiredRole="company">
+            <Settings />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/dashboard/certificates"
+        component={() => (
+          <ProtectedRoute requiredRole="company">
+            <Certificates />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/dashboard/legal-check"
+        component={() => (
+          <ProtectedRoute requiredRole="company">
+            <LegalCheck />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/dashboard/templates"
+        component={() => (
+          <ProtectedRoute requiredRole="company">
+            <Templates />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/dashboard/reminders"
+        component={() => (
+          <ProtectedRoute requiredRole="company">
+            <Reminders />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/dashboard/tools"
+        component={() => (
+          <ProtectedRoute requiredRole="company">
+            <DashboardTools />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/dashboard/notifications"
+        component={() => (
+          <ProtectedRoute requiredRole="company">
+            <Notifications />
+          </ProtectedRoute>
+        )}
+      />
       <Route path="/verify-decision" component={VerifyDecision} />
       <Route path="/services" component={Services} />
       <Route path="/brand-preview" component={BrandPreview} />

@@ -113,7 +113,9 @@ export default function AdminDashboard() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold">لوحة تحكم المدير</h1>
-              <p className="text-gray-600 mt-1">مرحباً بك في لوحة التحكم الرئيسية</p>
+              <p className="text-gray-600 mt-1">
+                مرحباً بك في لوحة التحكم الرئيسية
+              </p>
             </div>
             <Button>
               <Settings className="ml-2 h-4 w-4" />
@@ -148,7 +150,9 @@ export default function AdminDashboard() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">الاستشارات النشطة</p>
-                  <p className="text-2xl font-bold mt-1">{stats.activeConsultations}</p>
+                  <p className="text-2xl font-bold mt-1">
+                    {stats.activeConsultations}
+                  </p>
                   <p className="text-sm text-gray-600 mt-1">
                     {stats.pendingApprovals} في الانتظار
                   </p>
@@ -165,8 +169,12 @@ export default function AdminDashboard() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">إجمالي الإيرادات</p>
-                  <p className="text-2xl font-bold mt-1">{stats.totalRevenue.toLocaleString()} ﷼</p>
-                  <p className="text-sm text-green-600 mt-1">+12.5% هذا الشهر</p>
+                  <p className="text-2xl font-bold mt-1">
+                    {stats.totalRevenue.toLocaleString()} ﷼
+                  </p>
+                  <p className="text-sm text-green-600 mt-1">
+                    +12.5% هذا الشهر
+                  </p>
                 </div>
                 <div className="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center">
                   <DollarSign className="h-6 w-6 text-green-600" />
@@ -180,7 +188,9 @@ export default function AdminDashboard() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">التسجيلات في الدورات</p>
-                  <p className="text-2xl font-bold mt-1">{stats.coursesEnrolled}</p>
+                  <p className="text-2xl font-bold mt-1">
+                    {stats.coursesEnrolled}
+                  </p>
                   <p className="text-sm text-green-600 mt-1">+8.3% هذا الشهر</p>
                 </div>
                 <div className="h-12 w-12 bg-orange-100 rounded-lg flex items-center justify-center">
@@ -192,7 +202,11 @@ export default function AdminDashboard() {
         </div>
 
         {/* Main Content */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+        <Tabs
+          value={activeTab}
+          onValueChange={setActiveTab}
+          className="space-y-6"
+        >
           <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="overview">نظرة عامة</TabsTrigger>
             <TabsTrigger value="consultations">الاستشارات</TabsTrigger>
@@ -211,14 +225,16 @@ export default function AdminDashboard() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {recentConsultations.map((consultation) => (
+                    {recentConsultations.map(consultation => (
                       <div
                         key={consultation.id}
                         className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50"
                       >
                         <div className="flex-1">
                           <p className="font-medium">{consultation.client}</p>
-                          <p className="text-sm text-gray-600">{consultation.service}</p>
+                          <p className="text-sm text-gray-600">
+                            {consultation.service}
+                          </p>
                           <p className="text-xs text-gray-500 mt-1">
                             {consultation.consultant} • {consultation.date}
                           </p>
@@ -229,8 +245,8 @@ export default function AdminDashboard() {
                               consultation.status === "مكتملة"
                                 ? "default"
                                 : consultation.status === "جارية"
-                                ? "secondary"
-                                : "outline"
+                                  ? "secondary"
+                                  : "outline"
                             }
                           >
                             {consultation.status}
@@ -272,8 +288,12 @@ export default function AdminDashboard() {
                           </div>
                         </div>
                         <div className="text-left">
-                          <p className="font-medium">{consultant.revenue.toLocaleString()} ﷼</p>
-                          <p className="text-sm text-gray-600">⭐ {consultant.rating}</p>
+                          <p className="font-medium">
+                            {consultant.revenue.toLocaleString()} ﷼
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            ⭐ {consultant.rating}
+                          </p>
                         </div>
                       </div>
                     ))}
@@ -306,8 +326,12 @@ export default function AdminDashboard() {
                         </div>
                       </div>
                       <div className="text-left">
-                        <p className="font-medium">{course.revenue.toLocaleString()} ﷼</p>
-                        <p className="text-sm text-gray-600">إجمالي الإيرادات</p>
+                        <p className="font-medium">
+                          {course.revenue.toLocaleString()} ﷼
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          إجمالي الإيرادات
+                        </p>
                       </div>
                     </div>
                   ))}
@@ -329,7 +353,9 @@ export default function AdminDashboard() {
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">قريباً: نظام إدارة الاستشارات الكامل</p>
+                <p className="text-gray-600">
+                  قريباً: نظام إدارة الاستشارات الكامل
+                </p>
               </CardContent>
             </Card>
           </TabsContent>
@@ -347,7 +373,9 @@ export default function AdminDashboard() {
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">قريباً: نظام إدارة الدورات الكامل</p>
+                <p className="text-gray-600">
+                  قريباً: نظام إدارة الدورات الكامل
+                </p>
               </CardContent>
             </Card>
           </TabsContent>
@@ -359,7 +387,9 @@ export default function AdminDashboard() {
                 <CardTitle>إدارة المستخدمين</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">قريباً: نظام إدارة المستخدمين الكامل</p>
+                <p className="text-gray-600">
+                  قريباً: نظام إدارة المستخدمين الكامل
+                </p>
               </CardContent>
             </Card>
           </TabsContent>

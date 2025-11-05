@@ -1,8 +1,29 @@
 import { eq, and, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, passwords, InsertPassword, discountCodes, discountCodeUsage, notifications, notificationPreferences, emailLogs, smsLogs, consultationMessages, consultants, consultationBookings, consultantDocuments, specializations, consultationTypes, consultantReviews, InsertConsultant, Consultant, InsertConsultantDocument } from "../drizzle/schema";
-import bcrypt from 'bcryptjs';
-import { ENV } from './_core/env';
+import {
+  InsertUser,
+  users,
+  passwords,
+  InsertPassword,
+  discountCodes,
+  discountCodeUsage,
+  notifications,
+  notificationPreferences,
+  emailLogs,
+  smsLogs,
+  consultationMessages,
+  consultants,
+  consultationBookings,
+  consultantDocuments,
+  specializations,
+  consultationTypes,
+  consultantReviews,
+  InsertConsultant,
+  Consultant,
+  InsertConsultantDocument,
+} from "../drizzle/schema";
+import bcrypt from "bcryptjs";
+import { ENV } from "./_core/env";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -62,8 +83,8 @@ export async function upsertUser(user: InsertUser): Promise<void> {
       values.role = user.role;
       updateSet.role = user.role;
     } else if (user.openId === ENV.ownerOpenId) {
-      values.role = 'admin';
-      updateSet.role = 'admin';
+      values.role = "admin";
+      updateSet.role = "admin";
     }
 
     if (!values.lastSignedIn) {
@@ -90,7 +111,11 @@ export async function getUserByOpenId(openId: string) {
     return undefined;
   }
 
-  const result = await db.select().from(users).where(eq(users.openId, openId)).limit(1);
+  const result = await db
+    .select()
+    .from(users)
+    .where(eq(users.openId, openId))
+    .limit(1);
 
   return result.length > 0 ? result[0] : undefined;
 }
@@ -110,7 +135,10 @@ export async function hashPassword(password: string): Promise<string> {
 /**
  * Verify password against hash
  */
-export async function verifyPassword(password: string, hash: string): Promise<boolean> {
+export async function verifyPassword(
+  password: string,
+  hash: string
+): Promise<boolean> {
   return bcrypt.compare(password, hash);
 }
 
@@ -122,7 +150,7 @@ export async function createUserWithPassword(data: {
   email: string;
   password: string;
   phoneNumber?: string;
-  userType?: 'employee' | 'individual' | 'company' | 'consultant';
+  userType?: "employee" | "individual" | "company" | "consultant";
 }) {
   const db = await getDb();
   if (!db) {
@@ -131,7 +159,11 @@ export async function createUserWithPassword(data: {
 
   try {
     // Check if email already exists
-    const existingUser = await db.select().from(users).where(eq(users.email, data.email)).limit(1);
+    const existingUser = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, data.email))
+      .limit(1);
     if (existingUser.length > 0) {
       throw new Error("البريد الإلكتروني مستخدم بالفعل");
     }
@@ -145,7 +177,7 @@ export async function createUserWithPassword(data: {
       email: data.email,
       phoneNumber: data.phoneNumber || null,
       userType: data.userType || null,
-      loginMethod: 'email',
+      loginMethod: "email",
       emailVerified: false,
       profileCompleted: false,
       openId: null,
@@ -160,7 +192,11 @@ export async function createUserWithPassword(data: {
     });
 
     // Get created user
-    const newUser = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+    const newUser = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, userId))
+      .limit(1);
     return newUser[0];
   } catch (error) {
     console.error("[Database] Failed to create user:", error);
@@ -177,7 +213,11 @@ export async function getUserByEmail(email: string) {
     return undefined;
   }
 
-  const result = await db.select().from(users).where(eq(users.email, email)).limit(1);
+  const result = await db
+    .select()
+    .from(users)
+    .where(eq(users.email, email))
+    .limit(1);
   return result.length > 0 ? result[0] : undefined;
 }
 
@@ -198,19 +238,29 @@ export async function verifyUserLogin(email: string, password: string) {
     }
 
     // Get password hash
-    const passwordRecord = await db.select().from(passwords).where(eq(passwords.userId, user.id)).limit(1);
+    const passwordRecord = await db
+      .select()
+      .from(passwords)
+      .where(eq(passwords.userId, user.id))
+      .limit(1);
     if (passwordRecord.length === 0) {
       throw new Error("هذا الحساب مسجل عبر OAuth");
     }
 
     // Verify password
-    const isValid = await verifyPassword(password, passwordRecord[0].passwordHash);
+    const isValid = await verifyPassword(
+      password,
+      passwordRecord[0].passwordHash
+    );
     if (!isValid) {
       throw new Error("البريد الإلكتروني أو كلمة المرور غير صحيحة");
     }
 
     // Update last signed in
-    await db.update(users).set({ lastSignedIn: new Date() }).where(eq(users.id, user.id));
+    await db
+      .update(users)
+      .set({ lastSignedIn: new Date() })
+      .where(eq(users.id, user.id));
 
     return user;
   } catch (error) {
@@ -231,7 +281,11 @@ export async function getPasswordByUserId(userId: number) {
     return undefined;
   }
 
-  const result = await db.select().from(passwords).where(eq(passwords.userId, userId)).limit(1);
+  const result = await db
+    .select()
+    .from(passwords)
+    .where(eq(passwords.userId, userId))
+    .limit(1);
   if (result.length === 0) return undefined;
 
   const row: any = result[0];
@@ -244,22 +298,28 @@ export async function getPasswordByUserId(userId: number) {
  * Create a lightweight user (used by auth/register)
  * Returns the new user id
  */
-export async function createUser(data: { email: string; name?: string | null; role?: "user" | "admin" | null; }) {
+export async function createUser(data: {
+  email: string;
+  name?: string | null;
+  role?: "user" | "admin" | null;
+}) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
 
   const result = await db.insert(users).values({
     email: data.email,
     name: data.name ?? null,
-    role: (data.role === "admin" || data.role === "user") ? data.role : 'user',
-    loginMethod: 'email',
+    role: data.role === "admin" || data.role === "user" ? data.role : "user",
+    loginMethod: "email",
     emailVerified: false,
     profileCompleted: false,
     openId: null,
   });
 
   // Drizzle returns insertId in different shapes depending on driver
-  const insertedId = Number((result as any).insertId || (result as any)[0]?.insertId || 0);
+  const insertedId = Number(
+    (result as any).insertId || (result as any)[0]?.insertId || 0
+  );
   return insertedId;
 }
 
@@ -280,7 +340,11 @@ export async function getUserById(userId: number) {
   const db = await getDb();
   if (!db) return undefined;
 
-  const result = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+  const result = await db
+    .select()
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1);
   return result.length > 0 ? result[0] : undefined;
 }
 
@@ -291,7 +355,10 @@ export async function updateUserLastSignedIn(userId: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
 
-  await db.update(users).set({ lastSignedIn: new Date() }).where(eq(users.id, userId));
+  await db
+    .update(users)
+    .set({ lastSignedIn: new Date() })
+    .where(eq(users.id, userId));
 }
 
 // TODO: add feature queries here as your schema grows.
@@ -300,11 +367,11 @@ export async function updateUserLastSignedIn(userId: number) {
 // Template & Document Helpers
 // ==========================================
 
-import { 
-  templates, 
+import {
+  templates,
   generatedDocuments,
   Template,
-  GeneratedDocument 
+  GeneratedDocument,
 } from "../drizzle/schema";
 import { desc } from "drizzle-orm";
 
@@ -314,7 +381,7 @@ import { desc } from "drizzle-orm";
 export async function getAllTemplates() {
   const db = await getDb();
   if (!db) return [];
-  
+
   return await db
     .select()
     .from(templates)
@@ -328,13 +395,13 @@ export async function getAllTemplates() {
 export async function getTemplateByCode(code: string) {
   const db = await getDb();
   if (!db) return null;
-  
+
   const result = await db
     .select()
     .from(templates)
     .where(eq(templates.code, code))
     .limit(1);
-  
+
   return result.length > 0 ? result[0] : null;
 }
 
@@ -354,7 +421,7 @@ export async function createGeneratedDocument(data: {
 }) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  
+
   const result = await db.insert(generatedDocuments).values(data);
   return result;
 }
@@ -365,7 +432,7 @@ export async function createGeneratedDocument(data: {
 export async function getUserDocuments(userId: number, limit = 50) {
   const db = await getDb();
   if (!db) return [];
-  
+
   return await db
     .select()
     .from(generatedDocuments)
@@ -380,13 +447,13 @@ export async function getUserDocuments(userId: number, limit = 50) {
 export async function getDocumentById(documentId: number) {
   const db = await getDb();
   if (!db) return null;
-  
+
   const result = await db
     .select()
     .from(generatedDocuments)
     .where(eq(generatedDocuments.id, documentId))
     .limit(1);
-  
+
   return result.length > 0 ? result[0] : null;
 }
 
@@ -396,7 +463,7 @@ export async function getDocumentById(documentId: number) {
 export async function getUserSavedDocuments(userId: number) {
   const db = await getDb();
   if (!db) return [];
-  
+
   return await db
     .select()
     .from(generatedDocuments)
@@ -412,10 +479,13 @@ export async function getUserSavedDocuments(userId: number) {
 /**
  * Update document saved status
  */
-export async function updateDocumentSavedStatus(documentId: number, isSaved: boolean) {
+export async function updateDocumentSavedStatus(
+  documentId: number,
+  isSaved: boolean
+) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  
+
   await db
     .update(generatedDocuments)
     .set({ isSaved, updatedAt: new Date() })
@@ -425,10 +495,13 @@ export async function updateDocumentSavedStatus(documentId: number, isSaved: boo
 /**
  * Delete a generated document
  */
-export async function deleteGeneratedDocument(documentId: number, userId: number) {
+export async function deleteGeneratedDocument(
+  documentId: number,
+  userId: number
+) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  
+
   await db
     .delete(generatedDocuments)
     .where(
@@ -439,18 +512,17 @@ export async function deleteGeneratedDocument(documentId: number, userId: number
     );
 }
 
-
 // ==========================================
 // Consulting Packages & Tickets Helpers
 // ==========================================
 
-import { 
+import {
   consultingPackages,
   consultingTickets,
   consultingResponses,
   ConsultingPackage,
   ConsultingTicket,
-  ConsultingResponse
+  ConsultingResponse,
 } from "../drizzle/schema";
 
 /**
@@ -459,7 +531,7 @@ import {
 export async function getActiveConsultingPackages() {
   const db = await getDb();
   if (!db) return [];
-  
+
   return await db
     .select()
     .from(consultingPackages)
@@ -473,13 +545,13 @@ export async function getActiveConsultingPackages() {
 export async function getConsultingPackageById(id: number) {
   const db = await getDb();
   if (!db) return null;
-  
+
   const result = await db
     .select()
     .from(consultingPackages)
     .where(eq(consultingPackages.id, id))
     .limit(1);
-  
+
   return result.length > 0 ? result[0] : null;
 }
 
@@ -497,16 +569,16 @@ export async function createConsultingTicket(data: {
 }) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  
+
   // Generate ticket number
   const ticketNumber = `CONS-${Date.now()}-${Math.random().toString(36).substr(2, 6).toUpperCase()}`;
-  
+
   // Get package to calculate SLA deadline
   const pkg = await getConsultingPackageById(data.packageId);
   const slaHours = pkg?.slaHours || 24;
   const slaDeadline = new Date();
   slaDeadline.setHours(slaDeadline.getHours() + slaHours);
-  
+
   const result = await db.insert(consultingTickets).values({
     ...data,
     ticketNumber,
@@ -514,7 +586,7 @@ export async function createConsultingTicket(data: {
     priority: data.priority || "medium",
     slaDeadline,
   });
-  
+
   return { ticketNumber, insertId: result[0].insertId };
 }
 
@@ -524,7 +596,7 @@ export async function createConsultingTicket(data: {
 export async function getUserConsultingTickets(userId: number) {
   const db = await getDb();
   if (!db) return [];
-  
+
   return await db
     .select()
     .from(consultingTickets)
@@ -538,13 +610,13 @@ export async function getUserConsultingTickets(userId: number) {
 export async function getConsultingTicketById(ticketId: number) {
   const db = await getDb();
   if (!db) return null;
-  
+
   const result = await db
     .select()
     .from(consultingTickets)
     .where(eq(consultingTickets.id, ticketId))
     .limit(1);
-  
+
   return result.length > 0 ? result[0] : null;
 }
 
@@ -554,13 +626,13 @@ export async function getConsultingTicketById(ticketId: number) {
 export async function getConsultingTicketByNumber(ticketNumber: string) {
   const db = await getDb();
   if (!db) return null;
-  
+
   const result = await db
     .select()
     .from(consultingTickets)
     .where(eq(consultingTickets.ticketNumber, ticketNumber))
     .limit(1);
-  
+
   return result.length > 0 ? result[0] : null;
 }
 
@@ -573,13 +645,13 @@ export async function updateConsultingTicketStatus(
 ) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  
+
   const updateData: any = { status, updatedAt: new Date() };
-  
+
   if (status === "completed") {
     updateData.completedAt = new Date();
   }
-  
+
   await db
     .update(consultingTickets)
     .set(updateData)
@@ -589,13 +661,16 @@ export async function updateConsultingTicketStatus(
 /**
  * Assign ticket to consultant
  */
-export async function assignConsultingTicket(ticketId: number, consultantId: number) {
+export async function assignConsultingTicket(
+  ticketId: number,
+  consultantId: number
+) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  
+
   await db
     .update(consultingTickets)
-    .set({ 
+    .set({
       consultantId,
       status: "assigned",
       updatedAt: new Date(),
@@ -615,15 +690,15 @@ export async function addConsultingResponse(data: {
 }) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  
+
   const result = await db.insert(consultingResponses).values(data);
-  
+
   // Update ticket status to in-progress if it was pending
   const ticket = await getConsultingTicketById(data.ticketId);
   if (ticket?.status === "pending" || ticket?.status === "assigned") {
     await updateConsultingTicketStatus(data.ticketId, "in-progress");
   }
-  
+
   return result;
 }
 
@@ -633,7 +708,7 @@ export async function addConsultingResponse(data: {
 export async function getConsultingTicketResponses(ticketId: number) {
   const db = await getDb();
   if (!db) return [];
-  
+
   return await db
     .select()
     .from(consultingResponses)
@@ -644,13 +719,17 @@ export async function getConsultingTicketResponses(ticketId: number) {
 /**
  * Rate consulting ticket
  */
-export async function rateConsultingTicket(ticketId: number, rating: number, feedback?: string) {
+export async function rateConsultingTicket(
+  ticketId: number,
+  rating: number,
+  feedback?: string
+) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  
+
   await db
     .update(consultingTickets)
-    .set({ 
+    .set({
       rating,
       feedback,
       updatedAt: new Date(),
@@ -664,7 +743,7 @@ export async function rateConsultingTicket(ticketId: number, rating: number, fee
 export async function getConsultantTickets(consultantId: number) {
   const db = await getDb();
   if (!db) return [];
-  
+
   return await db
     .select()
     .from(consultingTickets)
@@ -678,14 +757,13 @@ export async function getConsultantTickets(consultantId: number) {
 export async function getPendingConsultingTickets() {
   const db = await getDb();
   if (!db) return [];
-  
+
   return await db
     .select()
     .from(consultingTickets)
     .where(eq(consultingTickets.status, "pending"))
     .orderBy(consultingTickets.priority, desc(consultingTickets.createdAt));
 }
-
 
 // ============================================
 // Discount Codes Functions
@@ -706,7 +784,7 @@ export async function createDiscountCode(data: {
 }) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  
+
   const result = await db.insert(discountCodes).values({
     ...data,
     usedCount: 0,
@@ -721,13 +799,13 @@ export async function createDiscountCode(data: {
 export async function getDiscountCodeByCode(code: string) {
   const db = await getDb();
   if (!db) return null;
-  
+
   const result = await db
     .select()
     .from(discountCodes)
     .where(eq(discountCodes.code, code))
     .limit(1);
-  
+
   return result.length > 0 ? result[0] : null;
 }
 
@@ -737,7 +815,7 @@ export async function getDiscountCodeByCode(code: string) {
 export async function getAllDiscountCodes() {
   const db = await getDb();
   if (!db) return [];
-  
+
   return await db
     .select()
     .from(discountCodes)
@@ -747,18 +825,21 @@ export async function getAllDiscountCodes() {
 /**
  * Update discount code
  */
-export async function updateDiscountCode(id: number, data: Partial<{
-  description: string;
-  discountType: "percentage" | "fixed";
-  discountValue: number;
-  maxUses: number | null;
-  validFrom: Date | null;
-  validUntil: Date | null;
-  isActive: boolean;
-}>) {
+export async function updateDiscountCode(
+  id: number,
+  data: Partial<{
+    description: string;
+    discountType: "percentage" | "fixed";
+    discountValue: number;
+    maxUses: number | null;
+    validFrom: Date | null;
+    validUntil: Date | null;
+    isActive: boolean;
+  }>
+) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  
+
   await db
     .update(discountCodes)
     .set({ ...data, updatedAt: new Date() })
@@ -771,10 +852,8 @@ export async function updateDiscountCode(id: number, data: Partial<{
 export async function deleteDiscountCode(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  
-  await db
-    .delete(discountCodes)
-    .where(eq(discountCodes.id, id));
+
+  await db.delete(discountCodes).where(eq(discountCodes.id, id));
 }
 
 /**
@@ -783,12 +862,12 @@ export async function deleteDiscountCode(id: number) {
 export async function incrementDiscountCodeUsage(codeId: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  
+
   await db
     .update(discountCodes)
-    .set({ 
+    .set({
       usedCount: sql`${discountCodes.usedCount} + 1`,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     })
     .where(eq(discountCodes.id, codeId));
 }
@@ -806,7 +885,7 @@ export async function recordDiscountCodeUsage(data: {
 }) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  
+
   await db.insert(discountCodeUsage).values(data);
 }
 
@@ -816,14 +895,13 @@ export async function recordDiscountCodeUsage(data: {
 export async function getDiscountCodeUsageHistory(codeId: number) {
   const db = await getDb();
   if (!db) return [];
-  
+
   return await db
     .select()
     .from(discountCodeUsage)
     .where(eq(discountCodeUsage.codeId, codeId))
     .orderBy(desc(discountCodeUsage.createdAt));
 }
-
 
 // ==================== Notifications ====================
 
@@ -832,7 +910,7 @@ export async function getDiscountCodeUsageHistory(codeId: number) {
  */
 export async function createNotification(data: {
   userId: number;
-  type: 'success' | 'info' | 'warning' | 'error';
+  type: "success" | "info" | "warning" | "error";
   title: string;
   message: string;
   link?: string;
@@ -869,7 +947,9 @@ export async function getUnreadNotificationsCount(userId: number) {
   const result = await db
     .select({ count: sql`COUNT(*)` })
     .from(notifications)
-    .where(and(eq(notifications.userId, userId), eq(notifications.isRead, false)));
+    .where(
+      and(eq(notifications.userId, userId), eq(notifications.isRead, false))
+    );
 
   return Number(result[0]?.count || 0);
 }
@@ -897,7 +977,9 @@ export async function markAllNotificationsAsRead(userId: number) {
   await db
     .update(notifications)
     .set({ isRead: true, readAt: new Date() })
-    .where(and(eq(notifications.userId, userId), eq(notifications.isRead, false)));
+    .where(
+      and(eq(notifications.userId, userId), eq(notifications.isRead, false))
+    );
 }
 
 /**
@@ -1002,7 +1084,7 @@ export async function logEmail(data: {
   toEmail: string;
   subject: string;
   template?: string;
-  status: 'pending' | 'sent' | 'failed';
+  status: "pending" | "sent" | "failed";
   errorMessage?: string;
 }) {
   const db = await getDb();
@@ -1010,7 +1092,7 @@ export async function logEmail(data: {
 
   await db.insert(emailLogs).values({
     ...data,
-    sentAt: data.status === 'sent' ? new Date() : undefined,
+    sentAt: data.status === "sent" ? new Date() : undefined,
   });
 }
 
@@ -1023,7 +1105,7 @@ export async function logSMS(data: {
   userId?: number;
   toPhone: string;
   message: string;
-  status: 'pending' | 'sent' | 'failed';
+  status: "pending" | "sent" | "failed";
   errorMessage?: string;
 }) {
   const db = await getDb();
@@ -1031,10 +1113,9 @@ export async function logSMS(data: {
 
   await db.insert(smsLogs).values({
     ...data,
-    sentAt: data.status === 'sent' ? new Date() : undefined,
+    sentAt: data.status === "sent" ? new Date() : undefined,
   });
 }
-
 
 // ==========================================
 // User Profile Helpers
@@ -1064,10 +1145,7 @@ export async function updateUserProfile(
     updateData.email = data.email;
   }
 
-  await db
-    .update(users)
-    .set(updateData)
-    .where(eq(users.openId, openId));
+  await db.update(users).set(updateData).where(eq(users.openId, openId));
 
   // Return updated user
   return await getUserByOpenId(openId);
@@ -1076,7 +1154,10 @@ export async function updateUserProfile(
 /**
  * Update user profile picture
  */
-export async function updateUserProfilePicture(openId: string, imageUrl: string) {
+export async function updateUserProfilePicture(
+  openId: string,
+  imageUrl: string
+) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
 
@@ -1092,7 +1173,6 @@ export async function updateUserProfilePicture(openId: string, imageUrl: string)
   return await getUserByOpenId(openId);
 }
 
-
 // ==========================================
 // Consultant System Helpers
 // ==========================================
@@ -1102,7 +1182,7 @@ export async function updateUserProfilePicture(openId: string, imageUrl: string)
 /**
  * Create a new consultant application
  */
-export async function createConsultant(data: Omit<InsertConsultant, 'id'>) {
+export async function createConsultant(data: Omit<InsertConsultant, "id">) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
 
@@ -1160,7 +1240,9 @@ export async function updateConsultant(id: number, data: Partial<Consultant>) {
 /**
  * Upload consultant document
  */
-export async function createConsultantDocument(data: Omit<InsertConsultantDocument, 'id'>) {
+export async function createConsultantDocument(
+  data: Omit<InsertConsultantDocument, "id">
+) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
 
@@ -1241,7 +1323,11 @@ export async function getApprovedConsultants() {
 /**
  * Approve consultant
  */
-export async function approveConsultant(id: number, approvedBy: number, commissionRate?: number) {
+export async function approveConsultant(
+  id: number,
+  approvedBy: number,
+  commissionRate?: number
+) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
 
@@ -1256,10 +1342,7 @@ export async function approveConsultant(id: number, approvedBy: number, commissi
     updateData.commissionRate = commissionRate;
   }
 
-  await db
-    .update(consultants)
-    .set(updateData)
-    .where(eq(consultants.id, id));
+  await db.update(consultants).set(updateData).where(eq(consultants.id, id));
 
   return await getConsultantById(id);
 }
@@ -1282,7 +1365,6 @@ export async function rejectConsultant(id: number, rejectionReason: string) {
 
   return await getConsultantById(id);
 }
-
 
 // ============================================
 // Consultation Messages Functions
@@ -1390,10 +1472,16 @@ export async function createConsultationBooking(data: {
   description: string;
   requiredInfo?: string;
   attachments?: string;
-  status?: "pending" | "confirmed" | "in-progress" | "completed" | "cancelled" | "no-show";
+  status?:
+    | "pending"
+    | "confirmed"
+    | "in-progress"
+    | "completed"
+    | "cancelled"
+    | "no-show";
 }) {
   const db = await getDb();
-  if (!db) throw new Error('Database not available');
+  if (!db) throw new Error("Database not available");
 
   // Generate booking number
   const bookingNumber = `BK-${Date.now()}-${Math.random().toString(36).substring(7).toUpperCase()}`;
@@ -1408,7 +1496,7 @@ export async function createConsultationBooking(data: {
     clientNotes: data.description || null,
     totalAmount: 0, // يمكن حسابه لاحقاً
     finalAmount: 0,
-    status: data.status || 'pending',
+    status: data.status || "pending",
   });
 
   return Number((result as any).insertId || 0);
@@ -1443,18 +1531,18 @@ export async function rateConsultation(data: {
     .from(consultantReviews)
     .where(eq(consultantReviews.consultantId, data.consultantId));
 
-  const avgRating = reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / reviews.length;
+  const avgRating =
+    reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / reviews.length;
   const totalReviews = reviews.length;
 
   await db
     .update(consultants)
-    .set({ 
+    .set({
       averageRating: Math.round(avgRating * 100), // تحويل إلى نظام 500 (5.00 * 100)
       updatedAt: new Date(),
     })
     .where(eq(consultants.id, data.consultantId));
 }
-
 
 // ============================================
 // PDPL Functions (حماية البيانات الشخصية)
@@ -1473,7 +1561,7 @@ export async function saveUserConsent(data: {
   if (!db) return null;
 
   const { users, userConsents } = await import("../drizzle/schema");
-  
+
   const result = await db.insert(userConsents).values({
     userId: data.userId,
     policyVersion: data.policyVersion,
@@ -1495,7 +1583,8 @@ export async function withdrawConsent(userId: number) {
   const { userConsents } = await import("../drizzle/schema");
   const { eq, isNull } = await import("drizzle-orm");
 
-  await db.update(userConsents)
+  await db
+    .update(userConsents)
     .set({ withdrawnAt: new Date() })
     .where(eq(userConsents.userId, userId));
 
@@ -1512,7 +1601,8 @@ export async function getConsentStatus(userId: number) {
   const { userConsents } = await import("../drizzle/schema");
   const { eq, isNull, desc } = await import("drizzle-orm");
 
-  const result = await db.select()
+  const result = await db
+    .select()
     .from(userConsents)
     .where(eq(userConsents.userId, userId))
     .orderBy(desc(userConsents.consentedAt))
@@ -1563,7 +1653,11 @@ export async function getUserAllData(userId: number) {
   const { eq } = await import("drizzle-orm");
 
   // جلب بيانات المستخدم الأساسية
-  const userData = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+  const userData = await db
+    .select()
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1);
 
   if (userData.length === 0) return null;
 
@@ -1620,7 +1714,8 @@ export async function updateSecurityIncident(
   const { securityIncidents } = await import("../drizzle/schema");
   const { eq } = await import("drizzle-orm");
 
-  await db.update(securityIncidents)
+  await db
+    .update(securityIncidents)
     .set(updates)
     .where(eq(securityIncidents.id, incidentId));
 
@@ -1632,7 +1727,12 @@ export async function updateSecurityIncident(
  */
 export async function createDataTransfer(data: {
   customerId?: number;
-  legalBasis: "adequacy" | "scc" | "explicit_consent" | "vital_interest" | "central_processing";
+  legalBasis:
+    | "adequacy"
+    | "scc"
+    | "explicit_consent"
+    | "vital_interest"
+    | "central_processing";
   destinationCountry: string;
   dataCategories?: string;
   riskAssessmentRef?: string;
@@ -1646,6 +1746,3 @@ export async function createDataTransfer(data: {
 
   return result;
 }
-
-
-

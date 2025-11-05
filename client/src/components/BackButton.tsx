@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button';
-import { ArrowRight, Home } from 'lucide-react';
-import { useLocation } from 'wouter';
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Home } from "lucide-react";
+import { useLocation } from "wouter";
 
 interface BackButtonProps {
   to?: string;
@@ -8,10 +8,10 @@ interface BackButtonProps {
   showHomeButton?: boolean;
 }
 
-export function BackButton({ 
-  to, 
-  label = 'الرجوع', 
-  showHomeButton = true 
+export function BackButton({
+  to,
+  label = "الرجوع",
+  showHomeButton = true,
 }: BackButtonProps) {
   const [, setLocation] = useLocation();
 
@@ -21,26 +21,21 @@ export function BackButton({
     } else if (window.history.length > 1) {
       window.history.back();
     } else {
-      setLocation('/');
+      setLocation("/");
     }
   };
 
   const handleHome = () => {
-    setLocation('/');
+    setLocation("/");
   };
 
   return (
     <div className="flex items-center gap-3 mb-6">
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={handleBack}
-        className="gap-2"
-      >
+      <Button variant="ghost" size="sm" onClick={handleBack} className="gap-2">
         <ArrowRight className="h-4 w-4 rotate-180" />
         {label}
       </Button>
-      
+
       {showHomeButton && (
         <Button
           variant="ghost"

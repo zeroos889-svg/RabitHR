@@ -122,9 +122,11 @@ limit_req_zone $binary_remote_addr zone=api:10m rate=100r/m;
 <script async src="https://www.googletagmanager.com/gtag/js?id=GA_ID"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'GA_ID');
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "GA_ID");
 </script>
 ```
 
@@ -174,6 +176,7 @@ location /api {
 ### CDN
 
 استخدم:
+
 - **Cloudflare** (مجاني)
 - **AWS CloudFront**
 - **Bunny CDN**
@@ -182,9 +185,9 @@ location /api {
 
 ## 📝 سجل الإطلاق
 
-| التاريخ | الإصدار | الملاحظات |
-|--------|---------|---------|
-| 2025-11-02 | 1.0.0 | الإطلاق الأول |
+| التاريخ    | الإصدار | الملاحظات     |
+| ---------- | ------- | ------------- |
+| 2025-11-02 | 1.0.0   | الإطلاق الأول |
 
 ---
 

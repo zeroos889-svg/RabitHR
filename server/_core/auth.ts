@@ -39,7 +39,10 @@ export function registerAuthRoutes(app: Express) {
       }
 
       // Verify password
-      const isValid = await verifyPassword(password, userPassword.hashedPassword);
+      const isValid = await verifyPassword(
+        password,
+        userPassword.hashedPassword
+      );
       if (!isValid) {
         res.status(401).json({ error: "Invalid email or password" });
         return;
@@ -57,7 +60,10 @@ export function registerAuthRoutes(app: Express) {
 
       // Set cookie
       const cookieOptions = getSessionCookieOptions(req);
-      res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
+      res.cookie(COOKIE_NAME, sessionToken, {
+        ...cookieOptions,
+        maxAge: ONE_YEAR_MS,
+      });
 
       res.json({
         success: true,
@@ -105,15 +111,16 @@ export function registerAuthRoutes(app: Express) {
       await db.savePassword(userId, hashedPassword);
 
       // Save privacy consent
-      const ipAddress = req.headers['x-forwarded-for'] as string || 
-                       req.headers['x-real-ip'] as string || 
-                       req.socket.remoteAddress || 
-                       'unknown';
-      const userAgent = req.headers['user-agent'] || 'unknown';
-      
+      const ipAddress =
+        (req.headers["x-forwarded-for"] as string) ||
+        (req.headers["x-real-ip"] as string) ||
+        req.socket.remoteAddress ||
+        "unknown";
+      const userAgent = req.headers["user-agent"] || "unknown";
+
       await db.saveUserConsent({
         userId,
-        policyVersion: '1.0',
+        policyVersion: "1.0",
         ipAddress,
         userAgent,
       });
@@ -127,7 +134,10 @@ export function registerAuthRoutes(app: Express) {
 
       // Set cookie
       const cookieOptions = getSessionCookieOptions(req);
-      res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
+      res.cookie(COOKIE_NAME, sessionToken, {
+        ...cookieOptions,
+        maxAge: ONE_YEAR_MS,
+      });
 
       res.json({
         success: true,
@@ -214,7 +224,11 @@ export async function requireAuth(req: Request, res: Response, next: Function) {
 /**
  * Admin authentication middleware
  */
-export async function requireAdmin(req: Request, res: Response, next: Function) {
+export async function requireAdmin(
+  req: Request,
+  res: Response,
+  next: Function
+) {
   const token = req.cookies[COOKIE_NAME];
   if (!token) {
     res.status(401).json({ error: "Not authenticated" });

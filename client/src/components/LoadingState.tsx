@@ -6,10 +6,10 @@ interface LoadingStateProps {
   fullScreen?: boolean;
 }
 
-export function LoadingState({ 
-  message = "جاري التحميل...", 
+export function LoadingState({
+  message = "جاري التحميل...",
   size = "md",
-  fullScreen = false 
+  fullScreen = false,
 }: LoadingStateProps) {
   const sizeClasses = {
     sm: "h-4 w-4",
@@ -25,9 +25,7 @@ export function LoadingState({
     <div className={containerClasses}>
       <div className="flex flex-col items-center gap-4">
         <Loader2 className={`${sizeClasses[size]} animate-spin text-primary`} />
-        {message && (
-          <p className="text-sm text-muted-foreground">{message}</p>
-        )}
+        {message && <p className="text-sm text-muted-foreground">{message}</p>}
       </div>
     </div>
   );

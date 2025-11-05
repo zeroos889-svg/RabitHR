@@ -1,5 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -156,7 +162,10 @@ export default function Reports() {
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
-                          <div className="h-full bg-blue-600" style={{ width: "65%" }}></div>
+                          <div
+                            className="h-full bg-blue-600"
+                            style={{ width: "65%" }}
+                          ></div>
                         </div>
                         <span className="text-sm font-semibold">45</span>
                       </div>
@@ -168,7 +177,10 @@ export default function Reports() {
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
-                          <div className="h-full bg-green-600" style={{ width: "50%" }}></div>
+                          <div
+                            className="h-full bg-green-600"
+                            style={{ width: "50%" }}
+                          ></div>
                         </div>
                         <span className="text-sm font-semibold">35</span>
                       </div>
@@ -180,7 +192,10 @@ export default function Reports() {
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
-                          <div className="h-full bg-purple-600" style={{ width: "40%" }}></div>
+                          <div
+                            className="h-full bg-purple-600"
+                            style={{ width: "40%" }}
+                          ></div>
                         </div>
                         <span className="text-sm font-semibold">28</span>
                       </div>
@@ -192,7 +207,10 @@ export default function Reports() {
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
-                          <div className="h-full bg-yellow-600" style={{ width: "35%" }}></div>
+                          <div
+                            className="h-full bg-yellow-600"
+                            style={{ width: "35%" }}
+                          ></div>
                         </div>
                         <span className="text-sm font-semibold">25</span>
                       </div>
@@ -204,7 +222,10 @@ export default function Reports() {
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
-                          <div className="h-full bg-pink-600" style={{ width: "33%" }}></div>
+                          <div
+                            className="h-full bg-pink-600"
+                            style={{ width: "33%" }}
+                          ></div>
                         </div>
                         <span className="text-sm font-semibold">23</span>
                       </div>
@@ -227,27 +248,42 @@ export default function Reports() {
                       <span className="text-sm">حضور</span>
                       <div className="flex items-center gap-2">
                         <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
-                          <div className="h-full bg-green-600" style={{ width: "92%" }}></div>
+                          <div
+                            className="h-full bg-green-600"
+                            style={{ width: "92%" }}
+                          ></div>
                         </div>
-                        <span className="text-sm font-semibold text-green-600">92%</span>
+                        <span className="text-sm font-semibold text-green-600">
+                          92%
+                        </span>
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-sm">إجازة</span>
                       <div className="flex items-center gap-2">
                         <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
-                          <div className="h-full bg-blue-600" style={{ width: "5%" }}></div>
+                          <div
+                            className="h-full bg-blue-600"
+                            style={{ width: "5%" }}
+                          ></div>
                         </div>
-                        <span className="text-sm font-semibold text-blue-600">5%</span>
+                        <span className="text-sm font-semibold text-blue-600">
+                          5%
+                        </span>
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-sm">غياب</span>
                       <div className="flex items-center gap-2">
                         <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
-                          <div className="h-full bg-red-600" style={{ width: "3%" }}></div>
+                          <div
+                            className="h-full bg-red-600"
+                            style={{ width: "3%" }}
+                          ></div>
                         </div>
-                        <span className="text-sm font-semibold text-red-600">3%</span>
+                        <span className="text-sm font-semibold text-red-600">
+                          3%
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -268,9 +304,17 @@ export default function Reports() {
               <CardContent>
                 <div className="space-y-3">
                   {[
-                    { name: "أحمد محمد", dept: "تقنية المعلومات", date: "2024-11-01" },
+                    {
+                      name: "أحمد محمد",
+                      dept: "تقنية المعلومات",
+                      date: "2024-11-01",
+                    },
                     { name: "فاطمة علي", dept: "المبيعات", date: "2024-10-28" },
-                    { name: "محمد عبدالله", dept: "الموارد البشرية", date: "2024-10-25" },
+                    {
+                      name: "محمد عبدالله",
+                      dept: "الموارد البشرية",
+                      date: "2024-10-25",
+                    },
                     { name: "سارة خالد", dept: "التسويق", date: "2024-10-20" },
                     { name: "خالد أحمد", dept: "المالية", date: "2024-10-15" },
                   ].map((emp, idx) => (
@@ -280,9 +324,13 @@ export default function Reports() {
                     >
                       <div>
                         <p className="font-semibold">{emp.name}</p>
-                        <p className="text-sm text-muted-foreground">{emp.dept}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {emp.dept}
+                        </p>
                       </div>
-                      <span className="text-sm text-muted-foreground">{emp.date}</span>
+                      <span className="text-sm text-muted-foreground">
+                        {emp.date}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -303,28 +351,40 @@ export default function Reports() {
               <Card>
                 <CardHeader className="pb-2">
                   <CardDescription>إجمالي الرواتب الشهرية</CardDescription>
-                  <CardTitle className="text-2xl text-green-600">﷼ 2,450,000</CardTitle>
+                  <CardTitle className="text-2xl text-green-600">
+                    ﷼ 2,450,000
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">متوسط الراتب: ﷼ 15,705</p>
+                  <p className="text-xs text-muted-foreground">
+                    متوسط الراتب: ﷼ 15,705
+                  </p>
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader className="pb-2">
                   <CardDescription>البدلات والمكافآت</CardDescription>
-                  <CardTitle className="text-2xl text-blue-600">﷼ 320,000</CardTitle>
+                  <CardTitle className="text-2xl text-blue-600">
+                    ﷼ 320,000
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">13% من إجمالي الرواتب</p>
+                  <p className="text-xs text-muted-foreground">
+                    13% من إجمالي الرواتب
+                  </p>
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader className="pb-2">
                   <CardDescription>الخصومات</CardDescription>
-                  <CardTitle className="text-2xl text-red-600">﷼ 180,000</CardTitle>
+                  <CardTitle className="text-2xl text-red-600">
+                    ﷼ 180,000
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">7.3% من إجمالي الرواتب</p>
+                  <p className="text-xs text-muted-foreground">
+                    7.3% من إجمالي الرواتب
+                  </p>
                 </CardContent>
               </Card>
             </div>
@@ -337,13 +397,24 @@ export default function Reports() {
               <CardContent>
                 <div className="space-y-4">
                   {[
-                    { dept: "تقنية المعلومات", amount: "﷼ 850,000", percent: 35 },
+                    {
+                      dept: "تقنية المعلومات",
+                      amount: "﷼ 850,000",
+                      percent: 35,
+                    },
                     { dept: "المبيعات", amount: "﷼ 650,000", percent: 27 },
-                    { dept: "الموارد البشرية", amount: "﷼ 420,000", percent: 17 },
+                    {
+                      dept: "الموارد البشرية",
+                      amount: "﷼ 420,000",
+                      percent: 17,
+                    },
                     { dept: "المالية", amount: "﷼ 350,000", percent: 14 },
                     { dept: "التسويق", amount: "﷼ 180,000", percent: 7 },
                   ].map((item, idx) => (
-                    <div key={idx} className="flex items-center justify-between">
+                    <div
+                      key={idx}
+                      className="flex items-center justify-between"
+                    >
                       <span className="text-sm font-medium">{item.dept}</span>
                       <div className="flex items-center gap-4">
                         <div className="w-48 h-2 bg-gray-200 rounded-full overflow-hidden">
@@ -379,7 +450,9 @@ export default function Reports() {
                   <CardTitle className="text-2xl text-blue-600">142</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">41% من الإجمالي</p>
+                  <p className="text-xs text-muted-foreground">
+                    41% من الإجمالي
+                  </p>
                 </CardContent>
               </Card>
               <Card>
@@ -388,7 +461,9 @@ export default function Reports() {
                   <CardTitle className="text-2xl text-yellow-600">89</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">26% من الإجمالي</p>
+                  <p className="text-xs text-muted-foreground">
+                    26% من الإجمالي
+                  </p>
                 </CardContent>
               </Card>
               <Card>
@@ -397,7 +472,9 @@ export default function Reports() {
                   <CardTitle className="text-2xl text-red-600">67</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">20% من الإجمالي</p>
+                  <p className="text-xs text-muted-foreground">
+                    20% من الإجمالي
+                  </p>
                 </CardContent>
               </Card>
               <Card>
@@ -406,7 +483,9 @@ export default function Reports() {
                   <CardTitle className="text-2xl text-purple-600">44</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">13% من الإجمالي</p>
+                  <p className="text-xs text-muted-foreground">
+                    13% من الإجمالي
+                  </p>
                 </CardContent>
               </Card>
             </div>
@@ -430,12 +509,17 @@ export default function Reports() {
                     { month: "سبتمبر", count: 30 },
                     { month: "أكتوبر", count: 27 },
                   ].map((item, idx) => (
-                    <div key={idx} className="flex-1 flex flex-col items-center gap-2">
+                    <div
+                      key={idx}
+                      className="flex-1 flex flex-col items-center gap-2"
+                    >
                       <div
                         className="w-full bg-gradient-to-t from-blue-600 to-blue-400 rounded-t-lg"
                         style={{ height: `${(item.count / 45) * 100}%` }}
                       ></div>
-                      <span className="text-xs text-muted-foreground">{item.month}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {item.month}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -459,7 +543,9 @@ export default function Reports() {
                   <CardTitle className="text-2xl text-purple-600">18</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">في 8 أقسام مختلفة</p>
+                  <p className="text-xs text-muted-foreground">
+                    في 8 أقسام مختلفة
+                  </p>
                 </CardContent>
               </Card>
               <Card>
@@ -468,7 +554,9 @@ export default function Reports() {
                   <CardTitle className="text-2xl text-blue-600">342</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">متوسط 19 لكل وظيفة</p>
+                  <p className="text-xs text-muted-foreground">
+                    متوسط 19 لكل وظيفة
+                  </p>
                 </CardContent>
               </Card>
               <Card>
@@ -477,7 +565,9 @@ export default function Reports() {
                   <CardTitle className="text-2xl text-yellow-600">89</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">26% من المتقدمين</p>
+                  <p className="text-xs text-muted-foreground">
+                    26% من المتقدمين
+                  </p>
                 </CardContent>
               </Card>
               <Card>
@@ -486,7 +576,9 @@ export default function Reports() {
                   <CardTitle className="text-2xl text-green-600">12</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">معدل قبول 3.5%</p>
+                  <p className="text-xs text-muted-foreground">
+                    معدل قبول 3.5%
+                  </p>
                 </CardContent>
               </Card>
             </div>
@@ -505,7 +597,10 @@ export default function Reports() {
                     { stage: "مقابلة فنية", count: 28, color: "orange" },
                     { stage: "عرض توظيف", count: 17, color: "green" },
                   ].map((item, idx) => (
-                    <div key={idx} className="flex items-center justify-between">
+                    <div
+                      key={idx}
+                      className="flex items-center justify-between"
+                    >
                       <span className="text-sm font-medium">{item.stage}</span>
                       <div className="flex items-center gap-4">
                         <div className="w-48 h-2 bg-gray-200 rounded-full overflow-hidden">
@@ -550,7 +645,9 @@ export default function Reports() {
                   <CardTitle className="text-2xl text-blue-600">23</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">26% من الإجمالي</p>
+                  <p className="text-xs text-muted-foreground">
+                    26% من الإجمالي
+                  </p>
                 </CardContent>
               </Card>
               <Card>
@@ -559,13 +656,17 @@ export default function Reports() {
                   <CardTitle className="text-2xl text-green-600">58</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">67% من الإجمالي</p>
+                  <p className="text-xs text-muted-foreground">
+                    67% من الإجمالي
+                  </p>
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader className="pb-2">
                   <CardDescription>متوسط وقت الحل</CardDescription>
-                  <CardTitle className="text-2xl text-purple-600">2.3</CardTitle>
+                  <CardTitle className="text-2xl text-purple-600">
+                    2.3
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-xs text-muted-foreground">يوم عمل</p>
@@ -576,7 +677,9 @@ export default function Reports() {
             <Card>
               <CardHeader>
                 <CardTitle>التذاكر حسب الفئة</CardTitle>
-                <CardDescription>توزيع التذاكر على الفئات المختلفة</CardDescription>
+                <CardDescription>
+                  توزيع التذاكر على الفئات المختلفة
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -587,8 +690,13 @@ export default function Reports() {
                     { category: "بيانات شخصية", count: 12, color: "purple" },
                     { category: "أخرى", count: 10, color: "gray" },
                   ].map((item, idx) => (
-                    <div key={idx} className="flex items-center justify-between">
-                      <span className="text-sm font-medium">{item.category}</span>
+                    <div
+                      key={idx}
+                      className="flex items-center justify-between"
+                    >
+                      <span className="text-sm font-medium">
+                        {item.category}
+                      </span>
                       <div className="flex items-center gap-4">
                         <div className="w-48 h-2 bg-gray-200 rounded-full overflow-hidden">
                           <div

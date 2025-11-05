@@ -1,4 +1,4 @@
-import * as db from '../db';
+import * as db from "../db";
 
 /**
  * Email Service using Resend API
@@ -26,13 +26,13 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
       toEmail: to,
       subject,
       template,
-      status: 'pending',
+      status: "pending",
     });
 
     // TODO: Integrate with actual email service (Resend, SendGrid, etc.)
     // For now, we'll just log it
-    console.log('[Email Service] Sending email:', { to, subject });
-    
+    console.log("[Email Service] Sending email:", { to, subject });
+
     // Simulate email sending
     // In production, replace this with actual API call:
     // const response = await fetch('https://api.resend.com/emails', {
@@ -55,20 +55,20 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
       toEmail: to,
       subject,
       template,
-      status: 'sent',
+      status: "sent",
     });
 
     return true;
   } catch (error: any) {
-    console.error('[Email Service] Error:', error);
-    
+    console.error("[Email Service] Error:", error);
+
     // Log the error
     await db.logEmail({
       userId,
       toEmail: to,
       subject,
       template,
-      status: 'failed',
+      status: "failed",
       errorMessage: error.message,
     });
 
@@ -109,7 +109,7 @@ export function getWelcomeEmailHTML(name: string): string {
         <li>المساعد الذكي</li>
       </ul>
       <div style="text-align: center; margin: 30px 0;">
-        <a href="${process.env.VITE_APP_URL || 'https://rabit-hr.com'}" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 40px; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold;">
+        <a href="${process.env.VITE_APP_URL || "https://rabit-hr.com"}" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 40px; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold;">
           ابدأ الآن
         </a>
       </div>
@@ -166,7 +166,7 @@ export function getBookingConfirmationHTML(data: {
         سيتم التواصل معك قريباً من قبل المستشار المختص.
       </p>
       <div style="text-align: center; margin: 30px 0;">
-        <a href="${process.env.VITE_APP_URL || 'https://rabit-hr.com'}/my-consultations" style="display: inline-block; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 15px 40px; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold;">
+        <a href="${process.env.VITE_APP_URL || "https://rabit-hr.com"}/my-consultations" style="display: inline-block; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 15px 40px; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold;">
           عرض حجوزاتي
         </a>
       </div>
@@ -206,7 +206,7 @@ export function getResponseNotificationHTML(data: {
         </p>
       </div>
       <div style="text-align: center; margin: 30px 0;">
-        <a href="${process.env.VITE_APP_URL || 'https://rabit-hr.com'}/consultations/${data.ticketId}" style="display: inline-block; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; padding: 15px 40px; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold;">
+        <a href="${process.env.VITE_APP_URL || "https://rabit-hr.com"}/consultations/${data.ticketId}" style="display: inline-block; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; padding: 15px 40px; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold;">
           عرض الرد الكامل
         </a>
       </div>
@@ -217,16 +217,18 @@ export function getResponseNotificationHTML(data: {
   `;
 }
 
-
 /**
  * Send welcome email to new users
  */
-export async function sendWelcomeEmail(data: { to: string; name: string }): Promise<boolean> {
+export async function sendWelcomeEmail(data: {
+  to: string;
+  name: string;
+}): Promise<boolean> {
   return sendEmail({
     to: data.to,
-    subject: 'مرحباً بك في رابِط - مساعدك الذكي للموارد البشرية',
+    subject: "مرحباً بك في رابِط - مساعدك الذكي للموارد البشرية",
     html: getWelcomeEmailHTML(data.name),
-    template: 'welcome',
+    template: "welcome",
   });
 }
 
@@ -242,9 +244,9 @@ export async function sendBookingConfirmationEmail(data: {
 }): Promise<boolean> {
   return sendEmail({
     to: data.to,
-    subject: 'تأكيد حجز الاستشارة - رابِط',
+    subject: "تأكيد حجز الاستشارة - رابِط",
     html: getBookingConfirmationHTML(data),
-    template: 'booking_confirmation',
+    template: "booking_confirmation",
   });
 }
 
@@ -260,8 +262,8 @@ export async function sendResponseNotificationEmail(data: {
 }): Promise<boolean> {
   return sendEmail({
     to: data.to,
-    subject: 'رد جديد على استشارتك - رابِط',
+    subject: "رد جديد على استشارتك - رابِط",
     html: getResponseNotificationHTML(data),
-    template: 'response_notification',
+    template: "response_notification",
   });
 }

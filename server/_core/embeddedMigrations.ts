@@ -559,10 +559,9 @@ export async function runEmbeddedMigrations(connection: any) {
     console.log("[Embedded Migrations] Starting...");
 
     // Split by semicolon and execute each statement
-    const statements = EMBEDDED_MIGRATIONS
-      .split(";")
-      .map((s) => s.trim())
-      .filter((s) => s.length > 0);
+    const statements = EMBEDDED_MIGRATIONS.split(";")
+      .map(s => s.trim())
+      .filter(s => s.length > 0);
 
     console.log(`[Embedded Migrations] Found ${statements.length} statements`);
 
@@ -572,7 +571,10 @@ export async function runEmbeddedMigrations(connection: any) {
         await (connection as any).query(statement);
       } catch (error: any) {
         // Ignore "table already exists" errors
-        if (error.code === 'ER_TABLE_EXISTS_ERROR' || error.message?.includes('already exists')) {
+        if (
+          error.code === "ER_TABLE_EXISTS_ERROR" ||
+          error.message?.includes("already exists")
+        ) {
           console.log(`[Embedded Migrations] ✓ Table already exists (skipped)`);
           continue;
         }
@@ -580,7 +582,9 @@ export async function runEmbeddedMigrations(connection: any) {
       }
     }
 
-    console.log("[Embedded Migrations] ✓ All migrations completed successfully");
+    console.log(
+      "[Embedded Migrations] ✓ All migrations completed successfully"
+    );
     return true;
   } catch (error) {
     console.error("[Embedded Migrations] ✗ Failed:", error);

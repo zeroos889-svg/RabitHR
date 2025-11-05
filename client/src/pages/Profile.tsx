@@ -2,39 +2,48 @@ import React, { useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
-import { 
-  User, 
-  Mail, 
-  Calendar, 
-  Clock, 
-  Upload, 
+import {
+  User,
+  Mail,
+  Calendar,
+  Clock,
+  Upload,
   Loader2,
   Save,
   Shield,
-  Camera
+  Camera,
 } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 
 export default function Profile() {
-  const { user, loading: authLoading } = useAuth({ redirectOnUnauthenticated: true });
+  const { user, loading: authLoading } = useAuth({
+    redirectOnUnauthenticated: true,
+  });
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
   // Get profile data
-  const { data: profileData, isLoading: profileLoading, refetch } = trpc.profile.getProfile.useQuery(
-    undefined,
-    {
-      enabled: !!user,
-    }
-  );
+  const {
+    data: profileData,
+    isLoading: profileLoading,
+    refetch,
+  } = trpc.profile.getProfile.useQuery(undefined, {
+    enabled: !!user,
+  });
 
   // Update form when profile data changes
   React.useEffect(() => {
@@ -51,7 +60,7 @@ export default function Profile() {
       setIsEditing(false);
       refetch();
     },
-    onError: (error) => {
+    onError: error => {
       toast.error("فشل تحديث الملف الشخصي: " + error.message);
     },
   });
@@ -60,15 +69,16 @@ export default function Profile() {
   const uploadFileMutation = trpc.consulting.uploadFile.useMutation();
 
   // Upload profile picture mutation
-  const uploadProfilePictureMutation = trpc.profile.uploadProfilePicture.useMutation({
-    onSuccess: () => {
-      toast.success("تم تحديث صورة الملف الشخصي بنجاح");
-      refetch();
-    },
-    onError: (error) => {
-      toast.error("فشل تحديث الصورة: " + error.message);
-    },
-  });
+  const uploadProfilePictureMutation =
+    trpc.profile.uploadProfilePicture.useMutation({
+      onSuccess: () => {
+        toast.success("تم تحديث صورة الملف الشخصي بنجاح");
+        refetch();
+      },
+      onError: error => {
+        toast.error("فشل تحديث الصورة: " + error.message);
+      },
+    });
 
   const handleSave = () => {
     updateProfileMutation.mutate({
@@ -96,7 +106,7 @@ export default function Profile() {
     }
 
     // Check file type
-    if (!file.type.startsWith('image/')) {
+    if (!file.type.startsWith("image/")) {
       toast.error("يجب أن يكون الملف صورة");
       return;
     }
@@ -106,7 +116,7 @@ export default function Profile() {
       const reader = new FileReader();
       reader.onloadend = async () => {
         const base64 = reader.result as string;
-        
+
         // Upload to S3
         const uploadResult = await uploadFileMutation.mutateAsync({
           fileName: file.name,
@@ -121,7 +131,7 @@ export default function Profile() {
       };
       reader.readAsDataURL(file);
     } catch (error) {
-      console.error('Error uploading image:', error);
+      console.error("Error uploading image:", error);
     }
   };
 
@@ -156,12 +166,14 @@ export default function Profile() {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-primary/5 via-background to-secondary/5">
       <Header />
-      
+
       <main className="flex-1 container py-8">
         <div className="max-w-4xl mx-auto space-y-6">
           {/* Header */}
           <div>
-            <h1 className="text-3xl font-bold text-gradient-primary">الملف الشخصي</h1>
+            <h1 className="text-3xl font-bold text-gradient-primary">
+              الملف الشخصي
+            </h1>
             <p className="text-muted-foreground mt-2">
               إدارة معلوماتك الشخصية وإعدادات حسابك
             </p>
@@ -174,7 +186,9 @@ export default function Profile() {
                 <div className="flex items-center gap-4">
                   <div className="relative">
                     <Avatar className="h-20 w-20">
-                      <AvatarImage src={userData?.profilePicture || undefined} />
+                      <AvatarImage
+                        src={userData?.profilePicture || undefined}
+                      />
                       <AvatarFallback className="text-2xl bg-gradient-primary text-white">
                         {getInitials(userData?.name || null)}
                       </AvatarFallback>
@@ -190,17 +204,23 @@ export default function Profile() {
                         accept="image/*"
                         className="hidden"
                         onChange={handleImageUpload}
-                        disabled={uploadFileMutation.isPending || uploadProfilePictureMutation.isPending}
+                        disabled={
+                          uploadFileMutation.isPending ||
+                          uploadProfilePictureMutation.isPending
+                        }
                       />
                     </label>
-                    {(uploadFileMutation.isPending || uploadProfilePictureMutation.isPending) && (
+                    {(uploadFileMutation.isPending ||
+                      uploadProfilePictureMutation.isPending) && (
                       <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
                         <Loader2 className="h-6 w-6 animate-spin text-white" />
                       </div>
                     )}
                   </div>
                   <div>
-                    <CardTitle className="text-2xl">{userData?.name || "مستخدم"}</CardTitle>
+                    <CardTitle className="text-2xl">
+                      {userData?.name || "مستخدم"}
+                    </CardTitle>
                     <CardDescription className="flex items-center gap-2 mt-1">
                       <Mail className="h-4 w-4" />
                       {userData?.email || "لا يوجد بريد إلكتروني"}
@@ -227,7 +247,7 @@ export default function Profile() {
                       <Input
                         id="name"
                         value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        onChange={e => setName(e.target.value)}
                         placeholder="أدخل اسمك الكامل"
                         className="pr-10"
                       />
@@ -242,7 +262,7 @@ export default function Profile() {
                         id="email"
                         type="email"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={e => setEmail(e.target.value)}
                         placeholder="example@company.com"
                         className="pr-10"
                       />
@@ -284,7 +304,9 @@ export default function Profile() {
                         <User className="h-4 w-4" />
                         <span>الاسم الكامل</span>
                       </div>
-                      <p className="text-lg font-medium">{userData?.name || "غير محدد"}</p>
+                      <p className="text-lg font-medium">
+                        {userData?.name || "غير محدد"}
+                      </p>
                     </div>
 
                     <div>
@@ -292,7 +314,9 @@ export default function Profile() {
                         <Mail className="h-4 w-4" />
                         <span>البريد الإلكتروني</span>
                       </div>
-                      <p className="text-lg font-medium">{userData?.email || "غير محدد"}</p>
+                      <p className="text-lg font-medium">
+                        {userData?.email || "غير محدد"}
+                      </p>
                     </div>
 
                     <div>
@@ -336,23 +360,31 @@ export default function Profile() {
           <Card>
             <CardHeader>
               <CardTitle>معلومات الحساب</CardTitle>
-              <CardDescription>
-                معلومات إضافية حول حسابك ونشاطك
-              </CardDescription>
+              <CardDescription>معلومات إضافية حول حسابك ونشاطك</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="flex items-center justify-between py-3 border-b">
-                  <span className="text-sm text-muted-foreground">معرف المستخدم</span>
+                  <span className="text-sm text-muted-foreground">
+                    معرف المستخدم
+                  </span>
                   <span className="font-mono text-sm">{userData?.id}</span>
                 </div>
                 <div className="flex items-center justify-between py-3 border-b">
-                  <span className="text-sm text-muted-foreground">طريقة تسجيل الدخول</span>
-                  <span className="text-sm">{userData?.loginMethod || "Manus OAuth"}</span>
+                  <span className="text-sm text-muted-foreground">
+                    طريقة تسجيل الدخول
+                  </span>
+                  <span className="text-sm">
+                    {userData?.loginMethod || "Manus OAuth"}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between py-3">
-                  <span className="text-sm text-muted-foreground">حالة الحساب</span>
-                  <span className="text-sm text-green-600 font-medium">نشط</span>
+                  <span className="text-sm text-muted-foreground">
+                    حالة الحساب
+                  </span>
+                  <span className="text-sm text-green-600 font-medium">
+                    نشط
+                  </span>
                 </div>
               </div>
             </CardContent>

@@ -1,22 +1,22 @@
-import fs from 'fs';
-import path from 'path';
-import mysql from 'mysql2/promise';
-import dotenv from 'dotenv';
+import fs from "fs";
+import path from "path";
+import mysql from "mysql2/promise";
+import dotenv from "dotenv";
 
 dotenv.config();
 
 const DATABASE_URL = process.env.DATABASE_URL;
 if (!DATABASE_URL) {
-  console.error('❌ DATABASE_URL is not set in environment');
+  console.error("❌ DATABASE_URL is not set in environment");
   process.exit(1);
 }
 
 async function dump() {
-  const outDir = path.resolve(process.cwd(), 'backups');
+  const outDir = path.resolve(process.cwd(), "backups");
   if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
-  const ts = new Date().toISOString().replace(/[:.]/g, '-');
+  const ts = new Date().toISOString().replace(/[:.]/g, "-");
   const outFile = path.join(outDir, `railway_dump_${ts}.sql`);
-  const ws = fs.createWriteStream(outFile, { encoding: 'utf8' });
+  const ws = fs.createWriteStream(outFile, { encoding: "utf8" });
 
   const conn = await mysql.createConnection(DATABASE_URL);
   try {
@@ -38,8 +38,11 @@ async function dump() {
 
       // CREATE TABLE
       const [[createRow]] = await conn.query(`SHOW CREATE TABLE \`${tbl}\``);
-      const createSql = createRow['Create Table'] || createRow['Create View'] || Object.values(createRow)[1];
-      ws.write(createSql + ';\n\n');
+      const createSql =
+        createRow["Create Table"] ||
+        createRow["Create View"] ||
+        Object.values(createRow)[1];
+      ws.write(createSql + ";\n\n");
 
       // Dump data
       ws.write(`-- ----------------------------\n`);
@@ -54,32 +57,34 @@ async function dump() {
 
       // Column names
       const cols = Object.keys(rows[0]);
-      const colList = cols.map(c => `\`${c}\``).join(', ');
+      const colList = cols.map(c => `\`${c}\``).join(", ");
 
       // Write INSERTs in batches
       const batchSize = 100;
       for (let i = 0; i < rows.length; i += batchSize) {
         const chunk = rows.slice(i, i + batchSize);
-        const values = chunk.map(r => {
-          const vals = cols.map(c => {
-            const v = r[c];
-            if (v === null || v === undefined) return 'NULL';
-            if (typeof v === 'number') return v;
-            // escape single quotes and backslashes
-            const s = String(v).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
-            return `'${s}'`;
-          });
-          return `(${vals.join(', ')})`;
-        }).join(',\n');
+        const values = chunk
+          .map(r => {
+            const vals = cols.map(c => {
+              const v = r[c];
+              if (v === null || v === undefined) return "NULL";
+              if (typeof v === "number") return v;
+              // escape single quotes and backslashes
+              const s = String(v).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+              return `'${s}'`;
+            });
+            return `(${vals.join(", ")})`;
+          })
+          .join(",\n");
 
         ws.write(`INSERT INTO \`${tbl}\` (${colList}) VALUES\n${values};\n`);
       }
-      ws.write('\n');
+      ws.write("\n");
     }
 
-    console.log('✅ Dump written to', outFile);
+    console.log("✅ Dump written to", outFile);
   } catch (err) {
-    console.error('❌ Dump failed:', err.message || err);
+    console.error("❌ Dump failed:", err.message || err);
     process.exitCode = 1;
   } finally {
     await conn.end();
