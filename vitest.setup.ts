@@ -1,8 +1,13 @@
-import "@testing-library/jest-dom";
-import { cleanup } from "@testing-library/react";
-import { afterEach } from "vitest";
-
-// تنظيف بعد كل اختبار
-afterEach(() => {
-  cleanup();
-});
+// Conditional setup based on test environment
+// Only load React testing library for client tests
+if (typeof window !== "undefined") {
+  // Client-side tests
+  import("@testing-library/jest-dom");
+  const { cleanup } = await import("@testing-library/react");
+  const { afterEach } = await import("vitest");
+  
+  // تنظيف بعد كل اختبار
+  afterEach(() => {
+    cleanup();
+  });
+}
