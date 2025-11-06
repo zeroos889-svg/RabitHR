@@ -5,7 +5,7 @@ import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 interface ErrorMessageProps {
   title?: string;
   message: string;
-  variant?: "default" | "destructive" | "warning";
+  variant?: "default" | "destructive";
   onRetry?: () => void;
   retryText?: string;
   fullScreen?: boolean;
@@ -23,8 +23,8 @@ export function ErrorMessage({
 }: ErrorMessageProps) {
   const getIcon = () => {
     if (!showIcon) return null;
-    
-    if (variant === "warning") {
+
+    if (variant === "default") {
       return <AlertCircle className="h-5 w-5" />;
     }
     return <XCircle className="h-5 w-5" />;
@@ -97,29 +97,30 @@ function translateErrorMessage(message: string): string {
     // Network errors
     "Network Error": "خطأ في الاتصال بالشبكة. تحقق من اتصالك بالإنترنت.",
     "Failed to fetch": "فشل الاتصال بالخادم. تحقق من اتصالك بالإنترنت.",
-    "timeout": "انتهت مهلة الاتصال. الرجاء المحاولة مرة أخرى.",
-    
+    timeout: "انتهت مهلة الاتصال. الرجاء المحاولة مرة أخرى.",
+
     // Authentication errors
-    "Unauthorized": "جلستك انتهت. الرجاء تسجيل الدخول مرة أخرى.",
+    Unauthorized: "جلستك انتهت. الرجاء تسجيل الدخول مرة أخرى.",
     "Invalid credentials": "بيانات الدخول غير صحيحة.",
     "Token expired": "انتهت صلاحية جلستك. الرجاء تسجيل الدخول مرة أخرى.",
-    
+
     // Validation errors
-    "Validation failed": "البيانات المدخلة غير صحيحة. الرجاء التحقق من المعلومات.",
+    "Validation failed":
+      "البيانات المدخلة غير صحيحة. الرجاء التحقق من المعلومات.",
     "Required field": "هذا الحقل مطلوب.",
     "Invalid email": "البريد الإلكتروني غير صحيح.",
     "Password too short": "كلمة المرور قصيرة جداً.",
-    
+
     // Server errors
     "Internal Server Error": "خطأ في الخادم. فريق الدعم يعمل على حل المشكلة.",
     "Service Unavailable": "الخدمة غير متوفرة حالياً. الرجاء المحاولة لاحقاً.",
     "Bad Gateway": "خطأ في الاتصال بالخادم. الرجاء المحاولة لاحقاً.",
-    
+
     // Resource errors
     "Not Found": "المورد المطلوب غير موجود.",
     "Already exists": "هذا العنصر موجود مسبقاً.",
     "Permission denied": "ليس لديك صلاحية للقيام بهذا الإجراء.",
-    
+
     // Payment errors
     "Payment failed": "فشلت عملية الدفع. الرجاء المحاولة مرة أخرى.",
     "Insufficient funds": "الرصيد غير كافٍ.",
