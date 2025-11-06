@@ -3,7 +3,7 @@ import { performanceMonitor } from "@/lib/performance";
 
 /**
  * Hook to monitor component performance
- * 
+ *
  * @example
  * function MyComponent() {
  *   usePerformanceMonitor("MyComponent");
@@ -44,7 +44,7 @@ export function usePerformanceMonitor(componentName: string) {
 
 /**
  * Hook to measure effect performance
- * 
+ *
  * @example
  * usePerformanceEffect(() => {
  *   // expensive operation

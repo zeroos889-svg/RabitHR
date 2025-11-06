@@ -64,12 +64,12 @@ export const toast = {
     });
   },
 
-  promise: <T,>(
+  promise: <T>(
     promise: Promise<T>,
     messages: {
       loading: string;
-      success: string | ((data: T) => string);
-      error: string | ((error: unknown) => string);
+      success: string | ((_data: T) => string);
+      error: string | ((_error: unknown) => string);
     }
   ) => {
     return sonnerToast.promise(promise, {

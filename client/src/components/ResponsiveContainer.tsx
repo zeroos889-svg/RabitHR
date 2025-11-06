@@ -33,20 +33,20 @@ interface ResponsiveContainerProps {
 
 /**
  * Responsive Container Component
- * 
+ *
  * Conditionally renders children based on viewport size
- * 
+ *
  * @example
  * // Show only on mobile
  * <ResponsiveContainer mobile>
  *   <MobileMenu />
  * </ResponsiveContainer>
- * 
+ *
  * // Hide on mobile
  * <ResponsiveContainer hideMobile>
  *   <DesktopSidebar />
  * </ResponsiveContainer>
- * 
+ *
  * // Show only on desktop
  * <ResponsiveContainer desktop>
  *   <DesktopFeatures />

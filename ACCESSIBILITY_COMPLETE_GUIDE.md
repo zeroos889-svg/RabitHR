@@ -1,4 +1,5 @@
 # دليل Accessibility الشامل - RabitHR Platform
+
 ## A11y Complete Implementation Guide
 
 ---
@@ -17,16 +18,19 @@
 ## ✅ ما تم تطبيقه
 
 ### 1. Loading States
+
 - ✅ `aria-live="polite"` للتحديثات التلقائية
 - ✅ `role="status"` للـ status messages
 - ✅ Screen reader announcements
 
 ### 2. Error Messages
+
 - ✅ `aria-label` واضحة بالعربية
 - ✅ `role="alert"` للأخطاء الحرجة
 - ✅ Error associations مع inputs
 
 ### 3. Buttons & Links
+
 - ✅ Descriptive labels
 - ✅ `aria-label` عند الحاجة
 - ✅ Focus visible styles
@@ -53,7 +57,7 @@ Home/End     - أول/آخر عنصر
 ```tsx
 // Auto-focus on modal open
 <Dialog
-  onOpenChange={(open) => {
+  onOpenChange={open => {
     if (open) {
       // Focus first input
       setTimeout(() => {
@@ -75,6 +79,7 @@ Home/End     - أول/آخر عنصر
 ### قواعد التطبيق
 
 #### 1. Buttons بدون نص مرئي
+
 ```tsx
 // ✅ Good
 <Button aria-label="إغلاق">
@@ -88,6 +93,7 @@ Home/End     - أول/آخر عنصر
 ```
 
 #### 2. Form Inputs
+
 ```tsx
 // ✅ Good - with label
 <label htmlFor="email">
@@ -111,6 +117,7 @@ Home/End     - أول/آخر عنصر
 ```
 
 #### 3. Dynamic Content
+
 ```tsx
 // ✅ Good - announces updates
 <div aria-live="polite" aria-atomic="true">
@@ -125,6 +132,7 @@ Home/End     - أول/آخر عنصر
 ```
 
 #### 4. Navigation
+
 ```tsx
 // ✅ Good - semantic HTML
 <nav aria-label="القائمة الرئيسية">
@@ -145,6 +153,7 @@ Home/End     - أول/آخر عنصر
 ```
 
 #### 5. Modals & Dialogs
+
 ```tsx
 // ✅ Good - proper modal
 <Dialog>
@@ -153,12 +162,8 @@ Home/End     - أول/آخر عنصر
     aria-labelledby="dialog-title"
     aria-describedby="dialog-description"
   >
-    <DialogTitle id="dialog-title">
-      عنوان النافذة
-    </DialogTitle>
-    <DialogDescription id="dialog-description">
-      وصف المحتوى
-    </DialogDescription>
+    <DialogTitle id="dialog-title">عنوان النافذة</DialogTitle>
+    <DialogDescription id="dialog-description">وصف المحتوى</DialogDescription>
   </DialogContent>
 </Dialog>
 ```
@@ -233,6 +238,7 @@ UI Components:           >= 3:1
 ```
 
 **المطبق في المشروع:**
+
 - ✅ `text-foreground` on `background`: 4.5:1+
 - ✅ `text-primary` on `primary-foreground`: 4.5:1+
 - ✅ `text-muted-foreground`: 4.5:1+
@@ -276,6 +282,7 @@ Ideal: 52x52px (comfortable)
 ```
 
 **المطبق:**
+
 ```tsx
 // ✅ All interactive elements
 <Button className="min-h-[44px] min-w-[44px]">
@@ -310,18 +317,21 @@ if (process.env.NODE_ENV !== 'production') {
 ### Manual Testing
 
 **Keyboard:**
+
 1. ✅ Tab through all interactive elements
 2. ✅ Verify logical tab order
 3. ✅ Test all keyboard shortcuts
 4. ✅ Ensure no keyboard traps
 
 **Screen Reader:**
+
 1. ✅ NVDA (Windows)
 2. ✅ JAWS (Windows)
 3. ✅ VoiceOver (macOS, iOS)
 4. ✅ TalkBack (Android)
 
 **Browser DevTools:**
+
 1. ✅ Lighthouse Accessibility audit
 2. ✅ Chrome DevTools - Accessibility pane
 3. ✅ Firefox Accessibility Inspector
@@ -331,6 +341,7 @@ if (process.env.NODE_ENV !== 'production') {
 ## ✅ Checklist
 
 ### Semantic HTML
+
 - [x] Use proper heading hierarchy (h1 > h2 > h3)
 - [x] Use `<nav>` for navigation
 - [x] Use `<main>` for main content
@@ -339,6 +350,7 @@ if (process.env.NODE_ENV !== 'production') {
 - [x] Use `<a>` for links only
 
 ### Forms
+
 - [x] All inputs have labels
 - [x] Use `<label>` element or `aria-label`
 - [x] Required fields marked with `aria-required`
@@ -347,12 +359,14 @@ if (process.env.NODE_ENV !== 'production') {
 - [x] Autocomplete attributes where applicable
 
 ### Images
+
 - [x] All images have `alt` text
 - [x] Decorative images: `alt=""`
 - [x] Complex images: detailed description
 - [x] SVG icons have `aria-label` or `role="img"`
 
 ### Navigation
+
 - [x] Skip links for keyboard users
 - [x] Logical tab order
 - [x] Current page indicated
@@ -360,6 +374,7 @@ if (process.env.NODE_ENV !== 'production') {
 - [x] Landmarks (nav, main, aside, footer)
 
 ### Interactive Elements
+
 - [x] Visible focus indicators
 - [x] Touch targets >= 44x44px
 - [x] Adequate spacing between targets
@@ -367,12 +382,14 @@ if (process.env.NODE_ENV !== 'production') {
 - [x] Support Enter and Space keys
 
 ### Dynamic Content
+
 - [x] ARIA live regions for updates
 - [x] Loading states announced
 - [x] Errors announced immediately
 - [x] Success messages announced
 
 ### Color & Contrast
+
 - [x] Text contrast >= 4.5:1
 - [x] UI component contrast >= 3:1
 - [x] Don't rely on color alone
@@ -383,6 +400,7 @@ if (process.env.NODE_ENV !== 'production') {
 ## 🚀 Quick Wins
 
 ### 1. Add alt text to images
+
 ```tsx
 // Before
 <img src="/logo.png" />
@@ -392,6 +410,7 @@ if (process.env.NODE_ENV !== 'production') {
 ```
 
 ### 2. Add labels to form inputs
+
 ```tsx
 // Before
 <input type="email" placeholder="البريد" />
@@ -402,6 +421,7 @@ if (process.env.NODE_ENV !== 'production') {
 ```
 
 ### 3. Add ARIA labels to icon buttons
+
 ```tsx
 // Before
 <button><X /></button>
@@ -411,6 +431,7 @@ if (process.env.NODE_ENV !== 'production') {
 ```
 
 ### 4. Make focus visible
+
 ```tsx
 // Before
 <button>زر</button>
@@ -422,6 +443,7 @@ if (process.env.NODE_ENV !== 'production') {
 ```
 
 ### 5. Announce dynamic changes
+
 ```tsx
 // Before
 <div>{message}</div>
@@ -448,12 +470,14 @@ if (process.env.NODE_ENV !== 'production') {
 ## 🎓 Training
 
 ### For Developers
+
 1. Complete WebAIM screen reader training
 2. Practice keyboard-only navigation
 3. Use accessibility auditing tools
 4. Review ARIA patterns regularly
 
 ### For Designers
+
 1. Consider accessibility in design
 2. Ensure sufficient color contrast
 3. Design focus states

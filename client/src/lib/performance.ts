@@ -1,6 +1,6 @@
 /**
  * Performance Utilities
- * 
+ *
  * Collection of utilities for monitoring and optimizing performance
  */
 
@@ -90,7 +90,7 @@ export const bundleOptimizer = {
   /**
    * Check if module is loaded
    */
-  isModuleLoaded: (moduleName: string): boolean => {
+  isModuleLoaded: (_moduleName: string): boolean => {
     // This would need build-time analysis
     return false;
   },
@@ -154,7 +154,7 @@ export const cacheManager = {
   clearExpired: () => {
     try {
       const keys = Object.keys(localStorage);
-      keys.forEach((key) => {
+      keys.forEach(key => {
         if (key.startsWith("cache_")) {
           const cached = localStorage.getItem(key);
           if (cached) {
@@ -172,16 +172,16 @@ export const cacheManager = {
 };
 
 // Debounce and Throttle
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (..._args: any[]) => any>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
   let timeout: NodeJS.Timeout | null = null;
 
-  return function executedFunction(...args: Parameters<T>) {
+  return function executedFunction(..._args: Parameters<T>) {
     const later = () => {
       timeout = null;
-      func(...args);
+      func(..._args);
     };
 
     if (timeout) clearTimeout(timeout);
@@ -189,15 +189,15 @@ export function debounce<T extends (...args: any[]) => any>(
   };
 }
 
-export function throttle<T extends (...args: any[]) => any>(
+export function throttle<T extends (..._args: any[]) => any>(
   func: T,
   limit: number
 ): (...args: Parameters<T>) => void {
   let inThrottle: boolean = false;
 
-  return function executedFunction(...args: Parameters<T>) {
+  return function executedFunction(..._args: Parameters<T>) {
     if (!inThrottle) {
-      func(...args);
+      func(..._args);
       inThrottle = true;
       setTimeout(() => {
         inThrottle = false;
@@ -208,7 +208,7 @@ export function throttle<T extends (...args: any[]) => any>(
 
 // Intersection Observer for lazy loading
 export function createIntersectionObserver(
-  callback: (entries: IntersectionObserverEntry[]) => void,
+  callback: (_entries: IntersectionObserverEntry[]) => void,
   options?: IntersectionObserverInit
 ): IntersectionObserver | null {
   if (typeof IntersectionObserver === "undefined") {

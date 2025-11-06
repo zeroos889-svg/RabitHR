@@ -29,7 +29,7 @@ export function LoadingSpinner({
     if (variant === "dots") {
       return (
         <div className="flex gap-1.5" dir="ltr">
-          {[0, 1, 2].map((i) => (
+          {[0, 1, 2].map(i => (
             <div
               key={i}
               className={`${size === "sm" ? "w-1.5 h-1.5" : size === "lg" ? "w-3 h-3" : "w-2 h-2"} rounded-full bg-primary`}
@@ -60,7 +60,8 @@ export function LoadingSpinner({
       <Loader2
         className={`${sizeClasses[size]} animate-spin text-primary transition-all duration-300`}
         style={{
-          animationDuration: size === "sm" ? "0.6s" : size === "lg" ? "1s" : "0.75s",
+          animationDuration:
+            size === "sm" ? "0.6s" : size === "lg" ? "1s" : "0.75s",
         }}
       />
     );

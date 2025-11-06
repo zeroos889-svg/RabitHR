@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 /**
  * Hook to detect media query changes
- * 
+ *
  * @example
  * const isMobile = useMediaQuery("(max-width: 768px)");
  * const isDesktop = useMediaQuery("(min-width: 1024px)");
@@ -19,7 +19,7 @@ export function useMediaQuery(query: string): boolean {
     if (typeof window === "undefined") return;
 
     const mediaQuery = window.matchMedia(query);
-    
+
     // Update state
     setMatches(mediaQuery.matches);
 
