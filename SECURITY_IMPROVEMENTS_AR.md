@@ -1,4 +1,5 @@
 # توصيات تحسين الأمان والجودة
+
 ## RabitHR Platform - Security & Quality Improvements
 
 **تاريخ:** 2025-11-06  
@@ -11,15 +12,18 @@
 ### 1. إزالة التبعيات غير المستخدمة
 
 #### حزمة csurf (غير مستخدمة)
+
 المشروع يستخدم تطبيق CSRF مخصص في `server/_core/csrf.ts` ولا يستخدم حزمة `csurf` المثبتة.
 
 **الإجراء:**
+
 ```bash
 # إزالة الحزمة غير المستخدمة
 pnpm remove csurf @types/csurf
 ```
 
 **السبب:**
+
 - الحزمة مؤرشفة (deprecated)
 - غير مستخدمة في الكود
 - تقلل من حجم node_modules
@@ -29,15 +33,18 @@ pnpm remove csurf @types/csurf
 ---
 
 #### حزمة @types/bcryptjs (غير ضرورية)
+
 المكتبة `bcryptjs` توفر تعريفاتها الخاصة للـ TypeScript.
 
 **الإجراء:**
+
 ```bash
 # إزالة الحزمة غير الضرورية
 pnpm remove -D @types/bcryptjs
 ```
 
 **السبب:**
+
 - التعريفات مضمنة في bcryptjs
 - تحذير من pnpm عند التثبيت
 
@@ -48,19 +55,22 @@ pnpm remove -D @types/bcryptjs
 ### 2. تحسين CSRF Protection الحالي
 
 #### المشكلة الحالية
+
 ```typescript
 // في server/_core/csrf.ts:13
 const csrfTokens = new Map<string, { token: string; expires: number }>();
 ```
 
 **⚠️ التحذير:** تخزين في الذاكرة (In-Memory Storage)
+
 - لا يعمل مع multiple server instances
 - يفقد كل الـ tokens عند إعادة تشغيل السيرفر
 - غير مناسب للإنتاج مع Load Balancer
 
 #### الحل المقترح (باستخدام Redis)
 
-**الخطوة 1: تحديث server/_core/csrf.ts**
+**الخطوة 1: تحديث server/\_core/csrf.ts**
+
 ```typescript
 import { redisClient } from "./redisClient";
 
@@ -101,8 +111,7 @@ export async function csrfProtection(
     return res.status(403).json({ error: "Missing session" });
   }
 
-  const token =
-    (req.headers["x-csrf-token"] as string) || req.body._csrf;
+  const token = (req.headers["x-csrf-token"] as string) || req.body._csrf;
 
   if (!token) {
     return res.status(403).json({ error: "Missing CSRF token" });
@@ -132,7 +141,8 @@ export async function generateCsrfTokenForSession(
 }
 ```
 
-**الخطوة 2: تحديث server/_core/index.ts**
+**الخطوة 2: تحديث server/\_core/index.ts**
+
 ```typescript
 // تأكد من استيراد النسخة المحدثة
 import { doubleSubmitCsrfProtection } from "./csrf";
@@ -148,6 +158,7 @@ app.use(async (req, res, next) => {
 ```
 
 **الفوائد:**
+
 - ✅ يعمل مع multiple server instances
 - ✅ لا يفقد الـ tokens عند إعادة التشغيل
 - ✅ مناسب للإنتاج
@@ -160,13 +171,15 @@ app.use(async (req, res, next) => {
 ### 3. تحسين نظام Logging
 
 #### المشكلة الحالية
+
 ```typescript
 // 150+ استخدام في الكود
-console.log('User created:', user);
-console.error('Database error:', error);
+console.log("User created:", user);
+console.error("Database error:", error);
 ```
 
 **المشاكل:**
+
 - لا يوجد مستويات logging (debug, info, warn, error)
 - لا يوجد timestamps
 - لا يوجد تخزين للـ logs
@@ -175,12 +188,14 @@ console.error('Database error:', error);
 #### الحل المقترح (Winston)
 
 **الخطوة 1: تثبيت Winston**
+
 ```bash
 pnpm add winston
 pnpm add -D @types/winston
 ```
 
 **الخطوة 2: إنشاء logger.ts محدث**
+
 ```typescript
 // server/_core/logger.ts
 import winston from "winston";
@@ -228,19 +243,21 @@ export default logger;
 ```
 
 **الخطوة 3: استبدال console.log**
+
 ```typescript
 // Before (قديم)
-console.log('User created:', user);
-console.error('Database error:', error);
+console.log("User created:", user);
+console.error("Database error:", error);
 
 // After (جديد)
-import logger from './_core/logger';
+import logger from "./_core/logger";
 
-logger.info('User created', { userId: user.id, email: user.email });
-logger.error('Database error', { error: error.message, stack: error.stack });
+logger.info("User created", { userId: user.id, email: user.email });
+logger.error("Database error", { error: error.message, stack: error.stack });
 ```
 
 **الخطوة 4: إضافة .gitignore**
+
 ```bash
 # في .gitignore
 logs/
@@ -248,6 +265,7 @@ logs/
 ```
 
 **الفوائد:**
+
 - ✅ مستويات logging واضحة
 - ✅ timestamps تلقائية
 - ✅ تخزين في ملفات
@@ -259,6 +277,7 @@ logs/
 ### 4. إصلاح مشاكل الاختبارات
 
 #### المشكلة
+
 ```
 ReferenceError: __vite_ssr_exportName__ is not defined
 ```
@@ -268,6 +287,7 @@ ReferenceError: __vite_ssr_exportName__ is not defined
 #### الحل
 
 **الخطوة 1: تحديث vitest.config.ts**
+
 ```typescript
 import { defineConfig } from "vitest/config";
 import path from "path";
@@ -304,6 +324,7 @@ export default defineConfig({
 ```
 
 **الخطوة 2: تحديث vitest.setup.ts**
+
 ```typescript
 import { beforeAll, afterAll } from "vitest";
 
@@ -320,6 +341,7 @@ afterAll(() => {
 ```
 
 **الخطوة 3: تحديث package.json**
+
 ```json
 {
   "scripts": {
@@ -339,6 +361,7 @@ afterAll(() => {
 #### استراتيجية التحديث الآمنة
 
 **الخطوة 1: تحديث الحزم الصغيرة أولاً**
+
 ```bash
 # Patch updates (آمن)
 pnpm update @radix-ui/react-aspect-ratio@latest
@@ -347,6 +370,7 @@ pnpm update bcryptjs@latest
 ```
 
 **الخطوة 2: اختبار بعد كل تحديث**
+
 ```bash
 pnpm check  # TypeScript
 pnpm lint   # Prettier
@@ -355,6 +379,7 @@ pnpm build  # Build
 ```
 
 **الخطوة 3: تحديث الحزم الكبيرة**
+
 ```bash
 # Minor updates (اختبار دقيق)
 pnpm update @trpc/client@latest @trpc/server@latest @trpc/react-query@latest
@@ -362,6 +387,7 @@ pnpm update @aws-sdk/client-s3@latest
 ```
 
 **الخطوة 4: التحديثات الرئيسية (Major)**
+
 ```bash
 # تحديث بحذر شديد
 # اقرأ CHANGELOG قبل التحديث
@@ -374,12 +400,14 @@ pnpm update @aws-sdk/client-s3@latest
 ### 6. إضافة ESLint
 
 **الخطوة 1: تثبيت ESLint**
+
 ```bash
 pnpm add -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
 pnpm add -D eslint-plugin-react eslint-plugin-react-hooks
 ```
 
 **الخطوة 2: إنشاء .eslintrc.json**
+
 ```json
 {
   "parser": "@typescript-eslint/parser",
@@ -398,6 +426,7 @@ pnpm add -D eslint-plugin-react eslint-plugin-react-hooks
 ```
 
 **الخطوة 3: تحديث package.json**
+
 ```json
 {
   "scripts": {
@@ -412,12 +441,14 @@ pnpm add -D eslint-plugin-react eslint-plugin-react-hooks
 ### 7. إضافة Pre-commit Hooks
 
 **الخطوة 1: تثبيت Husky و lint-staged**
+
 ```bash
 pnpm add -D husky lint-staged
 npx husky init
 ```
 
 **الخطوة 2: إنشاء .husky/pre-commit**
+
 ```bash
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
@@ -426,16 +457,12 @@ pnpm lint-staged
 ```
 
 **الخطوة 3: تحديث package.json**
+
 ```json
 {
   "lint-staged": {
-    "*.{ts,tsx,js,jsx}": [
-      "prettier --write",
-      "eslint --fix"
-    ],
-    "*.{json,md}": [
-      "prettier --write"
-    ]
+    "*.{ts,tsx,js,jsx}": ["prettier --write", "eslint --fix"],
+    "*.{json,md}": ["prettier --write"]
   }
 }
 ```
@@ -445,6 +472,7 @@ pnpm lint-staged
 ### 8. تحسين GitHub Actions
 
 **إنشاء .github/workflows/quality-check.yml**
+
 ```yaml
 name: Code Quality Check
 
@@ -496,6 +524,7 @@ jobs:
 ## 📊 مقاييس النجاح
 
 ### قبل التحسينات
+
 - TypeScript Errors: 2 ❌
 - Formatting Issues: 21 ملف ❌
 - Deprecated Packages: 2 ⚠️
@@ -503,6 +532,7 @@ jobs:
 - Security Alerts: 0 ✅
 
 ### بعد التحسينات المتوقعة
+
 - TypeScript Errors: 0 ✅
 - Formatting Issues: 0 ✅
 - Deprecated Packages: 0 ✅
@@ -514,18 +544,19 @@ jobs:
 
 ## 📅 جدول زمني مقترح
 
-| الأسبوع | المهام |
-|---------|---------|
-| 1 | إزالة csurf، @types/bcryptjs، إصلاح CSRF مع Redis |
-| 2 | تطبيق Winston logger، إصلاح الاختبارات |
-| 3 | تحديث التبعيات، إضافة ESLint |
-| 4 | Husky + lint-staged، تحسين GitHub Actions |
+| الأسبوع | المهام                                            |
+| ------- | ------------------------------------------------- |
+| 1       | إزالة csurf، @types/bcryptjs، إصلاح CSRF مع Redis |
+| 2       | تطبيق Winston logger، إصلاح الاختبارات            |
+| 3       | تحديث التبعيات، إضافة ESLint                      |
+| 4       | Husky + lint-staged، تحسين GitHub Actions         |
 
 ---
 
 ## 🎯 الخلاصة
 
 المشروع في حالة جيدة، والتحسينات المقترحة ستجعله أفضل من ناحية:
+
 - ✅ الأمان
 - ✅ الأداء
 - ✅ القابلية للصيانة
@@ -537,4 +568,4 @@ jobs:
 
 ---
 
-*تم إنشاء هذا التقرير بواسطة GitHub Copilot - تاريخ: 2025-11-06*
+_تم إنشاء هذا التقرير بواسطة GitHub Copilot - تاريخ: 2025-11-06_
