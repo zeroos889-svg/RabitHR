@@ -5,7 +5,7 @@ if (typeof window !== "undefined") {
   import("@testing-library/jest-dom");
   const { cleanup } = await import("@testing-library/react");
   const { afterEach } = await import("vitest");
-  
+
   // تنظيف بعد كل اختبار
   afterEach(() => {
     cleanup();

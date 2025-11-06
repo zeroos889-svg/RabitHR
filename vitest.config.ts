@@ -9,7 +9,7 @@ export default defineConfig({
     include: ["server/db.test.ts"],
     // Excluded integration tests (require Redis/DB):
     // - server/__tests__/db-integration.test.ts
-    // - server/_core/__tests__/cache.test.ts  
+    // - server/_core/__tests__/cache.test.ts
     // - server/_core/__tests__/redisClient.test.ts
     // These tests conflict with vite-plugin-manus-runtime
     globals: true,
