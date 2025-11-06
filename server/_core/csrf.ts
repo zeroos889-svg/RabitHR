@@ -12,6 +12,7 @@
 import { Request, Response, NextFunction } from "express";
 import crypto from "crypto";
 import { redis } from "./redisClient";
+import { logger } from "./logger";
 
 // Configuration constants
 const TOKEN_EXPIRY = parseInt(process.env.CSRF_TOKEN_EXPIRY || "3600000"); // 1 hour in milliseconds
@@ -31,15 +32,16 @@ async function initializeStorage(): Promise<void> {
     if (redis && redis.isOpen) {
       await redis.ping();
       useRedis = true;
-      console.log("✅ CSRF Protection: Using Redis storage");
+      logger.info("CSRF Protection: Using Redis storage", { context: "CSRF" });
     } else {
       throw new Error("Redis not connected");
     }
   } catch (error) {
     useRedis = false;
-    console.warn(
-      "⚠️  CSRF Protection: Redis unavailable, falling back to in-memory storage. " +
-        "This is NOT suitable for production with multiple server instances."
+    logger.warn(
+      "CSRF Protection: Redis unavailable, falling back to in-memory storage. " +
+        "This is NOT suitable for production with multiple server instances.",
+      { context: "CSRF" }
     );
   }
 }
@@ -68,7 +70,10 @@ async function storeCsrfToken(
       const key = `${REDIS_PREFIX}${sessionId}`;
       await redis.set(key, token, { PX: expiryMs });
     } catch (error) {
-      console.error("❌ Failed to store CSRF token in Redis:", error);
+      logger.error("Failed to store CSRF token in Redis", {
+        context: "CSRF",
+        error,
+      });
       // Fallback to memory
       memoryTokens.set(sessionId, { token, expires: Date.now() + expiryMs });
     }
@@ -86,7 +91,10 @@ async function getCsrfToken(sessionId: string): Promise<string | null> {
       const key = `${REDIS_PREFIX}${sessionId}`;
       return await redis.get(key);
     } catch (error) {
-      console.error("❌ Failed to get CSRF token from Redis:", error);
+      logger.error("Failed to get CSRF token from Redis", {
+        context: "CSRF",
+        error,
+      });
       // Fallback to memory
       const stored = memoryTokens.get(sessionId);
       if (stored && Date.now() <= stored.expires) {
@@ -112,7 +120,10 @@ async function deleteCsrfToken(sessionId: string): Promise<void> {
       const key = `${REDIS_PREFIX}${sessionId}`;
       await redis.del(key);
     } catch (error) {
-      console.error("❌ Failed to delete CSRF token from Redis:", error);
+      logger.error("Failed to delete CSRF token from Redis", {
+        context: "CSRF",
+        error,
+      });
     }
   }
   memoryTokens.delete(sessionId);
@@ -190,7 +201,7 @@ export async function csrfProtection(
     // Token is valid, allow request to proceed
     next();
   } catch (error) {
-    console.error("❌ CSRF Protection Error:", error);
+    logger.error("CSRF Protection Error", { context: "CSRF", error });
     res.status(500).json({
       error: "CSRF validation error",
       message: "خطأ في التحقق من رمز الحماية",
@@ -241,7 +252,7 @@ export async function getCsrfTokenEndpoint(
       expiresIn: TOKEN_EXPIRY,
     });
   } catch (error) {
-    console.error("❌ Error generating CSRF token:", error);
+    logger.error("Error generating CSRF token", { context: "CSRF", error });
     res.status(500).json({
       error: "Failed to generate CSRF token",
       message: "فشل في إنشاء رمز الحماية",
@@ -278,7 +289,7 @@ export async function attachCsrfToken(
 
     next();
   } catch (error) {
-    console.error("❌ Error attaching CSRF token:", error);
+    logger.error("Error attaching CSRF token", { context: "CSRF", error });
     // Don't fail the request, just log the error
     next();
   }
@@ -301,7 +312,10 @@ export function cleanupExpiredTokens(): void {
   }
 
   if (cleaned > 0) {
-    console.log(`🧹 Cleaned up ${cleaned} expired CSRF tokens from memory`);
+    logger.info(`Cleaned up ${cleaned} expired CSRF tokens from memory`, {
+      context: "CSRF",
+      cleaned,
+    });
   }
 }
 
@@ -375,7 +389,10 @@ export async function doubleSubmitCsrfProtection(
 
     next();
   } catch (error) {
-    console.error("❌ Double-submit CSRF protection error:", error);
+    logger.error("Double-submit CSRF protection error", {
+      context: "CSRF",
+      error,
+    });
     res.status(500).json({
       error: "CSRF validation error",
       message: "خطأ في التحقق من رمز الحماية",
@@ -389,8 +406,11 @@ export async function doubleSubmitCsrfProtection(
 export async function shutdownCsrfProtection(): Promise<void> {
   try {
     memoryTokens.clear();
-    console.log("✅ CSRF Protection: Cleaned up resources");
+    logger.info("CSRF Protection: Cleaned up resources", { context: "CSRF" });
   } catch (error) {
-    console.error("❌ Error during CSRF protection shutdown:", error);
+    logger.error("Error during CSRF protection shutdown", {
+      context: "CSRF",
+      error,
+    });
   }
 }
