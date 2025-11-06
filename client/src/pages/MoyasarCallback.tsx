@@ -8,7 +8,9 @@ import { Loader2 } from "lucide-react";
  */
 export default function MoyasarCallback() {
   const [, setLocation] = useLocation();
-  const [status, setStatus] = useState<"processing" | "success" | "failed">("processing");
+  const [status, setStatus] = useState<"processing" | "success" | "failed">(
+    "processing"
+  );
 
   useEffect(() => {
     const handleCallback = async () => {
@@ -28,11 +30,18 @@ export default function MoyasarCallback() {
       if (paymentStatus === "paid") {
         setStatus("success");
         // Redirect to success page with payment reference
-        setTimeout(() => setLocation(`/payment-success?ref=${paymentId}&gateway=moyasar`), 1500);
+        setTimeout(
+          () =>
+            setLocation(`/payment-success?ref=${paymentId}&gateway=moyasar`),
+          1500
+        );
       } else {
         setStatus("failed");
         // Redirect to failure page
-        setTimeout(() => setLocation(`/payment-failed?ref=${paymentId}&gateway=moyasar`), 1500);
+        setTimeout(
+          () => setLocation(`/payment-failed?ref=${paymentId}&gateway=moyasar`),
+          1500
+        );
       }
     };
 

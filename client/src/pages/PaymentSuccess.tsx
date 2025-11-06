@@ -124,7 +124,9 @@ export default function PaymentSuccess() {
               </div>
 
               <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">ضريبة القيمة المضافة (15%)</span>
+                <span className="text-muted-foreground">
+                  ضريبة القيمة المضافة (15%)
+                </span>
                 <span className="font-semibold">{transaction.vat} ﷼</span>
               </div>
 
@@ -132,7 +134,9 @@ export default function PaymentSuccess() {
 
               <div className="flex justify-between items-center text-lg">
                 <span className="font-bold">المجموع الإجمالي</span>
-                <span className="font-bold text-primary">{transaction.total} ﷼</span>
+                <span className="font-bold text-primary">
+                  {transaction.total} ﷼
+                </span>
               </div>
             </div>
 

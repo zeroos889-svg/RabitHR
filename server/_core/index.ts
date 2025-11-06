@@ -45,7 +45,9 @@ async function startServer() {
       await connectRedis();
       await testRedisConnection();
     } else {
-      console.warn("⚠️  REDIS_URL not configured, skipping Redis initialization");
+      console.warn(
+        "⚠️  REDIS_URL not configured, skipping Redis initialization"
+      );
     }
   } catch (error) {
     console.error("[Server] Failed to connect to Redis:", error);
@@ -150,23 +152,21 @@ async function startServer() {
     try {
       const isRedisHealthy = await testRedisConnection();
       if (isRedisHealthy) {
-        res
-          .status(200)
-          .json({ 
-            status: "ok", 
-            message: "Redis is healthy",
-            timestamp: new Date().toISOString() 
-          });
+        res.status(200).json({
+          status: "ok",
+          message: "Redis is healthy",
+          timestamp: new Date().toISOString(),
+        });
       } else {
         res
           .status(503)
           .json({ status: "error", message: "Redis connection failed" });
       }
     } catch (error) {
-      res.status(503).json({ 
-        status: "error", 
+      res.status(503).json({
+        status: "error",
         message: "Redis health check failed",
-        error: error instanceof Error ? error.message : "Unknown error"
+        error: error instanceof Error ? error.message : "Unknown error",
       });
     }
   });

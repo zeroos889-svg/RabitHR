@@ -21,26 +21,28 @@ export default function ForgotPassword() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email || !email.includes("@")) {
       toast.error("الرجاء إدخال بريد إلكتروني صحيح");
       return;
     }
 
     setIsLoading(true);
-    
+
     // Simulate API call - TODO: Implement actual password reset
     setTimeout(() => {
       setIsLoading(false);
       setEmailSent(true);
-      toast.success("تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني");
+      toast.success(
+        "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني"
+      );
     }, 2000);
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 flex items-center justify-center p-4">
       <BackButton />
-      
+
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
@@ -48,10 +50,9 @@ export default function ForgotPassword() {
           </div>
           <CardTitle className="text-2xl">استرجاع كلمة المرور</CardTitle>
           <CardDescription>
-            {emailSent 
+            {emailSent
               ? "تم إرسال رابط إعادة التعيين"
-              : "أدخل بريدك الإلكتروني لإرسال رابط إعادة تعيين كلمة المرور"
-            }
+              : "أدخل بريدك الإلكتروني لإرسال رابط إعادة تعيين كلمة المرور"}
           </CardDescription>
         </CardHeader>
 
@@ -61,7 +62,7 @@ export default function ForgotPassword() {
               <div className="mx-auto w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
                 <CheckCircle2 className="w-12 h-12 text-green-600" />
               </div>
-              
+
               <div className="space-y-2">
                 <p className="text-muted-foreground">
                   تم إرسال رابط إعادة تعيين كلمة المرور إلى
@@ -87,7 +88,7 @@ export default function ForgotPassword() {
                 >
                   إرسال مرة أخرى
                 </Button>
-                
+
                 <Link href="/login">
                   <Button variant="default" className="w-full group">
                     العودة لتسجيل الدخول
@@ -108,7 +109,7 @@ export default function ForgotPassword() {
                     placeholder="أدخل بريدك الإلكتروني"
                     className="pr-10"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={e => setEmail(e.target.value)}
                     required
                   />
                 </div>
@@ -116,8 +117,8 @@ export default function ForgotPassword() {
 
               <div className="bg-muted/50 p-4 rounded-lg text-sm text-muted-foreground">
                 <p>
-                  سنرسل لك رسالة تحتوي على رابط لإعادة تعيين كلمة المرور.
-                  الرجاء التأكد من البريد الإلكتروني المدخل.
+                  سنرسل لك رسالة تحتوي على رابط لإعادة تعيين كلمة المرور. الرجاء
+                  التأكد من البريد الإلكتروني المدخل.
                 </p>
               </div>
 
@@ -146,7 +147,7 @@ export default function ForgotPassword() {
                     تذكرت كلمة المرور؟ تسجيل الدخول
                   </Button>
                 </Link>
-                
+
                 <div className="text-sm text-muted-foreground">
                   ليس لديك حساب؟{" "}
                   <Link href="/signup" className="text-primary hover:underline">

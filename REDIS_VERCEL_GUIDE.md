@@ -1,4 +1,5 @@
 # دليل استخدام Redis مع Vercel
+
 # Redis Integration Guide for Vercel
 
 ## نظرة عامة | Overview
@@ -39,7 +40,7 @@ vercel env add REDIS_URL
 
 ## الاستخدام الأساسي | Basic Usage
 
-### في Express Server (server/_core/index.ts)
+### في Express Server (server/\_core/index.ts)
 
 ```typescript
 import { connectRedis, testRedisConnection } from "./redisClient.js";
@@ -70,13 +71,13 @@ async function getRedisClient() {
 // Use in API handler
 export default async function handler(req, res) {
   const client = await getRedisClient();
-  
+
   // Set data
   await client.set("key", "value");
-  
+
   // Get data
   const result = await client.get("key");
-  
+
   return res.json({ result });
 }
 ```
@@ -90,6 +91,7 @@ export default async function handler(req, res) {
 **Endpoint**: `POST /api/redis-example`
 
 **Request Body**:
+
 ```json
 {
   "key": "user:123",
@@ -101,6 +103,7 @@ export default async function handler(req, res) {
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -115,6 +118,7 @@ export default async function handler(req, res) {
 **Endpoint**: `GET /api/redis-example?key=user:123`
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -131,6 +135,7 @@ export default async function handler(req, res) {
 ## الملفات الرئيسية | Key Files
 
 ### 1. `server/_core/redisClient.ts`
+
 عميل Redis الرئيسي للسيرفر Express
 
 Main Redis client for Express server
@@ -150,11 +155,13 @@ export const connectRedis = async () => {
 ```
 
 ### 2. `api/redis-example.ts`
+
 مثال على Serverless Function يستخدم Redis
 
 Example Serverless Function using Redis
 
 ### 3. `server/_core/index.ts`
+
 تهيئة Redis عند بدء السيرفر
 
 Redis initialization on server startup
@@ -164,16 +171,19 @@ Redis initialization on server startup
 ## Health Check Endpoints
 
 ### Database Health Check
+
 ```
 GET /health
 ```
 
 ### Redis Health Check
+
 ```
 GET /health/redis
 ```
 
 **Response**:
+
 ```json
 {
   "status": "ok",
@@ -241,17 +251,19 @@ const user = JSON.parse(data);
 ### استخدام Redis محلي
 
 1. تثبيت Redis محلياً:
+
    ```bash
    # macOS
    brew install redis
    brew services start redis
-   
+
    # Ubuntu/Debian
    sudo apt-get install redis-server
    sudo systemctl start redis
    ```
 
 2. تحديث `.env.development.local`:
+
    ```
    REDIS_URL=redis://localhost:6379
    ```
@@ -270,6 +282,7 @@ const user = JSON.parse(data);
 **السبب**: عدم القدرة على الاتصال بـ Redis
 
 **الحل**:
+
 1. تأكد من أن `REDIS_URL` صحيح
 2. تأكد من أن Redis يعمل
 3. تحقق من الجدار الناري والاتصال بالشبكة
@@ -279,6 +292,7 @@ const user = JSON.parse(data);
 **السبب**: `REDIS_URL` غير مُعرّف
 
 **الحل**:
+
 ```bash
 vercel env add REDIS_URL
 # أو عبر Dashboard
@@ -289,6 +303,7 @@ vercel env add REDIS_URL
 **السبب**: Redis بطيء في الاستجابة
 
 **الحل**: زيادة timeout:
+
 ```typescript
 const redis = createClient({
   url: process.env.REDIS_URL,
@@ -312,11 +327,13 @@ const redis = createClient({
 ## الدعم | Support
 
 للمساعدة أو الأسئلة:
+
 - افتح issue في المستودع
 - راجع وثائق Vercel
 - تواصل مع فريق الدعم
 
 For help or questions:
+
 - Open an issue in the repository
 - Check Vercel documentation
 - Contact support team

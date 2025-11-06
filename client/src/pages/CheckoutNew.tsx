@@ -74,12 +74,14 @@ type PlanKey = keyof typeof PLANS;
 
 export default function CheckoutNew() {
   const [selectedPlan, setSelectedPlan] = useState<PlanKey>("pro");
-  const [paymentGateway, setPaymentGateway] = useState<"moyasar" | "tap">("moyasar");
+  const [paymentGateway, setPaymentGateway] = useState<"moyasar" | "tap">(
+    "moyasar"
+  );
   const [isProcessing, setIsProcessing] = useState(false);
 
   // Moyasar payment mutation
   const createMoyasarPayment = trpc.payment.createMoyasarPayment.useMutation({
-    onSuccess: (data) => {
+    onSuccess: data => {
       if (data.redirectUrl) {
         // Redirect to Moyasar payment page
         window.location.href = data.redirectUrl;
@@ -88,7 +90,7 @@ export default function CheckoutNew() {
         setIsProcessing(false);
       }
     },
-    onError: (error) => {
+    onError: error => {
       toast.error(error.message || "فشل إنشاء عملية الدفع");
       setIsProcessing(false);
     },
@@ -96,7 +98,7 @@ export default function CheckoutNew() {
 
   // Tap payment mutation
   const createTapPayment = trpc.payment.createTapPayment.useMutation({
-    onSuccess: (data) => {
+    onSuccess: data => {
       if (data.redirectUrl) {
         // Redirect to Tap payment page
         window.location.href = data.redirectUrl;
@@ -105,7 +107,7 @@ export default function CheckoutNew() {
         setIsProcessing(false);
       }
     },
-    onError: (error) => {
+    onError: error => {
       toast.error(error.message || "فشل إنشاء عملية الدفع");
       setIsProcessing(false);
     },
@@ -162,7 +164,7 @@ export default function CheckoutNew() {
               </CardHeader>
               <CardContent>
                 <div className="grid md:grid-cols-3 gap-4">
-                  {(Object.keys(PLANS) as PlanKey[]).map((planKey) => {
+                  {(Object.keys(PLANS) as PlanKey[]).map(planKey => {
                     const plan = PLANS[planKey];
                     const isSelected = selectedPlan === planKey;
 
@@ -170,13 +172,11 @@ export default function CheckoutNew() {
                       <Card
                         key={planKey}
                         className={`relative cursor-pointer transition-all hover:shadow-lg ${
-                          isSelected
-                            ? "border-primary ring-2 ring-primary"
-                            : ""
+                          isSelected ? "border-primary ring-2 ring-primary" : ""
                         }`}
                         onClick={() => setSelectedPlan(planKey)}
                       >
-                        {plan.popular && (
+                        {"popular" in plan && plan.popular && (
                           <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                             <Badge className="bg-primary text-white">
                               <Sparkles className="w-3 h-3 ml-1" />
@@ -200,10 +200,7 @@ export default function CheckoutNew() {
                         <CardContent>
                           <ul className="space-y-2 text-sm">
                             {plan.features.map((feature, idx) => (
-                              <li
-                                key={idx}
-                                className="flex items-start gap-2"
-                              >
+                              <li key={idx} className="flex items-start gap-2">
                                 <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
                                 <span>{feature}</span>
                               </li>
@@ -232,14 +229,12 @@ export default function CheckoutNew() {
                   <CreditCard className="w-5 h-5" />
                   بوابة الدفع
                 </CardTitle>
-                <CardDescription>
-                  اختر بوابة الدفع المفضلة لديك
-                </CardDescription>
+                <CardDescription>اختر بوابة الدفع المفضلة لديك</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <RadioGroup
                   value={paymentGateway}
-                  onValueChange={(value) =>
+                  onValueChange={value =>
                     setPaymentGateway(value as "moyasar" | "tap")
                   }
                 >
@@ -253,10 +248,7 @@ export default function CheckoutNew() {
                     onClick={() => setPaymentGateway("moyasar")}
                   >
                     <RadioGroupItem value="moyasar" id="moyasar" />
-                    <Label
-                      htmlFor="moyasar"
-                      className="flex-1 cursor-pointer"
-                    >
+                    <Label htmlFor="moyasar" className="flex-1 cursor-pointer">
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="font-semibold">Moyasar</p>
@@ -355,12 +347,14 @@ export default function CheckoutNew() {
                   </div>
 
                   <ul className="text-sm text-muted-foreground space-y-1">
-                    {selectedPlanData.features.slice(0, 3).map((feature, idx) => (
-                      <li key={idx} className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0" />
-                        {feature}
-                      </li>
-                    ))}
+                    {selectedPlanData.features
+                      .slice(0, 3)
+                      .map((feature, idx) => (
+                        <li key={idx} className="flex items-center gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0" />
+                          {feature}
+                        </li>
+                      ))}
                     {selectedPlanData.features.length > 3 && (
                       <li className="text-primary">
                         +{selectedPlanData.features.length - 3} ميزة أخرى
@@ -405,9 +399,7 @@ export default function CheckoutNew() {
                 <div className="flex items-start gap-3">
                   <Shield className="h-5 w-5 text-primary flex-shrink-0" />
                   <div>
-                    <p className="font-semibold text-sm">
-                      معاملات آمنة 100%
-                    </p>
+                    <p className="font-semibold text-sm">معاملات آمنة 100%</p>
                     <p className="text-xs text-muted-foreground">
                       جميع البيانات مشفرة بتقنية SSL
                     </p>
@@ -416,7 +408,9 @@ export default function CheckoutNew() {
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0" />
                   <div>
-                    <p className="font-semibold text-sm">ضمان استرجاع الأموال</p>
+                    <p className="font-semibold text-sm">
+                      ضمان استرجاع الأموال
+                    </p>
                     <p className="text-xs text-muted-foreground">
                       في حال عدم الرضا خلال 14 يوم
                     </p>

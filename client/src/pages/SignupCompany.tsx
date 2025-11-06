@@ -43,13 +43,13 @@ export default function SignupCompany() {
     taxNumber: "",
     address: "",
     city: "",
-    
+
     // Step 2: Admin Info
     adminName: "",
     jobTitle: "",
     email: "",
     phone: "",
-    
+
     // Step 3: Package Selection
     packageId: "",
   });
@@ -67,7 +67,7 @@ export default function SignupCompany() {
         setLocation("/payment");
       }, 2000);
     },
-    onError: (error) => {
+    onError: error => {
       toast.error(error.message || "حدث خطأ أثناء التسجيل");
     },
   });
@@ -109,7 +109,7 @@ export default function SignupCompany() {
         return;
       }
     }
-    
+
     if (currentStep < 3) {
       setCurrentStep(currentStep + 1);
     }
@@ -177,7 +177,7 @@ export default function SignupCompany() {
 
           {/* Progress Indicator */}
           <div className="flex items-center justify-center gap-2 mt-6">
-            {[1, 2, 3].map((step) => (
+            {[1, 2, 3].map(step => (
               <div key={step} className="flex items-center">
                 <div
                   className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-all ${
@@ -228,7 +228,7 @@ export default function SignupCompany() {
                       placeholder="مثال: شركة رابِط للتقنية"
                       className="pr-10"
                       value={companyData.companyName}
-                      onChange={(e) =>
+                      onChange={e =>
                         setCompanyData({
                           ...companyData,
                           companyName: e.target.value,
@@ -245,7 +245,7 @@ export default function SignupCompany() {
                     id="companyNameEn"
                     placeholder="Example: Rabit Technology Co."
                     value={companyData.companyNameEn}
-                    onChange={(e) =>
+                    onChange={e =>
                       setCompanyData({
                         ...companyData,
                         companyNameEn: e.target.value,
@@ -263,7 +263,7 @@ export default function SignupCompany() {
                       placeholder="1010xxxxxx"
                       className="pr-10"
                       value={companyData.commercialRegister}
-                      onChange={(e) =>
+                      onChange={e =>
                         setCompanyData({
                           ...companyData,
                           commercialRegister: e.target.value,
@@ -279,7 +279,7 @@ export default function SignupCompany() {
                     id="taxNumber"
                     placeholder="300xxxxxxxxx"
                     value={companyData.taxNumber}
-                    onChange={(e) =>
+                    onChange={e =>
                       setCompanyData({
                         ...companyData,
                         taxNumber: e.target.value,
@@ -289,7 +289,9 @@ export default function SignupCompany() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="city">المدينة <span className="text-red-500">*</span></Label>
+                  <Label htmlFor="city">
+                    المدينة <span className="text-red-500">*</span>
+                  </Label>
                   <div className="relative">
                     <MapPin className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                     <Input
@@ -297,7 +299,7 @@ export default function SignupCompany() {
                       placeholder="الرياض"
                       className="pr-10"
                       value={companyData.city}
-                      onChange={(e) =>
+                      onChange={e =>
                         setCompanyData({
                           ...companyData,
                           city: e.target.value,
@@ -320,7 +322,7 @@ export default function SignupCompany() {
                       placeholder="info@company.com"
                       className="pr-10"
                       value={companyData.email}
-                      onChange={(e) =>
+                      onChange={e =>
                         setCompanyData({
                           ...companyData,
                           email: e.target.value,
@@ -338,7 +340,7 @@ export default function SignupCompany() {
                   id="address"
                   placeholder="الشارع، الحي، المدينة"
                   value={companyData.address}
-                  onChange={(e) =>
+                  onChange={e =>
                     setCompanyData({
                       ...companyData,
                       address: e.target.value,
@@ -371,7 +373,7 @@ export default function SignupCompany() {
                       placeholder="أحمد محمد"
                       className="pr-10"
                       value={companyData.adminName}
-                      onChange={(e) =>
+                      onChange={e =>
                         setCompanyData({
                           ...companyData,
                           adminName: e.target.value,
@@ -391,7 +393,7 @@ export default function SignupCompany() {
                       placeholder="مدير الموارد البشرية"
                       className="pr-10"
                       value={companyData.jobTitle}
-                      onChange={(e) =>
+                      onChange={e =>
                         setCompanyData({
                           ...companyData,
                           jobTitle: e.target.value,
@@ -413,7 +415,7 @@ export default function SignupCompany() {
                       placeholder="05xxxxxxxx"
                       className="pr-10"
                       value={companyData.phone}
-                      onChange={(e) =>
+                      onChange={e =>
                         setCompanyData({
                           ...companyData,
                           phone: e.target.value,
@@ -451,7 +453,7 @@ export default function SignupCompany() {
               <h3 className="text-xl font-semibold">اختر الباقة المناسبة</h3>
 
               <div className="grid md:grid-cols-3 gap-4">
-                {packages.map((pkg) => (
+                {packages.map(pkg => (
                   <Card
                     key={pkg.id}
                     className={`relative cursor-pointer transition-all hover:shadow-lg ${
@@ -475,7 +477,9 @@ export default function SignupCompany() {
                       <CardTitle className="text-lg">{pkg.nameAr}</CardTitle>
                       <div className="text-3xl font-bold text-primary">
                         {pkg.price} ﷼
-                        <span className="text-sm text-muted-foreground">/شهر</span>
+                        <span className="text-sm text-muted-foreground">
+                          /شهر
+                        </span>
                       </div>
                     </CardHeader>
 
@@ -502,7 +506,7 @@ export default function SignupCompany() {
                     <Checkbox
                       id="terms"
                       checked={agreements.terms}
-                      onCheckedChange={(checked) =>
+                      onCheckedChange={checked =>
                         setAgreements({ ...agreements, terms: !!checked })
                       }
                     />
@@ -521,7 +525,7 @@ export default function SignupCompany() {
                     <Checkbox
                       id="privacy"
                       checked={agreements.privacy}
-                      onCheckedChange={(checked) =>
+                      onCheckedChange={checked =>
                         setAgreements({ ...agreements, privacy: !!checked })
                       }
                     />
@@ -540,7 +544,7 @@ export default function SignupCompany() {
                     <Checkbox
                       id="cookies"
                       checked={agreements.cookies}
-                      onCheckedChange={(checked) =>
+                      onCheckedChange={checked =>
                         setAgreements({ ...agreements, cookies: !!checked })
                       }
                     />

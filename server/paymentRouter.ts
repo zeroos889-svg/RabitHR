@@ -39,7 +39,10 @@ export const paymentRouter = router({
     .mutation(async ({ input, ctx }) => {
       try {
         const plan = PLANS[input.planKey];
-        const baseUrl = process.env.BASE_URL || process.env.VITE_APP_URL || "http://localhost:3000";
+        const baseUrl =
+          process.env.BASE_URL ||
+          process.env.VITE_APP_URL ||
+          "http://localhost:3000";
         const callbackUrl = `${baseUrl}/payment/moyasar/callback`;
 
         const payment = await createMoyasarPayment({
@@ -96,7 +99,10 @@ export const paymentRouter = router({
     .mutation(async ({ input, ctx }) => {
       try {
         const plan = PLANS[input.planKey];
-        const baseUrl = process.env.BASE_URL || process.env.VITE_APP_URL || "http://localhost:3000";
+        const baseUrl =
+          process.env.BASE_URL ||
+          process.env.VITE_APP_URL ||
+          "http://localhost:3000";
         const callbackUrl = `${baseUrl}/payment/tap/callback`;
 
         const payment = await createTapPayment({
@@ -259,10 +265,7 @@ export const paymentRouter = router({
     .mutation(async ({ input }) => {
       try {
         if (input.gateway === "moyasar") {
-          const isValid = verifyMoyasarWebhook(
-            input.payload,
-            input.signature
-          );
+          const isValid = verifyMoyasarWebhook(input.payload, input.signature);
 
           if (!isValid) {
             throw new TRPCError({

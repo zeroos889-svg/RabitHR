@@ -8,7 +8,9 @@ import { Loader2 } from "lucide-react";
  */
 export default function TapCallback() {
   const [, setLocation] = useLocation();
-  const [status, setStatus] = useState<"processing" | "success" | "failed">("processing");
+  const [status, setStatus] = useState<"processing" | "success" | "failed">(
+    "processing"
+  );
 
   useEffect(() => {
     const handleCallback = async () => {
@@ -29,11 +31,17 @@ export default function TapCallback() {
       if (chargeStatus === "CAPTURED" || chargeStatus === "captured") {
         setStatus("success");
         // Redirect to success page with payment reference
-        setTimeout(() => setLocation(`/payment-success?ref=${tapId}&gateway=tap`), 1500);
+        setTimeout(
+          () => setLocation(`/payment-success?ref=${tapId}&gateway=tap`),
+          1500
+        );
       } else {
         setStatus("failed");
         // Redirect to failure page
-        setTimeout(() => setLocation(`/payment-failed?ref=${tapId}&gateway=tap`), 1500);
+        setTimeout(
+          () => setLocation(`/payment-failed?ref=${tapId}&gateway=tap`),
+          1500
+        );
       }
     };
 

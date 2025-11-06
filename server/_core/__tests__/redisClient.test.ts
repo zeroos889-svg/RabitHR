@@ -4,18 +4,25 @@
  */
 
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
-import { redis, connectRedis, testRedisConnection, disconnectRedis } from "../redisClient.js";
+import {
+  redis,
+  connectRedis,
+  testRedisConnection,
+  disconnectRedis,
+} from "../redisClient.js";
 
 describe("Redis Client", () => {
   // تخطي الاختبارات إذا لم يكن REDIS_URL مُعرّفاً
-  const skipTests = !process.env.REDIS_URL || process.env.REDIS_URL === "redis://localhost:6379";
+  const skipTests =
+    !process.env.REDIS_URL ||
+    process.env.REDIS_URL === "redis://localhost:6379";
 
   beforeAll(async () => {
     if (skipTests) {
       console.log("⚠️  Skipping Redis tests: REDIS_URL not configured");
       return;
     }
-    
+
     // الاتصال بـ Redis قبل الاختبارات
     try {
       await connectRedis();
@@ -26,7 +33,7 @@ describe("Redis Client", () => {
 
   afterAll(async () => {
     if (skipTests) return;
-    
+
     // إغلاق الاتصال بعد الاختبارات
     try {
       await disconnectRedis();
