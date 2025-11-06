@@ -132,3 +132,7 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Winston Logs
+logs/
+*.log

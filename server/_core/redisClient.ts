@@ -4,17 +4,20 @@
  */
 
 import { createClient } from "redis";
+import { logger } from "./logger";
 
 export const redis = createClient({
   url: process.env.REDIS_URL,
 });
 
-redis.on("error", (err) => console.error("❌ Redis Client Error:", err));
+redis.on("error", err =>
+  logger.error("Redis Client Error", { context: "Redis", error: err })
+);
 
 export const connectRedis = async () => {
   if (!redis.isOpen) {
     await redis.connect();
-    console.log("✅ Redis connected successfully");
+    logger.info("Redis connected successfully", { context: "Redis" });
   }
 };
 
@@ -26,10 +29,13 @@ export const testRedisConnection = async () => {
   try {
     await redis.set("test_key", "alive");
     const value = await redis.get("test_key");
-    console.log("🟢 Redis test value:", value);
+    logger.debug("Redis test completed", {
+      context: "Redis",
+      testValue: value,
+    });
     return value === "alive";
   } catch (error) {
-    console.error("❌ Redis test failed:", error);
+    logger.error("Redis test failed", { context: "Redis", error });
     return false;
   }
 };
@@ -41,6 +47,6 @@ export const testRedisConnection = async () => {
 export const disconnectRedis = async () => {
   if (redis.isOpen) {
     await redis.quit();
-    console.log("✅ Redis disconnected");
+    logger.info("Redis disconnected", { context: "Redis" });
   }
 };

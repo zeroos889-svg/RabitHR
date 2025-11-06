@@ -1,4 +1,5 @@
 # إعداد متغيرات البيئة لـ Vite
+
 # Vite Environment Variables Setup
 
 ## نظرة عامة | Overview
@@ -11,10 +12,10 @@ This guide explains how to set up `VITE_APP_TITLE` and `VITE_APP_LOGO` in differ
 
 ## 📝 المتغيرات المطلوبة | Required Variables
 
-| المتغير | القيمة الافتراضية | الوصف |
-|---------|-------------------|--------|
-| `VITE_APP_TITLE` | `رابِط - منصة إدارة الموارد البشرية` | عنوان التطبيق |
-| `VITE_APP_LOGO` | `/logo.png` | مسار شعار التطبيق |
+| المتغير          | القيمة الافتراضية                    | الوصف             |
+| ---------------- | ------------------------------------ | ----------------- |
+| `VITE_APP_TITLE` | `رابِط - منصة إدارة الموارد البشرية` | عنوان التطبيق     |
+| `VITE_APP_LOGO`  | `/logo.png`                          | مسار شعار التطبيق |
 
 ---
 
@@ -110,6 +111,7 @@ VITE_APP_LOGO=/logo.png
 اذهب إلى: **Settings → Secrets and variables → Actions**
 
 أضف:
+
 - `VITE_APP_TITLE` = `رابِط - منصة إدارة الموارد البشرية`
 - `VITE_APP_LOGO` = `/logo.png`
 
@@ -133,6 +135,7 @@ pnpm build
 ```
 
 يجب ألا ترى تحذيرات مثل:
+
 - ❌ `%VITE_APP_LOGO% is not defined`
 - ❌ `%VITE_APP_TITLE% is not defined`
 
@@ -144,12 +147,14 @@ cat dist/public/index.html | grep -E "VITE_APP|title|icon"
 ```
 
 يجب أن ترى:
+
 - ✅ `<title>رابِط - منصة إدارة الموارد البشرية - مساعد الموارد البشرية الذكي</title>`
 - ✅ `<link rel="icon" type="image/png" href="/logo.png" />`
 
 ### 3. التحقق في المتصفح
 
 بعد النشر:
+
 1. افتح التطبيق في المتصفح
 2. افتح DevTools → Console
 3. نفذ:
@@ -187,6 +192,7 @@ export const APP_LOGO = import.meta.env.VITE_APP_LOGO || "/logo.png";
 ### خطأ: "VITE_APP_TITLE is not defined"
 
 **الحل:**
+
 1. تأكد من وجود ملف `.env` في جذر المشروع
 2. تأكد من أن اسم المتغير يبدأ بـ `VITE_`
 3. أعد تشغيل dev server: `pnpm dev`
@@ -194,6 +200,7 @@ export const APP_LOGO = import.meta.env.VITE_APP_LOGO || "/logo.png";
 ### خطأ: "Variables not replaced in built HTML"
 
 **الحل:**
+
 1. تأكد من استخدام `%VARIABLE_NAME%` في HTML (وليس `${VARIABLE_NAME}`)
 2. نفذ: `pnpm build` من جديد
 3. تحقق من `dist/public/index.html`
@@ -201,6 +208,7 @@ export const APP_LOGO = import.meta.env.VITE_APP_LOGO || "/logo.png";
 ### المتغيرات تعمل محلياً لكن ليس في Vercel
 
 **الحل:**
+
 1. تأكد من إضافة المتغيرات في Vercel Dashboard
 2. اختر جميع البيئات: Production, Preview, Development
 3. أعد النشر: `vercel --prod`

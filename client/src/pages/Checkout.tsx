@@ -31,7 +31,9 @@ import { trpc } from "@/lib/trpc";
 export default function Checkout() {
   const [, setLocation] = useLocation();
   const [isLoading, setIsLoading] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<"credit_card" | "bank_transfer">("credit_card");
+  const [paymentMethod, setPaymentMethod] = useState<
+    "credit_card" | "bank_transfer"
+  >("credit_card");
   const [discountCode, setDiscountCode] = useState("");
   const [appliedDiscount, setAppliedDiscount] = useState<{
     code: string;
@@ -91,7 +93,7 @@ export default function Checkout() {
   // Calculate final price
   const calculateFinalPrice = () => {
     let price = selectedPackage.price;
-    
+
     if (appliedDiscount) {
       if (appliedDiscount.discountType === "percentage") {
         price -= (price * appliedDiscount.discount) / 100;
@@ -99,7 +101,7 @@ export default function Checkout() {
         price -= appliedDiscount.discount;
       }
     }
-    
+
     return Math.max(0, price);
   };
 
@@ -127,7 +129,12 @@ export default function Checkout() {
     }
 
     if (paymentMethod === "credit_card") {
-      if (!cardData.cardNumber || !cardData.cardName || !cardData.expiryDate || !cardData.cvv) {
+      if (
+        !cardData.cardNumber ||
+        !cardData.cardName ||
+        !cardData.expiryDate ||
+        !cardData.cvv
+      ) {
         toast.error("الرجاء إكمال بيانات البطاقة");
         return;
       }
@@ -140,7 +147,7 @@ export default function Checkout() {
       await new Promise(resolve => setTimeout(resolve, 3000));
 
       toast.success("تمت عملية الدفع بنجاح!");
-      
+
       // Redirect to success page
       setTimeout(() => {
         setLocation("/payment-success");
@@ -159,7 +166,7 @@ export default function Checkout() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 py-12">
       <BackButton />
-      
+
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-2">إتمام عملية الدفع</h1>
@@ -189,8 +196,11 @@ export default function Checkout() {
                       <Input
                         id="fullName"
                         value={billingData.fullName}
-                        onChange={(e) =>
-                          setBillingData({ ...billingData, fullName: e.target.value })
+                        onChange={e =>
+                          setBillingData({
+                            ...billingData,
+                            fullName: e.target.value,
+                          })
                         }
                         required
                       />
@@ -198,14 +208,18 @@ export default function Checkout() {
 
                     <div className="space-y-2">
                       <Label htmlFor="email">
-                        البريد الإلكتروني <span className="text-red-500">*</span>
+                        البريد الإلكتروني{" "}
+                        <span className="text-red-500">*</span>
                       </Label>
                       <Input
                         id="email"
                         type="email"
                         value={billingData.email}
-                        onChange={(e) =>
-                          setBillingData({ ...billingData, email: e.target.value })
+                        onChange={e =>
+                          setBillingData({
+                            ...billingData,
+                            email: e.target.value,
+                          })
                         }
                         required
                       />
@@ -220,8 +234,11 @@ export default function Checkout() {
                         type="tel"
                         placeholder="05xxxxxxxx"
                         value={billingData.phone}
-                        onChange={(e) =>
-                          setBillingData({ ...billingData, phone: e.target.value })
+                        onChange={e =>
+                          setBillingData({
+                            ...billingData,
+                            phone: e.target.value,
+                          })
                         }
                         required
                       />
@@ -232,8 +249,11 @@ export default function Checkout() {
                       <Input
                         id="companyName"
                         value={billingData.companyName}
-                        onChange={(e) =>
-                          setBillingData({ ...billingData, companyName: e.target.value })
+                        onChange={e =>
+                          setBillingData({
+                            ...billingData,
+                            companyName: e.target.value,
+                          })
                         }
                       />
                     </div>
@@ -244,8 +264,11 @@ export default function Checkout() {
                         id="taxNumber"
                         placeholder="300xxxxxxxxx"
                         value={billingData.taxNumber}
-                        onChange={(e) =>
-                          setBillingData({ ...billingData, taxNumber: e.target.value })
+                        onChange={e =>
+                          setBillingData({
+                            ...billingData,
+                            taxNumber: e.target.value,
+                          })
                         }
                       />
                     </div>
@@ -255,8 +278,11 @@ export default function Checkout() {
                       <Input
                         id="address"
                         value={billingData.address}
-                        onChange={(e) =>
-                          setBillingData({ ...billingData, address: e.target.value })
+                        onChange={e =>
+                          setBillingData({
+                            ...billingData,
+                            address: e.target.value,
+                          })
                         }
                       />
                     </div>
@@ -276,11 +302,16 @@ export default function Checkout() {
               <CardContent className="space-y-6">
                 <RadioGroup
                   value={paymentMethod}
-                  onValueChange={(value) => setPaymentMethod(value as "credit_card" | "bank_transfer")}
+                  onValueChange={value =>
+                    setPaymentMethod(value as "credit_card" | "bank_transfer")
+                  }
                 >
                   <div className="flex items-center space-x-2 space-x-reverse p-4 border rounded-lg cursor-pointer hover:bg-muted/50">
                     <RadioGroupItem value="credit_card" id="credit_card" />
-                    <Label htmlFor="credit_card" className="flex-1 cursor-pointer">
+                    <Label
+                      htmlFor="credit_card"
+                      className="flex-1 cursor-pointer"
+                    >
                       بطاقة الائتمان / مدى
                     </Label>
                     <div className="flex gap-2">
@@ -292,7 +323,10 @@ export default function Checkout() {
 
                   <div className="flex items-center space-x-2 space-x-reverse p-4 border rounded-lg cursor-pointer hover:bg-muted/50">
                     <RadioGroupItem value="bank_transfer" id="bank_transfer" />
-                    <Label htmlFor="bank_transfer" className="flex-1 cursor-pointer">
+                    <Label
+                      htmlFor="bank_transfer"
+                      className="flex-1 cursor-pointer"
+                    >
                       تحويل بنكي
                     </Label>
                   </div>
@@ -307,8 +341,11 @@ export default function Checkout() {
                         placeholder="1234 5678 9012 3456"
                         maxLength={19}
                         value={cardData.cardNumber}
-                        onChange={(e) =>
-                          setCardData({ ...cardData, cardNumber: e.target.value })
+                        onChange={e =>
+                          setCardData({
+                            ...cardData,
+                            cardNumber: e.target.value,
+                          })
                         }
                       />
                     </div>
@@ -319,7 +356,7 @@ export default function Checkout() {
                         id="cardName"
                         placeholder="كما هو مكتوب على البطاقة"
                         value={cardData.cardName}
-                        onChange={(e) =>
+                        onChange={e =>
                           setCardData({ ...cardData, cardName: e.target.value })
                         }
                       />
@@ -333,8 +370,11 @@ export default function Checkout() {
                           placeholder="MM/YY"
                           maxLength={5}
                           value={cardData.expiryDate}
-                          onChange={(e) =>
-                            setCardData({ ...cardData, expiryDate: e.target.value })
+                          onChange={e =>
+                            setCardData({
+                              ...cardData,
+                              expiryDate: e.target.value,
+                            })
                           }
                         />
                       </div>
@@ -347,7 +387,7 @@ export default function Checkout() {
                           placeholder="123"
                           maxLength={4}
                           value={cardData.cvv}
-                          onChange={(e) =>
+                          onChange={e =>
                             setCardData({ ...cardData, cvv: e.target.value })
                           }
                         />
@@ -416,7 +456,9 @@ export default function Checkout() {
                   <div className="flex items-start justify-between">
                     <div>
                       <h3 className="font-semibold">{selectedPackage.name}</h3>
-                      <p className="text-sm text-muted-foreground">اشتراك شهري</p>
+                      <p className="text-sm text-muted-foreground">
+                        اشتراك شهري
+                      </p>
                     </div>
                     <div className="text-left">
                       {selectedPackage.discount > 0 && (
@@ -429,19 +471,24 @@ export default function Checkout() {
                   </div>
 
                   {selectedPackage.discount > 0 && (
-                    <Badge variant="secondary" className="bg-green-100 text-green-800">
+                    <Badge
+                      variant="secondary"
+                      className="bg-green-100 text-green-800"
+                    >
                       <Sparkles className="w-3 h-3 ml-1" />
                       خصم {selectedPackage.discount}%
                     </Badge>
                   )}
 
                   <ul className="text-sm text-muted-foreground space-y-1">
-                    {selectedPackage.features.slice(0, 3).map((feature, idx) => (
-                      <li key={idx} className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0" />
-                        {feature}
-                      </li>
-                    ))}
+                    {selectedPackage.features
+                      .slice(0, 3)
+                      .map((feature, idx) => (
+                        <li key={idx} className="flex items-center gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0" />
+                          {feature}
+                        </li>
+                      ))}
                     {selectedPackage.features.length > 3 && (
                       <li className="text-primary">
                         +{selectedPackage.features.length - 3} ميزة أخرى
@@ -460,7 +507,9 @@ export default function Checkout() {
                       id="discount"
                       placeholder="أدخل الكود"
                       value={discountCode}
-                      onChange={(e) => setDiscountCode(e.target.value.toUpperCase())}
+                      onChange={e =>
+                        setDiscountCode(e.target.value.toUpperCase())
+                      }
                       disabled={!!appliedDiscount}
                     />
                     <Button
@@ -476,7 +525,9 @@ export default function Checkout() {
                     <p className="text-sm text-green-600 flex items-center gap-1">
                       <CheckCircle2 className="h-4 w-4" />
                       تم تطبيق خصم {appliedDiscount.discount}
-                      {appliedDiscount.discountType === "percentage" ? "%" : " ﷼"}
+                      {appliedDiscount.discountType === "percentage"
+                        ? "%"
+                        : " ﷼"}
                     </p>
                   )}
                 </div>
@@ -496,7 +547,11 @@ export default function Checkout() {
                       <span>
                         -{" "}
                         {appliedDiscount.discountType === "percentage"
-                          ? ((selectedPackage.price * appliedDiscount.discount) / 100).toFixed(2)
+                          ? (
+                              (selectedPackage.price *
+                                appliedDiscount.discount) /
+                              100
+                            ).toFixed(2)
                           : appliedDiscount.discount.toFixed(2)}{" "}
                         ﷼
                       </span>
@@ -539,7 +594,9 @@ export default function Checkout() {
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0" />
                   <div>
-                    <p className="font-semibold text-sm">ضمان استرجاع الأموال</p>
+                    <p className="font-semibold text-sm">
+                      ضمان استرجاع الأموال
+                    </p>
                     <p className="text-xs text-muted-foreground">
                       في حال عدم الرضا خلال 14 يوم
                     </p>

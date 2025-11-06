@@ -10,7 +10,15 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Lock, ArrowRight, Loader2, CheckCircle2, Eye, EyeOff, AlertCircle } from "lucide-react";
+import {
+  Lock,
+  ArrowRight,
+  Loader2,
+  CheckCircle2,
+  Eye,
+  EyeOff,
+  AlertCircle,
+} from "lucide-react";
 import { Link, useRoute, useLocation } from "wouter";
 import { toast } from "sonner";
 
@@ -21,7 +29,7 @@ export default function ResetPassword() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [success, setSuccess] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",
@@ -50,7 +58,7 @@ export default function ResetPassword() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validation
     const passwordError = validatePassword(formData.password);
     if (passwordError) {
@@ -78,7 +86,7 @@ export default function ResetPassword() {
       setIsLoading(false);
       setSuccess(true);
       toast.success("تم تغيير كلمة المرور بنجاح!");
-      
+
       // Redirect to login after 3 seconds
       setTimeout(() => {
         setLocation("/login");
@@ -89,7 +97,8 @@ export default function ResetPassword() {
   const getPasswordStrength = (password: string) => {
     if (password.length === 0) return { label: "", color: "" };
     if (password.length < 8) return { label: "ضعيفة", color: "text-red-500" };
-    if (password.length < 12) return { label: "متوسطة", color: "text-yellow-500" };
+    if (password.length < 12)
+      return { label: "متوسطة", color: "text-yellow-500" };
     return { label: "قوية", color: "text-green-500" };
   };
 
@@ -98,7 +107,7 @@ export default function ResetPassword() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 flex items-center justify-center p-4">
       <BackButton />
-      
+
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
@@ -106,10 +115,9 @@ export default function ResetPassword() {
           </div>
           <CardTitle className="text-2xl">إعادة تعيين كلمة المرور</CardTitle>
           <CardDescription>
-            {success 
+            {success
               ? "تم تغيير كلمة المرور بنجاح"
-              : "أدخل كلمة مرور جديدة لحسابك"
-            }
+              : "أدخل كلمة مرور جديدة لحسابك"}
           </CardDescription>
         </CardHeader>
 
@@ -119,7 +127,7 @@ export default function ResetPassword() {
               <div className="mx-auto w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
                 <CheckCircle2 className="w-12 h-12 text-green-600" />
               </div>
-              
+
               <div className="space-y-2">
                 <p className="font-semibold text-lg">تم التغيير بنجاح!</p>
                 <p className="text-muted-foreground">
@@ -151,7 +159,7 @@ export default function ResetPassword() {
                     placeholder="أدخل كلمة مرور قوية"
                     className="pr-10 pl-10"
                     value={formData.password}
-                    onChange={(e) => {
+                    onChange={e => {
                       setFormData({ ...formData, password: e.target.value });
                       setErrors({ ...errors, password: "" });
                     }}
@@ -162,10 +170,14 @@ export default function ResetPassword() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                   >
-                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
                   </button>
                 </div>
-                
+
                 {/* Password Strength Indicator */}
                 {formData.password && (
                   <div className="flex items-center gap-2 text-sm">
@@ -175,8 +187,8 @@ export default function ResetPassword() {
                           formData.password.length < 8
                             ? "w-1/3 bg-red-500"
                             : formData.password.length < 12
-                            ? "w-2/3 bg-yellow-500"
-                            : "w-full bg-green-500"
+                              ? "w-2/3 bg-yellow-500"
+                              : "w-full bg-green-500"
                         }`}
                       />
                     </div>
@@ -185,7 +197,7 @@ export default function ResetPassword() {
                     </span>
                   </div>
                 )}
-                
+
                 {errors.password && (
                   <p className="text-sm text-red-500 flex items-center gap-1">
                     <AlertCircle className="h-4 w-4" />
@@ -205,8 +217,11 @@ export default function ResetPassword() {
                     placeholder="أعد إدخال كلمة المرور"
                     className="pr-10 pl-10"
                     value={formData.confirmPassword}
-                    onChange={(e) => {
-                      setFormData({ ...formData, confirmPassword: e.target.value });
+                    onChange={e => {
+                      setFormData({
+                        ...formData,
+                        confirmPassword: e.target.value,
+                      });
                       setErrors({ ...errors, confirmPassword: "" });
                     }}
                     required
@@ -216,10 +231,14 @@ export default function ResetPassword() {
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                   >
-                    {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
                   </button>
                 </div>
-                
+
                 {errors.confirmPassword && (
                   <p className="text-sm text-red-500 flex items-center gap-1">
                     <AlertCircle className="h-4 w-4" />
@@ -232,16 +251,32 @@ export default function ResetPassword() {
               <div className="bg-muted/50 p-4 rounded-lg text-sm space-y-2">
                 <p className="font-medium">متطلبات كلمة المرور:</p>
                 <ul className="text-muted-foreground space-y-1 text-right">
-                  <li className={formData.password.length >= 8 ? "text-green-600" : ""}>
+                  <li
+                    className={
+                      formData.password.length >= 8 ? "text-green-600" : ""
+                    }
+                  >
                     • 8 أحرف على الأقل
                   </li>
-                  <li className={/[A-Z]/.test(formData.password) ? "text-green-600" : ""}>
+                  <li
+                    className={
+                      /[A-Z]/.test(formData.password) ? "text-green-600" : ""
+                    }
+                  >
                     • حرف كبير واحد على الأقل
                   </li>
-                  <li className={/[a-z]/.test(formData.password) ? "text-green-600" : ""}>
+                  <li
+                    className={
+                      /[a-z]/.test(formData.password) ? "text-green-600" : ""
+                    }
+                  >
                     • حرف صغير واحد على الأقل
                   </li>
-                  <li className={/[0-9]/.test(formData.password) ? "text-green-600" : ""}>
+                  <li
+                    className={
+                      /[0-9]/.test(formData.password) ? "text-green-600" : ""
+                    }
+                  >
                     • رقم واحد على الأقل
                   </li>
                 </ul>
@@ -251,7 +286,9 @@ export default function ResetPassword() {
                 type="submit"
                 className="w-full"
                 size="lg"
-                disabled={isLoading || !formData.password || !formData.confirmPassword}
+                disabled={
+                  isLoading || !formData.password || !formData.confirmPassword
+                }
               >
                 {isLoading ? (
                   <>

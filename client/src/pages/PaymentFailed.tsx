@@ -63,7 +63,7 @@ export default function PaymentFailed() {
     },
   ];
 
-  const currentError = commonErrors.find((e) => e.code === error.code) || {
+  const currentError = commonErrors.find(e => e.code === error.code) || {
     title: "فشلت عملية الدفع",
     description: error.message,
     solution: "يرجى المحاولة مرة أخرى أو استخدام طريقة دفع أخرى",
@@ -111,7 +111,9 @@ export default function PaymentFailed() {
               <div className="flex items-start gap-3">
                 <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                 <div className="flex-1">
-                  <p className="font-semibold text-red-900">{currentError.title}</p>
+                  <p className="font-semibold text-red-900">
+                    {currentError.title}
+                  </p>
                   <p className="text-sm text-red-700 mt-1">
                     {currentError.description}
                   </p>
@@ -162,7 +164,9 @@ export default function PaymentFailed() {
                   </div>
                   <div>
                     <p className="font-semibold">{err.title}</p>
-                    <p className="text-muted-foreground text-xs">{err.solution}</p>
+                    <p className="text-muted-foreground text-xs">
+                      {err.solution}
+                    </p>
                   </div>
                 </li>
               ))}
@@ -214,7 +218,9 @@ export default function PaymentFailed() {
                 </div>
                 <div>
                   <p className="font-semibold text-sm">راسلنا</p>
-                  <p className="text-xs text-muted-foreground">info@rbithr.com</p>
+                  <p className="text-xs text-muted-foreground">
+                    info@rbithr.com
+                  </p>
                   <p className="text-xs text-muted-foreground mt-1">
                     الرد خلال 24 ساعة
                   </p>

@@ -1,159 +1,165 @@
 /**
- * Structured Logging System for Production
- * Enterprise-grade logging with JSON format and log levels
+ * Winston-based Logging System for Production
+ * Enterprise-grade logging with file storage, rotation, and structured logs
+ *
+ * Features:
+ * - Winston logger with multiple transports
+ * - File rotation and management
+ * - JSON structured logging
+ * - Development-friendly console output
+ * - Configurable via environment variables
+ * - Integration with external services (Sentry, etc.)
  */
 
-export type LogLevel = "debug" | "info" | "warn" | "error" | "fatal";
+import winston from "winston";
+import path from "path";
+import fs from "fs";
 
-export interface LogEntry {
-  timestamp: string;
-  level: LogLevel;
-  message: string;
-  context?: string;
-  data?: any;
-  error?: {
-    name: string;
-    message: string;
-    stack?: string;
-  };
-  request?: {
-    method?: string;
-    url?: string;
-    ip?: string;
-    userAgent?: string;
-  };
+// Ensure logs directory exists
+const logsDir = path.join(process.cwd(), "logs");
+if (!fs.existsSync(logsDir)) {
+  fs.mkdirSync(logsDir, { recursive: true });
 }
 
-class Logger {
-  private isProduction = process.env.NODE_ENV === "production";
-  private minLevel: LogLevel = this.isProduction ? "info" : "debug";
-
-  private levelPriority: Record<LogLevel, number> = {
-    debug: 0,
-    info: 1,
-    warn: 2,
-    error: 3,
-    fatal: 4,
-  };
-
-  private shouldLog(level: LogLevel): boolean {
-    return this.levelPriority[level] >= this.levelPriority[this.minLevel];
-  }
-
-  private formatLog(entry: LogEntry): string {
-    if (this.isProduction) {
-      // JSON format for production (structured logs)
-      return JSON.stringify(entry);
-    } else {
-      // Human-readable format for development
-      const time = new Date(entry.timestamp).toLocaleTimeString();
-      const levelEmoji = {
-        debug: "🔍",
-        info: "ℹ️",
-        warn: "⚠️",
-        error: "❌",
-        fatal: "💀",
-      };
-
-      let output = `${levelEmoji[entry.level]} [${time}] ${entry.level.toUpperCase()}`;
-
-      if (entry.context) {
-        output += ` [${entry.context}]`;
-      }
-
-      output += `: ${entry.message}`;
-
-      if (entry.data) {
-        output += `\n  Data: ${JSON.stringify(entry.data, null, 2)}`;
-      }
-
-      if (entry.error) {
-        output += `\n  Error: ${entry.error.message}`;
-        if (entry.error.stack) {
-          output += `\n${entry.error.stack}`;
-        }
-      }
-
-      return output;
-    }
-  }
-
-  private log(
-    level: LogLevel,
-    message: string,
-    meta?: Partial<Omit<LogEntry, "timestamp" | "level" | "message">>
-  ) {
-    if (!this.shouldLog(level)) return;
-
-    const entry: LogEntry = {
-      timestamp: new Date().toISOString(),
-      level,
-      message,
-      ...meta,
+// Custom format for development (colorized and readable)
+const devFormat = winston.format.combine(
+  winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
+  winston.format.errors({ stack: true }),
+  winston.format.printf(({ timestamp, level, message, context, ...meta }) => {
+    const levelEmojis: Record<string, string> = {
+      debug: "🔍",
+      info: "ℹ️",
+      warn: "⚠️",
+      error: "❌",
+      fatal: "💀",
     };
 
-    const formatted = this.formatLog(entry);
+    let output = `${levelEmojis[level] || "📝"} [${timestamp}] ${level.toUpperCase()}`;
 
-    // Output to appropriate stream
-    if (level === "error" || level === "fatal") {
-      console.error(formatted);
-    } else if (level === "warn") {
-      console.warn(formatted);
-    } else {
-      console.log(formatted);
+    if (context) {
+      output += ` [${context}]`;
     }
 
-    // In production, you could send to external logging service here
-    // if (this.isProduction && (level === "error" || level === "fatal")) {
-    //   sendToSentry(entry);
-    // }
+    output += `: ${message}`;
+
+    // Add metadata if present
+    const metaKeys = Object.keys(meta);
+    if (
+      metaKeys.length > 0 &&
+      metaKeys.some(k => k !== "timestamp" && k !== "level")
+    ) {
+      const cleanMeta = { ...meta };
+      delete cleanMeta.timestamp;
+      delete cleanMeta.level;
+      if (Object.keys(cleanMeta).length > 0) {
+        output += `\n  ${JSON.stringify(cleanMeta, null, 2)}`;
+      }
+    }
+
+    return output;
+  })
+);
+
+// Custom format for production (JSON with full metadata)
+const prodFormat = winston.format.combine(
+  winston.format.timestamp(),
+  winston.format.errors({ stack: true }),
+  winston.format.json()
+);
+
+// Determine environment
+const isProduction = process.env.NODE_ENV === "production";
+const isDevelopment = !isProduction;
+
+// Configure transports
+const transports: winston.transport[] = [
+  // Console transport (always enabled)
+  new winston.transports.Console({
+    format: isDevelopment
+      ? winston.format.combine(winston.format.colorize(), devFormat)
+      : prodFormat,
+  }),
+];
+
+// File transports (production only or when explicitly enabled)
+if (isProduction || process.env.ENABLE_FILE_LOGGING === "true") {
+  transports.push(
+    // Error log file
+    new winston.transports.File({
+      filename: path.join(logsDir, "error.log"),
+      level: "error",
+      maxsize: 5242880, // 5MB
+      maxFiles: 5,
+      format: prodFormat,
+    }),
+    // Combined log file
+    new winston.transports.File({
+      filename: path.join(logsDir, "combined.log"),
+      maxsize: 5242880, // 5MB
+      maxFiles: 5,
+      format: prodFormat,
+    })
+  );
+}
+
+// Create Winston logger instance
+const winstonLogger = winston.createLogger({
+  level: process.env.LOG_LEVEL || (isDevelopment ? "debug" : "info"),
+  format: prodFormat,
+  transports,
+  exitOnError: false,
+});
+
+// Custom Logger class wrapping Winston
+class Logger {
+  private winston = winstonLogger;
+
+  private formatMeta(meta?: any): any {
+    if (!meta) return {};
+
+    // Handle Error objects
+    if (meta.error instanceof Error) {
+      return {
+        ...meta,
+        error: {
+          name: meta.error.name,
+          message: meta.error.message,
+          stack: meta.error.stack,
+        },
+      };
+    }
+
+    return meta;
   }
 
-  debug(
-    message: string,
-    meta?: Partial<Omit<LogEntry, "timestamp" | "level" | "message">>
-  ) {
-    this.log("debug", message, meta);
+  // Logging methods
+  debug(message: string, meta?: any) {
+    this.winston.debug(message, this.formatMeta(meta));
   }
 
-  info(
-    message: string,
-    meta?: Partial<Omit<LogEntry, "timestamp" | "level" | "message">>
-  ) {
-    this.log("info", message, meta);
+  info(message: string, meta?: any) {
+    this.winston.info(message, this.formatMeta(meta));
   }
 
-  warn(
-    message: string,
-    meta?: Partial<Omit<LogEntry, "timestamp" | "level" | "message">>
-  ) {
-    this.log("warn", message, meta);
+  warn(message: string, meta?: any) {
+    this.winston.warn(message, this.formatMeta(meta));
   }
 
-  error(
-    message: string,
-    meta?: Partial<Omit<LogEntry, "timestamp" | "level" | "message">>
-  ) {
-    this.log("error", message, meta);
+  error(message: string, meta?: any) {
+    this.winston.error(message, this.formatMeta(meta));
   }
 
-  fatal(
-    message: string,
-    meta?: Partial<Omit<LogEntry, "timestamp" | "level" | "message">>
-  ) {
-    this.log("fatal", message, meta);
+  fatal(message: string, meta?: any) {
+    // Winston doesn't have 'fatal' level by default, use error with fatal flag
+    this.winston.error(message, { ...this.formatMeta(meta), fatal: true });
   }
 
   // Helper for logging errors with full context
   logError(error: Error, context?: string, additionalData?: any) {
     this.error(error.message, {
       context,
-      data: additionalData,
-      error: {
-        name: error.name,
-        message: error.message,
-        stack: error.stack,
-      },
+      error,
+      ...additionalData,
     });
   }
 
@@ -163,28 +169,70 @@ class Logger {
     url: string,
     statusCode: number,
     responseTime: number,
-    ip?: string
+    ip?: string,
+    userAgent?: string
   ) {
     const level =
       statusCode >= 500 ? "error" : statusCode >= 400 ? "warn" : "info";
 
-    this.log(level, `${method} ${url} ${statusCode} - ${responseTime}ms`, {
-      context: "HTTP",
-      request: {
-        method,
-        url,
-        ip,
-      },
-      data: {
+    this.winston.log(
+      level,
+      `${method} ${url} ${statusCode} - ${responseTime}ms`,
+      {
+        context: "HTTP",
+        request: {
+          method,
+          url,
+          ip,
+          userAgent,
+        },
         statusCode,
         responseTime,
-      },
+      }
+    );
+  }
+
+  // HTTP middleware for logging requests
+  middleware() {
+    return (req: any, res: any, next: any) => {
+      const start = Date.now();
+
+      // Log when response finishes
+      res.on("finish", () => {
+        const duration = Date.now() - start;
+        this.logRequest(
+          req.method,
+          req.originalUrl || req.url,
+          res.statusCode,
+          duration,
+          req.ip || req.connection.remoteAddress,
+          req.get("user-agent")
+        );
+      });
+
+      next();
+    };
+  }
+
+  // Graceful shutdown
+  async close(): Promise<void> {
+    return new Promise(resolve => {
+      this.winston.on("finish", resolve);
+      this.winston.end();
     });
+  }
+
+  // Get Winston instance for advanced usage
+  getWinston() {
+    return this.winston;
   }
 }
 
 // Export singleton instance
 export const logger = new Logger();
 
-// Export for testing/advanced usage
+// Export class for testing/advanced usage
 export { Logger };
+
+// Legacy compatibility - export winston instance directly
+export const winstonInstance = winstonLogger;
