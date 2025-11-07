@@ -37,10 +37,10 @@ const navigationItems: NavigationItem[] = [
 
 /**
  * Mobile Bottom Navigation Bar
- * 
+ *
  * Fixed bottom navigation with icons and labels
  * Shows on mobile devices only
- * 
+ *
  * @example
  * <MobileNavigation />
  */
@@ -50,7 +50,7 @@ export function MobileNavigation() {
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border">
       <div className="flex items-center justify-around h-16 px-2">
-        {navigationItems.slice(0, 5).map((item) => {
+        {navigationItems.slice(0, 5).map(item => {
           const Icon = item.icon;
           const isActive = location === item.href;
 
@@ -84,9 +84,9 @@ export function MobileNavigation() {
 
 /**
  * Mobile Top Bar with Menu
- * 
+ *
  * Contains logo, search, and hamburger menu
- * 
+ *
  * @example
  * <MobileTopBar />
  */
@@ -132,7 +132,7 @@ export function MobileTopBar() {
                 <SheetTitle>القائمة</SheetTitle>
               </SheetHeader>
               <div className="flex flex-col gap-2 mt-6">
-                {navigationItems.map((item) => {
+                {navigationItems.map(item => {
                   const Icon = item.icon;
                   const isActive = location === item.href;
 
@@ -169,9 +169,9 @@ export function MobileTopBar() {
 
 /**
  * Mobile Safe Area Spacer
- * 
+ *
  * Adds padding for mobile bottom navigation
- * 
+ *
  * @example
  * <div>
  *   <Content />

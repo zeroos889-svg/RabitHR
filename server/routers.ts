@@ -644,7 +644,7 @@ ${companyName ? `اسم الشركة: ${companyName}\n` : ""}
           consultantId: z.number(),
         })
       )
-      .mutation(async ({ input, ctx }) => {
+      .mutation(async ({ input }) => {
         // TODO: Add admin check
         await db.assignConsultingTicket(input.ticketId, input.consultantId);
         return { success: true };
@@ -1204,7 +1204,8 @@ ${companyName ? `اسم الشركة: ${companyName}\n` : ""}
           const { url } = await storagePut(fileKey, buffer, input.mimeType);
 
           return { success: true, url };
-        } catch (error: any) {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (_error: any) {
           throw new TRPCError({
             code: "INTERNAL_SERVER_ERROR",
             message: "فشل رفع الملف",

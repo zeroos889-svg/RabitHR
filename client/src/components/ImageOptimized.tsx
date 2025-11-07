@@ -11,7 +11,7 @@ interface ImageOptimizedProps extends ImgHTMLAttributes<HTMLImageElement> {
 
 /**
  * Optimized Image Component
- * 
+ *
  * Features:
  * - Lazy loading by default
  * - Blur placeholder
@@ -19,9 +19,9 @@ interface ImageOptimizedProps extends ImgHTMLAttributes<HTMLImageElement> {
  * - Responsive images
  * - Error handling
  * - Loading state
- * 
+ *
  * @example
- * <ImageOptimized 
+ * <ImageOptimized
  *   src="/images/profile.jpg"
  *   alt="Profile"
  *   className="w-full rounded-lg"

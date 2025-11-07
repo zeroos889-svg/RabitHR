@@ -1635,7 +1635,7 @@ export async function saveUserConsent(data: {
   const db = await getDb();
   if (!db) return null;
 
-  const { users, userConsents } = await import("../drizzle/schema");
+  const { userConsents } = await import("../drizzle/schema");
 
   const result = await db.insert(userConsents).values({
     userId: data.userId,
@@ -1656,7 +1656,7 @@ export async function withdrawConsent(userId: number) {
   if (!db) return null;
 
   const { userConsents } = await import("../drizzle/schema");
-  const { eq, isNull } = await import("drizzle-orm");
+  const { eq } = await import("drizzle-orm");
 
   await db
     .update(userConsents)
@@ -1674,7 +1674,7 @@ export async function getConsentStatus(userId: number) {
   if (!db) return null;
 
   const { userConsents } = await import("../drizzle/schema");
-  const { eq, isNull, desc } = await import("drizzle-orm");
+  const { eq, desc } = await import("drizzle-orm");
 
   const result = await db
     .select()

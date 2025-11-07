@@ -169,6 +169,7 @@ function Layout() {
 ```
 
 **المميزات:**
+
 - ✅ Fixed bottom bar
 - ✅ Active state indicators
 - ✅ Badge notifications
@@ -193,6 +194,7 @@ function Layout() {
 ```
 
 **المميزات:**
+
 - ✅ Sticky top bar
 - ✅ Logo + branding
 - ✅ Search button
@@ -266,7 +268,9 @@ function Page() {
 ```tsx
 // 1 column on mobile, 2 on tablet, 3 on desktop
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-  {items.map(item => <Card key={item.id} {...item} />)}
+  {items.map(item => (
+    <Card key={item.id} {...item} />
+  ))}
 </div>
 ```
 
@@ -276,9 +280,7 @@ function Page() {
 // Stack on mobile, table on desktop
 <div className="block md:table w-full">
   <div className="md:table-row">
-    <div className="block md:table-cell p-2">
-      {data}
-    </div>
+    <div className="block md:table-cell p-2">{data}</div>
   </div>
 </div>
 ```
@@ -305,9 +307,7 @@ function MobileLayout() {
   return (
     <div className="flex flex-col min-h-screen">
       <MobileTopBar />
-      <main className="flex-1 p-4 pb-20">
-        {children}
-      </main>
+      <main className="flex-1 p-4 pb-20">{children}</main>
       <MobileNavigation />
     </div>
   );
@@ -323,9 +323,7 @@ function DesktopLayout() {
       <aside className="w-64 border-r">
         <Sidebar />
       </aside>
-      <main className="flex-1 p-8">
-        {children}
-      </main>
+      <main className="flex-1 p-8">{children}</main>
     </div>
   );
 }
@@ -340,15 +338,9 @@ function AdaptiveLayout() {
   return (
     <div className="min-h-screen">
       {isMobile && <MobileTopBar />}
-      <div className={cn(
-        "flex",
-        isMobile ? "flex-col" : "flex-row"
-      )}>
+      <div className={cn("flex", isMobile ? "flex-col" : "flex-row")}>
         {isDesktop && <Sidebar />}
-        <main className={cn(
-          "flex-1",
-          isMobile ? "p-4 pb-20" : "p-8"
-        )}>
+        <main className={cn("flex-1", isMobile ? "p-4 pb-20" : "p-8")}>
           {children}
         </main>
       </div>
@@ -458,22 +450,14 @@ function OldComponent() {
 
 // After - Responsive
 function NewComponent() {
-  return (
-    <div className="w-full md:w-2/3 lg:w-1/2">
-      {content}
-    </div>
-  );
+  return <div className="w-full md:w-2/3 lg:w-1/2">{content}</div>;
 }
 
 // After - With hooks
 function SmartComponent() {
   const { isMobile } = useBreakpoint();
 
-  return (
-    <div className={isMobile ? "w-full" : "w-1/2"}>
-      {content}
-    </div>
-  );
+  return <div className={isMobile ? "w-full" : "w-1/2"}>{content}</div>;
 }
 ```
 

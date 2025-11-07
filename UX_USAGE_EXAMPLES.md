@@ -1,4 +1,5 @@
 # أمثلة استخدام تحسينات UX
+
 ## UX Components Usage Examples
 
 **تاريخ الإنشاء:** 2025-11-06
@@ -19,6 +20,7 @@
 ### LoadingSpinner
 
 #### الاستخدام الأساسي
+
 ```tsx
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 
@@ -33,6 +35,7 @@ import { LoadingSpinner } from "@/components/LoadingSpinner";
 ```
 
 #### Variants مختلفة
+
 ```tsx
 // Default spinner
 <LoadingSpinner variant="default" />
@@ -45,10 +48,11 @@ import { LoadingSpinner } from "@/components/LoadingSpinner";
 ```
 
 #### Full Screen Loading
+
 ```tsx
 // ملء الشاشة
-<LoadingSpinner 
-  fullScreen 
+<LoadingSpinner
+  fullScreen
   size="lg"
   text="جاري تحميل التطبيق..."
   variant="pulse"
@@ -60,13 +64,14 @@ import { LoadingSpinner } from "@/components/LoadingSpinner";
 ### LoadingState
 
 #### الاستخدام في الصفحات
+
 ```tsx
 import { LoadingState } from "@/components/LoadingState";
 
 function MyPage() {
   if (isLoading) {
     return (
-      <LoadingState 
+      <LoadingState
         title="جاري تحميل البيانات"
         message="الرجاء الانتظار..."
         size="lg"
@@ -79,6 +84,7 @@ function MyPage() {
 ```
 
 #### مع React Query
+
 ```tsx
 import { useQuery } from "@tanstack/react-query";
 import { LoadingState } from "@/components/LoadingState";
@@ -108,6 +114,7 @@ function DataPage() {
 ### ErrorMessage Component
 
 #### الاستخدام الأساسي
+
 ```tsx
 import { ErrorMessage } from "@/components/ErrorMessage";
 
@@ -115,15 +122,16 @@ import { ErrorMessage } from "@/components/ErrorMessage";
 <ErrorMessage message="حدث خطأ ما" />
 
 // مع عنوان
-<ErrorMessage 
+<ErrorMessage
   title="فشل التحميل"
   message="لم نتمكن من تحميل البيانات"
 />
 ```
 
 #### مع زر إعادة المحاولة
+
 ```tsx
-<ErrorMessage 
+<ErrorMessage
   title="فشل حفظ البيانات"
   message="حدث خطأ أثناء الحفظ"
   onRetry={() => saveData()}
@@ -132,23 +140,25 @@ import { ErrorMessage } from "@/components/ErrorMessage";
 ```
 
 #### Variants مختلفة
+
 ```tsx
 // Error (default)
-<ErrorMessage 
+<ErrorMessage
   variant="destructive"
   message="حدث خطأ حرج"
 />
 
 // Warning
-<ErrorMessage 
+<ErrorMessage
   variant="warning"
   message="تحذير: البيانات غير محدثة"
 />
 ```
 
 #### Full Screen Error
+
 ```tsx
-<ErrorMessage 
+<ErrorMessage
   fullScreen
   title="فشل تحميل التطبيق"
   message="لم نتمكن من الاتصال بالخادم"
@@ -161,6 +171,7 @@ import { ErrorMessage } from "@/components/ErrorMessage";
 ### getErrorMessage() Utility
 
 #### استخدام في Error Handling
+
 ```tsx
 import { getErrorMessage } from "@/components/ErrorMessage";
 
@@ -173,10 +184,11 @@ try {
 ```
 
 #### مع React Query
+
 ```tsx
 const { mutate } = useMutation({
   mutationFn: saveData,
-  onError: (error) => {
+  onError: error => {
     toast.error(getErrorMessage(error));
   },
 });
@@ -189,6 +201,7 @@ const { mutate } = useMutation({
 ### Toast Utilities
 
 #### Success Messages
+
 ```tsx
 import { toast, successMessages } from "@/lib/toast";
 
@@ -202,6 +215,7 @@ toast.success(successMessages.delete);
 ```
 
 #### Error Messages
+
 ```tsx
 import { toast, errorMessages } from "@/lib/toast";
 
@@ -215,6 +229,7 @@ toast.error(errorMessages.server);
 ```
 
 #### Info & Warning
+
 ```tsx
 // معلومة
 toast.info("تم تحديث البيانات");
@@ -224,6 +239,7 @@ toast.warning("البيانات قديمة، يرجى التحديث");
 ```
 
 #### Loading State
+
 ```tsx
 // عرض loading
 const loadingToast = toast.loading("جاري الحفظ...");
@@ -239,40 +255,37 @@ toast.success("تم الحفظ");
 ### Promise Toast
 
 #### مع Async Operations
+
 ```tsx
 import { toast } from "@/lib/toast";
 
 // Toast تلقائي لـ promise
-toast.promise(
-  saveData(),
-  {
-    loading: "جاري الحفظ...",
-    success: "تم الحفظ بنجاح ✓",
-    error: "فشل الحفظ"
-  }
-);
+toast.promise(saveData(), {
+  loading: "جاري الحفظ...",
+  success: "تم الحفظ بنجاح ✓",
+  error: "فشل الحفظ",
+});
 ```
 
 #### مع Dynamic Messages
+
 ```tsx
-toast.promise(
-  uploadFile(file),
-  {
-    loading: "جاري رفع الملف...",
-    success: (data) => `تم رفع ${data.filename} بنجاح ✓`,
-    error: (error) => getErrorMessage(error)
-  }
-);
+toast.promise(uploadFile(file), {
+  loading: "جاري رفع الملف...",
+  success: data => `تم رفع ${data.filename} بنجاح ✓`,
+  error: error => getErrorMessage(error),
+});
 ```
 
 #### مع Action Button
+
 ```tsx
 toast.success("تم حذف العنصر", {
   duration: 5000,
   action: {
     label: "تراجع",
-    onClick: () => restoreItem()
-  }
+    onClick: () => restoreItem(),
+  },
 });
 ```
 
@@ -319,7 +332,7 @@ toast.success("تم حفظ البيانات بنجاح ✓");
 <ErrorMessage message="فشل التحميل" />
 
 // ✅ جيد: خطأ مع إعادة محاولة
-<ErrorMessage 
+<ErrorMessage
   message="فشل التحميل"
   onRetry={refetch}
 />
@@ -329,7 +342,7 @@ toast.success("تم حفظ البيانات بنجاح ✓");
 
 ```tsx
 // ✅ دائماً استخدم ARIA labels
-<LoadingSpinner 
+<LoadingSpinner
   text="جاري التحميل..."
   // يضيف تلقائياً: role="status" aria-live="polite"
 />
@@ -360,7 +373,7 @@ function UserProfile() {
     onSuccess: () => {
       toast.success(successMessages.save);
     },
-    onError: (error) => {
+    onError: error => {
       toast.error(getErrorMessage(error));
     },
   });
@@ -368,7 +381,7 @@ function UserProfile() {
   // Loading state
   if (isLoading) {
     return (
-      <LoadingState 
+      <LoadingState
         title="جاري تحميل الملف الشخصي"
         message="الرجاء الانتظار..."
         variant="pulse"
@@ -379,7 +392,7 @@ function UserProfile() {
   // Error state
   if (error) {
     return (
-      <ErrorMessage 
+      <ErrorMessage
         title="فشل تحميل الملف الشخصي"
         message={getErrorMessage(error)}
         onRetry={refetch}
@@ -391,10 +404,7 @@ function UserProfile() {
   return (
     <div>
       <h1>{data.name}</h1>
-      <button 
-        onClick={() => saveUser(data)}
-        disabled={isPending}
-      >
+      <button onClick={() => saveUser(data)} disabled={isPending}>
         {isPending ? (
           <>
             <LoadingSpinner size="sm" />
@@ -414,20 +424,23 @@ function UserProfile() {
 ## 📝 ملاحظات مهمة
 
 ### Performance
+
 - استخدم `variant="pulse"` للعمليات السريعة
 - استخدم `variant="dots"` للعمليات الطويلة
 - تجنب `fullScreen` إلا عند الضرورة
 
 ### Accessibility
+
 - جميع المكونات تدعم ARIA labels تلقائياً
 - استخدم `text` prop دائماً للـ context
 - تجنب الرسائل الفارغة
 
 ### RTL Support
+
 - جميع المكونات تدعم RTL تلقائياً
 - Toast messages تظهر من اليمين
 - Text direction يتم ضبطه تلقائياً
 
 ---
 
-*آخر تحديث: 2025-11-06*
+_آخر تحديث: 2025-11-06_

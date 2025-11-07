@@ -8,7 +8,6 @@ import { router, publicProcedure, protectedProcedure } from "./_core/trpc";
 import { TRPCError } from "@trpc/server";
 import {
   createMoyasarPayment,
-  getMoyasarPayment,
   refundMoyasarPayment,
   createTapPayment,
   verifyMoyasarWebhook,
@@ -23,8 +22,6 @@ const PLANS = {
   pro: { amount: 1499, name: "Professional Plan" },
   enterprise: { amount: 2999, name: "Enterprise Plan" },
 } as const;
-
-type PlanKey = keyof typeof PLANS;
 
 export const paymentRouter = router({
   /**
@@ -329,7 +326,7 @@ export const paymentRouter = router({
         offset: z.number().min(0).default(0),
       })
     )
-    .query(async ({ input, ctx }) => {
+    .query(async ({ input: _input, ctx: _ctx }) => {
       try {
         // TODO: Implement db.getUserPayments()
         // const payments = await db.getUserPayments(ctx.user!.id, input.limit, input.offset);
@@ -339,8 +336,9 @@ export const paymentRouter = router({
           payments: [],
           total: 0,
         };
-      } catch (error: any) {
-        console.error("[Payment] History fetch error:", error);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (_error: any) {
+        console.error("[Payment] History fetch error:", _error);
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "فشل جلب سجل المدفوعات",
