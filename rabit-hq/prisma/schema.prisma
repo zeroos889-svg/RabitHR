@@ -1,0 +1,140 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Users with roles
+model User {
+  id         String    @id @default(cuid())
+  email      String    @unique
+  name       String?
+  password   String?   // hashed
+  role       Role      @default(TECH)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  // relations
+  expenses   Expense[] @relation("paidByUser")
+  milestones Milestone[]
+}
+
+enum Role {
+  FOUNDER
+  FINANCE
+  TECH
+  OPERATIONS
+  INVESTOR
+}
+
+model CapitalEvent {
+  id           String   @id @default(cuid())
+  type         CapitalType
+  investorName String?
+  amount       Decimal  @db.Decimal(18,4)
+  currency     String   @default("SAR")
+  date         DateTime
+  notes        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+enum CapitalType {
+  FOUNDER_CONTRIBUTION
+  INVESTMENT_ROUND
+  OTHER
+}
+
+model Expense {
+  id            String     @id @default(cuid())
+  category      ExpenseCategory
+  amount        Decimal    @db.Decimal(18,4)
+  currency      String     @default("SAR")
+  date          DateTime
+  paidByUserId  String?
+  paidByName    String?
+  paymentMethod PaymentMethod
+  phaseId       String?    // link to project phase
+  notes         String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  paidByUser    User?      @relation("paidByUser", fields: [paidByUserId], references: [id])
+}
+
+enum ExpenseCategory {
+  DEVELOPMENT
+  MARKETING
+  LEGAL
+  OPERATIONS
+  INFRASTRUCTURE
+  SALARIES
+  CONSULTING
+  OTHER
+}
+
+enum PaymentMethod {
+  BANK_TRANSFER
+  CARD
+  CASH
+  OTHER
+}
+
+model ProjectPhase {
+  id               String      @id @default(cuid())
+  name             String
+  description      String?
+  order            Int
+  status           PhaseStatus @default(NOT_STARTED)
+  plannedStartDate DateTime?
+  plannedEndDate   DateTime?
+  actualStartDate  DateTime?
+  actualEndDate    DateTime?
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  milestones Milestone[]
+}
+
+enum PhaseStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+model Milestone {
+  id            String        @id @default(cuid())
+  phaseId       String
+  title         String
+  description   String?
+  status        MilestoneStatus @default(NOT_STARTED)
+  ownerId       String?
+  plannedDate   DateTime?
+  completedDate DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  phase ProjectPhase @relation(fields: [phaseId], references: [id])
+  owner User? @relation(fields: [ownerId], references: [id])
+}
+
+enum MilestoneStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  DELAYED
+}
+
+// Simple audit log for critical actions
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String?
+  action    String
+  resource  String
+  resourceId String?
+  details   String?
+  createdAt DateTime @default(now())
+}

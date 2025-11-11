@@ -1,0 +1,345 @@
+{
+  "common": {
+    "appName": "Rabit HQ",
+    "welcome": "Welcome",
+    "login": "Login",
+    "logout": "Logout",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "email": "Email",
+    "password": "Password",
+    "signingIn": "Signing in...",
+    "demoAccounts": "Demo Accounts",
+    "founder": "Founder",
+    "finance": "Finance",
+    "investor": "Investor",
+    "invalidCredentials": "Invalid credentials",
+    "unauthorized": "Unauthorized"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "kpis": "Key Performance Indicators",
+    "totalCapital": "Total Capital",
+    "totalExpenses": "Total Expenses",
+    "remaining": "Remaining",
+    "monthlyBurn": "Monthly Burn Rate",
+    "runwayMonths": "Runway Months",
+    "aiInsights": "AI Insights",
+    "aiDisabled": "AI is currently disabled",
+    "capitalEvents": "Capital Events",
+    "expenses": "Expenses",
+    "projectPhases": "Project Phases",
+    "milestones": "Milestones"
+  },
+  "investor": {
+    "title": "Investor Portal",
+    "overview": "Overview",
+    "phases": "Phases",
+    "status": "Status",
+    "notStarted": "Not Started",
+    "inProgress": "In Progress",
+    "completed": "Completed",
+    "disabled": "Investor portal is disabled"
+  },
+  "capital": {
+    "title": "Capital",
+    "create": "Add Capital",
+    "type": "Type",
+    "investorName": "Investor Name",
+    "amount": "Amount",
+    "currency": "Currency",
+    "date": "Date",
+    "notes": "Notes",
+    "types": {
+      "FOUNDER_CONTRIBUTION": "Founder Contribution",
+      "INVESTMENT_ROUND": "Investment Round",
+      "OTHER": "Other"
+    },
+    "form": {
+      "title": "Add Capital Event",
+      "description": "Log a capital contribution or investment round.",
+      "addButton": "Add Capital Event",
+      "cancel": "Cancel",
+      "submit": "Add"
+    }
+  },
+  "expense": {
+    "title": "Expenses",
+    "create": "Add Expense",
+    "category": "Category",
+    "amount": "Amount",
+    "date": "Date",
+    "paidBy": "Paid By",
+    "paymentMethod": "Payment Method",
+    "categories": {
+      "DEVELOPMENT": "Development",
+      "MARKETING": "Marketing",
+      "LEGAL": "Legal",
+      "OPERATIONS": "Operations",
+      "INFRASTRUCTURE": "Infrastructure",
+      "SALARIES": "Salaries",
+      "CONSULTING": "Consulting",
+      "OTHER": "Other"
+    },
+    "paymentMethods": {
+      "BANK_TRANSFER": "Bank Transfer",
+      "CARD": "Card",
+      "CASH": "Cash",
+      "OTHER": "Other"
+    },
+    "form": {
+      "title": "Add Expense",
+      "description": "Record a new expense in the ledger.",
+      "addButton": "Add Expense",
+      "descriptionField": "Description",
+      "vendor": "Vendor",
+      "invoiceNumber": "Invoice Number",
+      "cancel": "Cancel",
+      "submit": "Add"
+    }
+  },
+  "phase": {
+    "title": "Phases",
+    "create": "Add Phase",
+    "name": "Name",
+    "description": "Description",
+    "status": "Status",
+    "order": "Order",
+    "plannedStartDate": "Planned Start Date",
+    "plannedEndDate": "Planned End Date",
+    "actualStartDate": "Actual Start Date",
+    "actualEndDate": "Actual End Date"
+  },
+  "milestone": {
+    "title": "Milestones",
+    "create": "Add Milestone",
+    "phaseId": "Phase",
+    "milestoneTitle": "Title",
+    "description": "Description",
+    "status": "Status",
+    "plannedDate": "Planned Date",
+    "completedDate": "Completed Date",
+    "owner": "Owner"
+  },
+  "admin": {
+    "title": "Administration",
+    "users": "Users",
+    "features": "Features",
+    "settings": "Settings",
+    "createUser": "Create User",
+    "editUser": "Edit User",
+    "deleteUser": "Delete User",
+    "role": "Role",
+    "roles": {
+      "FOUNDER": "Founder",
+      "FINANCE": "Finance",
+      "TECH": "Tech",
+      "OPERATIONS": "Operations",
+      "INVESTOR": "Investor"
+    },
+    "featureToggles": "Feature Toggles",
+    "enableAI": "Enable AI",
+    "enableInvestor": "Enable Investor Portal"
+  },
+  "feedback": {
+    "error": "Something went wrong. Please try again."
+  },
+  "layout": {
+    "footer": {
+      "copyright": "© {year} Rabit HQ",
+      "tagline": "Secure founder cockpit & investor snapshot"
+    }
+  },
+  "landing": {
+    "eyebrow": "Unified control center",
+    "headline": "Operate Rabit with clarity and intent.",
+    "description": "Founders, finance, and investors see the same truth—from burn runway to milestone execution—with guardrails for authentication and RBAC baked in.",
+    "primaryCta": "Open dashboard",
+    "secondaryCta": "Sign in",
+    "cards": {
+      "dashboard": {
+        "title": "Founder dashboard",
+        "description": "Track burn, capital efficiency, and system alerts in one place."
+      },
+      "investor": {
+        "title": "Investor snapshot",
+        "description": "Share curated delivery phases, progress, and read-only metrics."
+      },
+      "api": {
+        "title": "Capital events API",
+        "description": "Secure endpoints for logging contributions and AI-assisted notes."
+      }
+    }
+  },
+  "dashboardPage": {
+    "eyebrow": "Founder control center",
+    "title": "Dashboard",
+    "subtitle": "Real-time capital posture, burn signals, and AI guidance for the Rabit founding team.",
+    "statusPill": "{status} runway",
+    "status": {
+      "healthy": "Healthy",
+      "warning": "Warning",
+      "critical": "Critical"
+    },
+    "quickActions": {
+      "title": "Quick actions",
+      "description": "Log capital events or capture new expenses in seconds.",
+      "note": "Actions adapt to your language automatically."
+    },
+    "stats": {
+      "totalCapital": {
+        "label": "Total capital raised",
+        "description": "Across all closed rounds"
+      },
+      "totalExpenses": {
+        "label": "Total expenses",
+        "description": "Booked in ledger"
+      },
+      "remaining": {
+        "label": "Remaining buffer",
+        "description": "Dry powder for execution"
+      },
+      "monthlyBurn": {
+        "label": "Monthly burn (avg)",
+        "description": "Based on {months} month lookback"
+      }
+    },
+    "burnTrend": {
+      "title": "Burn trend",
+      "description": "Visualized spend across the last {months} months",
+      "chartAria": "Burn history over time"
+    },
+    "statusDescription": {
+      "healthy": "Runway looks comfortable.",
+      "warning": "Monitor spending; runway is tightening.",
+      "critical": "Critical runway. Plan a capital event."
+    },
+    "insights": {
+      "title": "Insights & actions",
+      "aiSource": "Powered by OpenAI",
+      "ruleSource": "Rule-based guidance",
+      "keySignals": "Key signals",
+      "empty": "No insights available yet.",
+      "suggestedActions": "Suggested actions",
+      "actionsEmpty": "Add more data to unlock actions."
+    },
+    "systemStatus": {
+      "title": "System status",
+      "description": "Quick health check for the operating stack",
+      "dataSource": "Data source · {source}",
+      "sources": {
+        "database": "Live database",
+        "fallback": "Fallback safe mode"
+      },
+      "runway": "Runway months · {runway}",
+      "runwayUnknown": "Not enough data yet",
+      "aiMode": "AI mode · {mode}",
+      "aiModes": {
+        "enabled": "AI enabled",
+        "heuristic": "Heuristic mode"
+      }
+    }
+  },
+  "investorPage": {
+    "disabled": {
+      "title": "Investor portal is disabled",
+      "subtitle": "Set FEATURE_ENABLE_INVESTOR=true to re-enable access."
+    },
+    "eyebrow": "Investor view",
+    "title": "Progress & capital snapshot",
+    "subtitle": "Read-only transparency for partners—no sensitive employee data, only aggregated delivery signals.",
+    "stats": {
+      "remaining": {
+        "label": "Capital remaining",
+        "verified": "Verified via ledger",
+        "fallback": "Fallback snapshot"
+      },
+      "runway": {
+        "label": "Runway",
+        "value": "{months} mo",
+        "pending": "Pending data",
+        "health": {
+          "healthy": "Health: healthy",
+          "warning": "Health: warning",
+          "critical": "Health: critical"
+        }
+      },
+      "burn": {
+        "label": "Avg monthly burn",
+        "description": "{months} month average"
+      }
+    },
+    "roadmap": {
+      "title": "Delivery roadmap",
+      "subtitle": "Phase-by-phase alignment",
+      "missingDescription": "No description provided yet."
+    },
+    "statuses": {
+      "completed": "Completed",
+      "inProgress": "In progress",
+      "notStarted": "Upcoming"
+    },
+    "fallbackPhases": {
+      "foundation": {
+        "title": "Foundation",
+        "description": "Entity setup, hiring founding engineers, compliance."
+      },
+      "beta": {
+        "title": "Product beta",
+        "description": "Deploy HR workflows to 3 pilot companies."
+      },
+      "scale": {
+        "title": "Scale",
+        "description": "Activate AI automations & regional roll-out."
+      }
+    }
+  },
+  "authPage": {
+    "eyebrow": "Secure access",
+    "title": "Sign in to Rabit HQ",
+    "subtitle": "Demo credentials are prefilled. Replace them with production accounts once the database is connected.",
+    "signingIn": "Signing in…",
+    "demo": {
+      "title": "Demo accounts",
+      "subtitle": "Use the pre-provisioned users while the hosted Postgres instance is offline.",
+      "founder": "Founder · founder@rabit.test / password123",
+      "finance": "Finance · finance@rabit.test / password123",
+      "investor": "Investor · investor@rabit.test / password123",
+      "note": "Passwords are validated via Prisma if the database is connected; otherwise demo mode accepts password123."
+    }
+  },
+  "errors": {
+    "unauthorized": "Unauthorized - Please sign in",
+    "forbidden": "Forbidden - Insufficient permissions",
+    "validation": "Validation error",
+    "server": "Server error",
+    "notFound": "Not found",
+    "networkError": "Network error"
+  },
+  "navigation": {
+    "primary": "Primary navigation",
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "investor": "Investors",
+    "admin": "Admin",
+    "profile": "Profile",
+    "switch": {
+      "ar": "العربية",
+      "en": "English"
+    }
+  }
+}

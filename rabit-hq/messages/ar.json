@@ -1,0 +1,345 @@
+{
+  "common": {
+    "appName": "رابِط HQ",
+    "welcome": "مرحباً",
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
+    "submit": "إرسال",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "create": "إنشاء",
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "success": "نجح",
+    "search": "بحث",
+    "filter": "تصفية",
+    "sort": "ترتيب"
+  },
+  "auth": {
+    "signIn": "تسجيل الدخول",
+    "signOut": "تسجيل الخروج",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "signingIn": "جاري تسجيل الدخول...",
+    "demoAccounts": "حسابات تجريبية",
+    "founder": "المؤسس",
+    "finance": "المالية",
+    "investor": "المستثمر",
+    "invalidCredentials": "بيانات الدخول غير صحيحة",
+    "unauthorized": "غير مصرح"
+  },
+  "dashboard": {
+    "title": "لوحة التحكم",
+    "kpis": "المؤشرات الرئيسية",
+    "totalCapital": "إجمالي رأس المال",
+    "totalExpenses": "إجمالي المصروفات",
+    "remaining": "المتبقي",
+    "monthlyBurn": "المعدل الشهري",
+    "runwayMonths": "أشهر التشغيل المتبقية",
+    "aiInsights": "رؤى AI",
+    "aiDisabled": "AI معطل حالياً",
+    "capitalEvents": "أحداث رأس المال",
+    "expenses": "المصروفات",
+    "projectPhases": "مراحل المشروع",
+    "milestones": "المحطات الرئيسية"
+  },
+  "investor": {
+    "title": "بوابة المستثمرين",
+    "overview": "نظرة عامة",
+    "phases": "المراحل",
+    "status": "الحالة",
+    "notStarted": "لم يبدأ",
+    "inProgress": "قيد التنفيذ",
+    "completed": "مكتمل",
+    "disabled": "بوابة المستثمرين معطلة"
+  },
+  "capital": {
+    "title": "رأس المال",
+    "create": "إضافة رأس مال",
+    "type": "النوع",
+    "investorName": "اسم المستثمر",
+    "amount": "المبلغ",
+    "currency": "العملة",
+    "date": "التاريخ",
+    "notes": "ملاحظات",
+    "types": {
+      "FOUNDER_CONTRIBUTION": "مساهمة المؤسسين",
+      "INVESTMENT_ROUND": "جولة استثمارية",
+      "OTHER": "أخرى"
+    },
+    "form": {
+      "title": "إضافة حدث رأس مال",
+      "description": "سجّل مساهمة رأس مال أو جولة استثمارية.",
+      "addButton": "إضافة حدث رأس مال",
+      "cancel": "إلغاء",
+      "submit": "إضافة"
+    }
+  },
+  "expense": {
+    "title": "المصروفات",
+    "create": "إضافة مصروف",
+    "category": "الفئة",
+    "amount": "المبلغ",
+    "date": "التاريخ",
+    "paidBy": "دفع بواسطة",
+    "paymentMethod": "طريقة الدفع",
+    "categories": {
+      "DEVELOPMENT": "تطوير",
+      "MARKETING": "تسويق",
+      "LEGAL": "قانوني",
+      "OPERATIONS": "عمليات",
+      "INFRASTRUCTURE": "بنية تحتية",
+      "SALARIES": "رواتب",
+      "CONSULTING": "استشارات",
+      "OTHER": "أخرى"
+    },
+    "paymentMethods": {
+      "BANK_TRANSFER": "تحويل بنكي",
+      "CARD": "بطاقة",
+      "CASH": "نقدي",
+      "OTHER": "أخرى"
+    },
+    "form": {
+      "title": "إضافة مصروف",
+      "description": "سجّل مصروفاً جديداً في السجلات.",
+      "addButton": "إضافة مصروف",
+      "descriptionField": "الوصف",
+      "vendor": "المورد",
+      "invoiceNumber": "رقم الفاتورة",
+      "cancel": "إلغاء",
+      "submit": "إضافة"
+    }
+  },
+  "phase": {
+    "title": "المراحل",
+    "create": "إضافة مرحلة",
+    "name": "الاسم",
+    "description": "الوصف",
+    "status": "الحالة",
+    "order": "الترتيب",
+    "plannedStartDate": "تاريخ البدء المخطط",
+    "plannedEndDate": "تاريخ الانتهاء المخطط",
+    "actualStartDate": "تاريخ البدء الفعلي",
+    "actualEndDate": "تاريخ الانتهاء الفعلي"
+  },
+  "milestone": {
+    "title": "المحطات",
+    "create": "إضافة محطة",
+    "phaseId": "المرحلة",
+    "milestoneTitle": "العنوان",
+    "description": "الوصف",
+    "status": "الحالة",
+    "plannedDate": "التاريخ المخطط",
+    "completedDate": "تاريخ الإكمال",
+    "owner": "المسؤول"
+  },
+  "admin": {
+    "title": "الإدارة",
+    "users": "المستخدمون",
+    "features": "الميزات",
+    "settings": "الإعدادات",
+    "createUser": "إنشاء مستخدم",
+    "editUser": "تعديل مستخدم",
+    "deleteUser": "حذف مستخدم",
+    "role": "الدور",
+    "roles": {
+      "FOUNDER": "مؤسس",
+      "FINANCE": "مالية",
+      "TECH": "تقنية",
+      "OPERATIONS": "عمليات",
+      "INVESTOR": "مستثمر"
+    },
+    "featureToggles": "تبديل الميزات",
+    "enableAI": "تفعيل AI",
+    "enableInvestor": "تفعيل بوابة المستثمرين"
+  },
+  "feedback": {
+    "error": "حدث خطأ. يرجى المحاولة مرة أخرى."
+  },
+  "layout": {
+    "footer": {
+      "copyright": "© {year} رابِط HQ",
+      "tagline": "منصة تحكم المؤسسين ولوحة المستثمر"
+    }
+  },
+  "landing": {
+    "eyebrow": "مركز تحكم موحد",
+    "headline": "أدر رابِط بوضوح وتركيز.",
+    "description": "يرى المؤسسون وفريق المالية والمستثمرون نفس الحقيقة—من مسار الحرق إلى تنفيذ المراحل—مع ضوابط مدمجة للمصادقة والتحكم بالصلاحيات.",
+    "primaryCta": "فتح لوحة التحكم",
+    "secondaryCta": "تسجيل الدخول",
+    "cards": {
+      "dashboard": {
+        "title": "لوحة المؤسس",
+        "description": "تتبع الحرق، كفاءة رأس المال، والتنبيهات في مكان واحد."
+      },
+      "investor": {
+        "title": "ملخص المستثمر",
+        "description": "شارك مراحل التسليم والتقدم والمؤشرات المقروءة فقط."
+      },
+      "api": {
+        "title": "واجهة أحداث رأس المال",
+        "description": "نقاط نهاية آمنة لتسجيل المساهمات وملاحظات الذكاء الاصطناعي."
+      }
+    }
+  },
+  "dashboardPage": {
+    "eyebrow": "مركز القيادة للمؤسس",
+    "title": "لوحة التحكم",
+    "subtitle": "وضع رأس المال في الزمن الحقيقي مع إشارات الحرق وإرشادات الذكاء الاصطناعي لفريق رابِط التأسيسي.",
+    "statusPill": "{status} للسيولة",
+    "status": {
+      "healthy": "صحي",
+      "warning": "تحذيري",
+      "critical": "حرج"
+    },
+    "quickActions": {
+      "title": "إجراءات سريعة",
+      "description": "سجّل أحداث رأس المال أو المصروفات خلال ثوانٍ.",
+      "note": "تتكيف الإجراءات مع لغتك تلقائياً."
+    },
+    "stats": {
+      "totalCapital": {
+        "label": "إجمالي رأس المال المجمع",
+        "description": "عبر جميع الجولات المغلقة"
+      },
+      "totalExpenses": {
+        "label": "إجمالي المصروفات",
+        "description": "مسجلة في الدفتر"
+      },
+      "remaining": {
+        "label": "الهامش المتبقي",
+        "description": "سيولة جاهزة للتنفيذ"
+      },
+      "monthlyBurn": {
+        "label": "متوسط الحرق الشهري",
+        "description": "استناداً إلى فترة {months} شهر"
+      }
+    },
+    "burnTrend": {
+      "title": "اتجاه الحرق",
+      "description": "عرض الإنفاق خلال آخر {months} شهر",
+      "chartAria": "سجل الحرق عبر الزمن"
+    },
+    "statusDescription": {
+      "healthy": "السيولة مريحة.",
+      "warning": "راقب الإنفاق؛ المسار يضيق.",
+      "critical": "السيولة حرجة. خطط لحدث تمويلي."
+    },
+    "insights": {
+      "title": "الرؤى والإجراءات",
+      "aiSource": "مدعوم من OpenAI",
+      "ruleSource": "إرشاد مبني على القواعد",
+      "keySignals": "إشارات رئيسية",
+      "empty": "لا توجد رؤى حتى الآن.",
+      "suggestedActions": "إجراءات مقترحة",
+      "actionsEmpty": "أضف بيانات أكثر لفتح الإجراءات."
+    },
+    "systemStatus": {
+      "title": "حالة النظام",
+      "description": "فحص سريع لصحة المنصة",
+      "dataSource": "مصدر البيانات · {source}",
+      "sources": {
+        "database": "قاعدة بيانات مباشرة",
+        "fallback": "وضع احتياطي آمن"
+      },
+      "runway": "أشهر السيولة · {runway}",
+      "runwayUnknown": "لا توجد بيانات كافية",
+      "aiMode": "وضع الذكاء الاصطناعي · {mode}",
+      "aiModes": {
+        "enabled": "مفعل",
+        "heuristic": "وضع إرشادي"
+      }
+    }
+  },
+  "investorPage": {
+    "disabled": {
+      "title": "بوابة المستثمرين معطلة",
+      "subtitle": "عيّن FEATURE_ENABLE_INVESTOR=true لإعادة التفعيل."
+    },
+    "eyebrow": "منظور المستثمر",
+    "title": "ملخص التقدم والسيولة",
+    "subtitle": "شفافية للجهات الشريكة دون بيانات حساسة، مع إشارات تنفيذ مجمعة.",
+    "stats": {
+      "remaining": {
+        "label": "السيولة المتبقية",
+        "verified": "تم التحقق من السجل",
+        "fallback": "لقطة احتياطية"
+      },
+      "runway": {
+        "label": "مدة التشغيل",
+        "value": "{months} شهر",
+        "pending": "بانتظار البيانات",
+        "health": {
+          "healthy": "الصحة: مستقرة",
+          "warning": "الصحة: تتطلب متابعة",
+          "critical": "الصحة: حرجة"
+        }
+      },
+      "burn": {
+        "label": "متوسط الحرق الشهري",
+        "description": "متوسط {months} شهر"
+      }
+    },
+    "roadmap": {
+      "title": "خارطة التنفيذ",
+      "subtitle": "مواءمة المراحل خطوة بخطوة",
+      "missingDescription": "لم يتم إدخال وصف بعد."
+    },
+    "statuses": {
+      "completed": "مكتمل",
+      "inProgress": "قيد التنفيذ",
+      "notStarted": "قادمة"
+    },
+    "fallbackPhases": {
+      "foundation": {
+        "title": "المرحلة التأسيسية",
+        "description": "تأسيس الكيان، توظيف مهندسين مؤسسين، والامتثال."
+      },
+      "beta": {
+        "title": "إطلاق تجريبي",
+        "description": "تشغيل مسارات الموارد البشرية لثلاث شركات تجريبية."
+      },
+      "scale": {
+        "title": "التوسع",
+        "description": "تفعيل أتمتة الذكاء الاصطناعي والتوسع الإقليمي."
+      }
+    }
+  },
+  "authPage": {
+    "eyebrow": "وصول آمن",
+    "title": "تسجيل الدخول إلى رابِط HQ",
+    "subtitle": "بيانات الدخول التجريبية جاهزة مسبقاً. استبدلها بحسابات الإنتاج عند ربط قاعدة البيانات.",
+    "signingIn": "جاري تسجيل الدخول...",
+    "demo": {
+      "title": "حسابات تجريبية",
+      "subtitle": "استخدم الحسابات المجهزة مسبقاً أثناء توقف قاعدة بيانات Postgres المستضافة.",
+      "founder": "المؤسس · founder@rabit.test / password123",
+      "finance": "المالية · finance@rabit.test / password123",
+      "investor": "المستثمر · investor@rabit.test / password123",
+      "note": "يتم التحقق من كلمات المرور عبر Prisma عند توفر قاعدة البيانات؛ وإلا يقبل النظام password123."
+    }
+  },
+  "errors": {
+    "unauthorized": "غير مصرح - يرجى تسجيل الدخول",
+    "forbidden": "ممنوع - لا تملك الصلاحيات الكافية",
+    "validation": "خطأ في التحقق من البيانات",
+    "server": "خطأ في الخادم",
+    "notFound": "غير موجود",
+    "networkError": "خطأ في الاتصال بالشبكة"
+  },
+  "navigation": {
+    "primary": "التنقل الرئيسي",
+    "home": "الرئيسية",
+    "dashboard": "لوحة التحكم",
+    "investor": "المستثمرون",
+    "admin": "الإدارة",
+    "profile": "الملف الشخصي",
+    "switch": {
+      "ar": "العربية",
+      "en": "English"
+    }
+  }
+}
