@@ -48,7 +48,7 @@
 
 ## Build Status
 
-```
+```text
 ✅ npm run build - SUCCESS
 ✅ npm run dev - WORKS (with demo mode)
 ✅ TypeScript - NO ERRORS
@@ -107,9 +107,37 @@ npx prisma studio      # Visual editor
 
 ---
 
+## Local Database (PostgreSQL)
+
+This app uses PostgreSQL (see `prisma/schema.prisma`). A lightweight dev stack is provided via `docker-compose.dev.yml`.
+
+```bash
+# 1) Start Postgres + pgAdmin (first run pulls images)
+docker compose -f docker-compose.dev.yml up -d
+
+# 2) Push schema (creates tables)
+npx prisma db push
+
+# 3) Seed demo data (optional)
+npm run seed
+
+# 4) Open Prisma Studio (optional)
+npx prisma studio
+
+# 5) Stop the stack when done
+docker compose -f docker-compose.dev.yml down
+```
+
+Notes:
+- Connection string is configured in `.env` as `DATABASE_URL=postgresql://postgres:postgres@localhost:5432/rabit_hq?schema=public`.
+- pgAdmin runs on http://localhost:5050 (email: `admin@local`, password: `admin`).
+- If port 5432 is busy, update the port mapping in `docker-compose.dev.yml` and `.env` accordingly.
+
+---
+
 ## Quick Dev Flow
 
-```
+```text
 1. npm run dev
 2. Navigate to http://localhost:3000/auth/signin
 3. Login: founder@rabit.test / password123
@@ -157,7 +185,7 @@ Only real data storage needs PostgreSQL.
 
 ## Architecture Highlights
 
-```
+```text
 Secure API Pattern:
 ┌─ Session Check (JWT)
 ├─ Permission Check (RBAC)

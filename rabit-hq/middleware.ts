@@ -26,6 +26,32 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  // Optional: role-based redirect placeholders
+  // If user is authenticated and hits the signin page or bare locale root,
+  // redirect them to a role-specific landing. Adjust mapping as pages expand.
+  if (token) {
+    const [_, maybeLocale, maybeAuth] = request.nextUrl.pathname.split('/');
+    const locale = locales.includes(maybeLocale as any) ? maybeLocale : 'ar';
+    const role = (token as any)?.role as string | undefined;
+
+    const roleDest: Record<string, string> = {
+      INVESTOR: `/${locale}/investor`,
+      FOUNDER: `/${locale}/dashboard`,
+      FINANCE: `/${locale}/dashboard`,
+      TECH: `/${locale}/dashboard`,
+      OPERATIONS: `/${locale}/dashboard`,
+    };
+
+    const isSignin = locales.includes(maybeLocale as any) && maybeAuth === 'auth' && request.nextUrl.pathname.endsWith('/signin');
+    const isBareLocale = locales.includes(maybeLocale as any) && request.nextUrl.pathname === `/${maybeLocale}`;
+
+    const destination = (role && roleDest[role]) || `/${locale}/dashboard`;
+
+    if (isSignin || isBareLocale) {
+      return NextResponse.redirect(new URL(destination, request.url));
+    }
+  }
+
   return response;
 }
 
